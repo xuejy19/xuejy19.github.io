@@ -3,12 +3,12 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Hexo
+title: 风之声
 subtitle: ''
-description: ''
+description: 与孤独为友
 keywords:
-author: John Doe
-language: en
+author: 思考猫
+language: zh-CN
 timezone: ''
 
 # URL
@@ -51,11 +51,6 @@ highlight:
   tab_replace: ''
   wrap: true
   hljs: false
-prismjs:
-  enable: false
-  preprocess: true
-  line_number: true
-  tab_replace: ''
 
 # Home page setting
 # path: Root path for your blogs index page. (default = '')
@@ -81,8 +76,8 @@ meta_generator: true
 ## http://momentjs.com/docs/#/displaying/format/
 date_format: YYYY-MM-DD
 time_format: HH:mm:ss
-## updated_option supports 'mtime', 'date', 'empty'
-updated_option: 'mtime'
+## Use post's date for updated date unless set in front-matter
+use_date_for_updated: false
 
 # Pagination
 ## Set per_page to 0 to disable pagination
@@ -98,9 +93,11 @@ ignore:
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: landscape
+theme: next
 
 # Deployment
-## Docs: https://hexo.io/docs/one-command-deployment
+## Docs: https://hexo.io/docs/deployment.html
 deploy:
-  type: ''
+  type: git
+  repo: git@github.com:xuejy19/xuejy19.github.io
+  branch: master
