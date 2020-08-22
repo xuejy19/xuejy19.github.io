@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="在使用贝叶斯理论进行决策时，我们需要知道先验概率$P(\omega)$,类条件概率密度函数$p(x|\omega)$,而在这一部分，我们便讨论下如何从样本集中将这些所需的概率密度函数估计出来">
+<meta property="og:type" content="article">
+<meta property="og:title" content="概率密度函数估计">
+<meta property="og:url" content="http://yoursite.com/2020/07/27/%E6%A6%82%E7%8E%87%E5%AF%86%E5%BA%A6%E5%87%BD%E6%95%B0%E4%BC%B0%E8%AE%A1/index.html">
+<meta property="og:site_name" content="风之声">
+<meta property="og:description" content="在使用贝叶斯理论进行决策时，我们需要知道先验概率$P(\omega)$,类条件概率密度函数$p(x|\omega)$,而在这一部分，我们便讨论下如何从样本集中将这些所需的概率密度函数估计出来">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-07-27T09:10:26.000Z">
+<meta property="article:modified_time" content="2020-08-22T02:25:10.933Z">
+<meta property="article:author" content="思考猫">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2020/07/27/%E6%A6%82%E7%8E%87%E5%AF%86%E5%BA%A6%E5%87%BD%E6%95%B0%E4%BC%B0%E8%AE%A1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>概率密度函数估计 | 风之声</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">风之声</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-schedule">
+
+    <a href="/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>日程表</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/27/%E6%A6%82%E7%8E%87%E5%AF%86%E5%BA%A6%E5%87%BD%E6%95%B0%E4%BC%B0%E8%AE%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/logo.jpg">
+      <meta itemprop="name" content="思考猫">
+      <meta itemprop="description" content="与孤独为友">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="风之声">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          概率密度函数估计
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-07-27 17:10:26" itemprop="dateCreated datePublished" datetime="2020-07-27T17:10:26+08:00">2020-07-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-22 10:25:10" itemprop="dateModified" datetime="2020-08-22T10:25:10+08:00">2020-08-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">统计学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>在使用贝叶斯理论进行决策时，我们需要知道先验概率$P(\omega)$,类条件概率密度函数$p(x|\omega)$,而在这一部分，我们便讨论下如何从样本集中将这些所需的概率密度函数估计出来<a id="more"></a>，本文主要讨论以下几个问题：</p>
+<ul>
+<li>如何利用样本集估算$p(x|\omega)$和$P(\omega)$</li>
+<li>估计量性质</li>
+<li>利用样本集估算错误率</li>
+</ul>
+<p>从样本集推断总体概率分布的方法可以分为以下几种类型:</p>
+<ul>
+<li>监督参数估计——样本所属的类别以及总体概率密度函数的形式为已知，而概率密度函数的某些参数是未知的</li>
+<li>非监督参数估计——已知总体概率密度函数形式，但未知样本所属种类，要求推断出概率密度函数某些参数</li>
+<li>非参数估计——已知样本类别，但未知总体概率密度函数形式，要求我们直接推断概率密度函数本身</li>
+</ul>
+<h3 id="最大似然估计"><a href="#最大似然估计" class="headerlink" title="最大似然估计"></a>最大似然估计</h3><p>最大似然估计是进行参数估计的常用方法，它有两个假设：</p>
+<ul>
+<li>待估计的参数$\theta$是一个确定的、未知的量</li>
+<li>概率分布函数的形式已知</li>
+<li>样本为独立抽取</li>
+</ul>
+<p>若记$\theta$为待估计参数(比如正态分布中的$\mu,\sigma$),$\mathcal{X}$为样本集合：</p>
+<script type="math/tex; mode=display">\mathcal{X} = \{ x_1,x_2, \dots, x_n\}</script><p>概率密度函数形式已知，记做$p(x|\theta)$，由于假设样本为独立抽取，则似然函数可以写做：</p>
+<script type="math/tex; mode=display">l(\theta) = p(\mathcal{X}|\theta) = \prod_{i=1}^n p(x_i|\theta)</script><p>对数似然函数为：</p>
+<script type="math/tex; mode=display">H(\theta) = ln(l(\theta)) = \sum_{i=1}^n lnp(x_i|\theta)</script><p>首先来看似然函数，它表征了在参数为$\theta$情况下，得到样本集合$\mathcal{X}$的概率，直观来看，这个概率越大，则证明估计得到的参数更好,至于为何使用对数似然函数，这是因为我们需要求$l(\theta)$的最大值，但连乘积求导非常复杂，而取对数运算是单调的，并不改变最值位置，同时计算上大大简化。因此最终最大似然估计值为:</p>
+<script type="math/tex; mode=display">\frac{\partial H(\theta)}{\theta} = 0</script><p>实践中常见的概率分布为正态分布，其最大似然估计值为：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    \hat{\mu} &= \frac{1}{n} \sum_{i=1}^n x_i \\\\
+    \hat{\sigma^2} &= \frac{1}{n} \sum_{i=1}^n (x_i - \hat{\mu})^2
+\end{aligned}</script><h3 id="贝叶斯估计"><a href="#贝叶斯估计" class="headerlink" title="贝叶斯估计"></a>贝叶斯估计</h3><p>首先回顾下贝叶斯决策：</p>
+<ul>
+<li>状态空间:$\Omega = \{ \omega_1, \omega_2, \dots , \omega_c \}$</li>
+<li>待识别对象: $\mathbf{x} = [x_1,x_2,\dots, x_d]^T$</li>
+</ul>
+<p>设真实状态为$\omega_j$，而采取决策$a_i$所带来的损失为$\lambda(\omega_j,a_i)$,对于特定$\mathbf{x}$，采取决策$a_i$所带来的平均损失为:</p>
+<script type="math/tex; mode=display">R(a_i|\mathbf{x}) = \sum_{j=1}^c \lambda(a_i,\omega_j) p(\omega_j|x)</script><p>整体损失则需要再对$\mathbf{x}$进行积分，在进行贝叶斯决策时，若想使得整体损失最小，则只需要对任意的$\mathbf{x}$，$R(a_i|\mathbf{x})$。<br>下面我们考虑参数估计问题:现在有一个样本集$\mathcal{X}$，要求我们找到最优估计量$\hat{\theta}$(对比决策$a_i$),使得带来的贝叶斯风险最小。由此可见，与贝叶斯决策相比，贝叶斯估计也是立足于使得贝叶斯风险最小，两者对比如下图所示：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>决策问题</th>
+<th style="text-align:right">估计问题</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>样本$\mathbf{x}$</td>
+<td style="text-align:right">样本集$\mathcal{X}$</td>
+</tr>
+<tr>
+<td>决策量$a_i$</td>
+<td style="text-align:right">待估计值$\hat{\theta}$</td>
+</tr>
+<tr>
+<td>真实状态$\omega_j$</td>
+<td style="text-align:right">真实参数$\theta$</td>
+</tr>
+<tr>
+<td>状态空间$\mathcal{A}$是离散空间</td>
+<td style="text-align:right">参数空间$\Theta$是连续空间</td>
+</tr>
+<tr>
+<td>先验概率$P(\omega_j)$</td>
+<td style="text-align:right">参数的先验分布$p(\theta)$</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>对于样本集$\mathcal{X}$，参数估计值为$\hat{\theta}$所带来的平均损失为：</p>
+<script type="math/tex; mode=display">
+    R(\hat{\theta}|\mathcal{X}) = \int_{\Theta} \lambda(\hat{\theta},\theta) p(\hat{\theta}|\mathcal{X}) d\theta</script><p>从上式中可以也可以看出贝叶斯决策与贝叶斯估计的区别:</p>
+<blockquote>
+<p>贝叶斯决策是立足于每一个样本$\mathbf{x}$，只需要保证对每一个样本均做出最优决策，便可保证整体决策最优；而贝叶斯估计则是立足于样本集$\mathcal{X}$</p>
+</blockquote>
+<p>现在我们要想获得贝叶斯估计，便转化为寻找合适的估计值$\hat{\theta}$,使得$R(\hat{\theta}｜\mathcal{X})$最小，这需要解决两个问题：</p>
+<ul>
+<li>$p(\hat{\theta}|\mathcal{X})$计算</li>
+<li>损失函数$\lambda(\hat{\theta},\theta)$的选择 </li>
+</ul>
+<p>首先考虑$p(\hat{\theta}|\mathcal{X})$的计算，假设$\theta$的先验概率分布为$p(\theta)$,类条件概率密度函数为$p(\mathbf{x}|\theta)$,样本集$\mathcal{X} = \{ x_1,\dots, x_n \}$,似然函数$p(\mathcal{X}|\theta)$可以表示为：</p>
+<script type="math/tex; mode=display">
+    p(\mathcal{X}|\theta) = \prod_{i=1}^n p(\mathbf{x_i}|\theta)</script><p>由贝叶斯公式，后验概率可以表示为:</p>
+<script type="math/tex; mode=display">
+    p(\hat{\theta}|\mathcal{X}) = \frac{p(\mathcal{X}|\hat{\theta})p(\hat{\theta})}{ \int p(\mathcal{X}|\theta)p(\theta) d\theta}</script><p>损失函数$\lambda(\hat{\theta},\theta)$常见的有三种选择:</p>
+<ul>
+<li>均方误差函数:$\lambda(\hat{\theta},\theta) = (\theta - \hat{\theta})^2$</li>
+<li>绝对值误差函数: $\lambda(\hat{\theta},\theta) = |\theta - \hat{\theta}|$</li>
+<li>均匀函数: $\lambda(\hat{\theta}, \theta) = \begin{cases}<br>  0 &amp; x \in [-\frac{\Delta}{2}, \frac{\Delta}{2}] \\<br>  1 &amp; other<br>\end{cases}$</li>
+</ul>
+<p>在不同损失函数下，可以推导出不同的结果：</p>
+<ul>
+<li>均方误差函数:  <script type="math/tex; mode=display">\hat{\theta}_{MS} = \int_{-\infty}^\infty \theta p(\theta| \mathcal{X})d\theta</script></li>
+<li>绝对值误差函数:<script type="math/tex; mode=display">\int_{-\infty}^{\hat{\theta_{ABS}}} p(\theta|\mathcal{X}) d\theta = \int_{\hat{\theta_{ABS}}}^{\infty} p(\theta|\mathcal{X}) d\theta</script></li>
+<li>均匀误差函数: $\theta_{MAP}$应当取在后验概率密度函数最大之处</li>
+</ul>
+<p>下面以均方误差函数为例，假设:</p>
+<ul>
+<li>$p(x|\mu) \sim N(\mu, \sigma^2)$</li>
+<li>$p(\mu) \sim N(\mu_0,\sigma_0^2)$ </li>
+</ul>
+<p>则后验概率密度函数$p(\theta|\mathcal{X})$为:<br>$$<br>\begin{aligned}<br>    p(\mu|\mathcal{X}) &amp;= \frac{p(\mathcal{X}|\mu)p(\mu)}{\int p(\mathcal{X}|\mu)p(\mu)d\mu}  \\\\<br>    &amp;= a exp\{ -\frac{1}{2}[\sum_{k=1}^N (\frac{\mu - x_k}{\sigma})^2 + (\frac{\mu - \mu_0}{\sigma_0})^2] \}<br>\end{aligned}</p>
+<script type="math/tex; mode=display">
+由于该概率密度函数是$\mu$的二次函数指数形式，所以仍是一个正态密度，其均值和方差为：</script><p>\begin{aligned}<br>    \mu_N &amp;= \frac{N\sigma_0^2}{N\sigma_0^2 + \sigma^2} \frac{1}{N}\sum_{k=1}^N x_k + \frac{\sigma^2}{N\sigma_0^2 + \sigma^2} \mu_0  \\\\<br>    \sigma_N^2 &amp;= \frac{\sigma_0^2 \sigma^2}{N\sigma_0^2 + \sigma^2}<br>\end{aligned}</p>
+<script type="math/tex; mode=display">
+因为误差函数为均方误差函数，则其参数估计值应当是后验概率密度意义上的均值，即$\mu_N$
+### 非参数估计
+在使用最大似然估计或者贝叶斯估计进行参数估计时，需要对类条件概率密度函数$p(\mathbf{x}|\omega)$形式已知，但在某些情况下，我们仅仅拥有样本，但并没有这些先验知识，此时若想要进行概率密度函数的估计，则就用到了非参数估计的方法，该类方法具有以下几点假设：
+- 不知道分布函数形式
+- $N$个样本服从独立同分布
+
+假设样本点$\mathbf{x}$落在$d$维空间中，在$d$维空间中有一个超立方体$\mathcal{R}$,点$\mathbf{x}$落到该超立方体中的概率记做$P$:</script><pre><code>P = \int_{\mathcal{R}} p(x) dx 
+</code></pre><script type="math/tex; mode=display">
+若$N$个样本是从密度为$p(x)$的总体中独立抽取的，则$N$个样本中有$k$个落入区域$\mathcal{R}$中的概率符合二项分布，该概率可以写做：</script><pre><code>P_k = C_N^k P^k(1-P)^{N-k}
+</code></pre><script type="math/tex; mode=display">
+根据二项分布的性质，$k$的期望为：</script><pre><code>E(k) = NP 
+</code></pre><script type="math/tex; mode=display">
+我们的目的是想获得关于$P$的估计值，因此考虑：
+$$ \hat{P} = \frac{k}{N}</script><p>若超立方体$\mathcal{R}$很小，则可以假设在该超球内概率密度函数$p(x)$为定值，此时：</p>
+<script type="math/tex; mode=display">
+    P = \int_{\mathcal{R}} p(x) dx  = p(x)V</script><p>由此我们便可以获得$p(x)$的估计值：</p>
+<script type="math/tex; mode=display">
+    \hat{p}(x) = \frac{P}{V} = \frac{k}{NV}</script><p>下面讨论下体积$V$的大小及样本数量多少之间的关系。如果把体积$V$固定，样本数取得越来越多，则比值$\frac{k}{N}$将在概率上收敛，最终得到的$p(x)$估计是在超立方体$\mathcal{R}$上的平均估计，而若想要得到$p(x)$的点估计，则需要区间尽可能小，但区间取得过小又会导致一些区间内没有样本点，这种估计也是没有意义的。<br>下面给出概率密度函数估计值$p_N(x)$收敛于真实概率密度函数$p(x)$的条件：</p>
+<ul>
+<li>$\lim_{N \rightarrow \infty} V_N = 0$</li>
+<li>$\lim_{N \rightarrow \infty} k_N = \infty$</li>
+<li>$\lim_{N \rightarrow \infty} \frac{k_N}{N} = 0$</li>
+</ul>
+<p>第一个条件可以使空间平均$\frac{P}{V}$收敛于$p(x)$,第二个条件可以使频数比在概率意义上收敛于概率$P$。满足以上三个条件的区域序列的选择有两种：</p>
+<ul>
+<li>Parzen窗法： 使区域序列$V_N$ 以$N$的某个函数的关系不断缩小，但此时需要对$k_N$和$\frac{k_N}{N}$加些限制条件</li>
+<li>$k_N$近邻估计，让$k_N$为$N$的某个函数，而$V_N$的选取是使相应的$\mathcal{R_N}$正好包含$x$的$k_N$个近邻。</li>
+</ul>
+<h4 id="Parzen窗法"><a href="#Parzen窗法" class="headerlink" title="Parzen窗法"></a>Parzen窗法</h4><p>假设$\mathcal{R_N}$为一个超立方体，其棱长为$h_N$,则此时超立方体体积$V_N = h_N^d$,定义窗函数$\phi(\mu)$：</p>
+<script type="math/tex; mode=display">
+    \phi(\mu) = \begin{cases}
+        1, if |\mu_j| \leq \frac{1}{2} \\
+        0, other
+    \end{cases}</script><p>引入窗函数的的目的主要是对落入区间的样本数$k$进行显示表达，当$x_i$落入以$x$为中心，体积为$V_N$的超立方体内时，$\phi(\mu) = \phi(\frac{x-x_i}{h_N}) = 1$，否则为0，此时落入该超立方体内的样本数为：</p>
+<script type="math/tex; mode=display">
+    k_N = \sum_{i=1}^N \phi(\frac{x-x_i}{h_N})</script><p>由此便可以得到概率密度函数估计：</p>
+<script type="math/tex; mode=display">
+    p_N(x) = \frac{k_N}{V_NN} = \frac{1}{N} \sum_{i=1}^N \frac{1}{V_N} \phi(\frac{x-x_i}{h_N})</script><p>事实上，窗函数的主要作用是内插，反映了每一样本$x_i$对$x$点处的概率密度函数的贡献<br>下面我们讨论下，若要使得$p_N(x)$满足概率密度函数特性(在整个空间上积分为1),则窗函数应当具有什么特性:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+          \int p_N(x)dx &= \frac{1}{NV_N} \int \sum_{i=1}^N\phi(\frac{x-x_i}{h_N})dx  \\\\
+          &= \frac{1}{N} \sum_{i=1}^N \int \phi(\mu)d\mu \\\\
+          & = 1
+    \end{aligned}</script><p>因此考虑到$p_N(x)$非负且积分为1,则窗函数应当具备一般概率密度函数所具有的特征：</p>
+<ul>
+<li>$\phi(\mu) \geq 0 $</li>
+<li>$\int \phi(\mu) d\mu = 1$</li>
+</ul>
+<p>常见的窗函数有以下三种：</p>
+<ul>
+<li>方窗函数</li>
+<li>正态窗函数:$\phi(\mu) = \frac{1}{\sqrt{2\pi}} exp(-\frac{1}{2}\mu^2)$</li>
+<li>指数窗函数:$\phi(\mu) = \frac{1}{2} exp(-|\mu|)$</li>
+</ul>
+<p>窗宽$h_d$的选择非常重要，若$h_d$选择过大，则会使得估计的分辨力降低，若选的过小，又会导致估计的稳定性下降，反映在估计得到的概率密度函数上就是毛刺很多，一般需要折中考虑。<br>下面讨论估计量$p_N(x)$的统计性质，可以证明在某些限制条件下，估计量是渐进无偏和平方误差一致的，限制条件为:</p>
+<ul>
+<li>总体密度函数$p(x)$在$x$点连续</li>
+<li>窗函数满足以下条件：<script type="math/tex; mode=display">\phi(\mu) \geq 0, \int \phi(\mu) d\mu = 1, sup_{u} \phi(\mu)<\infty</script></li>
+<li>窗宽满足: <script type="math/tex">\lim_{N \rightarrow \infty} V_N= 0,\lim_{N \rightarrow \infty} NV_N = \infty</script></li>
+</ul>
+<h4 id="k-N-近邻估计"><a href="#k-N-近邻估计" class="headerlink" title="$k_N$近邻估计"></a>$k_N$近邻估计</h4><p>parzen窗估计是对体积序列进行限制，而$k_N$近邻估计则是对$k_N$序列做出限制</p>
+<h3 id="概率密度函数估计的准确性与分类器性能的关系"><a href="#概率密度函数估计的准确性与分类器性能的关系" class="headerlink" title="概率密度函数估计的准确性与分类器性能的关系"></a>概率密度函数估计的准确性与分类器性能的关系</h3><p>因为概率密度函数的估计最终还是需要服务于一些下游任务，比如应用贝叶斯决策进行分类，因此这部分主要讨论分类器的误差来源，误差来源主要有以下几种：</p>
+<ul>
+<li>贝叶斯误差：这种误差是由于不同的类条件概率分布函数之间的相互重叠引起的，这种误差是问题本身所固有的，在分类器设计阶段无法消除</li>
+<li>模型误差：指因为选择了不正确的模型导致的误差</li>
+<li>估计误差： 由于采用有限样本进行估计所带来的误差</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechat.jpeg" alt="思考猫 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/ali.jpeg" alt="思考猫 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/07/25/Markov-network/" rel="prev" title="马尔可夫网络">
+      <i class="fa fa-chevron-left"></i> 马尔可夫网络
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/07/30/EM/" rel="next" title="EM">
+      EM <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#最大似然估计"><span class="nav-number">1.</span> <span class="nav-text">最大似然估计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#贝叶斯估计"><span class="nav-number">2.</span> <span class="nav-text">贝叶斯估计</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Parzen窗法"><span class="nav-number">2.1.</span> <span class="nav-text">Parzen窗法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#k-N-近邻估计"><span class="nav-number">2.2.</span> <span class="nav-text">$k_N$近邻估计</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#概率密度函数估计的准确性与分类器性能的关系"><span class="nav-number">3.</span> <span class="nav-text">概率密度函数估计的准确性与分类器性能的关系</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="思考猫"
+      src="/images/logo.jpg">
+  <p class="site-author-name" itemprop="name">思考猫</p>
+  <div class="site-description" itemprop="description">与孤独为友</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/xuejy19" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xuejy19" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:xuejianye19.com" title="E-Mail → mailto:xuejianye19.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">思考猫</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

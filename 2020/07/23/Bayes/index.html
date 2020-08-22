@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="该部分按照以下层次进行组织：   从贝叶斯公式谈起 贝叶斯决策">
+<meta property="og:type" content="article">
+<meta property="og:title" content="贝叶斯理论">
+<meta property="og:url" content="http://yoursite.com/2020/07/23/Bayes/index.html">
+<meta property="og:site_name" content="风之声">
+<meta property="og:description" content="该部分按照以下层次进行组织：   从贝叶斯公式谈起 贝叶斯决策">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/xuejy19/Images/master/bayes2.png">
+<meta property="article:published_time" content="2020-07-23T02:32:46.000Z">
+<meta property="article:modified_time" content="2020-08-22T02:28:56.544Z">
+<meta property="article:author" content="思考猫">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/xuejy19/Images/master/bayes2.png">
+
+<link rel="canonical" href="http://yoursite.com/2020/07/23/Bayes/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>贝叶斯理论 | 风之声</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">风之声</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-schedule">
+
+    <a href="/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>日程表</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/23/Bayes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/logo.jpg">
+      <meta itemprop="name" content="思考猫">
+      <meta itemprop="description" content="与孤独为友">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="风之声">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          贝叶斯理论
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-07-23 10:32:46" itemprop="dateCreated datePublished" datetime="2020-07-23T10:32:46+08:00">2020-07-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-22 10:28:56" itemprop="dateModified" datetime="2020-08-22T10:28:56+08:00">2020-08-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">统计学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <hr>
+<p>该部分按照以下层次进行组织：</p>
+<blockquote>
+<ul>
+<li>从贝叶斯公式谈起</li>
+<li>贝叶斯决策 <a id="more"></a>
+</li>
+</ul>
+<hr>
+<h2 id="贝叶斯公式"><a href="#贝叶斯公式" class="headerlink" title="贝叶斯公式"></a>贝叶斯公式</h2><p><strong>概念介绍</strong>(From 维基百科)：</p>
+<ul>
+<li><strong>条件概率</strong>：条件概率就是事件A在事件B发生条件下的概率，记做$P(A|B)$.</li>
+<li><strong>先验概率</strong>：先验概率是指在考虑“观测数据”之前，对某一不确定量的估计,如$P(A)$</li>
+<li><strong>后验概率</strong>：在贝叶斯统计中，一个随机事件或者一个不确定事件的后验概率是在考虑和给出相关证据或数据后所得到的条件概率，“后验”指代考虑了被测试事件的相关证据，如$P(B|A)$可以看作事件B的后验概率</li>
+</ul>
+</blockquote>
+<p>贝叶斯公式形式如下：</p>
+<script type="math/tex; mode=display">P(A|B) = \frac{P(A)P(A|B)}{P(B)}</script><p>再根据全概率公式：</p>
+<script type="math/tex; mode=display">P(B) = \sum_j P(B|A_j)P(A_j)</script><p>可以得到贝叶斯公式另一种形式：</p>
+<script type="math/tex; mode=display">P(A_i|B) = \frac{P(A_i)P(B|A_i)}{\sum_j P(B|A_j)P(A_j) }</script><blockquote>
+<p>公式分析：在现实世界中，我们往往期望通过一些观察到的事件来对一些不可以直接观测的事件进行推断，公式中的$B$变量指代可以直接观测到的事件，而我们的目的则是希望通过$B$事件与$A$事件之间的关联(因果性,相关性)来间接对A事件进行观测，贝叶斯公式便为我们搭起了这样一做桥梁。</p>
+</blockquote>
+<p>从公式角度出发，可以看出这样进行推理是有代价的，或者是必须拥有某些知识：</p>
+<blockquote>
+<ul>
+<li>先验概率$P(A)$</li>
+<li>类条件概率$P(B|A)$</li>
+</ul>
+<hr>
+</blockquote>
+<h2 id="贝叶斯决策"><a href="#贝叶斯决策" class="headerlink" title="贝叶斯决策"></a>贝叶斯决策</h2><p>这部分主要介绍三种基于贝叶斯理论的决策策略：</p>
+<blockquote>
+<ul>
+<li>基于最小错误率的贝叶斯决策</li>
+<li>基于最小风险的贝叶斯决策</li>
+<li>在限定一类错误率条件下使另一类错误率为最小的两类别决策</li>
+</ul>
+<hr>
+<h3 id="最小错误率贝叶斯决策"><a href="#最小错误率贝叶斯决策" class="headerlink" title="最小错误率贝叶斯决策"></a>最小错误率贝叶斯决策</h3><p>从贝叶斯公式出发，通过比较后验概率大小，选择后验概率大的类别作为label。以而分类问题为例，$\omega_i(i=1,2)$是类别标签，$x$为特征相量，由贝叶斯公式，可得$P(\omega_i|x)$：</p>
+<script type="math/tex; mode=display">P(\omega_i|x) = \frac{P(x|\omega_i)P(\omega_i)}{\sum_{j=1}^2 P(x|\omega_j)P(\omega_j)}</script><p>最小错误率下等价的决策规则有：</p>
+<ul>
+<li>若$P(\omega_i|x) = max_{j=1,2}P(\omega_j|x)$,则$x \in \omega_i$</li>
+<li>若$P(x|\omega_i)P(\omega_i) = max_{j=1,2}P(x|\omega_j)P(\omega_j)$,则$x \in \omega_i$</li>
+<li>对于二分类问题，若$l(x) = \frac{P(x|\omega_1)}{P(x|\omega_2)} &gt; \frac{P(\omega_2)}{P(\omega_1)}$,则$x \in \omega_1$</li>
+</ul>
+</blockquote>
+<p>下面证明该种决策策略为最小错误率，首先给出平均错误率公式：</p>
+<script type="math/tex; mode=display">P(e) = \int_{-\infty}^{\infty}P(e,x)dx = \int_{-\infty}^{\infty} P(e|x)p(x)dx</script><p>由上面给出的决策规则可知：</p>
+<script type="math/tex; mode=display">P(e|x) = \begin{cases} P(\omega_1|x),if P(\omega_2|x) > P(\omega_1|x) \\ 
+P(\omega_2|x),if P(\omega_1|x) > P(\omega_2|x) \end{cases}</script><p>若$t$为两类的决策分界面，在该分界面上$P(\omega_1|x) = P(\omega_2|x)$，$t$将整个决策空间分为了两部分$\mathcal{R_1}$和$\mathcal{R_2}$,分别对应将$x$归为$\omega_1$和$\omega_2$,据此平均错误率可以写为：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+P(e) &= P(x \in \mathcal{R_1},\omega_2) + P(x \in \mathcal{R_2},\omega_1) \\
+&= P(x\in \mathcal{R_1}|\omega_2) P(\omega_2) + P(x \in \mathcal{R_2}|\omega_1) P(\omega_1) \\
+&= P(\omega_2) \int_{\mathcal{R_1}} p(x|\omega_2)dx + P(\omega_1)\int_{\mathcal{R_2}}p(x|\omega_1)dx \\
+&= P(\omega_2) P_2(e) + P(\omega_1) P_1(e)
+\end{aligned}</script><p><img src="https://raw.githubusercontent.com/xuejy19/Images/master/bayes2.png" alt="最小错误率"></p>
+<p>图中斜线部分代表$P(e)$的第一项，纹线部分代表第二项，而从最小错误率公式来看，若要使平均错误率$P(e)$最小，只需要对于任意的$x$，保证$P(e|x)$最小，而这恰恰是贝叶斯最小错误率决策规则。</p>
+<h3 id="最小风险贝叶斯决策"><a href="#最小风险贝叶斯决策" class="headerlink" title="最小风险贝叶斯决策"></a>最小风险贝叶斯决策</h3><p>最小风险贝叶斯决策，或者称为最小损失贝叶斯决策，这种决策思想也是非常朴素：</p>
+<blockquote>
+<p>同样是决策错误，但不同的错误带来的损失并不相同，有时甚至天差地别，比如去医院看病，对于早起癌症，漏警要比虚警严重的多，可能会让患者失去早期治疗的时机。</p>
+</blockquote>
+<p>最小风险错误率准则正是考虑各种错误造成损失不同而提出的一种决策规则，若将决策空间记做$\mathcal{A}$,而每个决策都将带来一定的损失，它通常是决策和自然状态的函数，比如$\lambda(a_i,\omega_j)$则指代在$x$处于状态$\omega_j$而做出$a_i$决策时的损失，下面给出数学符号定义：</p>
+<ul>
+<li>观测向量$x$为$d$维随机向量<script type="math/tex; mode=display">x = [x_1, x_2 , \dots, x_d]^T</script></li>
+<li>状态空间$\Omega$由$c$个自然状态(c类)组成<script type="math/tex; mode=display">\Omega = \{ \omega_1, \dots, \omega_c \}</script></li>
+<li>决策空间由$n$个决策组成<script type="math/tex; mode=display">\mathcal{A} = \{ a_1, \dots, a_n \}</script></li>
+<li>决策表，决策表中第$i$行$j$列为相应损失值$\lambda(a_i,\omega_j)$</li>
+</ul>
+<p>由于引入了损失的概念，在进行决策时便不能够只根据后验概率大小来做决策，必须考虑所采取的决策是否使得损失最小。对于给定的$x$，如果我们采取决策$a_i$,其对应$c$种可能的损失$\lambda(a_i,\omega_j)$,每种损失出现的概率为$P(\omega_i|x)$,由此可以计算条件期望损失$R(a_i|x)$:</p>
+<script type="math/tex; mode=display">
+    R(a_i|x) = E(\lambda(a_i,\omega_j)) = \sum_{j=1}^c \lambda(a_i,\omega_j) P(\omega_j|x), i=1,\dots,n</script><p>在决策论种$R(a_i|x)$被称作条件风险，由于$x$是随机向量的观察值，因此对于不同的$x$，采取决策$a_i$时，其条件风险是不同的，所以最终采取何种决策应当与$x$有关，在这种意义下，可以将决策$a$看作是$x$的函数，记做$a(x)$,可以定义期望风险$R$为：</p>
+<script type="math/tex; mode=display">
+    R = \int R(a(x)|x) p(x)dx</script><p>若想使得期望风险$R$最小，只需要保证对于任意的$x$，$R(a(x)|x)$最小，因此最小损失贝叶斯决策规则为：</p>
+<script type="math/tex; mode=display">
+    if R(a_k|x) = \min \limits_{i=1,\dots,n}R(a_i|x) \Rightarrow a = a_k</script><h3 id="在限定一类错误率条件下，使得另一类错误率最小"><a href="#在限定一类错误率条件下，使得另一类错误率最小" class="headerlink" title="在限定一类错误率条件下，使得另一类错误率最小"></a>在限定一类错误率条件下，使得另一类错误率最小</h3><p>在两类别决策问题中，有两种错误分类的可能性,分别对应两个错误率$P_1(e)$和$P_2(e)$,而在实际应用中，我们往往期望某一个错误率不大于某个常数，而使另一类错误率尽可能小。比如在癌症诊断中，我们认识到将异常判断为正常非常严重，我们期望这类错误率为一个很小的值$P_2(e) = \epsilon_0$,在满足该条件下，期望另一类错误率$P_1(e)$尽可能低，这其实是一个带有等式约束的优化问题，可以用拉格朗日乘子法进行求解，拉格朗日函数$L$为:</p>
+<script type="math/tex; mode=display">
+    L = P_1(e) + \lambda(P_2(e) - \epsilon_0)</script><p>其中$P_1(e)$为：</p>
+<script type="math/tex; mode=display">
+    P_1(e) = \int_{\mathcal{R_2}} p(x|\omega_1)dx</script><p>$P_2(e)$类似，因此拉格朗日函数可以写做：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    L &= \int_{\mathcal{R_2}} p(x|\omega_1) + \lambda(\int_{\mathcal{R_1}} p(x|\omega_2)dx - \epsilon_0)  \\
+    &= 1-\lambda \epsilon_0 + \int_{\mathcal{R_1}} [\lambda  p(x|\omega_2) - p(x|\omega_1)dx]
+\end{aligned}</script><p>$L$分别对分界点$t$和$\lambda$求导，可得：</p>
+<script type="math/tex; mode=display">
+ \begin{cases}
+    \frac{\partial L}{\partial t} = 0 \Rightarrow \lambda = \frac{p(t|\omega_1)}{p(t|\omega_2)} \\
+    \frac{\partial L}{\partial \lambda} = 0 \Rightarrow P_2(e) = \epsilon_0
+ \end{cases}</script><p>由此便可得到Neyman-Pearson决策准则：</p>
+<script type="math/tex; mode=display">
+    if \frac{p(x|\omega_1)}{p(x|omega_2)} > \lambda \Rightarrow x \in \omega_1</script>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechat.jpeg" alt="思考猫 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/ali.jpeg" alt="思考猫 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/07/06/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%90%86%E8%AE%BA/" rel="prev" title="机器学习理论">
+      <i class="fa fa-chevron-left"></i> 机器学习理论
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/07/24/bayes-network/" rel="next" title="贝叶斯网络">
+      贝叶斯网络 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#贝叶斯公式"><span class="nav-number">1.</span> <span class="nav-text">贝叶斯公式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#贝叶斯决策"><span class="nav-number">2.</span> <span class="nav-text">贝叶斯决策</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#最小错误率贝叶斯决策"><span class="nav-number">2.1.</span> <span class="nav-text">最小错误率贝叶斯决策</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最小风险贝叶斯决策"><span class="nav-number">2.2.</span> <span class="nav-text">最小风险贝叶斯决策</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在限定一类错误率条件下，使得另一类错误率最小"><span class="nav-number">2.3.</span> <span class="nav-text">在限定一类错误率条件下，使得另一类错误率最小</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="思考猫"
+      src="/images/logo.jpg">
+  <p class="site-author-name" itemprop="name">思考猫</p>
+  <div class="site-description" itemprop="description">与孤独为友</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/xuejy19" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xuejy19" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:xuejianye19.com" title="E-Mail → mailto:xuejianye19.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">思考猫</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

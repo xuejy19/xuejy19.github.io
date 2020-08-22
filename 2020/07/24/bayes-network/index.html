@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="在该部分对贝叶斯网络进行介绍，按照递进关系总结以下知识点：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="贝叶斯网络">
+<meta property="og:url" content="http://yoursite.com/2020/07/24/bayes-network/index.html">
+<meta property="og:site_name" content="风之声">
+<meta property="og:description" content="在该部分对贝叶斯网络进行介绍，按照递进关系总结以下知识点：">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/xuejy19/Images/master/eg2.png">
+<meta property="article:published_time" content="2020-07-24T01:48:11.000Z">
+<meta property="article:modified_time" content="2020-07-25T14:41:59.110Z">
+<meta property="article:author" content="思考猫">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/xuejy19/Images/master/eg2.png">
+
+<link rel="canonical" href="http://yoursite.com/2020/07/24/bayes-network/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>贝叶斯网络 | 风之声</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">风之声</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-schedule">
+
+    <a href="/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>日程表</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/24/bayes-network/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/logo.jpg">
+      <meta itemprop="name" content="思考猫">
+      <meta itemprop="description" content="与孤独为友">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="风之声">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          贝叶斯网络
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-07-24 09:48:11" itemprop="dateCreated datePublished" datetime="2020-07-24T09:48:11+08:00">2020-07-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-07-25 22:41:59" itemprop="dateModified" datetime="2020-07-25T22:41:59+08:00">2020-07-25</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">统计学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>在该部分对贝叶斯网络进行介绍，按照递进关系总结以下知识点：<a id="more"></a></p>
+<ul>
+<li>条件独立性</li>
+<li>条件参数化</li>
+<li>朴素贝叶斯模型</li>
+<li><strong>贝叶斯网络</strong></li>
+</ul>
+<hr>
+<h3 id="问题来源"><a href="#问题来源" class="headerlink" title="问题来源"></a>问题来源</h3><p>首先探讨下为什么我们需要利用变量之间的条件独立性性质，假设我们要描述的对象为$n$个二值变量：$X_1,\dots,X_n$,这些变量的联合分布为$P$,那么我们需要$\bf{2^n - 1}$个参数来描述联合分布$P$，所需参数量是$O(2^n)$级别，我们便考虑能否利用变量之间的某种性质使得$P$可以用更少的参数来描述，由此便引出了变量之间的独立性性质。</p>
+<h3 id="独立性"><a href="#独立性" class="headerlink" title="独立性"></a>独立性</h3><p>下面给出一些独立性等价的定义:</p>
+<blockquote>
+<ul>
+<li>若$P(X = x|Y = y) = P(X=x)$对于任意的$x,y$均成立 $\Rightarrow$ 变量$X$与$Y$相互独立 </li>
+<li>若$P(X,Y) = P(X|Y)P(Y) = P(X)P(Y)$ $\Rightarrow$ 变量$X$与$Y$相互独立 </li>
+</ul>
+</blockquote>
+<p>若问题来源中的$n$个变量相互独立，则联合分布:</p>
+<script type="math/tex; mode=display">
+    P(X_1,X_2,\dots,X_n) = P(X_1) P(X_2) \dots P(X_n)</script><p>此时仅需$O(n)$个变量来对联合分布进行描述，参数花销大大减少，但在实际中，独立性是一个非常强的假设，往往不能够得到满足，由此便引出了条件独立性性质。</p>
+<h3 id="条件独立性"><a href="#条件独立性" class="headerlink" title="条件独立性"></a>条件独立性</h3><blockquote>
+<p>定义： 两个变量$X$和$Y$关于变量$Z$是条件独立的 $\Leftrightarrow$ 对于$\forall x,y,z$,$P(X = x|Y = y, Z = z) = P(X = x|Z = z)$ $\Leftrightarrow$ $P(X = x,Y = y|Z = z) = P(X = x|Z = z) \cdot P(Y=y|Z= z)$</p>
+</blockquote>
+<p>这里需要特别说明的是条件独立性并不能推出独立性，独立性也并不能推出条件独立性，下面给出两个反例：</p>
+<ul>
+<li>独立性 $\nRightarrow$ 条件独立性: 有两枚正反概率均为$50\%$的硬币,设事件A为第一枚硬币为正面，事件B为第二枚硬币为正面，事件C为两枚硬币同面，若不考虑事件C，事件A与事件B显然独立;但若事件C已经发生，则此时A与B便不再独立，即A与B关于C不条件独立。</li>
+<li>条件独立性 $\nRightarrow$ 独立性: 有两枚硬币，一枚正面概率为$90\%$,另一枚反面概率为$90\%$,随机拿出一枚抛掷硬币两次, 事件A表示第一次为正面，事件B表示第二次为正面，事件C表示选择的是第一枚硬币，则抛开事件C，事件A与事件B并不独立($0.5 = P(B) \neq P(B|A) = 0.9802$),但若事件C发生，则相当于进行了两次独立重复实验，此时事件A与事件B独立。</li>
+</ul>
+<p>条件独立性符号表示：</p>
+<ul>
+<li>$Ind(X;Y|Z)$ or $(X \perp Y|Z)$</li>
+</ul>
+<h3 id="条件参数化"><a href="#条件参数化" class="headerlink" title="条件参数化"></a>条件参数化</h3><p>在了解了变量条件独立性后，下面以一个例子分析如何利用变量之间的条件独立性性质来减少描述联合分布所需的参数。</p>
+<div align=center>
+
+![栗子](https://raw.githubusercontent.com/xuejy19/Images/master/Ind.png)
+</div>
+
+<p>图中大写字母均代表随机变量，含义如下：</p>
+<ul>
+<li>$D:$课程难度，$Val(D) = \{d^0, d^1\}$</li>
+<li>$I:$智力，$Val(I) = \{i^0,i^1\}$</li>
+<li>$S:$SAT分数，$Val(S) = \{s^0,s^1\}$</li>
+<li>$G:$课程成绩，$Val(G) = \{g^0,g^1, g^2\}$</li>
+<li>$L:$推荐信，$Val(L) = \{l^0,l^1\}$</li>
+</ul>
+<p>假设$G$和$S$关于$I$条件独立，下面我们分析两种情况的条件参数化</p>
+<p>首先以$I$和$S$两个变量为例，我们既可以通过联合分布$P(I,S)$来进行描述，也可以通过$P(I)$和$P(S|I)$进行描述，两种描述均是三个独立参数，如下图所示。<br><img src="https://raw.githubusercontent.com/xuejy19/Images/master/eg2.png" alt=""></p>
+<p>接下来分析$I、D、G$三个变量的条件参数化，其中$I$与$D$相互独立，下面分析两种表示方法所需的参数个数：</p>
+<ul>
+<li>联合分布: $P(I,D,G)$,所需参数个数为$2 \times 2 \times 3 - 1=11$</li>
+<li>利用独立性条件: $P(I,D,G) = P(I)P(D)P(G|I,D)$,所需独立参数为$1+1+2\times 2 \times (3-1) =10 $<br>$\Rightarrow$ <strong>利用独立性可以减少表示联合分布所需的参数个数</strong></li>
+</ul>
+<h3 id="朴素贝叶斯模型"><a href="#朴素贝叶斯模型" class="headerlink" title="朴素贝叶斯模型"></a>朴素贝叶斯模型</h3><p>在这一部分对朴素贝叶斯模型做简要介绍，首先我们有两组变量：</p>
+<ul>
+<li>$C$:类别变量，$C = \{c_1,\dots, c_k\}$</li>
+<li>观测变量：$X_1,X_2,\dots, X_d$</li>
+</ul>
+<p>在朴素贝叶斯模型中，我们的目标便是利用观测变量来对类别进行预测/推理。所有这些变量其实可以看做一个联合概率分布$P(C,X_1,\dots,X_d)$,然而该概率分布很难计算，所需的参数量是指数级别，因此在朴素贝叶斯模型中有一个很强的假设：</p>
+<blockquote>
+<p>观测变量彼此之间关于类别变量$C$是相互独立的，据此联合概率分布便很容易计算：</p>
+<script type="math/tex; mode=display">P(C,X_1,\dots,X_d) = P(X_1,\dots,X_d|C) P(C) = P(X_1|C)\dots P(X_d|C) P(C)</script></blockquote>
+<p>这是一个很强的假设，在真实世界中往往不能满足，同时因为没有充分利用变量之间的相关性性质，也造成了计算上的浪费。</p>
+<h3 id="贝叶斯网络"><a href="#贝叶斯网络" class="headerlink" title="贝叶斯网络"></a>贝叶斯网络</h3><blockquote>
+<p>贝叶斯网路定义：贝叶斯网络，又称信念网络，是一种概率图模型，记做$(G,P)$,借由有向无环图表示一组随机变量及它们之间的条件概率分布。</p>
+</blockquote>
+<p>贝叶斯网络是一种以有向无环图方式对独立性假设进行编码的手段，在贝叶斯网络中，任意变量与它的非后代变量对于其父节点变量是条件独立的：</p>
+<script type="math/tex; mode=display">
+    (X_i \perp Nondesc(X_i)|Pa(X_i))</script><p><strong>独立性映射(I-Maps):</strong> 记$P$为一组变量$\mathbf{X}$的联合概率分布，$I(P)$为表征$P$中独立性的集合</p>
+<blockquote>
+<p>定义：$G$为贝叶斯网路，若$I(G) \subset I(P)$,则称$G$为$P$的一个独立映射</p>
+<p>分解定理：若$G$是$P$的独立映射 $\Leftrightarrow$ $P(X_1,\dots,X_d) = \prod \limits_{i=1}^d P(X_i|Pa(X_i))$,通过该分解定理可以将全局的概率分布用局部的条件概率来表示</p>
+</blockquote>
+<p>下面分析下与联合概率分布相比，贝叶斯网络所需参数,以$n$个二值变量为例：</p>
+<ul>
+<li>联合概率分布：$2^n$</li>
+<li>贝叶斯网络(限制各个节点入度为$k$):$n2^k$</li>
+</ul>
+<h3 id="d-Separation-有向分离"><a href="#d-Separation-有向分离" class="headerlink" title="d-Separation(有向分离)"></a>d-Separation(有向分离)</h3><p>在前面我们已经讨论了贝叶斯网络$G$编码了局部独立性假设，现在我们希望能够了解$G$是否还编码了其他独立性假设，因此我们需要一个方法来挖掘出$G$中所有的独立性假设<br>$\Rightarrow$ <strong>d-Separation</strong><br>下面分别讨论不分离两种情况：</p>
+<ul>
+<li>不分离<ul>
+<li>两个节点直接相连：此时不存在一个节点使得这两个节点关于该节点条件独立<br>$e.g. X \rightarrow Y$</li>
+<li>两个节点间接相连：head2tail,head2head,tail2tail</li>
+<li>一般情况：对于图$G$中的路径$X_1 \leftrightarrow \dots \leftrightarrow X_n$关于节点集合$E$是激活的如果<ul>
+<li>对于每个V状结构$X_{i-1} \rightarrow X_i \leftarrow X_{i+1},X_i$或者其后代<br>在集合$E$中</li>
+<li>路径上的点不在集合$E$中</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>分离：在贝叶斯网络$G$中，$X$和$Y$在给定$Z$条件下是d分离的$d-sep_G(X;Y|Z)$,如果<strong>不存在</strong>从集合$X$到$Y$的激活路径</li>
+</ul>
+<p>由此可以通过d分离来找到贝叶斯网络中所有独立性关系：</p>
+<script type="math/tex; mode=display">
+    I(G) = \{ (\mathbf{X \perp Y |Z}): d-sep_G(\mathbf{X;Y|Z})\}</script><p>简单总结而言，如果两个节点之间的路径被阻隔，则需要满足以下两个条件其一：</p>
+<ul>
+<li>若存在V形结构，则冲撞点及其后代不能出现在条件集中</li>
+<li>有路径中的点(非碰撞点)出现在条件集合中</li>
+</ul>
+<h3 id="Forward-VS-Backward"><a href="#Forward-VS-Backward" class="headerlink" title="Forward VS Backward"></a>Forward VS Backward</h3><p>直观上感觉，贝叶斯网络的反向过程(给出结果，推理原因)要比前向过程困难不少，这是因为子节点会激活其父母之间的路径，而这种相关性会进一步向上传播。<br><strong>最小独立映射</strong>：对于一个图$G$和一个分布$P$，我们在图中哪怕仅仅去掉一个边都会导致$G$不再是$P$的一个独立映射，则称$G$是最小独立映射。<br><strong>最佳映射</strong>：对于一个图$G$和一个分布$P$，若有$I(P) = I(G)$，则称图$G$是$P$的一个最佳映射</p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechat.jpeg" alt="思考猫 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/ali.jpeg" alt="思考猫 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/07/23/Bayes/" rel="prev" title="贝叶斯理论">
+      <i class="fa fa-chevron-left"></i> 贝叶斯理论
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/07/25/Markov-network/" rel="next" title="马尔可夫网络">
+      马尔可夫网络 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题来源"><span class="nav-number">1.</span> <span class="nav-text">问题来源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#独立性"><span class="nav-number">2.</span> <span class="nav-text">独立性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条件独立性"><span class="nav-number">3.</span> <span class="nav-text">条件独立性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条件参数化"><span class="nav-number">4.</span> <span class="nav-text">条件参数化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#朴素贝叶斯模型"><span class="nav-number">5.</span> <span class="nav-text">朴素贝叶斯模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#贝叶斯网络"><span class="nav-number">6.</span> <span class="nav-text">贝叶斯网络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#d-Separation-有向分离"><span class="nav-number">7.</span> <span class="nav-text">d-Separation(有向分离)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Forward-VS-Backward"><span class="nav-number">8.</span> <span class="nav-text">Forward VS Backward</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="思考猫"
+      src="/images/logo.jpg">
+  <p class="site-author-name" itemprop="name">思考猫</p>
+  <div class="site-description" itemprop="description">与孤独为友</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/xuejy19" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xuejy19" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:xuejianye19.com" title="E-Mail → mailto:xuejianye19.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">思考猫</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

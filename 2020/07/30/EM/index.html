@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="在前面概率密度函数估计中，若概率模型的变量都是可观测变量，那么给定数据，便可以直接用极大似然估计法或者贝叶斯估计法来直接估计模型参数。但是当模型中含有隐变量时，便不能直接使用这些估计方法，EM算法就是含有隐变量的概率模型参数的极大似然估计法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="EM">
+<meta property="og:url" content="http://yoursite.com/2020/07/30/EM/index.html">
+<meta property="og:site_name" content="风之声">
+<meta property="og:description" content="在前面概率密度函数估计中，若概率模型的变量都是可观测变量，那么给定数据，便可以直接用极大似然估计法或者贝叶斯估计法来直接估计模型参数。但是当模型中含有隐变量时，便不能直接使用这些估计方法，EM算法就是含有隐变量的概率模型参数的极大似然估计法">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-07-30T08:01:11.000Z">
+<meta property="article:modified_time" content="2020-08-22T02:26:13.133Z">
+<meta property="article:author" content="思考猫">
+<meta property="article:tag" content="EM算法,隐变量,高斯混合模型">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2020/07/30/EM/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>EM | 风之声</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">风之声</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-schedule">
+
+    <a href="/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>日程表</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/30/EM/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/logo.jpg">
+      <meta itemprop="name" content="思考猫">
+      <meta itemprop="description" content="与孤独为友">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="风之声">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          EM
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-07-30 16:01:11" itemprop="dateCreated datePublished" datetime="2020-07-30T16:01:11+08:00">2020-07-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-22 10:26:13" itemprop="dateModified" datetime="2020-08-22T10:26:13+08:00">2020-08-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">统计学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>在前面概率密度函数估计中，若概率模型的变量都是可观测变量，那么给定数据，便可以直接用极大似然估计法或者贝叶斯估计法来直接估计模型参数。但是当模型中含有隐变量时，便不能直接使用这些估计方法，<strong>EM算法就是含有隐变量的概率模型参数的极大似然估计法</strong><a id="more"></a>,本文便围绕EM算法展开，主要包含以下几部分：</p>
+<ul>
+<li>算法引入</li>
+<li>算法定义</li>
+<li>算法导出</li>
+<li>算法收敛性分析</li>
+<li>算法应用-高斯混合模型(GMM)</li>
+</ul>
+<h3 id="算法引入"><a href="#算法引入" class="headerlink" title="算法引入"></a>算法引入</h3><p>首先介绍一个使用EM算法的栗子，引出EM算法应用场景:</p>
+<blockquote>
+<p>三硬币模型： 假设有三枚硬币A,B,C。这三枚硬币出现正面的概率分别为$\pi,p,q$。现进行如下掷币实验：首先掷出硬币A,根据其结果选出硬币B或硬币C，正面选硬币B,反面选硬币C；然后掷选出的硬币，掷硬币的结果，正面记做1，反面记做0,独立的重复$n$次实验，得到实验结果为$(x_1,\dots,x_n)$<br><strong>问题</strong>：根据实验结果估计三枚硬币参数(正面朝上概率)</p>
+</blockquote>
+<p>这个问题的特殊性在于，我们只能够观察到最终实验结果，但是对于中间变量(硬币A的投掷结果)则没有记录，是隐变量，所以该问题是在有隐变量情况下的参数估计问题。下面首先尝试使用极大似然估计方法，做如下标记：</p>
+<ul>
+<li>待估计参数$\theta = (\pi,p,q)$</li>
+<li>观测变量$y$:最终掷硬币结果</li>
+<li>隐含变量$z$:每次实验掷硬币A的结果</li>
+</ul>
+<p>若直接采用最大似然估计，我们希望能够写出似然概率$P(y|\theta)$，但这个概率并不能够直接写出，需要引入隐含变量$z$，因此考虑将似然概率写成</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+         P(y|\theta) &= \sum P(y,z|\theta) = \sum_{z} P(z|\theta) P(y|\theta,z) \\\\
+         &= \pi p^y (1-p)^{1-y} + (1-\pi)q^y(1-q)^{1-y}
+    \end{aligned}</script><p>将观测数据记做$Y = (Y_1,\dots, Y_n)^T$,未观测数据记做$Z = (Z_1,\dots, Z_n)^T$,则似然函数可以写做：</p>
+<script type="math/tex; mode=display">
+    L = P(Y|\theta) = \prod_{j=1}^n[\pi p^{y_j} (1-p)^{1-y_j} + (1-\pi)q^{y_j}(1-q)^{1-y_j}]</script><p>对数似然函数则是:</p>
+<script type="math/tex; mode=display">
+    logL = \sum_{j=1}^nlog[\pi p^{y_j} (1-p)^{1-y_j} + (1-\pi)q^{y_j}(1-q)^{1-y_j}]</script><p>直接极大化对数似然函数并不能得到解析解，该问题只能通过EM算法迭代求解</p>
+<h3 id="算法推导"><a href="#算法推导" class="headerlink" title="算法推导"></a>算法推导</h3><p>首先给出算法定义：<br><strong>EM算法</strong>:</p>
+<blockquote>
+<p>  输入： 观测变量数据$Y$,隐变量数据$Z$，联合分布$P(Y,Z|\theta)$,条件分布$P(Z|Y,\theta$<br>  输出： 模型参数$\theta$</p>
+<ol>
+<li>选择参数初始值$\theta^0$,开始迭代</li>
+<li>E步：记$\theta^i$为第$i$次迭代参数$\theta$的估计值，在第$i+1$次迭代的E步，计算：</li>
+</ol>
+</blockquote>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        Q(\theta,\theta^i) &= E_Z[logP(Y,Z|\theta)|Y,\theta^i] \\\\
+            &= \sum_Z log P(Y,Z|\theta) P(Z|Y,\theta^i)
+    \end{aligned}</script><ol>
+<li>M步： 求使得$Q(\theta,\theta^i)$极大化的$\theta$,确定第$i+1$次迭代的参数的估计值$\theta^{i+1}$ <script type="math/tex; mode=display">\theta^{i+1} = argmax_{\theta}Q(\theta,\theta^i)</script></li>
+<li>重复第2,3步，直到算法收敛</li>
+</ol>
+<p>从形式上来看，$Q$函数与极大似然函数其实是一样的，不同之处在于$P(Z|Y,\theta^i)$中使用的是参数迭代估计值，用该迭代估计值代替真值，$Q$函数可以看作是：</p>
+<blockquote>
+<p>完全数据的对数似然函数$logP(Y,Z|\theta)$关于在给定观测数据$Y$和当前参数$\theta^i$下对未观测数据$Z$的的条件概率分布$P(Z|Y,\theta^i)$的期望。</p>
+</blockquote>
+<p>我们这样使用$Q$函数来近似优化最大似然函数，需要证明这样的迭代优化是有效的</p>
+<h3 id="算法导出"><a href="#算法导出" class="headerlink" title="算法导出"></a>算法导出</h3><p>对数似然形式前面已经讨论过，形式为：</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        L(\theta) &= log P(Y|\theta) = log \sum_Z P(Y,Z|\theta) \\
+        &= log(\sum_Z P(Y|\theta,Z) P(Z|\theta))
+    \end{aligned}</script><p>直接极大化对数似然函数困难之处在于两点：</p>
+<ul>
+<li>含有隐变量$Z$</li>
+<li>对数似然函数是和的对数的形式</li>
+</ul>
+<p>假设在第$i$次迭代后参数$\theta$估计值为$\theta^i$,新的估计值是$\theta$，我们期望新的估计值$\theta$能够使得对数似然函数增大，因此，考虑计算两者的差：</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        L(\theta) - L(\theta^i) &= log(\sum_Z P(Y|\theta,Z) P(Z|\theta)) - logP(Y|\theta^i) 
+        \\\\
+        &= log(\sum_Z P(Z|Y,\theta^i) \frac{P(Y|Z,\theta)P(Z|\theta)}{P(Z|Y,\theta^i)}) - logP(Y|\theta^i) 
+        \\\\
+        &\geq \sum_Z P(Z|Y,\theta^i) log \frac{P(Y|Z,\theta)P(Z|\theta)}{P(Z|Y,\theta^i)} - logP(Y|\theta^i)  (Jensen不等式)  
+        \\\\
+        &= \sum_Z P(Z|Y,\theta^i) log \frac{P(Y|Z,\theta)P(Z|\theta)}{P(Z|Y,\theta^i)P(Y|\theta^i)}
+    \end{aligned}</script><p>令 </p>
+<script type="math/tex; mode=display">
+    B(\theta,\theta^i) = L(\theta^i) + \sum_Z P(Z|Y,\theta^i) log \frac{P(Y|Z,\theta)P(Z|\theta)}{P(Z|Y,\theta^i)P(Y|\theta^i)}</script><p>则有：</p>
+<script type="math/tex; mode=display">
+    L(\theta) \geq B(\theta,\theta^i)</script><p>至此，我们找到了对数似然函数的一个下界，同时在点$\theta^i$处，有：</p>
+<script type="math/tex; mode=display">
+    L(\theta^i) = B(\theta^i,\theta^i)</script><p>因此若我们可以找到$\theta^{i+1}$,使得$B(\theta^{i+1},\theta^i)&gt;B(\theta^i,<br>\theta^i)$,则有：</p>
+<script type="math/tex; mode=display">
+    L(\theta^{i+1}) \geq B(\theta^{i+1},\theta^i) > B(\theta^i,\theta^i) = L(\theta^i)</script><p>因此我们可以考虑优化$B(\theta,\theta^i)$，从而变相使原始似然函数增大。接下来考虑$B(\theta,\theta^i)$中需要优化的具体是哪一项:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        \theta^{i+1} &= argmax(L(\theta^i) +  \sum_Z P(Z|Y,\theta^i) log \frac{P(Y|Z,\theta)P(Z|\theta)}{P(Z|Y,\theta^i)P(Y|\theta^i)})  \\\\
+        &= argmax  \sum_Z P(Z|Y,\theta^i) log \frac{P(Y|Z,\theta)P(Z|\theta)}{P(Z|Y,\theta^i)P(Y|\theta^i)} \\\\
+        &= argmax \sum_Z P(Z|Y,\theta^i) log(P(Y|Z,\theta) P(Z|\theta)) \\\\
+        &= argmax \sum_Z P(Z|Y,\theta^i) log P(Y,Z|\theta) \\\\
+        &= argmax Q(\theta,\theta^i)
+    \end{aligned}</script><div align=center>
+
+![EM](https://raw.githubusercontent.com/xuejy19/Images/master/EM.png)
+</div>
+
+<p>图中下方曲线为$B(\theta,\theta^i)$，上方曲线为$L(\theta)$,在$\theta^n$处，两者相等，当对$B(\theta,\theta^n)$进行优化时，似然函数也得到了优化，同样，这种迭代算法只能够保证每次迭代都会使得似然函数增加，但并不能保证为全局最优。</p>
+<h3 id="算法收敛性分析"><a href="#算法收敛性分析" class="headerlink" title="算法收敛性分析"></a>算法收敛性分析</h3><p>该部分只给出一些结论，证明过程略过</p>
+<blockquote>
+<p><strong>定理1</strong>:设$P(Y|\theta)$为观测数据的似然函数，$\theta^i$为EM算法得到的参数估计序列，$P(Y|\theta^i)$为对应的似然函数序列，则$P(Y|\theta_i)$是单调递增的，即：</p>
+<pre><code>$$    
+P(Y|\theta^{i+1}) \geq P(Y|\theta^i) 
+$$
+</code></pre><p><strong>定理2</strong>:设$L(\theta) = log P(Y|\theta)$为观测数据的对数似然函数，$\theta^i$为EM算法得到的参数估计序列，$L(\theta^i)$为对应的对数似然函数序列 </p>
+<ol>
+<li>如果$P(Y|\theta)$有上界,则$L(\theta^i) = log P(Y|\theta^i)$ 收敛到某一值$L^*$</li>
+<li>在函数$Q(\theta,\theta^{‘})$与$L(\theta)$满足一定条件下，由EM算法得到的参数估计序列$<br>\theta^i$的收敛点$\theta^*$是$L(\theta)$的稳定点</li>
+</ol>
+</blockquote>
+<h3 id="算法应用-高斯混合模型-GMM"><a href="#算法应用-高斯混合模型-GMM" class="headerlink" title="算法应用-高斯混合模型(GMM)"></a>算法应用-高斯混合模型(GMM)</h3><p>首先给出高斯混合模型定义:</p>
+<blockquote>
+<p>高斯混合模型是指具有如下形式的概率分布模型：</p>
+<script type="math/tex; mode=display">
+    P(y|\theta) = \sum_{k=1}^K \alpha_k \phi(y|\theta_k)</script><p>其中,$\alpha_k$是系数，$\alpha_k \geq 0$,$\sum \alpha_k = 1$;$\phi(y|\theta_k)$是高斯概率密度函数，$\theta_k = (\mu_k,\sigma_k^2)$,称为第$k$个分模型</p>
+</blockquote>
+<p>高斯模型是描述数据分布的一种常见模型，但在有时候单一的高斯模型并不足以对数据进行描述，因此便考虑该数据分布有没有可能用多个高斯模型来描述，即任意一个数据点可能来自于某一个分模型。假设观测数据$y_1,y_2,\dots,y_N$由高斯混合模型生成：</p>
+<script type="math/tex; mode=display">
+      P(y|\theta) = \sum_{k=1}^K \alpha_k \phi(y|\theta_k)</script><p>其中$\theta = (\alpha_1,\dots,\alpha_K;\theta_1,\dots,\theta_K)$,我们现在期望利用观测数据将这些参数估计出来。</p>
+<h4 id="隐变量定义"><a href="#隐变量定义" class="headerlink" title="隐变量定义"></a>隐变量定义</h4><p>首先来看对于这样一个模型，隐变量是什么，数据是这样产生的：首先依概率$\alpha_k$选择第$k$个高斯分布分模型，然后依第$k$个分模型的概率分布生成观测数据$y$。观测数据$y$是已知的，但是$y$究竟来自于哪个分模型是未知的，记该变量为隐变量$\gamma_{jk}$,其定义如下：</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        \gamma_{jk} &= \begin{cases}
+            1,& 第j个观测来自第k个分模型 \\
+            0,& other
+        \end{cases}   
+        \\\\
+        j &= 1,\dots,N;k = 1,\dots,K
+    \end{aligned}</script><p>目前，我们的观测数据为$y_j$,未观测数据是$\gamma_{jk}$,完全数据是：</p>
+<script type="math/tex; mode=display">
+    (y_j,\gamma_{j_1},\dots,\gamma_{jk}),j=1,\dots,N</script><p>于是，可以写出完全数据的对数似然函数：</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+         P(y,\gamma|\theta) &= \prod_{j=1}^N P(y_j,\gamma_{j1},\dots,\gamma_{jk}|\theta) \\\\
+         &= \prod_{k=1}^K \prod_{j=1}^N [\alpha_k \phi(y_j|\theta_k)]^{\gamma_{jk} } \\\\
+         &= \prod_{k=1}^K \alpha_k^{n_k} \prod_{j=1}^N [\alpha_k \phi(y_j|\theta_k)]^{\gamma_{jk} } \\\\
+         &= \prod_{k=1}^K \alpha_k^{n_k} \prod_{j=1}^N [\frac{1}{\sqrt{2\pi}\sigma_k} exp(-\frac{(y_j-\mu_k)^2}{2\sigma_k^2})]^{\gamma_{jk}}
+    \end{aligned}</script><p>公式中$n_k = \sum_{j=1}^N \gamma_{jk},\sum_{k=1}^K n_k = N$,由此，便可以写出完全数据的对数似然函数：</p>
+<script type="math/tex; mode=display">
+ logP(y,\gamma|\theta) = \sum_{k=1}^K \{ n_klog\alpha_k + \sum_{j=1}^N \gamma_{jk}[log(\frac{1}{\sqrt{2\pi}})-log\sigma_k - \frac{1}{2\sigma_k^2} (y_j-\mu_k)^2]\}</script><p><strong>E步</strong>：其实就是要在已知上次迭代参数估计值$\theta$和观测值$y$的情况下将$\gamma_{jk}$估计出来，然后代回完全数据的对数似然函数，下面就求解下$E(\gamma_{jk}|y,\theta)$:</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    \hat{\gamma}_{jk} &= E(\gamma_{jk}|y,\theta) = P(\gamma_{jk}|y,\theta)\\\\
+    &= \frac{P(\gamma_{jk = 1,y|\theta})}{\sum_{k=1}^K P(\gamma_{jk}=1,y_j|\theta)} \\\\
+    &= \frac{P(y_j|\gamma_{jk}=1,\theta)P(\gamma_{jk}=1|\theta)}{\sum_{k=1}^K P(y_j|\gamma_{jk}=1,\theta)P(\gamma_{jk}=1|\theta)} \\\\
+    &= \frac{\alpha_k \phi(y_j|\theta_k)}{\sum_{k=1}^K \alpha_k \phi(y_j|\theta_k)}
+\end{aligned}</script><p>将该估计值代回完全数据的对数似然函数，便得到了$Q$函数：</p>
+<script type="math/tex; mode=display">
+    Q(\theta,\theta^i) =  logP(y,\gamma|\theta) = \sum_{k=1}^K \{ n_klog\alpha_k + \sum_{j=1}^N \hat{\gamma}_{jk}[log(\frac{1}{\sqrt{2\pi}})-log\sigma_k - \frac{1}{2\sigma_k^2} (y_j-\mu_k)^2]\}</script><p><strong>M步</strong>：迭代的M步是求函数$Q(\theta,\theta^i)$对$\theta$的极大值，即求新一轮迭代的模型参数:</p>
+<script type="math/tex; mode=display">
+    \theta^{i+1} = \arg max_{\theta} Q(\theta,\theta^i)</script><p>该步只需分别对$\alpha_K,\mu_k,\sigma_k$求偏导，令偏导等于0,注意在求解$\alpha_k$时需要利用$\alpha_k$天然的约束条件$\sum_{k=1}^K \alpha_k = 1$,最终求解结果为:</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    \hat{\mu}_k &= \frac{\sum_{j=1}^N \hat{\gamma}_{jk}y_j}{\sum_{j=1}^N \hat{\gamma}_{jk}} \\\\
+    \hat{\sigma}_k^2 &= \frac{\sum_{j=1}^N \hat{\gamma}_{jk}(y_j - \mu_k)^2}{\sum_{j=1}^N \hat{\gamma}_{jk}} \\\\
+    \hat{\alpha}_k &= \frac{n_k}{N} = \frac{\sum_{j=1}^N \hat{\gamma}_{jk}}{N}
+\end{aligned}</script><h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>该部分就高斯混合模型的EM算法进行总结</p>
+<ul>
+<li>取参数的初始值开始迭代</li>
+<li>E步：根据当前模型参数，计算分模型$k$对观测数据$y_j$的响应度</li>
+<li>M步：计算新一轮迭代的模型参数 </li>
+<li>重复直到算法收敛</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechat.jpeg" alt="思考猫 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/ali.jpeg" alt="思考猫 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/EM%E7%AE%97%E6%B3%95-%E9%9A%90%E5%8F%98%E9%87%8F-%E9%AB%98%E6%96%AF%E6%B7%B7%E5%90%88%E6%A8%A1%E5%9E%8B/" rel="tag"># EM算法,隐变量,高斯混合模型</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/07/27/%E6%A6%82%E7%8E%87%E5%AF%86%E5%BA%A6%E5%87%BD%E6%95%B0%E4%BC%B0%E8%AE%A1/" rel="prev" title="概率密度函数估计">
+      <i class="fa fa-chevron-left"></i> 概率密度函数估计
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/08/11/%E7%BA%BF%E6%80%A7%E5%88%A4%E5%88%AB%E5%87%BD%E6%95%B0/" rel="next" title="线性判别函数">
+      线性判别函数 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#算法引入"><span class="nav-number">1.</span> <span class="nav-text">算法引入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#算法推导"><span class="nav-number">2.</span> <span class="nav-text">算法推导</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#算法导出"><span class="nav-number">3.</span> <span class="nav-text">算法导出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#算法收敛性分析"><span class="nav-number">4.</span> <span class="nav-text">算法收敛性分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#算法应用-高斯混合模型-GMM"><span class="nav-number">5.</span> <span class="nav-text">算法应用-高斯混合模型(GMM)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#隐变量定义"><span class="nav-number">5.1.</span> <span class="nav-text">隐变量定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结"><span class="nav-number">5.2.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="思考猫"
+      src="/images/logo.jpg">
+  <p class="site-author-name" itemprop="name">思考猫</p>
+  <div class="site-description" itemprop="description">与孤独为友</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/xuejy19" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xuejy19" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:xuejianye19.com" title="E-Mail → mailto:xuejianye19.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">思考猫</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
