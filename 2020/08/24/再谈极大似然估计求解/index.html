@@ -20,21 +20,23 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="在这一部分我将介绍另一种常见的概率图模型:马尔可夫网络，或称马尔可夫随机场。接下来分为以下几部分进行组织">
+  <meta name="description" content="首先我们思考这样一个问题：  当我们用最大似然估计进行概率模型参数估计时，为什么基本都是直接求导，一阶导数等于0的点就是我们待求的最优估计?  问到这个地方的时候，可能有一部分人就不知该如何回答了，因为一阶导数为0显然不是函数最大值点的充要条件，但我相信肯定有的答案是:  因为碰到的对数似然函数是一个凹函数形式，这样一阶导数为0的点就与函数最大值点互为充要条件了  这个答案是正确的，但是">
 <meta property="og:type" content="article">
-<meta property="og:title" content="马尔可夫网络">
-<meta property="og:url" content="http://yoursite.com/2020/07/25/Markov-network/index.html">
+<meta property="og:title" content="再谈极大似然估计求解">
+<meta property="og:url" content="http://yoursite.com/2020/08/24/%E5%86%8D%E8%B0%88%E6%9E%81%E5%A4%A7%E4%BC%BC%E7%84%B6%E4%BC%B0%E8%AE%A1%E6%B1%82%E8%A7%A3/index.html">
 <meta property="og:site_name" content="风之声">
-<meta property="og:description" content="在这一部分我将介绍另一种常见的概率图模型:马尔可夫网络，或称马尔可夫随机场。接下来分为以下几部分进行组织">
+<meta property="og:description" content="首先我们思考这样一个问题：  当我们用最大似然估计进行概率模型参数估计时，为什么基本都是直接求导，一阶导数等于0的点就是我们待求的最优估计?  问到这个地方的时候，可能有一部分人就不知该如何回答了，因为一阶导数为0显然不是函数最大值点的充要条件，但我相信肯定有的答案是:  因为碰到的对数似然函数是一个凹函数形式，这样一阶导数为0的点就与函数最大值点互为充要条件了  这个答案是正确的，但是">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://raw.githubusercontent.com/xuejy19/Images/master/mav1.png">
-<meta property="article:published_time" content="2020-07-25T01:20:59.000Z">
-<meta property="article:modified_time" content="2020-08-22T02:26:21.859Z">
+<meta property="og:image" content="https://www.zhihu.com/question/263423642/answer/269353169">
+<meta property="og:image" content="https://web.stanford.edu/class/stats311/Lectures/lec-07.pdf">
+<meta property="article:published_time" content="2020-08-24T08:46:01.000Z">
+<meta property="article:modified_time" content="2020-08-24T13:43:56.432Z">
 <meta property="article:author" content="思考猫">
+<meta property="article:tag" content="统计学习，凸优化">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/xuejy19/Images/master/mav1.png">
+<meta name="twitter:image" content="https://www.zhihu.com/question/263423642/answer/269353169">
 
-<link rel="canonical" href="http://yoursite.com/2020/07/25/Markov-network/">
+<link rel="canonical" href="http://yoursite.com/2020/08/24/%E5%86%8D%E8%B0%88%E6%9E%81%E5%A4%A7%E4%BC%BC%E7%84%B6%E4%BC%B0%E8%AE%A1%E6%B1%82%E8%A7%A3/">
 
 
 <script id="page-configurations">
@@ -47,7 +49,7 @@
   };
 </script>
 
-  <title>马尔可夫网络 | 风之声</title>
+  <title>再谈极大似然估计求解 | 风之声</title>
   
 
 
@@ -172,7 +174,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/25/Markov-network/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/24/%E5%86%8D%E8%B0%88%E6%9E%81%E5%A4%A7%E4%BC%BC%E7%84%B6%E4%BC%B0%E8%AE%A1%E6%B1%82%E8%A7%A3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/logo.jpg">
@@ -185,7 +187,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          马尔可夫网络
+          再谈极大似然估计求解
         </h1>
 
         <div class="post-meta">
@@ -194,16 +196,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2020-07-25 09:20:59" itemprop="dateCreated datePublished" datetime="2020-07-25T09:20:59+08:00">2020-07-25</time>
+              <time title="创建时间：2020-08-24 16:46:01 / 修改时间：21:43:56" itemprop="dateCreated datePublished" datetime="2020-08-24T16:46:01+08:00">2020-08-24</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-22 10:26:21" itemprop="dateModified" datetime="2020-08-22T10:26:21+08:00">2020-08-22</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -223,8 +219,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2020/07/25/Markov-network/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/07/25/Markov-network/" itemprop="commentCount"></span>
+    <a title="valine" href="/2020/08/24/%E5%86%8D%E8%B0%88%E6%9E%81%E5%A4%A7%E4%BC%BC%E7%84%B6%E4%BC%B0%E8%AE%A1%E6%B1%82%E8%A7%A3/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/08/24/%E5%86%8D%E8%B0%88%E6%9E%81%E5%A4%A7%E4%BC%BC%E7%84%B6%E4%BC%B0%E8%AE%A1%E6%B1%82%E8%A7%A3/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -239,78 +235,99 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>在这一部分我将介绍另一种常见的概率图模型:马尔可夫网络，或称马尔可夫随机场。接下来分为以下几部分进行组织<a id="more"></a>：</p>
-<ul>
-<li>马尔可夫网络</li>
-<li>独立性假设</li>
-<li>势函数</li>
-</ul>
-<h3 id="马尔可夫网络"><a href="#马尔可夫网络" class="headerlink" title="马尔可夫网络"></a>马尔可夫网络</h3><p>首先给出维基百科上关于马尔可夫网络的定义：</p>
+        <p>首先我们思考这样一个问题：</p>
 <blockquote>
-<p>马尔可夫网络是一组有马尔可夫性质随机变量$X$的全联合概率分布模型。马尔可夫网络类似贝叶斯网络用于表示依赖关系。但是，一方面它可以表示贝叶斯网络无法表示的一些关系，如循环依赖；另一方面，它不能表示贝叶斯网络能够表示的某些关系，如推导关系。</p>
+<p>当我们用最大似然估计进行概率模型参数估计时，为什么基本都是直接求导，一阶导数等于0的点就是我们待求的最优估计?</p>
 </blockquote>
-<p>马尔可夫网络具有以下特征：</p>
-<ul>
-<li>无向图$H = (V,E)$</li>
-<li>每个顶点$v \in V$表示一个在集合$X$的随机变量，每条边$\{u,v\}\in E$ 表示随机变量$u$和$v$之间的依赖关系</li>
-</ul>
-<h3 id="独立性假设"><a href="#独立性假设" class="headerlink" title="独立性假设"></a>独立性假设</h3><p>马尔可夫网络与贝叶斯网络类似，以图的形式对独立性假设进行编码，首先给出图中激活路径的概念：</p>
-<ul>
-<li>激活路径：一个路径$X_1,X_2,\dots,X_n$是激活的 $\Leftrightarrow$ 没有路径上的变量被观测到  </li>
-</ul>
-<p>有了激活路径概念之后，便可以讨论图中的条件独立关系：</p>
-<ul>
-<li>在图$H$中，节点集$X$与节点集$Y$相对于是节点集$Z$是分离的 $\Leftrightarrow$ $X$与$Y$之间不存在激活路径</li>
-<li>表示为$sep_H(X;Y|Z)$,栗子如下图所示。</li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/xuejy19/Images/master/mav1.png" alt="栗子"></p>
-<h3 id="势函数"><a href="#势函数" class="headerlink" title="势函数"></a>势函数</h3><p>在贝叶斯网络中，节点之间的关系通过条件概率进行表征，而在马尔可夫网络中，节点之间的关系通过势函数来表征，势函数定义如下：</p>
+<p>问到这个地方的时候，可能有一部分人就不知该如何回答了，因为一阶导数为0显然不是函数最大值点的充要条件，但我相信肯定有的答案是:</p>
 <blockquote>
-<p>一个函数集合$f_k$(也称为因子或者团因子有时也称为特征)，每一个$f_k$的定义域是图$G$的团或子团$k$,每一个$f_k$是从可能的特定联合的指派(到元素$k$)到非负实数的映射。</p>
+<p>因为碰到的对数似然函数是一个凹函数形式，这样一阶导数为0的点就与函数最大值点互为充要条件了</p>
 </blockquote>
-<p>总结而言，势函数具有以下特征：</p>
-<blockquote>
+<p>这个答案是正确的，但是不够严谨，我相信基本没人会在应用最大似然进行参数估计时首先进行对数似然函数的凸性判定，这篇文章主要就是想通过严谨的数学推导来说明一类概率密度函数的对数似然函数是凹函数，可以直接利用求导等于0这种简单直接的方法寻找最优估计，而若碰到不属于这一类的概率密度函数，则在使用最大似然估计时还是先判断对数似然函数凹凸性为妙，本篇文章按照以下结构组织:</p>
 <ul>
-<li>非负</li>
-<li>与条件概率不同，其求和不必为1</li>
-</ul>
-</blockquote>
-<h3 id="吉布斯分布"><a href="#吉布斯分布" class="headerlink" title="吉布斯分布"></a>吉布斯分布</h3><p>我们引入该图模型的目的在于：<strong>通过马尔可夫网络来对变量之间的独立性关系进行编码，然后获得对于联合概率分布更加紧凑的表示形式</strong>，而吉布斯分布便是将联合概率与势函数相连接的桥梁。<br>一个概率分布$P$可以分解为图$H$：</p>
-<blockquote>
-<ul>
-<li>$H$可以分为若干子团$D_i$</li>
-<li>在每个子团上相应定义了势函数$\pi_i$</li>
-</ul>
-</blockquote>
-<p>由此便可以写出吉布斯分布形式：</p>
+<li>指数分布族</li>
+<li>指数族函数举例</li>
+<li>对数似然函数凹凸性证明</li>
+<li>总结<a id="more"></a>
+<h3 id="指数分布族"><a href="#指数分布族" class="headerlink" title="指数分布族"></a>指数分布族</h3>首先给出指数分布族的定义：<blockquote>
+<p>指数分布族是一类概率分布的总称，这类分布的概率密度函数具有这样的形式：</p>
 <script type="math/tex; mode=display">
-\begin{aligned}
-     P(X_1,X_2,\dots,X_n) = \frac{1}{Z} f(X_1,X_2,\dots,X_n) 
-\end{aligned}</script><p>其中:</p>
-<blockquote>
-<ul>
-<li>$f(X_1,X_2,\dots,X_n) = \prod_{i=1}^m \pi_i(D_i)$</li>
-<li>$Z = \sum_{X_1,\dots,X_n} f(X_1,\dots,X_n)$</li>
-</ul>
-</blockquote>
-<p>每一个势函数定义了一个映射:$Sub(X) \rightarrow \mathcal{R^+}$ ,一个势函数的定义域相当于是一个集合，而这个集合中的变量彼此之间是直接依赖关系，从这个视角来看，条件概率可以看作是势函数的特例(仅仅表征两个变量之间依赖关系)。</p>
-<p>下面我们讨论下一个势函数(因子)应该定义在一个多大的集合上，首先考虑如果在每条边上均定义一个势函数，那么马尔可夫网络能否表征联合概率分布？答案是并不行，为此我以一个7个节点(均为二值变量)的全连接网络为例，分别讨论两种情况下具有的独立参数的数量：</p>
-<ul>
-<li>联合概率分布：$2^7 - 1 = 127$</li>
-<li>边上势函数：$4*C_7^2 = 84$</li>
-</ul>
-<p>显然对于全连接网络，若给予每个边一个势函数并不足以表征联合概率分布，在前面已经说明一个势函数定义域中的变量应当是两两直接相关，因此势函数的定义域应当是一个团(clique)。<br>$\Rightarrow$ <strong>马尔可夫网络中的局部结构是团</strong></p>
-<h3 id="马尔可夫网络分解"><a href="#马尔可夫网络分解" class="headerlink" title="马尔可夫网络分解"></a>马尔可夫网络分解</h3><p>首先给出$I-Map$的概念:$H$为一个马尔可夫网络，$P$为联合概率分布，若有$I(H) \subseteq I(P)$，则称马尔可夫网络$H$为分布$P$的一个$I-Map$。 </p>
-<p>记$D_i$为马尔可夫网络$H$中的子团，Hammersley-Clifford定理如下：</p>
-<blockquote>
-<p>对于一个无向图$H$和分布$P$,$P$可以被分解成$P(X) = \frac{1}{Z}\prod \pi_i (D_i) \Leftrightarrow$ $H$是$P$的$I-Map$</p>
-</blockquote>
-<p>在实际进行分解时一般都是在最大团上定义势函数</p>
-<h3 id="对数表示"><a href="#对数表示" class="headerlink" title="对数表示"></a>对数表示</h3><p>在马尔可夫网络中，联合分布除了可以利用吉布斯分布来进行表示，也可以采取对数表示的方法，将原始的势函数$\pi_i(D_i)$ 表示成$exp(-\epsilon(D_i))$的形式，其中$\epsilon(D_i) = -log(\pi_i(D_i))$,据此，联合概率分布可以表示成：</p>
+  p_\theta(x) = h(x) \exp(\theta^T \phi(x) - A(\theta))</script><p>式中，$x$是密度函数自变量，$x \in \mathcal{X}$;$\phi(x)$是充分统计量，可以看做是原始变量的一个映射:</p>
 <script type="math/tex; mode=display">
-    P(X_1,X_2,\dots,X_n) = \frac{1}{Z} exp(-\sum_{i=1}^m \epsilon(D_i))</script><p>这种表示方法将连乘变成了连家，计算更加方便，同时有定理证明，若无向图$H$是分布$P$的一个独立映射，那么$\epsilon(D_i) = \omega_i \phi_i(D_i)$,此时$\phi$被称作特征函数，与势函数关系为：</p>
+  \phi: \mathcal{X} \rightarrow R^d</script><p>$\theta$是模型参数向量，与充分统计量维度相同，$h(x)$是一个只与$x$有关的统计量，$A(\theta)$为配分函数，通过该函数来保证$p_\theta(x)$满足概率密度函数的定义：</p>
 <script type="math/tex; mode=display">
-    \pi_i(D_i) = exp(\omega_i \phi_i(D_i))</script>
+   \int_{\mathcal{X}} p_{\theta}(x) dx = 1</script><p>由此约束条件，我们可以得到$A(\theta)$的解析表达式：</p>
+<script type="math/tex; mode=display">
+  A(\theta) = \log (\int h(x) \exp(\theta^T \phi(x))dx )</script></blockquote>
+</li>
+</ul>
+<h3 id="指数分布族函数举例"><a href="#指数分布族函数举例" class="headerlink" title="指数分布族函数举例"></a>指数分布族函数举例</h3><p>首先给出结论，按照笔者调研，属于指数分布族的分布有：</p>
+<ul>
+<li>正态分布$N(\mu,\sigma^2)$</li>
+<li>伯努利分布(两点分布)$B(1,\pi)$</li>
+<li>二项分布$B(n,\pi)$</li>
+<li>泊松分布$P(\lambda)$</li>
+<li>伽马分布$G(\mu,v)$</li>
+<li>……. </li>
+</ul>
+<p>下面就将其中几个分布化成指数分布族的标准形式</p>
+<h4 id="伯努利分布"><a href="#伯努利分布" class="headerlink" title="伯努利分布"></a>伯努利分布</h4><p>对于伯努利分布，我们有$\mathcal{X} = \{ 0,1 \}$,模型参数为$P(x = 1) = \pi,P(x = -1) = 1 - \pi$,因此我们有:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        P(X = x)  = \pi^x (1 - \pi)^{1-x} &= \exp(x \log \pi + (1-x) \log(1-\pi) )  \\
+        &= \exp(x \log \frac{\pi}{1-\pi} + \log (1-\pi)) 
+    \end{aligned}</script><p>因此令$\theta = \log \frac{\pi}{1 - \pi}$, 则$P(X = x)$可以写做:</p>
+<script type="math/tex; mode=display">
+    P(X = x) = \exp(x\theta - \log(1 + e^\theta))</script><p>因此对于伯努利分布$h(x) = 1,\phi(x) = x, \theta = log \frac{\pi}{1-\pi}, A(\theta) = log(1 + e^\theta)$ </p>
+<h4 id="泊松分布"><a href="#泊松分布" class="headerlink" title="泊松分布"></a>泊松分布</h4><p>首先给出泊松分布的形式:</p>
+<script type="math/tex; mode=display">
+    P_\lambda(X = x) = \frac{\lambda^x}{x!} e^{- \lambda}</script><p>下面将其转化成指数分布族标准形式:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        P_\lambda(X = x) &= \frac{\lambda^x}{x!} e^{- \lambda} \\
+        &= \frac{1}{x!} e^{x\log \lambda - \lambda}
+    \end{aligned}</script><p>因此，对于泊松分布，$h(x) = \frac{1}{x!}, \theta = \log \lambda,\phi(x) = x,A(\theta) = e^\theta$   </p>
+<h4 id="高斯分布"><a href="#高斯分布" class="headerlink" title="高斯分布"></a>高斯分布</h4><p>高斯分布的概率密度函数形式如下:</p>
+<script type="math/tex; mode=display">
+    p_{\mu,\sigma}(x) = \frac{1}{\sqrt{2 \pi} \sigma} \exp(- \frac{(x-\mu)^2}{2\sigma^2})</script><p>下面将其转化成指数分布族标准形式: </p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+         p_{\mu,\sigma}(x) &= \frac{1}{\sqrt{2 \pi} \sigma} \exp(- \frac{(x-\mu)^2}{2\sigma^2})  \\
+         &= \frac{1}{\sqrt{2 \pi} \sigma} \exp(\frac{-x^2}{2 \sigma^2} + \frac{x \mu}{\sigma^2} - \frac{\mu^2}{2\sigma^2}) \\
+         &= \frac{1}{\sqrt{2 \pi} } \exp(\frac{-x^2}{2 \sigma^2} + \frac{x \mu}{\sigma^2} - \frac{\mu^2}{2\sigma^2} + \log \sigma)
+    \end{aligned}</script><p>因此，对于高斯分布:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        h(x) &= \frac{1}{\sqrt{2 \pi} \sigma}  \\
+        \phi(x) &= [\frac{x^2}{2}, x]^T \\
+        \theta &= [-\frac{1}{\sigma^2}, \frac{\mu}{\sigma^2}]^T \\
+        A(\theta) &= -\frac{1}{2} (log \theta^{(1)} + \theta^{(2)})
+    \end{aligned}</script><h3 id="对数似然函数凹凸性证明"><a href="#对数似然函数凹凸性证明" class="headerlink" title="对数似然函数凹凸性证明"></a>对数似然函数凹凸性证明</h3><p>我们关心的是最终对数似然函数的凹凸性，因为最终的对数似然函数是各个样本的概率密度函数取对数后累加的形式，由保凸运算可知，若单个对数概率密度函数的凹凸性可以确定，那么最终对数似然函数的凹凸性也就确定了。对于指数族分布，单个样本的概率密度函数取对数如下:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        \log p_{\theta}(x) &= \log h(x) \exp(\theta^T \phi(x) - A(\theta)) \\
+        &= \log h(x) + \theta^T \phi(x) + \log(-A(\theta))
+    \end{aligned}</script><p>第一项与$\theta$无关，第二项为$\theta$的线性组合，不影响函数的凹凸性，所以整个函数的凹凸性是由第三项来确定，对于外层函数是对数函数的对数函数$\log f(x)$而言:</p>
+<script type="math/tex; mode=display">
+    (\log f(x))^{''} = \frac{f(x) f^{''}(x) - f^{'}(x)^2}{f(x)^2}</script><p>由对数函数性质有$f(x) &gt; 0$,因此，若$f(x)$是凹函数($f^{‘’}(x) \leq 0$),则可推出$(\log f(x))^{‘’} \leq 0$,即$\log f(x)$为凹函数，若$f(x)$为凸函数则不能有直接的结论，因此我们的重点放在讨论$A(\theta)$的凹凸性上。<br>下面证明$A(\theta)$为凸函数,从定义出发证明，记$\theta_{\lambda} = \lambda \theta_1 + (1 - \lambda) \theta_2$,其中$\theta_1,\theta_2 \in dom f, \lambda \in [0,1]$,由Hölder不等式，可知:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        A(\theta_\lambda) &= \log (\int h(x) \exp(\theta_{\lambda}^T \phi(x))dx ) \\ 
+        &= \log (\int \exp(\theta_{\lambda}^T \phi(x))d\mu(x)\\
+        &= \log (\int \exp[ (\lambda \theta_1 \phi(x) + (1-\lambda)\theta_2)\phi(x)]d\mu(x) ) \\
+        &= \log (\int \exp(\theta_1 \phi(x)^{\lambda}) \exp (\theta_2 \phi(x))^{1-\lambda} d \mu(x)) \\
+        &\leq \log (\int \exp(\theta_1 \phi(x))^{\frac{\lambda}{\lambda}} d\mu(x) )^\lambda (\int \exp(\theta_2 \phi(x))^{\frac{1-\lambda}{1- \lambda}}d\mu(x))^{1-\lambda}  (Hölder不等式) \\
+        &= \lambda \log (\int \exp(\theta_1 \phi(x)) d\mu(x) ) + (1-\lambda)
+        \log (\int \exp(\theta_2 \phi(x)) d\mu(x) ) \\
+        &= \lambda A(\theta_1) + (1-\lambda) A(\theta_2)
+    \end{aligned}</script><p>从凸函数定义可知,$A(\theta)$为凸函数，至此我们便得到了对数似然函数的凹凸性:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        &A(\theta) 凸 \rightarrow -A(\theta) 凹 \rightarrow \log(-A(\theta)) 凹 \\
+        & log(p_\theta(x)) 凹  \rightarrow 对数似然函数 凹
+    \end{aligned}</script><h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>从前面列出的指数分布族所包含的分布来看，我们日常所碰到的绝大多数概率分布都属于指数族分布，是可以直接通过求导等于0这种方法来得到参数估计，而对于不属于指数分布族的分布，则是有必要对对数似然函数进行分析，而不能直接通过求导来解最优参数估计值。</p>
+<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p>本文内容主要参考以下链接：<br><img src="https://www.zhihu.com/question/263423642/answer/269353169" alt="为什么极大似然估计求导为 0 就是要求的值呢？"><br><img src="https://web.stanford.edu/class/stats311/Lectures/lec-07.pdf" alt="指数分布组族函数"></p>
+
     </div>
 
     
@@ -338,6 +355,9 @@
 
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%EF%BC%8C%E5%87%B8%E4%BC%98%E5%8C%96/" rel="tag"># 统计学习，凸优化</a>
+          </div>
 
         
 
@@ -345,13 +365,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/07/24/bayes-network/" rel="prev" title="贝叶斯网络">
-      <i class="fa fa-chevron-left"></i> 贝叶斯网络
+    <a href="/2020/08/23/logistic%E5%9B%9E%E5%BD%92%E4%B8%8E%E6%9C%80%E5%A4%A7%E7%86%B5%E6%A8%A1%E5%9E%8B/" rel="prev" title="logistic回归与最大熵模型">
+      <i class="fa fa-chevron-left"></i> logistic回归与最大熵模型
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/07/27/%E6%A6%82%E7%8E%87%E5%AF%86%E5%BA%A6%E5%87%BD%E6%95%B0%E4%BC%B0%E8%AE%A1/" rel="next" title="概率密度函数估计">
-      概率密度函数估计 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -411,7 +428,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#马尔可夫网络"><span class="nav-number">1.</span> <span class="nav-text">马尔可夫网络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#独立性假设"><span class="nav-number">2.</span> <span class="nav-text">独立性假设</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#势函数"><span class="nav-number">3.</span> <span class="nav-text">势函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#吉布斯分布"><span class="nav-number">4.</span> <span class="nav-text">吉布斯分布</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#马尔可夫网络分解"><span class="nav-number">5.</span> <span class="nav-text">马尔可夫网络分解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对数表示"><span class="nav-number">6.</span> <span class="nav-text">对数表示</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#指数分布族"><span class="nav-number">1.</span> <span class="nav-text">指数分布族</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#指数分布族函数举例"><span class="nav-number">2.</span> <span class="nav-text">指数分布族函数举例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#伯努利分布"><span class="nav-number">2.1.</span> <span class="nav-text">伯努利分布</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#泊松分布"><span class="nav-number">2.2.</span> <span class="nav-text">泊松分布</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#高斯分布"><span class="nav-number">2.3.</span> <span class="nav-text">高斯分布</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对数似然函数凹凸性证明"><span class="nav-number">3.</span> <span class="nav-text">对数似然函数凹凸性证明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#参考"><span class="nav-number">4.1.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
