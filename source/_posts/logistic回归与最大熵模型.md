@@ -9,7 +9,6 @@ mathjax: true
 在学习李航老师《统计学习》条件随机场章节时，对于学习算法感到有些陌生，后来发现在书中第六章“logistic回归与最大熵模型”有过一些介绍，因此本章节便总结一下相关知识，其中logistic回归模型做简要介绍，重点放在最大熵模型的学习算法上，本文按照如下结构组织：
 - logistic回归
 - 最大熵模型
-- 模型学习的最优化算法
 <!--more-->
 ### logistic回归
 #### logistic分布
@@ -251,8 +250,14 @@ $$
 至此，我们得到了对偶函数$\phi(w)$表达式：
 $$
     \begin{aligned}
-        \phi(w) = 
+        \phi(w) &= \sum_{x,y} \tilde{P}(x,y) \sum_{i=1}^n w_i f_i(x,y) + \sum_{x,y} \tilde{P}(x)P_w(y|x)(\log P_w(y|x) - \sum_{i=1}^n w_i f_i(x,y)) \\
+        &= \sum_{x,y} \tilde{P}(x,y) \sum_{i=1}^n w_i f_i(x,y) - \sum_{x,y} \tilde{P}(x)P_w(y|x) \log Z_w(x) \\
+        &= \sum_{x,y} \tilde{P}(x,y) \sum_{i=1}^n w_i f_i(x,y) - \sum_x \tilde{P}(x) \log Z_w(x)
     \end{aligned}
+$$
+因此接下来便是求解对偶优化问题:
+$$
+    \max \phi(w)
 $$
 得到$w^\ast$,然后回代$P_w(y|x)$,得到最大熵模型表达式:
 $$
@@ -266,7 +271,9 @@ $$
 $$
     \begin{aligned}
          L_{\tilde{P}}(P_w) &= \log \prod_{x,y} P(y|x)^{\tilde{P}(x,y)} = \sum_{x,y} \tilde{P}(x,y) \log P(y|x) \\
-         &= \sum_{x,y} \tilde{P}(x,y) \sum_{i=1}^n w_i f_i(x,y)  - \sum_{x,y} \tilde{P}(x,y) \log Z_w(x) \\
+         &= \sum_{x,y} \tilde{P}(x,y) \sum_{i=1}^n w_i f_i(x,)  - \sum_{x,y} \tilde{P}(x,y) \log Z_w(x) \\
          &= \sum_{x,y} \tilde{P}(x,y) \sum_{i=1}^n w_i f_i(x,y)  - \sum_{x} \tilde{P}(x) \log Z_w(x)
     \end{aligned}
 $$
+与对偶函数$\phi(w)$一致，这说明对对偶函数求最大等价于求最大熵模型的极大似然估计。
+最大熵模型与logistic回归模型有类似的形式，它们又称为对数线性模型。模型学习就是对模型进行极大似然估计或者正则化的极大似然估计
