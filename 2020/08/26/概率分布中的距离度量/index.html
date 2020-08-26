@@ -20,16 +20,17 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="与孤独为友">
+  <meta name="description" content="在$k$近邻章节中，我总结了在样本空间中常用的两种距离度量:$L_p$距离以及马氏距离。但在一些机器学习任务中，我们期望能够得到一个分布与目标分布尽可能接近，这也就引出了一个新的问题:  如何度量两个概率分布之间的距离(差异程度)？  本文将介绍一些常见的概率分布之间的距离度量，按照以下结构组织:  信息量与熵 KL散度(相对熵) 交叉熵 JS散度 推土机理论与Wasserstein距离">
 <meta property="og:type" content="article">
 <meta property="og:title" content="概率分布中的距离度量">
 <meta property="og:url" content="http://yoursite.com/2020/08/26/%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83%E4%B8%AD%E7%9A%84%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F/index.html">
 <meta property="og:site_name" content="风之声">
-<meta property="og:description" content="与孤独为友">
+<meta property="og:description" content="在$k$近邻章节中，我总结了在样本空间中常用的两种距离度量:$L_p$距离以及马氏距离。但在一些机器学习任务中，我们期望能够得到一个分布与目标分布尽可能接近，这也就引出了一个新的问题:  如何度量两个概率分布之间的距离(差异程度)？  本文将介绍一些常见的概率分布之间的距离度量，按照以下结构组织:  信息量与熵 KL散度(相对熵) 交叉熵 JS散度 推土机理论与Wasserstein距离">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-08-26T09:38:32.000Z">
-<meta property="article:modified_time" content="2020-08-26T09:38:32.520Z">
+<meta property="article:modified_time" content="2020-08-26T15:20:39.741Z">
 <meta property="article:author" content="思考猫">
+<meta property="article:tag" content="KL散度，JS散度，推土机距离">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://yoursite.com/2020/08/26/%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83%E4%B8%AD%E7%9A%84%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F/">
@@ -192,8 +193,18 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2020-08-26 17:38:32" itemprop="dateCreated datePublished" datetime="2020-08-26T17:38:32+08:00">2020-08-26</time>
+              <time title="创建时间：2020-08-26 17:38:32 / 修改时间：23:20:39" itemprop="dateCreated datePublished" datetime="2020-08-26T17:38:32+08:00">2020-08-26</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">统计学习</span></a>
+                </span>
             </span>
 
           
@@ -221,7 +232,70 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        
+        <p>在$k$近邻章节中，我总结了在样本空间中常用的两种距离度量:$L_p$距离以及马氏距离。但在一些机器学习任务中，我们期望能够得到一个分布与目标分布尽可能接近，这也就引出了一个新的问题:</p>
+<blockquote>
+<p>如何度量两个概率分布之间的距离(差异程度)？</p>
+</blockquote>
+<p>本文将介绍一些常见的概率分布之间的距离度量，按照以下结构组织:</p>
+<ul>
+<li>信息量与熵</li>
+<li>KL散度(相对熵)</li>
+<li>交叉熵</li>
+<li>JS散度</li>
+<li>推土机理论与Wasserstein距离<a id="more"></a>
+</li>
+</ul>
+<h3 id="信息量与熵"><a href="#信息量与熵" class="headerlink" title="信息量与熵"></a>信息量与熵</h3><h4 id="信息量"><a href="#信息量" class="headerlink" title="信息量"></a>信息量</h4><p>任何事件都会承载着一定的信息量，包括已经发生的事件和未发生的事件，只是它们承载的信息量有所不同：</p>
+<blockquote>
+<p>🌰：对于两个事件：昨天下雨与明天下雨。昨天下雨这个事件，因为已经发生，既定事实，那么它的信息量就为0；而对于明天会下雨这个事件，因为未有发生，那么该事件的信息量就大。</p>
+</blockquote>
+<p>从上面栗子可以看出信息量是一个与事件发生概率相关的概念，而且可以得出，事件发生的概率越小，其信息量越大。这也很好理解，因为所谓的“搞个大新闻”,也就是发生了不太可能发生的事情，”大新闻”则意味着该事件蕴含着更多的信息。从这个角度出发， 定义信息量:</p>
+<blockquote>
+<p><strong>信息量:</strong> 假设$X$是一个离散型随机变量，其取值集合为$\mathcal{X}$，其概率分布为:</p>
+<script type="math/tex; mode=display">
+    p(x) = P(X = x), x \in \mathcal{X}</script><p>则定义事件$X = x_0$的信息量为:</p>
+<script type="math/tex; mode=display">
+    I(x_0) = -\log(p(x_0))</script></blockquote>
+<h4 id="熵"><a href="#熵" class="headerlink" title="熵"></a>熵</h4><p>首先给出熵的定义：</p>
+<blockquote>
+<p>在信息论与概率统计中，熵是表示<strong>随机变量不确定性</strong>的度量，设$X$是一个取有限个值的离散随机变量，其概率分布为:</p>
+<script type="math/tex; mode=display">
+    P(X = x_i) = p_i, \quad i =1,2,\dots,n</script><p>则随机变量$X$的熵定义为:</p>
+<script type="math/tex; mode=display">
+    H(X) = - \sum_{i=1}^n p_i \log p_i</script></blockquote>
+<p>有了信息量的定义后，再看关于熵的定义式可以看出，熵不过是在概率分布$P$下对信息量求的期望，所以说熵实际上就是<strong>事件信息量的期望</strong>。<br>若$p_i = 0$,则定义$0\log 0 =0$,式中的对数一般取以2为底或者以$e$为底，这时熵的单位被称作比特或纳特，由定义可知，熵只依赖于$X$的分布，而与$X$的取值无关，因此也可将$X$的熵记作$H(p)$,熵越大，随机变量的不确定性越大。因为$p_i \leq 0$,由$H(p)$函数性质(凹函数，应用拉格朗日乘子法可求最大值)可知:</p>
+<script type="math/tex; mode=display">
+    0 \leq H(p) \leq \log n</script><h3 id="KL散度-相对熵"><a href="#KL散度-相对熵" class="headerlink" title="KL散度(相对熵)"></a>KL散度(相对熵)</h3><p>KL散度又称相对熵，如果我们对同一个随机变量有两个独立的概率分布$P(x)$和$Q(x)$，我们可以使用KL散度来衡量这两个分布的差异,下面给出KL散度的定义式:</p>
+<blockquote>
+<p>在机器学习中，$P$往往用来表示样本的真实分布，$Q$用来表示模型所预测的分布，那么$KL$散度就可以计算两个分布之间的差异，也就是Loss损失值:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+         D_{KL}(P||Q) &= -\sum_{i=1}^n p(x_i) \log(\frac{q(x_i)}{p(x_i)}) \\
+            &= -\sum_{i=1}^n p(x_i) \log(q(x_i)) - (-\sum_{i=1}^n p(x_i) \log p(x_i))
+    \end{aligned}</script><p>由于$-\log x$为凸函数，由凸函数性质可知:</p>
+<script type="math/tex; mode=display">
+     -\sum_{i=1}^n p(x_i) \log(\frac{q(x_i)}{p(x_i)}) \geq  \log \sum_{i=1}^n q(x_i) = 0</script><p>这说明KL散度具有非负的性质，这也说明$P(x)$与其他分布的交叉熵恒大于熵。</p>
+</blockquote>
+<p>这里需要说明的是，虽然KL散度具有非负性，但其并不满足度量的另外两个性质:</p>
+<ul>
+<li>对称性</li>
+<li>三角不等式</li>
+</ul>
+<h3 id="交叉熵"><a href="#交叉熵" class="headerlink" title="交叉熵"></a>交叉熵</h3><p>KL散度由两部分组成，第一部分是交叉熵，第二部分则是$P(x)$的熵，$P(x)$因为是真实的分布，所以其熵为固定值。在机器学习任务中，我们需要评估样本固有label与我们算法的预测$predict$之间的差距，在优化过程中，我们只需关注交叉熵，所以在分类任务中，往往采用交叉熵作为loss函数。</p>
+<h3 id="JS散度"><a href="#JS散度" class="headerlink" title="JS散度"></a>JS散度</h3><p>JS散度只是KL散度的变形，其解决了KL散度的非对称问题，其表达式如下:</p>
+<script type="math/tex; mode=display">
+    JS(P||Q) = \frac{1}{2} KL(P(x)||\frac{P(x) + Q(x)}{2}) + \frac{1}{2}KL(Q(x)||\frac{P(x)+ Q(x)}{2})</script><p>若$\log$以2为底，则JS散度的范围为$[0,1]$,若$\log$以$e$为底，则JS散度范围为$[0,\ln 2]$。当两个分布完全相同时取下界，当两个分布完全不同时取上界。<br>这也就带来了一个问题，若优化时两个分布完全没有交集时,JS散度就是一个常数($1$或$\ln 2$),此时会出现梯度消失问题，导致无法进行优化。</p>
+<h3 id="Wasserstein距离"><a href="#Wasserstein距离" class="headerlink" title="Wasserstein距离"></a>Wasserstein距离</h3><p>首先说明下KL散度与JS散度存在的问题:</p>
+<blockquote>
+<p>若两个分布$P,Q$完全没有重叠，则会导致KL散度无意义($\log 0$),而JS散度是一个常数，也就是说出现了梯度消失问题。</p>
+</blockquote>
+<p>而Wasserstein距离可以一定程度上解决该问题。</p>
+<h4 id="思想"><a href="#思想" class="headerlink" title="思想"></a>思想</h4><p>对于两个分布$P$和$Q$，考虑从将一个分布转换成另一个分布所需的代价入手来定义概率分布的差异。下面以一个栗子来说明该距离的思想:</p>
+<blockquote>
+<p>🌰: 考虑两个分布$P$和$Q$:</p>
+<script type="math/tex; mode=display">
+</script></blockquote>
+
     </div>
 
     
@@ -249,6 +323,9 @@
 
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/KL%E6%95%A3%E5%BA%A6%EF%BC%8CJS%E6%95%A3%E5%BA%A6%EF%BC%8C%E6%8E%A8%E5%9C%9F%E6%9C%BA%E8%B7%9D%E7%A6%BB/" rel="tag"># KL散度，JS散度，推土机距离</a>
+          </div>
 
         
 
@@ -319,6 +396,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#信息量与熵"><span class="nav-number">1.</span> <span class="nav-text">信息量与熵</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#信息量"><span class="nav-number">1.1.</span> <span class="nav-text">信息量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#熵"><span class="nav-number">1.2.</span> <span class="nav-text">熵</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#KL散度-相对熵"><span class="nav-number">2.</span> <span class="nav-text">KL散度(相对熵)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#交叉熵"><span class="nav-number">3.</span> <span class="nav-text">交叉熵</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JS散度"><span class="nav-number">4.</span> <span class="nav-text">JS散度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Wasserstein距离"><span class="nav-number">5.</span> <span class="nav-text">Wasserstein距离</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#思想"><span class="nav-number">5.1.</span> <span class="nav-text">思想</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -343,7 +421,7 @@
         <span class="site-state-item-name">分类</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">9</span>
         <span class="site-state-item-name">标签</span>
       </div>
   </nav>
@@ -437,6 +515,59 @@
   
 
   
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
 
   
 
