@@ -20,20 +20,20 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="首先我们思考这样一个问题：  当我们用最大似然估计进行概率模型参数估计时，为什么基本都是直接求导，一阶导数等于0的点就是我们待求的最优估计?  问到这个地方的时候，可能有一部分人就不知该如何回答了，因为一阶导数为0显然不是函数最大值点的充要条件，但我相信肯定有的答案是:  因为碰到的对数似然函数是一个凹函数形式，这样一阶导数为0的点就与函数最大值点互为充要条件了  这个答案是正确的，但是">
+  <meta name="description" content="首先讲一个有意思的现象，早期的主流人工智能专注于以逻辑为基础来进行形式化和推理，但这样很难定量地对不确定事件进行表达和处理，后来随着机器学习算法的井喷，大家都更加关注于对定量的数据进行处理。但现在，很多人发现在解决某些任务的时候，加入一些行业中的常识知识可能会让任务解决地更好，而现在定性知识与定量数据之间似乎有着一道鸿沟，唯一的联系就是进行算法设计的人可能会依赖于他的领域知识来选择合适的算法并对算">
 <meta property="og:type" content="article">
-<meta property="og:title" content="再谈极大似然估计求解">
-<meta property="og:url" content="http://yoursite.com/2020/08/24/%E5%86%8D%E8%B0%88%E6%9E%81%E5%A4%A7%E4%BC%BC%E7%84%B6%E4%BC%B0%E8%AE%A1%E6%B1%82%E8%A7%A3/index.html">
+<meta property="og:title" content="规则学习">
+<meta property="og:url" content="http://yoursite.com/2020/08/27/%E8%A7%84%E5%88%99%E5%AD%A6%E4%B9%A0/index.html">
 <meta property="og:site_name" content="风之声">
-<meta property="og:description" content="首先我们思考这样一个问题：  当我们用最大似然估计进行概率模型参数估计时，为什么基本都是直接求导，一阶导数等于0的点就是我们待求的最优估计?  问到这个地方的时候，可能有一部分人就不知该如何回答了，因为一阶导数为0显然不是函数最大值点的充要条件，但我相信肯定有的答案是:  因为碰到的对数似然函数是一个凹函数形式，这样一阶导数为0的点就与函数最大值点互为充要条件了  这个答案是正确的，但是">
+<meta property="og:description" content="首先讲一个有意思的现象，早期的主流人工智能专注于以逻辑为基础来进行形式化和推理，但这样很难定量地对不确定事件进行表达和处理，后来随着机器学习算法的井喷，大家都更加关注于对定量的数据进行处理。但现在，很多人发现在解决某些任务的时候，加入一些行业中的常识知识可能会让任务解决地更好，而现在定性知识与定量数据之间似乎有着一道鸿沟，唯一的联系就是进行算法设计的人可能会依赖于他的领域知识来选择合适的算法并对算">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-08-24T08:46:01.000Z">
-<meta property="article:modified_time" content="2020-08-24T13:46:12.659Z">
+<meta property="article:published_time" content="2020-08-27T12:05:51.000Z">
+<meta property="article:modified_time" content="2020-08-27T13:59:32.008Z">
 <meta property="article:author" content="思考猫">
-<meta property="article:tag" content="统计学习，凸优化">
+<meta property="article:tag" content="规则学习，定性关联">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://yoursite.com/2020/08/24/%E5%86%8D%E8%B0%88%E6%9E%81%E5%A4%A7%E4%BC%BC%E7%84%B6%E4%BC%B0%E8%AE%A1%E6%B1%82%E8%A7%A3/">
+<link rel="canonical" href="http://yoursite.com/2020/08/27/%E8%A7%84%E5%88%99%E5%AD%A6%E4%B9%A0/">
 
 
 <script id="page-configurations">
@@ -46,7 +46,7 @@
   };
 </script>
 
-  <title>再谈极大似然估计求解 | 风之声</title>
+  <title>规则学习 | 风之声</title>
   
 
 
@@ -171,7 +171,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/24/%E5%86%8D%E8%B0%88%E6%9E%81%E5%A4%A7%E4%BC%BC%E7%84%B6%E4%BC%B0%E8%AE%A1%E6%B1%82%E8%A7%A3/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/27/%E8%A7%84%E5%88%99%E5%AD%A6%E4%B9%A0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/logo.jpg">
@@ -184,7 +184,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          再谈极大似然估计求解
+          规则学习
         </h1>
 
         <div class="post-meta">
@@ -195,7 +195,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-08-24 16:46:01 / 修改时间：21:46:12" itemprop="dateCreated datePublished" datetime="2020-08-24T16:46:01+08:00">2020-08-24</time>
+              <time title="创建时间：2020-08-27 20:05:51 / 修改时间：21:59:32" itemprop="dateCreated datePublished" datetime="2020-08-27T20:05:51+08:00">2020-08-27</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -216,8 +216,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2020/08/24/%E5%86%8D%E8%B0%88%E6%9E%81%E5%A4%A7%E4%BC%BC%E7%84%B6%E4%BC%B0%E8%AE%A1%E6%B1%82%E8%A7%A3/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/08/24/%E5%86%8D%E8%B0%88%E6%9E%81%E5%A4%A7%E4%BC%BC%E7%84%B6%E4%BC%B0%E8%AE%A1%E6%B1%82%E8%A7%A3/" itemprop="commentCount"></span>
+    <a title="valine" href="/2020/08/27/%E8%A7%84%E5%88%99%E5%AD%A6%E4%B9%A0/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/08/27/%E8%A7%84%E5%88%99%E5%AD%A6%E4%B9%A0/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -232,98 +232,42 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>首先我们思考这样一个问题：</p>
-<blockquote>
-<p>当我们用最大似然估计进行概率模型参数估计时，为什么基本都是直接求导，一阶导数等于0的点就是我们待求的最优估计?</p>
-</blockquote>
-<p>问到这个地方的时候，可能有一部分人就不知该如何回答了，因为一阶导数为0显然不是函数最大值点的充要条件，但我相信肯定有的答案是:</p>
-<blockquote>
-<p>因为碰到的对数似然函数是一个凹函数形式，这样一阶导数为0的点就与函数最大值点互为充要条件了</p>
-</blockquote>
-<p>这个答案是正确的，但是不够严谨，我相信基本没人会在应用最大似然进行参数估计时首先进行对数似然函数的凸性判定，这篇文章主要就是想通过严谨的数学推导来说明一类概率密度函数的对数似然函数是凹函数，可以直接利用求导等于0这种简单直接的方法寻找最优估计，而若碰到不属于这一类的概率密度函数，则在使用最大似然估计时还是先判断对数似然函数凹凸性为妙，本篇文章按照以下结构组织:</p>
+        <p>首先讲一个有意思的现象，早期的主流人工智能专注于以逻辑为基础来进行形式化和推理，但这样很难定量地对不确定事件进行表达和处理，后来随着机器学习算法的井喷，大家都更加关注于对定量的数据进行处理。但现在，很多人发现在解决某些任务的时候，加入一些行业中的常识知识可能会让任务解决地更好，而现在定性知识与定量数据之间似乎有着一道鸿沟，唯一的联系就是进行算法设计的人可能会依赖于他的领域知识来选择合适的算法并对算法进行调参。基于学习下定性知识如何表达的想法，这部分介绍下周志华老师🍉书的倒数第二章——规则学习，这部分内容安扎以下结构组织:</p>
 <ul>
-<li>指数分布族</li>
-<li>指数族函数举例</li>
-<li>对数似然函数凹凸性证明</li>
-<li>总结<a id="more"></a>
-<h3 id="指数分布族"><a href="#指数分布族" class="headerlink" title="指数分布族"></a>指数分布族</h3>首先给出指数分布族的定义：<blockquote>
-<p>指数分布族是一类概率分布的总称，这类分布的概率密度函数具有这样的形式：</p>
-<script type="math/tex; mode=display">
-  p_\theta(x) = h(x) \exp(\theta^T \phi(x) - A(\theta))</script><p>式中，$x$是密度函数自变量，$x \in \mathcal{X}$;$\phi(x)$是充分统计量，可以看做是原始变量的一个映射:</p>
-<script type="math/tex; mode=display">
-  \phi: \mathcal{X} \rightarrow R^d</script><p>$\theta$是模型参数向量，与充分统计量维度相同，$h(x)$是一个只与$x$有关的统计量，$A(\theta)$为配分函数，通过该函数来保证$p_\theta(x)$满足概率密度函数的定义：</p>
-<script type="math/tex; mode=display">
-   \int_{\mathcal{X}} p_{\theta}(x) dx = 1</script><p>由此约束条件，我们可以得到$A(\theta)$的解析表达式：</p>
-<script type="math/tex; mode=display">
-  A(\theta) = \log (\int h(x) \exp(\theta^T \phi(x))dx )</script></blockquote>
-</li>
+<li>基本概念 </li>
+<li>序贯覆盖</li>
+<li>剪枝优化</li>
+<li>一阶规则学习</li>
+<li>归纳逻辑程序设计 </li>
 </ul>
-<h3 id="指数分布族函数举例"><a href="#指数分布族函数举例" class="headerlink" title="指数分布族函数举例"></a>指数分布族函数举例</h3><p>首先给出结论，按照笔者调研，属于指数分布族的分布有：</p>
+<a id="more"></a>
+<h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p>首先给出机器学习中规则和规则学习的概念：</p>
+<blockquote>
+<p><strong>规则:</strong> 在机器学习领域中，“规则”通常是指语义明确、能描述数据分布所隐含的客观规律或领域概念，可以写成”若….,则….”形式的逻辑规则。<br><strong>规则学习:</strong> “规则学习”是从训练数据中学习出一组能用于对未见示例进行判别的规则。</p>
+</blockquote>
+<p>形式化来看，一条规则形如：</p>
+<script type="math/tex; mode=display">
+    \oplus \leftarrow f_1 \land f_2 \dots \land f_L</script><p>公式中$\leftarrow$右侧部分称为”规则体”，表示该条规则的前提，左边部分称为”规则头”,表示该条规则的结果。规则体是由逻辑文字$f_k$所组成的合取式(conjuction)，每个文字$f_k$都是对示例属性进行检验的布尔表达式，例如”(色泽 = 乌黑)”或者”$\neg$(根蒂 = 硬挺)”。$L$是规则体中逻辑文字的个数,称为规则的长度,规则头的”$\oplus$”,同样是逻辑文字，一般用来表示所判定的目标的类别或概念，比如”好瓜”，这样的逻辑规则也被称为<strong>if-then规则</strong>。<br>与神经网络、支持向量机这样的”黑箱模型”相比，规则学习具有以下几个优点:</p>
 <ul>
-<li>正态分布$N(\mu,\sigma^2)$</li>
-<li>伯努利分布(两点分布)$B(1,\pi)$</li>
-<li>二项分布$B(n,\pi)$</li>
-<li>泊松分布$P(\lambda)$</li>
-<li>伽马分布$G(\mu,v)$</li>
-<li>……. </li>
+<li>可解释性较强</li>
+<li>很强的表达能力，绝大多数的人类知识都能够通过数理逻辑进行简洁的刻画和表达，例如”父亲的父亲是爷爷”这样的知识不易用函数式表达，而用一阶逻辑则可以方便地写为：<script type="math/tex; mode=display">
+  爷爷(X,Y) \leftarrow 父亲(X,Z) \land 父亲(Z,Y)</script></li>
+<li>逻辑规则的抽象描述能力在处理一些高度复杂的AI任务时具有显著的优势，例如在问答系统中有时可能遇到非常多、甚至无穷种可能的答案，此时若能基于逻辑规则进行抽象表述或者推理，则将带来极大的便利。</li>
 </ul>
-<p>下面就将其中几个分布化成指数分布族的标准形式</p>
-<h4 id="伯努利分布"><a href="#伯努利分布" class="headerlink" title="伯努利分布"></a>伯努利分布</h4><p>对于伯努利分布，我们有$\mathcal{X} = \{ 0,1 \}$,模型参数为$P(x = 1) = \pi,P(x = -1) = 1 - \pi$,因此我们有:</p>
+<p>假设我们从西瓜数据集中学得规则集合$\mathcal{R}$:</p>
 <script type="math/tex; mode=display">
     \begin{aligned}
-        P(X = x)  = \pi^x (1 - \pi)^{1-x} &= \exp(x \log \pi + (1-x) \log(1-\pi) )  \\
-        &= \exp(x \log \frac{\pi}{1-\pi} + \log (1-\pi)) 
-    \end{aligned}</script><p>因此令$\theta = \log \frac{\pi}{1 - \pi}$, 则$P(X = x)$可以写做:</p>
-<script type="math/tex; mode=display">
-    P(X = x) = \exp(x\theta - \log(1 + e^\theta))</script><p>因此对于伯努利分布$h(x) = 1,\phi(x) = x, \theta = log \frac{\pi}{1-\pi}, A(\theta) = log(1 + e^\theta)$ </p>
-<h4 id="泊松分布"><a href="#泊松分布" class="headerlink" title="泊松分布"></a>泊松分布</h4><p>首先给出泊松分布的形式:</p>
-<script type="math/tex; mode=display">
-    P_\lambda(X = x) = \frac{\lambda^x}{x!} e^{- \lambda}</script><p>下面将其转化成指数分布族标准形式:</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        P_\lambda(X = x) &= \frac{\lambda^x}{x!} e^{- \lambda} \\
-        &= \frac{1}{x!} e^{x\log \lambda - \lambda}
-    \end{aligned}</script><p>因此，对于泊松分布，$h(x) = \frac{1}{x!}, \theta = \log \lambda,\phi(x) = x,A(\theta) = e^\theta$   </p>
-<h4 id="高斯分布"><a href="#高斯分布" class="headerlink" title="高斯分布"></a>高斯分布</h4><p>高斯分布的概率密度函数形式如下:</p>
-<script type="math/tex; mode=display">
-    p_{\mu,\sigma}(x) = \frac{1}{\sqrt{2 \pi} \sigma} \exp(- \frac{(x-\mu)^2}{2\sigma^2})</script><p>下面将其转化成指数分布族标准形式: </p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-         p_{\mu,\sigma}(x) &= \frac{1}{\sqrt{2 \pi} \sigma} \exp(- \frac{(x-\mu)^2}{2\sigma^2})  \\
-         &= \frac{1}{\sqrt{2 \pi} \sigma} \exp(\frac{-x^2}{2 \sigma^2} + \frac{x \mu}{\sigma^2} - \frac{\mu^2}{2\sigma^2}) \\
-         &= \frac{1}{\sqrt{2 \pi} } \exp(\frac{-x^2}{2 \sigma^2} + \frac{x \mu}{\sigma^2} - \frac{\mu^2}{2\sigma^2} + \log \sigma)
-    \end{aligned}</script><p>因此，对于高斯分布:</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        h(x) &= \frac{1}{\sqrt{2 \pi} \sigma}  \\
-        \phi(x) &= [\frac{x^2}{2}, x]^T \\
-        \theta &= [-\frac{1}{\sigma^2}, \frac{\mu}{\sigma^2}]^T \\
-        A(\theta) &= -\frac{1}{2} (log \theta^{(1)} + \theta^{(2)})
-    \end{aligned}</script><h3 id="对数似然函数凹凸性证明"><a href="#对数似然函数凹凸性证明" class="headerlink" title="对数似然函数凹凸性证明"></a>对数似然函数凹凸性证明</h3><p>我们关心的是最终对数似然函数的凹凸性，因为最终的对数似然函数是各个样本的概率密度函数取对数后累加的形式，由保凸运算可知，若单个对数概率密度函数的凹凸性可以确定，那么最终对数似然函数的凹凸性也就确定了。对于指数族分布，单个样本的概率密度函数取对数如下:</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        \log p_{\theta}(x) &= \log h(x) \exp(\theta^T \phi(x) - A(\theta)) \\
-        &= \log h(x) + \theta^T \phi(x) + \log(-A(\theta))
-    \end{aligned}</script><p>第一项与$\theta$无关，第二项为$\theta$的线性组合，不影响函数的凹凸性，所以整个函数的凹凸性是由第三项来确定，对于外层函数是对数函数的对数函数$\log f(x)$而言:</p>
-<script type="math/tex; mode=display">
-    (\log f(x))^{''} = \frac{f(x) f^{''}(x) - f^{'}(x)^2}{f(x)^2}</script><p>由对数函数性质有$f(x) &gt; 0$,因此，若$f(x)$是凹函数($f^{‘’}(x) \leq 0$),则可推出$(\log f(x))^{‘’} \leq 0$,即$\log f(x)$为凹函数，若$f(x)$为凸函数则不能有直接的结论，因此我们的重点放在讨论$A(\theta)$的凹凸性上。<br>下面证明$A(\theta)$为凸函数,从定义出发证明，记$\theta_{\lambda} = \lambda \theta_1 + (1 - \lambda) \theta_2$,其中$\theta_1,\theta_2 \in dom f, \lambda \in [0,1]$,由Hölder不等式，可知:</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        A(\theta_\lambda) &= \log (\int h(x) \exp(\theta_{\lambda}^T \phi(x))dx ) \\ 
-        &= \log (\int \exp(\theta_{\lambda}^T \phi(x))d\mu(x)\\
-        &= \log (\int \exp[ (\lambda \theta_1 \phi(x) + (1-\lambda)\theta_2)\phi(x)]d\mu(x) ) \\
-        &= \log (\int \exp(\theta_1 \phi(x)^{\lambda}) \exp (\theta_2 \phi(x))^{1-\lambda} d \mu(x)) \\
-        &\leq \log (\int \exp(\theta_1 \phi(x))^{\frac{\lambda}{\lambda}} d\mu(x) )^\lambda (\int \exp(\theta_2 \phi(x))^{\frac{1-\lambda}{1- \lambda}}d\mu(x))^{1-\lambda}  (Hölder不等式) \\
-        &= \lambda \log (\int \exp(\theta_1 \phi(x)) d\mu(x) ) + (1-\lambda)
-        \log (\int \exp(\theta_2 \phi(x)) d\mu(x) ) \\
-        &= \lambda A(\theta_1) + (1-\lambda) A(\theta_2)
-    \end{aligned}</script><p>从凸函数定义可知,$A(\theta)$为凸函数，至此我们便得到了对数似然函数的凹凸性:</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        &A(\theta) 凸 \rightarrow -A(\theta) 凹 \rightarrow \log(-A(\theta)) 凹 \\
-        & log(p_\theta(x)) 凹  \rightarrow 对数似然函数 凹
-    \end{aligned}</script><h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>从前面列出的指数分布族所包含的分布来看，我们日常所碰到的绝大多数概率分布都属于指数族分布，是可以直接通过求导等于0这种方法来得到参数估计，而对于不属于指数分布族的分布，则是有必要对对数似然函数进行分析，而不能直接通过求导来解最优参数估计值。</p>
-<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p>本文内容主要参考以下链接：<br>[1] <a href="https://www.zhihu.com/question/263423642/answer/269353169" target="_blank" rel="noopener">为什么极大似然估计求导为 0 就是要求的值呢？</a><br>[2] <a href="https://web.stanford.edu/class/stats311/Lectures/lec-07.pdf" target="_blank" rel="noopener">指数分布族函数</a></p>
+        &规则1: 好瓜 \leftarrow (根蒂 = 蜷缩) \land (脐部 = 凹陷) \\
+        &规则2: \neg好瓜 \leftarrow (纹理 = 模糊)
+    \end{aligned}</script><p>规则集合中的每条规则都可看作一个子模型，规则集合是这些子模型的一个集成。当同一个示例被判别结果不同的多条规则覆盖时，则称发生了“冲突”，解决冲突的办法则称为”冲突消解”，常用的冲突消解的方法有投票法、排序法、元规则法，投票法就是常用的少数服从多数策略，排序法则是指定规则优先级，出现冲突时使用排序靠前的规则。所谓元规则，其实就是规则的规则，例如”发生冲突时使用长度最小的规则“，然后根据元规则的指导来使用规则集。<br>此外，从训练集学得的规则集合也许并不能覆盖所有可能的未见示例，此时规则学习算法通常会设置一条默认规则，由它来处理规则集合未覆盖的样本；例如为$\mathcal{R}$增加一条默认规则：“未被规则1,2覆盖的都不是好瓜”。<br>从形式语言表达能力而言，规则可分为两类：“命题规则”和“一阶规则”：</p>
+<blockquote>
+<ul>
+<li>命题规则是由“原子命题(propositional atom)”和逻辑连接词“与($\land$)”、”(或($\lor$))”、“非($\neg$)”和“蕴含”($\leftarrow$)构成的简单陈述句；例如规则集$\mathcal{R}$就是一个命题规则集，”根蒂 = 蜷缩”，“脐部 = 凹陷”都是元子命题。</li>
+<li>一阶规则的基本成分是能表述事物的属性或关系的”原子公式”，例如表达父子关系的谓词(predict)“父亲$(X,Y)$”就是原子公式，再如表示加1操作”$\sigma(X) = X+1$”的函数$\sigma(X)$也是原子公式。如果进一步使用谓词“自然数$(X)$”表示$X$是自然数，“$\forall X$”表示对任意$X$成立，”$\exists Y$”表示”存在$Y$使之成立”,那么”所有自然数加1都是自然数”就可以写做:<script type="math/tex; mode=display">
+  \forall X, \exists Y  \leftarrow 自然数(X) \land (Y = \sigma(X))</script>或者表示成更加简洁的形式:<script type="math/tex; mode=display">
+  \forall X, 自然数(\sigma(X)) \leftarrow 自然数(X)</script>这样的规则就是一阶规则，其中$X$和$Y$称为逻辑变量，$\forall,\exists$用于限定变量的取值范围，称为”量词”，显然，一阶规则可以表达复杂的关系，因此也被称为“关系型规则”。若我们简单地把属性当作谓词来定义示例与属性值之间的关系，则命题规则集$\mathcal{R}$可以改写为一阶规则集$R’$:</li>
+</ul>
+</blockquote>
 
     </div>
 
@@ -353,7 +297,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%EF%BC%8C%E5%87%B8%E4%BC%98%E5%8C%96/" rel="tag"># 统计学习，凸优化</a>
+              <a href="/tags/%E8%A7%84%E5%88%99%E5%AD%A6%E4%B9%A0%EF%BC%8C%E5%AE%9A%E6%80%A7%E5%85%B3%E8%81%94/" rel="tag"># 规则学习，定性关联</a>
           </div>
 
         
@@ -362,13 +306,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/08/23/logistic%E5%9B%9E%E5%BD%92%E4%B8%8E%E6%9C%80%E5%A4%A7%E7%86%B5%E6%A8%A1%E5%9E%8B/" rel="prev" title="logistic回归与最大熵模型">
-      <i class="fa fa-chevron-left"></i> logistic回归与最大熵模型
+    <a href="/2020/08/26/%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83%E4%B8%AD%E7%9A%84%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F/" rel="prev" title="概率分布中的距离度量">
+      <i class="fa fa-chevron-left"></i> 概率分布中的距离度量
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/08/24/%E8%AE%BA%E6%97%B6%E9%97%B4%E9%A9%B1%E5%8A%A8%E4%B8%8E%E4%BA%8B%E4%BB%B6%E9%A9%B1%E5%8A%A8/" rel="next" title="论时间驱动与事件驱动">
-      论时间驱动与事件驱动 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -428,7 +369,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#指数分布族"><span class="nav-number">1.</span> <span class="nav-text">指数分布族</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#指数分布族函数举例"><span class="nav-number">2.</span> <span class="nav-text">指数分布族函数举例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#伯努利分布"><span class="nav-number">2.1.</span> <span class="nav-text">伯努利分布</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#泊松分布"><span class="nav-number">2.2.</span> <span class="nav-text">泊松分布</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#高斯分布"><span class="nav-number">2.3.</span> <span class="nav-text">高斯分布</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对数似然函数凹凸性证明"><span class="nav-number">3.</span> <span class="nav-text">对数似然函数凹凸性证明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#参考"><span class="nav-number">4.1.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本概念"><span class="nav-number">1.</span> <span class="nav-text">基本概念</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
