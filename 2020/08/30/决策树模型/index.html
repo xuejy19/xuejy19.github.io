@@ -20,21 +20,22 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="该部分按照以下层次进行组织：   从贝叶斯公式谈起 贝叶斯决策">
+  <meta name="description" content="这一部分介绍下决策树算法，决策树是一种基本的分类与回归表示方法，决策树模型呈树形结构，在分类问题中，可以表示为基于特征对实例进行分类的过程。决策树可以认为是”if-then”规则的集合，也可以认为是定义在特征空间与类空间上的概率分分布。本文按照以下四部分进行组织:  决策树模型与学习 特征选择 决策树生成算法 决策树剪枝算法">
 <meta property="og:type" content="article">
-<meta property="og:title" content="贝叶斯理论">
-<meta property="og:url" content="http://yoursite.com/2020/07/23/Bayes/index.html">
+<meta property="og:title" content="决策树模型">
+<meta property="og:url" content="http://yoursite.com/2020/08/30/%E5%86%B3%E7%AD%96%E6%A0%91%E6%A8%A1%E5%9E%8B/index.html">
 <meta property="og:site_name" content="风之声">
-<meta property="og:description" content="该部分按照以下层次进行组织：   从贝叶斯公式谈起 贝叶斯决策">
+<meta property="og:description" content="这一部分介绍下决策树算法，决策树是一种基本的分类与回归表示方法，决策树模型呈树形结构，在分类问题中，可以表示为基于特征对实例进行分类的过程。决策树可以认为是”if-then”规则的集合，也可以认为是定义在特征空间与类空间上的概率分分布。本文按照以下四部分进行组织:  决策树模型与学习 特征选择 决策树生成算法 决策树剪枝算法">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://raw.githubusercontent.com/xuejy19/Images/master/bayes2.png">
-<meta property="article:published_time" content="2020-07-23T02:32:46.000Z">
-<meta property="article:modified_time" content="2020-08-22T02:28:56.544Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/Decision_tree.png">
+<meta property="article:published_time" content="2020-08-30T07:26:51.000Z">
+<meta property="article:modified_time" content="2020-08-31T09:59:37.076Z">
 <meta property="article:author" content="思考猫">
+<meta property="article:tag" content="树模型,categorical变量">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/xuejy19/Images/master/bayes2.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/Decision_tree.png">
 
-<link rel="canonical" href="http://yoursite.com/2020/07/23/Bayes/">
+<link rel="canonical" href="http://yoursite.com/2020/08/30/%E5%86%B3%E7%AD%96%E6%A0%91%E6%A8%A1%E5%9E%8B/">
 
 
 <script id="page-configurations">
@@ -47,7 +48,7 @@
   };
 </script>
 
-  <title>贝叶斯理论 | 风之声</title>
+  <title>决策树模型 | 风之声</title>
   
 
 
@@ -172,7 +173,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/23/Bayes/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/30/%E5%86%B3%E7%AD%96%E6%A0%91%E6%A8%A1%E5%9E%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/logo.jpg">
@@ -185,7 +186,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          贝叶斯理论
+          决策树模型
         </h1>
 
         <div class="post-meta">
@@ -195,14 +196,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-07-23 10:32:46" itemprop="dateCreated datePublished" datetime="2020-07-23T10:32:46+08:00">2020-07-23</time>
+              <time title="创建时间：2020-08-30 15:26:51" itemprop="dateCreated datePublished" datetime="2020-08-30T15:26:51+08:00">2020-08-30</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-22 10:28:56" itemprop="dateModified" datetime="2020-08-22T10:28:56+08:00">2020-08-22</time>
+                <time title="修改时间：2020-08-31 17:59:37" itemprop="dateModified" datetime="2020-08-31T17:59:37+08:00">2020-08-31</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -223,8 +224,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2020/07/23/Bayes/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/07/23/Bayes/" itemprop="commentCount"></span>
+    <a title="valine" href="/2020/08/30/%E5%86%B3%E7%AD%96%E6%A0%91%E6%A8%A1%E5%9E%8B/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/08/30/%E5%86%B3%E7%AD%96%E6%A0%91%E6%A8%A1%E5%9E%8B/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -239,98 +240,72 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <hr>
-<p>该部分按照以下层次进行组织：</p>
+        <p>这一部分介绍下决策树算法，决策树是一种基本的分类与回归表示方法，决策树模型呈树形结构，在分类问题中，可以表示为基于特征对实例进行分类的过程。决策树可以认为是”if-then”规则的集合，也可以认为是定义在特征空间与类空间上的概率分分布。本文按照以下四部分进行组织:</p>
+<ul>
+<li>决策树模型与学习</li>
+<li>特征选择</li>
+<li>决策树生成算法</li>
+<li>决策树剪枝算法</li>
+</ul>
+<a id="more"></a>
+<h3 id="决策树模型与学习"><a href="#决策树模型与学习" class="headerlink" title="决策树模型与学习"></a>决策树模型与学习</h3><h4 id="决策树模型定义"><a href="#决策树模型定义" class="headerlink" title="决策树模型定义"></a>决策树模型定义</h4><p>首先给出决策树的定义:</p>
 <blockquote>
-<ul>
-<li>从贝叶斯公式谈起</li>
-<li>贝叶斯决策 <a id="more"></a>
-</li>
-</ul>
-<hr>
-<h2 id="贝叶斯公式"><a href="#贝叶斯公式" class="headerlink" title="贝叶斯公式"></a>贝叶斯公式</h2><p><strong>概念介绍</strong>(From 维基百科)：</p>
-<ul>
-<li><strong>条件概率</strong>：条件概率就是事件A在事件B发生条件下的概率，记做$P(A|B)$.</li>
-<li><strong>先验概率</strong>：先验概率是指在考虑“观测数据”之前，对某一不确定量的估计,如$P(A)$</li>
-<li><strong>后验概率</strong>：在贝叶斯统计中，一个随机事件或者一个不确定事件的后验概率是在考虑和给出相关证据或数据后所得到的条件概率，“后验”指代考虑了被测试事件的相关证据，如$P(B|A)$可以看作事件B的后验概率</li>
-</ul>
+<p><strong>决策树：</strong> 分类决策树模型是一种描述对实例进行分类的树形结构。决策树由节点和有向边组成，节点由两种类型：内部节点和叶节点。内部节点表示一个特征或属性，叶节点表示一个类。</p>
 </blockquote>
-<p>贝叶斯公式形式如下：</p>
-<script type="math/tex; mode=display">P(A|B) = \frac{P(A)P(A|B)}{P(B)}</script><p>再根据全概率公式：</p>
-<script type="math/tex; mode=display">P(B) = \sum_j P(B|A_j)P(A_j)</script><p>可以得到贝叶斯公式另一种形式：</p>
-<script type="math/tex; mode=display">P(A_i|B) = \frac{P(A_i)P(B|A_i)}{\sum_j P(B|A_j)P(A_j) }</script><blockquote>
-<p>公式分析：在现实世界中，我们往往期望通过一些观察到的事件来对一些不可以直接观测的事件进行推断，公式中的$B$变量指代可以直接观测到的事件，而我们的目的则是希望通过$B$事件与$A$事件之间的关联(因果性,相关性)来间接对A事件进行观测，贝叶斯公式便为我们搭起了这样一做桥梁。</p>
-</blockquote>
-<p>从公式角度出发，可以看出这样进行推理是有代价的，或者是必须拥有某些知识：</p>
+<p>一个决策树模型如下图所示：<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/Decision_tree.png" alt="决策树"><br>决策树的逻辑其实与人思考的逻辑非常贴合,都是通过一连串的”if-then”语句来进行判断，这也是决策树算法具有较好可解释性的原因。</p>
+<h4 id="决策树与”if-then”规则"><a href="#决策树与”if-then”规则" class="headerlink" title="决策树与”if-then”规则"></a>决策树与”if-then”规则</h4><p>一个决策树可以转换成一组”if-then”规则,将决策树转换成”if-then”规则集合的步骤如下:由决策树的根节点到叶节点的每一条路径构建一条规则：路径上内部节点的特征对应着规则的条件，而叶节点的类则对应着规则的结论。<br>决策树对应的”if-then”规则集合具有一个重要的性质：互斥并且完备，即每一个实例都被一条路径或一条规则所覆盖，而且只被一条规则或一条规则所覆盖。</p>
+<h4 id="决策树与条件概率分布"><a href="#决策树与条件概率分布" class="headerlink" title="决策树与条件概率分布"></a>决策树与条件概率分布</h4><p>决策树还表示给定特征条件下类的条件概率分布。这一条件概率分布定义在特征空间的一个划分上。将特征空间划分为互不相交的单元或区域，并在每个单元定义一个类的概率分布就构成了一个条件概率分布。决策树的一条路径对应于划分中的一个单元，决策树所表示的条件概率分布由各个单元给定条件下类的条件概率分布组成。<br>假设$X$为表示特征的随机变量，$Y$为表示类别的随机变量，那么这个条件概率分布可以表示为$P(Y|X)$,$X$取值于给定划分下单元的集合，$Y$取值于类的集合。</p>
+<h4 id="决策树学习"><a href="#决策树学习" class="headerlink" title="决策树学习"></a>决策树学习</h4><p>假设给定训练数据集:</p>
+<script type="math/tex; mode=display">
+    D = \{ (x_1,y_1),(x_2,y_2), \dots, (x_N,y_N)\}</script><p>其中$x_i \in R^n$为特征向量,$n$为特征个数，$y_i \in \{1,2, \dots, K\}$为类标记，$N$为样本容量。<br><strong>决策树学习的目标是根据给定的训练数据集构建一个决策树模型，使它能够对实例进行正确的分类。</strong></p>
+<p>决策树学习本质上是从训练数据集中归纳出一组分类规则，这点与前面章节介绍过的规则学习非常类似，不过决策树所针对的问题更加具体。与训练数据集不相矛盾的决策树可能有多个，也可能一个也没有。我们需要的是一个与训练数据矛盾较小的决策树，同时具有很好的泛化能力。从条件概率分布的角度来看，决策树学习是由训练数据集估计条件概率模型，基于特征空间划分的类的条件概率模型有无穷多个，我们选择的条件概率模型应该不仅对训练数据有很好的拟合，同时也应当对未知的数据有较好的预测。<br>从所有可能的决策树中选取最优决策树是NP完全问题，所以现实中决策树学习算法通常采用启发式方法，近似求解这一最优问题，这样得到的决策树是次最优的。<br>决策树学习算法通常是一个递归地选取最优特征，并根据该特征对训练数据进行分割，使得各数据集有一个最好的分类的过程。这一过程对应着特征空间的划分，也对应着决策树的构建。构建流程如下:</p>
+<ul>
+<li>构建根节点，将所有训练数据都放在跟节点</li>
+<li>选择一个最优特征，按照这一特征将训练数据集分割成子集，使得各个子集有一个在当前条件下最好的分类。</li>
+<li>判断子集中的实例是否都被正确分类，若都已经被正确分类，则构建叶节点</li>
+<li>若子集不能被正确分类，则返回第二步，选取最优特征并划分子集。</li>
+</ul>
+<p>通过上述流程所构建的决策树往往对训练数据有着良好的分类能力，但对未知的测试数据却未必有很好的分类能力，即可能发生过拟合现象，因此往往需要的生成的决策树自下而上进行剪枝。</p>
+<h3 id="特征选择"><a href="#特征选择" class="headerlink" title="特征选择"></a>特征选择</h3><p>特征选择的目的在于选取具有分类能力的特征，决策树的每一次分叉都是进行特征选择的过程, 所以有一个亟需回答的问题就是：</p>
 <blockquote>
-<ul>
-<li>先验概率$P(A)$</li>
-<li>类条件概率$P(B|A)$</li>
-</ul>
-<hr>
+<p><strong>应当以什么样的标准来评判一个特征的分类能力？</strong></p>
 </blockquote>
-<h2 id="贝叶斯决策"><a href="#贝叶斯决策" class="headerlink" title="贝叶斯决策"></a>贝叶斯决策</h2><p>这部分主要介绍三种基于贝叶斯理论的决策策略：</p>
+<p>通常评价特征分类能力的指标是信息增益和信息增益比，在前面章节中我已经给出了熵和条件熵的定义：</p>
 <blockquote>
-<ul>
-<li>基于最小错误率的贝叶斯决策</li>
-<li>基于最小风险的贝叶斯决策</li>
-<li>在限定一类错误率条件下使另一类错误率为最小的两类别决策</li>
-</ul>
-<hr>
-<h3 id="最小错误率贝叶斯决策"><a href="#最小错误率贝叶斯决策" class="headerlink" title="最小错误率贝叶斯决策"></a>最小错误率贝叶斯决策</h3><p>从贝叶斯公式出发，通过比较后验概率大小，选择后验概率大的类别作为label。以而分类问题为例，$\omega_i(i=1,2)$是类别标签，$x$为特征相量，由贝叶斯公式，可得$P(\omega_i|x)$：</p>
-<script type="math/tex; mode=display">P(\omega_i|x) = \frac{P(x|\omega_i)P(\omega_i)}{\sum_{j=1}^2 P(x|\omega_j)P(\omega_j)}</script><p>最小错误率下等价的决策规则有：</p>
-<ul>
-<li>若$P(\omega_i|x) = max_{j=1,2}P(\omega_j|x)$,则$x \in \omega_i$</li>
-<li>若$P(x|\omega_i)P(\omega_i) = max_{j=1,2}P(x|\omega_j)P(\omega_j)$,则$x \in \omega_i$</li>
-<li>对于二分类问题，若$l(x) = \frac{P(x|\omega_1)}{P(x|\omega_2)} &gt; \frac{P(\omega_2)}{P(\omega_1)}$,则$x \in \omega_1$</li>
-</ul>
-</blockquote>
-<p>下面证明该种决策策略为最小错误率，首先给出平均错误率公式：</p>
-<script type="math/tex; mode=display">P(e) = \int_{-\infty}^{\infty}P(e,x)dx = \int_{-\infty}^{\infty} P(e|x)p(x)dx</script><p>由上面给出的决策规则可知：</p>
-<script type="math/tex; mode=display">P(e|x) = \begin{cases} P(\omega_1|x),if P(\omega_2|x) > P(\omega_1|x) \\ 
-P(\omega_2|x),if P(\omega_1|x) > P(\omega_2|x) \end{cases}</script><p>若$t$为两类的决策分界面，在该分界面上$P(\omega_1|x) = P(\omega_2|x)$，$t$将整个决策空间分为了两部分$\mathcal{R_1}$和$\mathcal{R_2}$,分别对应将$x$归为$\omega_1$和$\omega_2$,据此平均错误率可以写为：</p>
+<p><strong>熵：</strong> 在信息论与概率统计中，熵是表示<strong>随机变量不确定性</strong>的度量，设$X$是一个取有限个值的离散随机变量，其概率分布为:</p>
 <script type="math/tex; mode=display">
-\begin{aligned}
-P(e) &= P(x \in \mathcal{R_1},\omega_2) + P(x \in \mathcal{R_2},\omega_1) \\
-&= P(x\in \mathcal{R_1}|\omega_2) P(\omega_2) + P(x \in \mathcal{R_2}|\omega_1) P(\omega_1) \\
-&= P(\omega_2) \int_{\mathcal{R_1}} p(x|\omega_2)dx + P(\omega_1)\int_{\mathcal{R_2}}p(x|\omega_1)dx \\
-&= P(\omega_2) P_2(e) + P(\omega_1) P_1(e)
-\end{aligned}</script><p><img src="https://raw.githubusercontent.com/xuejy19/Images/master/bayes2.png" alt="最小错误率"></p>
-<p>图中斜线部分代表$P(e)$的第一项，纹线部分代表第二项，而从最小错误率公式来看，若要使平均错误率$P(e)$最小，只需要对于任意的$x$，保证$P(e|x)$最小，而这恰恰是贝叶斯最小错误率决策规则。</p>
-<h3 id="最小风险贝叶斯决策"><a href="#最小风险贝叶斯决策" class="headerlink" title="最小风险贝叶斯决策"></a>最小风险贝叶斯决策</h3><p>最小风险贝叶斯决策，或者称为最小损失贝叶斯决策，这种决策思想也是非常朴素：</p>
+    P(X = x_i) = p_i, \quad i =1,2,\dots,n</script><p>则随机变量$X$的熵定义为:</p>
+<script type="math/tex; mode=display">
+    H(X) = - \sum_{i=1}^n p_i \log p_i</script><p><strong>条件熵：</strong> 设有随机变量$(X,Y)$,其联合概率分布为：</p>
+<script type="math/tex; mode=display">
+    P(X = x_i,Y = y_i) = p_{ij}\quad i = 1,2,\dots,n;\quad j = 1,2,\dots,m</script><p>条件熵$H(Y|X)$表示在已知随机变量$X$条件下随机变量$Y$的不确定性。随机变量$X$给定的条件下随机变量$Y$的条件熵$H(Y|X)$,定义为$X$给定条件下$Y$的条件概率分布的熵对$X$的数学期望：</p>
+<script type="math/tex; mode=display">
+    H(Y|X) = \sum_{i=1}^n p_i H(Y|X = x_i)</script><p>当熵和条件熵中的概率由数据估计得到时，所对应的熵与条件熵分别称为经验熵和经验条件熵</p>
+</blockquote>
+<h4 id="信息增益"><a href="#信息增益" class="headerlink" title="信息增益"></a>信息增益</h4><p>下面给出信息增益的定义：</p>
 <blockquote>
-<p>同样是决策错误，但不同的错误带来的损失并不相同，有时甚至天差地别，比如去医院看病，对于早起癌症，漏警要比虚警严重的多，可能会让患者失去早期治疗的时机。</p>
-</blockquote>
-<p>最小风险错误率准则正是考虑各种错误造成损失不同而提出的一种决策规则，若将决策空间记做$\mathcal{A}$,而每个决策都将带来一定的损失，它通常是决策和自然状态的函数，比如$\lambda(a_i,\omega_j)$则指代在$x$处于状态$\omega_j$而做出$a_i$决策时的损失，下面给出数学符号定义：</p>
+<p><strong>信息增益：</strong> 特征$A$对训练集$D$的信息增益$g(D,A)$,定义为集合$D$的经验熵$H(D)$与特征$A$给定条件下$D$的经验条件熵$H(D|A)$之差，即：</p>
+<script type="math/tex; mode=display">
+    g(D,A) = H(D) - H(D|A)</script></blockquote>
+<p>给定数据集$D$和特征$A$,经验熵$H(D)$表示对数据集$D$进行分类的不确定性，而经验条件熵$H(D|A)$则表示在特征$A$给定条件下对数据集$D$进行分类的不确定性。而它们之间的差则表示由于特征$A$而使得对数据集$D$的分类的不确定性减少的程度。由此便可得通过信息增益来选择特征的算法如下:</p>
+<blockquote>
+<p><strong>信息增益算法</strong><br><strong>输入：</strong> 训练数据集$D$及特征$A$<br><strong>输出：</strong> 特征$A$对训练数据集$D$的信息增益$g(D,A)$</p>
 <ul>
-<li>观测向量$x$为$d$维随机向量<script type="math/tex; mode=display">x = [x_1, x_2 , \dots, x_d]^T</script></li>
-<li>状态空间$\Omega$由$c$个自然状态(c类)组成<script type="math/tex; mode=display">\Omega = \{ \omega_1, \dots, \omega_c \}</script></li>
-<li>决策空间由$n$个决策组成<script type="math/tex; mode=display">\mathcal{A} = \{ a_1, \dots, a_n \}</script></li>
-<li>决策表，决策表中第$i$行$j$列为相应损失值$\lambda(a_i,\omega_j)$</li>
+<li>Step1: 计算数据集$D$的经验熵：<script type="math/tex; mode=display">
+  H(D) = -\sum_{k=1}^K \frac{|C_k|}{|D|} \log_2 \frac{|C_k|}{|D|}</script></li>
+<li>Step2: 计算特征$A$对数据集$D$的经验条件熵$H(D|A)$<script type="math/tex; mode=display">
+  H(D|A) = \sum_{i=1}^n \frac{|D_i|}{|D|} H(D_i) = -\sum_{i=1}^n \frac{|D_i|}{|D|} \sum_{k=1}^K \frac{|D_{ik}|}{|D_i|} \log_2 \frac{|D_{ik}|}{|D_i|}</script></li>
+<li>Step3: 计算信息增益<script type="math/tex; mode=display">
+  g(D,A) = H(D) - H(D|A)</script></li>
 </ul>
-<p>由于引入了损失的概念，在进行决策时便不能够只根据后验概率大小来做决策，必须考虑所采取的决策是否使得损失最小。对于给定的$x$，如果我们采取决策$a_i$,其对应$c$种可能的损失$\lambda(a_i,\omega_j)$,每种损失出现的概率为$P(\omega_i|x)$,由此可以计算条件期望损失$R(a_i|x)$:</p>
+</blockquote>
+<h4 id="信息增益比"><a href="#信息增益比" class="headerlink" title="信息增益比"></a>信息增益比</h4><p>以信息增益作为划分训练数据集的特征，存在偏向于选择取值较多的特征的问题。使用信息增益比则可以对这一问题进行校正，下面给出信息增益比的定义:</p>
+<blockquote>
+<p><strong>信息增益比：</strong> 特征$A$对训练数据集$D$的信息增益比$g_R(D,A)$定义为其信息增益$g(D,A)$与训练数据集$D$关于特征$A$的值的熵$H_A(D)$之比，即：</p>
 <script type="math/tex; mode=display">
-    R(a_i|x) = E(\lambda(a_i,\omega_j)) = \sum_{j=1}^c \lambda(a_i,\omega_j) P(\omega_j|x), i=1,\dots,n</script><p>在决策论种$R(a_i|x)$被称作条件风险，由于$x$是随机向量的观察值，因此对于不同的$x$，采取决策$a_i$时，其条件风险是不同的，所以最终采取何种决策应当与$x$有关，在这种意义下，可以将决策$a$看作是$x$的函数，记做$a(x)$,可以定义期望风险$R$为：</p>
-<script type="math/tex; mode=display">
-    R = \int R(a(x)|x) p(x)dx</script><p>若想使得期望风险$R$最小，只需要保证对于任意的$x$，$R(a(x)|x)$最小，因此最小损失贝叶斯决策规则为：</p>
-<script type="math/tex; mode=display">
-    if R(a_k|x) = \min \limits_{i=1,\dots,n}R(a_i|x) \Rightarrow a = a_k</script><h3 id="在限定一类错误率条件下，使得另一类错误率最小"><a href="#在限定一类错误率条件下，使得另一类错误率最小" class="headerlink" title="在限定一类错误率条件下，使得另一类错误率最小"></a>在限定一类错误率条件下，使得另一类错误率最小</h3><p>在两类别决策问题中，有两种错误分类的可能性,分别对应两个错误率$P_1(e)$和$P_2(e)$,而在实际应用中，我们往往期望某一个错误率不大于某个常数，而使另一类错误率尽可能小。比如在癌症诊断中，我们认识到将异常判断为正常非常严重，我们期望这类错误率为一个很小的值$P_2(e) = \epsilon_0$,在满足该条件下，期望另一类错误率$P_1(e)$尽可能低，这其实是一个带有等式约束的优化问题，可以用拉格朗日乘子法进行求解，拉格朗日函数$L$为:</p>
-<script type="math/tex; mode=display">
-    L = P_1(e) + \lambda(P_2(e) - \epsilon_0)</script><p>其中$P_1(e)$为：</p>
-<script type="math/tex; mode=display">
-    P_1(e) = \int_{\mathcal{R_2}} p(x|\omega_1)dx</script><p>$P_2(e)$类似，因此拉格朗日函数可以写做：</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-    L &= \int_{\mathcal{R_2}} p(x|\omega_1) + \lambda(\int_{\mathcal{R_1}} p(x|\omega_2)dx - \epsilon_0)  \\
-    &= 1-\lambda \epsilon_0 + \int_{\mathcal{R_1}} [\lambda  p(x|\omega_2) - p(x|\omega_1)dx]
-\end{aligned}</script><p>$L$分别对分界点$t$和$\lambda$求导，可得：</p>
-<script type="math/tex; mode=display">
- \begin{cases}
-    \frac{\partial L}{\partial t} = 0 \Rightarrow \lambda = \frac{p(t|\omega_1)}{p(t|\omega_2)} \\
-    \frac{\partial L}{\partial \lambda} = 0 \Rightarrow P_2(e) = \epsilon_0
- \end{cases}</script><p>由此便可得到Neyman-Pearson决策准则：</p>
-<script type="math/tex; mode=display">
-    if \frac{p(x|\omega_1)}{p(x|omega_2)} > \lambda \Rightarrow x \in \omega_1</script>
+    g_R(D,A) = \frac{g(D,A)}{H_A(D)}</script><p>其中$H_A(D) = -\sum_{i=1}^n \frac{|D_i|}{|D|} \log_2 \frac{|D_i|}{|D|}$,$n$是特征$A$取值的个数</p>
+</blockquote>
+
     </div>
 
     
@@ -358,6 +333,9 @@ P(e) &= P(x \in \mathcal{R_1},\omega_2) + P(x \in \mathcal{R_2},\omega_1) \\
 
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%A0%91%E6%A8%A1%E5%9E%8B-categorical%E5%8F%98%E9%87%8F/" rel="tag"># 树模型,categorical变量</a>
+          </div>
 
         
 
@@ -365,13 +343,10 @@ P(e) &= P(x \in \mathcal{R_1},\omega_2) + P(x \in \mathcal{R_2},\omega_1) \\
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/07/06/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%90%86%E8%AE%BA/" rel="prev" title="机器学习理论">
-      <i class="fa fa-chevron-left"></i> 机器学习理论
+    <a href="/2020/08/27/%E8%A7%84%E5%88%99%E5%AD%A6%E4%B9%A0/" rel="prev" title="规则学习">
+      <i class="fa fa-chevron-left"></i> 规则学习
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/07/24/bayes-network/" rel="next" title="贝叶斯网络">
-      贝叶斯网络 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -431,7 +406,7 @@ P(e) &= P(x \in \mathcal{R_1},\omega_2) + P(x \in \mathcal{R_2},\omega_1) \\
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#贝叶斯公式"><span class="nav-number">1.</span> <span class="nav-text">贝叶斯公式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#贝叶斯决策"><span class="nav-number">2.</span> <span class="nav-text">贝叶斯决策</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#最小错误率贝叶斯决策"><span class="nav-number">2.1.</span> <span class="nav-text">最小错误率贝叶斯决策</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最小风险贝叶斯决策"><span class="nav-number">2.2.</span> <span class="nav-text">最小风险贝叶斯决策</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在限定一类错误率条件下，使得另一类错误率最小"><span class="nav-number">2.3.</span> <span class="nav-text">在限定一类错误率条件下，使得另一类错误率最小</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#决策树模型与学习"><span class="nav-number">1.</span> <span class="nav-text">决策树模型与学习</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#决策树模型定义"><span class="nav-number">1.1.</span> <span class="nav-text">决策树模型定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#决策树与”if-then”规则"><span class="nav-number">1.2.</span> <span class="nav-text">决策树与”if-then”规则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#决策树与条件概率分布"><span class="nav-number">1.3.</span> <span class="nav-text">决策树与条件概率分布</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#决策树学习"><span class="nav-number">1.4.</span> <span class="nav-text">决策树学习</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#特征选择"><span class="nav-number">2.</span> <span class="nav-text">特征选择</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#信息增益"><span class="nav-number">2.1.</span> <span class="nav-text">信息增益</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#信息增益比"><span class="nav-number">2.2.</span> <span class="nav-text">信息增益比</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
