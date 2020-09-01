@@ -20,19 +20,20 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="笔者近期想做一下机器学习相关理论总结">
+  <meta name="description" content="对于一个特定机器学习问题，我们可能会建立很多模型，这些单个模型可能表现都不是非常好，由此便会引出一个问题:  问题1: 能否通过一个算法将这些模型组合起来(Ensemble)，产生一个效果更好的组合模型？  这个问题的答案是肯定的，历史上，Kearns 和 Valiant首先提出了“弱可学习”和“强可学习”的概念：  强可学习： 在概率近似正确(PAC)框架下，一个概念(类)，如果存在一个多项式的">
 <meta property="og:type" content="article">
-<meta property="og:title" content="机器学习理论">
-<meta property="og:url" content="http://yoursite.com/2020/07/06/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%90%86%E8%AE%BA/index.html">
+<meta property="og:title" content="提升算法总结">
+<meta property="og:url" content="http://yoursite.com/2020/09/01/%E6%8F%90%E5%8D%87%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/index.html">
 <meta property="og:site_name" content="风之声">
-<meta property="og:description" content="笔者近期想做一下机器学习相关理论总结">
+<meta property="og:description" content="对于一个特定机器学习问题，我们可能会建立很多模型，这些单个模型可能表现都不是非常好，由此便会引出一个问题:  问题1: 能否通过一个算法将这些模型组合起来(Ensemble)，产生一个效果更好的组合模型？  这个问题的答案是肯定的，历史上，Kearns 和 Valiant首先提出了“弱可学习”和“强可学习”的概念：  强可学习： 在概率近似正确(PAC)框架下，一个概念(类)，如果存在一个多项式的">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-07-06T02:15:07.000Z">
-<meta property="article:modified_time" content="2020-08-22T02:25:02.456Z">
+<meta property="article:published_time" content="2020-09-01T01:25:02.000Z">
+<meta property="article:modified_time" content="2020-09-01T03:54:34.657Z">
 <meta property="article:author" content="思考猫">
+<meta property="article:tag" content="Bagging, AdaBoost, 提升树模型">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://yoursite.com/2020/07/06/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%90%86%E8%AE%BA/">
+<link rel="canonical" href="http://yoursite.com/2020/09/01/%E6%8F%90%E5%8D%87%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/">
 
 
 <script id="page-configurations">
@@ -45,7 +46,7 @@
   };
 </script>
 
-  <title>机器学习理论 | 风之声</title>
+  <title>提升算法总结 | 风之声</title>
   
 
 
@@ -170,7 +171,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/06/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%90%86%E8%AE%BA/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/01/%E6%8F%90%E5%8D%87%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/logo.jpg">
@@ -183,7 +184,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          机器学习理论
+          提升算法总结
         </h1>
 
         <div class="post-meta">
@@ -192,16 +193,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2020-07-06 10:15:07" itemprop="dateCreated datePublished" datetime="2020-07-06T10:15:07+08:00">2020-07-06</time>
+              <time title="创建时间：2020-09-01 09:25:02 / 修改时间：11:54:34" itemprop="dateCreated datePublished" datetime="2020-09-01T09:25:02+08:00">2020-09-01</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-22 10:25:02" itemprop="dateModified" datetime="2020-08-22T10:25:02+08:00">2020-08-22</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -221,8 +216,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2020/07/06/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%90%86%E8%AE%BA/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/07/06/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%90%86%E8%AE%BA/" itemprop="commentCount"></span>
+    <a title="valine" href="/2020/09/01/%E6%8F%90%E5%8D%87%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/09/01/%E6%8F%90%E5%8D%87%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -237,30 +232,98 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>笔者近期想做一下<strong>机器学习</strong>相关理论总结<a id="more"></a>，计划划分为以下章节：</p>
+        <p>对于一个特定机器学习问题，我们可能会建立很多模型，这些单个模型可能表现都不是非常好，由此便会引出一个问题:</p>
+<blockquote>
+<p><strong>问题1: 能否通过一个算法将这些模型组合起来(Ensemble)，产生一个效果更好的组合模型？</strong></p>
+</blockquote>
+<p>这个问题的答案是肯定的，历史上，Kearns 和 Valiant首先提出了“弱可学习”和“强可学习”的概念：</p>
+<blockquote>
+<p><strong>强可学习：</strong> 在概率近似正确(PAC)框架下，一个概念(类)，如果存在一个多项式的学习算法能够学习它，并且正确率很高，就称这个概念是强可学习的<br><strong>弱可学习：</strong> 一个概念，如果存在一个多项式的算法能够学习它，但学习的正确率仅仅比随机猜测好，则称该概念是弱可学习</p>
+</blockquote>
+<p>后来Schapire证明了一个重要结论:</p>
+<blockquote>
+<p><strong>一个概念是强可学习的  $\Leftrightarrow$ 一个概念是弱可学习的</strong></p>
+</blockquote>
+<p>这样一来，问题1就转换成了另一个问题:</p>
+<blockquote>
+<p><strong>问题2: 在学习中国，如果已经发现了“弱可学习算法”，那么能否将它提升为强可学习算法？</strong></p>
+</blockquote>
+<p>该部分介绍以下几类提升算法:</p>
+<ul>
+<li>Bagging</li>
+<li><strong>AdaBoost</strong></li>
+<li>提升树</li>
+</ul>
+<a id="more"></a>
+<h3 id="Bagging"><a href="#Bagging" class="headerlink" title="Bagging"></a>Bagging</h3><p>对于一个训练数据集，如果我们将所有的训练集数据拿来训练，那么我们便只能得到一个模型，因此Bagging的思想非常简单：</p>
+<blockquote>
+<p>每次从训练数据集中取一部分数据来训练模型，通过这种方式得到多个模型，最后的决策结果则由这些模型投票表决</p>
+</blockquote>
+<p>算法流程如下:</p>
 <blockquote>
 <ul>
-<li>贝叶斯理论 </li>
-<li>概率密度函数估计</li>
-<li>EM算法</li>
-<li>线性判别——感知器</li>
-<li>支持向量机</li>
-<li>近邻法 </li>
-<li>特征提取与特征选择</li>
-<li>神经网络</li>
-<li>RNN</li>
-<li>非监督学习</li>
-<li>决策树</li>
-<li>聚类</li>
+<li>Step1: 从包含$n$个样本的数据集中取$m$个样本作为新的训练集</li>
+<li>Step2: 用挑选出的数据集来训练得到一个模型</li>
+<li>Step3: 重复Step1 L次，得到L个模型</li>
+<li>Step4: 最终决策结果由这$L$个模型多数投票得到</li>
 </ul>
 </blockquote>
-<p>各章节主要包含两部分： </p>
-<blockquote>
+<h3 id="AdaBoost"><a href="#AdaBoost" class="headerlink" title="AdaBoost"></a>AdaBoost</h3><h4 id="算法流程"><a href="#算法流程" class="headerlink" title="算法流程"></a>算法流程</h4><p>Bagging的思想比较简单粗暴，所有样本都一视同仁，而另一种思路则是改变训练数据的概率分布(训练数据的权值分布)，针对不同的训练数据分布调用弱学习算法学习一系列弱分类器。这样，对于提升算法而言，有两个问题需要回答：</p>
 <ul>
-<li>理论介绍</li>
-<li>代码实战</li>
+<li>在每一轮如何改变训练数据的权值或概率分布  </li>
+<li>如何将这些弱分类器组合成一个强分类器</li>
 </ul>
+<p>AdaBoost针对这两个问题的的解决方案是:</p>
+<ul>
+<li>第1个问题: 提高那些被前一轮弱分类器错误分类样本的权值，而降低那些被正确分类的样本的权值。这样一来，那些没有得到正确分类的数据由于权值加大而受到后一轮弱分类器的更多关注。</li>
+<li>第2个问题：AdaBoost采用加权表决的方法,加大分类误差率小的弱分类器的权值。</li>
+</ul>
+<p>AdaBoost算法流程如下:</p>
+<blockquote>
+<p><strong>AdaBoost算法</strong><br><strong>输入：</strong> 训练数据集$T = \{ (x_1,y_1), (x_2,y_2),\dots, (x_N,y_N)\}$,其中$x_i \in R^n, y_i \in \{ -1, +1 \}$,弱学习算法<br><strong>输出：</strong> 最终分类器$G(x)$ </p>
+<ol>
+<li>初始化训练数据的权值分布<script type="math/tex; mode=display">
+ D_1 = (w_{11}, \dots, w_{1i}, \dots,w_{1N}), w_{1i} = \frac{1}{N}</script></li>
+<li>对于$m = 1,2,\dots,M$ <ul>
+<li>使用具有权值分布$D_m$的训练数据集学习，得到基本分类器<script type="math/tex; mode=display">
+   G_m(x): \mathcal{X} \rightarrow \{ -1, +1 \}</script></li>
+<li>计算$G_m(x)$ 在训练数据集上的分类误差率<script type="math/tex; mode=display">
+   e_m = \sum_{i=1}^N P(G_m(x_i) \neq y_i) = \sum_{i=1}^N w_{mi} I(G_m(x_i) \neq y_i)</script></li>
+<li>计算$G_m(x)$的系数:<script type="math/tex; mode=display">
+   \alpha_m = \frac{1}{2} \log \frac{1 - e_m}{e_m}</script></li>
+<li>更新训练数据集的权值分布<script type="math/tex; mode=display">
+\begin{aligned}
+   D_{m+1} &= (w_{m+1,1},\dots, w_{m+1,i}, \dots,w_{m+1,N}) \\
+   w_{m+1,i} &= \frac{w_{m+1,i}}{Z_{m}} \exp(- \alpha_m y_i G_m(x_i)) \\
+   Z_m &= \sum_{i=1}^N w_{mi} \exp(-\alpha_m y_i G_m(x_i))
+\end{aligned}</script></li>
+<li>构建基本分类器的线性组合:<script type="math/tex; mode=display">
+    f(x) = \sum_{m=1}^M \alpha_m G_m(x)</script>得到最终分类器：<script type="math/tex; mode=display">
+   G(x) = sign(f(x)) = sign(\sum_{m=1}^M \alpha_m G_m(x))</script></li>
+</ul>
+</li>
+</ol>
 </blockquote>
+<p>下面对AdaBoost算法说明如下:</p>
+<ul>
+<li>在最开始假设训练数据具有均匀的权值分布，即每个训练样本在基本分类器中的作用相同，这一假设保证第一步能够在原始数据上学习基本分类器$G_1(x)$</li>
+<li>AdaBoost反复学习基本分类器，在每一轮弱分类器训练中，首先使用当前分布$D_m$加权的训练数据集，学习基本分类器$G_m(x)$,使用加权数据进行训练，最终学得的分类器更加关注权重较高的数据，接下来计算该基本分类器$G_m(x)$在加权训练数据集上的分类误差率,然后通过该误差率计算分类器$G_m(x)$的权重，从权重计算公式可以看出，当$e_m \leq 0.5$(弱分类器前提假设)时，$\alpha_m \geq 0$,且随着$e_m$减小，$\alpha_m$会不断增大。 </li>
+<li>接下来更新训练数据的权值，对于被分类器$G_m(x)$分类正确的样本，增加其权重，反之减少其权重。<strong>不改变所给的训练数据，而是不断改变训练数据权值的分布，使得训练数据在基本分类器的学习中起不同作用。</strong></li>
+<li>最终的组合分类器是一个基本分类器的线性组合形式，$f(x)$的符号决定了实例$x$的类，而$f(x)$的绝对值则显示了分类结果的置信度。</li>
+</ul>
+<h4 id="算法理论说明"><a href="#算法理论说明" class="headerlink" title="算法理论说明"></a>算法理论说明</h4><p>上一部分从算法思想来对AdaBoost进行理解，这一部分将从理论推导方面证明AdaBoost中的一些关键公式是如何来的，比如：</p>
+<ul>
+<li>分类器权重$\alpha_m = \frac{1}{2} \log \frac{1-e_m}{e_m}$</li>
+<li>样本点权重更新公式： <script type="math/tex; mode=display">
+\begin{aligned}
+  D_{m+1} &= (w_{m+1,1},\dots, w_{m+1,i}, \dots,w_{m+1,N}) \\
+  w_{m+1,i} &= \frac{w_{m+1,i}}{Z_{m}} \exp(- \alpha_m y_i G_m(x_i)) \\
+  Z_m &= \sum_{i=1}^N w_{mi} \exp(-\alpha_m y_i G_m(x_i))
+\end{aligned}</script></li>
+</ul>
+<p>首先来推导下AdaBoost的训练误差界，样本$x_i$ 在第$t$轮训练时的权重，由样本点权重递推公式可以得到：</p>
+<script type="math/tex; mode=display">
+    w_{ti} = w_{t-1i} \frac{e^{-\alpha_t y_i h_t(i)}}{Z_{t-1}} = \dots = w_{1i} \frac{e^{-y_i \sum_{j=1}^t \alpha_j h_j(t)}}{\prod_{i=1}^{t-1} Z_i}</script><p>其中$w_{1i} = \frac{1}{N}$</p>
 
     </div>
 
@@ -289,6 +352,9 @@
 
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Bagging-AdaBoost-%E6%8F%90%E5%8D%87%E6%A0%91%E6%A8%A1%E5%9E%8B/" rel="tag"># Bagging, AdaBoost, 提升树模型</a>
+          </div>
 
         
 
@@ -296,13 +362,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/02/22/%E6%9C%89%E6%84%9F/" rel="prev" title="有感">
-      <i class="fa fa-chevron-left"></i> 有感
+    <a href="/2020/09/01/%E7%89%B9%E5%BE%81%E6%8F%90%E5%8F%96%E4%B8%8E%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9/" rel="prev" title="特征提取与特征选择">
+      <i class="fa fa-chevron-left"></i> 特征提取与特征选择
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/07/23/Bayes/" rel="next" title="贝叶斯理论">
-      贝叶斯理论 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -362,6 +425,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Bagging"><span class="nav-number">1.</span> <span class="nav-text">Bagging</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AdaBoost"><span class="nav-number">2.</span> <span class="nav-text">AdaBoost</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#算法流程"><span class="nav-number">2.1.</span> <span class="nav-text">算法流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#算法理论说明"><span class="nav-number">2.2.</span> <span class="nav-text">算法理论说明</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
