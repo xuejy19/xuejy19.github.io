@@ -27,11 +27,13 @@
 <meta property="og:site_name" content="风之声">
 <meta property="og:description" content="对于一个特定机器学习问题，我们可能会建立很多模型，这些单个模型可能表现都不是非常好，由此便会引出一个问题:  问题1: 能否通过一个算法将这些模型组合起来(Ensemble)，产生一个效果更好的组合模型？  这个问题的答案是肯定的，历史上，Kearns 和 Valiant首先提出了“弱可学习”和“强可学习”的概念：  强可学习： 在概率近似正确(PAC)框架下，一个概念(类)，如果存在一个多项式的">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/Ensemble.png">
 <meta property="article:published_time" content="2020-09-01T01:25:02.000Z">
-<meta property="article:modified_time" content="2020-09-01T03:54:34.657Z">
+<meta property="article:modified_time" content="2020-09-01T09:30:25.943Z">
 <meta property="article:author" content="思考猫">
 <meta property="article:tag" content="Bagging, AdaBoost, 提升树模型">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/Ensemble.png">
 
 <link rel="canonical" href="http://yoursite.com/2020/09/01/%E6%8F%90%E5%8D%87%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/">
 
@@ -195,7 +197,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-09-01 09:25:02 / 修改时间：11:54:34" itemprop="dateCreated datePublished" datetime="2020-09-01T09:25:02+08:00">2020-09-01</time>
+              <time title="创建时间：2020-09-01 09:25:02 / 修改时间：17:30:25" itemprop="dateCreated datePublished" datetime="2020-09-01T09:25:02+08:00">2020-09-01</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -252,7 +254,8 @@
 <ul>
 <li>Bagging</li>
 <li><strong>AdaBoost</strong></li>
-<li>提升树</li>
+<li>随机森林 </li>
+<li>提升算法解释</li>
 </ul>
 <a id="more"></a>
 <h3 id="Bagging"><a href="#Bagging" class="headerlink" title="Bagging"></a>Bagging</h3><p>对于一个训练数据集，如果我们将所有的训练集数据拿来训练，那么我们便只能得到一个模型，因此Bagging的思想非常简单：</p>
@@ -319,11 +322,69 @@
   D_{m+1} &= (w_{m+1,1},\dots, w_{m+1,i}, \dots,w_{m+1,N}) \\
   w_{m+1,i} &= \frac{w_{m+1,i}}{Z_{m}} \exp(- \alpha_m y_i G_m(x_i)) \\
   Z_m &= \sum_{i=1}^N w_{mi} \exp(-\alpha_m y_i G_m(x_i))
-\end{aligned}</script></li>
+\end{aligned}</script><h5 id="AdaBoost算法训练误差界"><a href="#AdaBoost算法训练误差界" class="headerlink" title="AdaBoost算法训练误差界"></a>AdaBoost算法训练误差界</h5>首先来推导下AdaBoost的训练误差界，样本$x_i$ 在第$t$轮训练时的权重，由样本点权重递推公式可以得到：<script type="math/tex; mode=display">
+  w_{t+1i} = w_{ti} \frac{e^{-\alpha_t y_i h_t(i)}}{Z_{t}} = \dots = w_{1i} \frac{e^{-y_i \sum_{j=1}^t \alpha_j h_j(i)}}{\prod_{i=1}^{t} Z_i}</script>其中$w_{1i} = \frac{1}{N}$,若记：<script type="math/tex; mode=display">
+  \boldsymbol{\alpha} = [\alpha_1,\alpha_2,\dots, \alpha_t], \boldsymbol{h(x)} = [h_1(i),h_2(i),\dots, h_t(i)]</script>$w_{t+1i}$可以写成更加紧凑的形式:<script type="math/tex; mode=display">
+  w_{t+1i} = \frac{e^{-y_i <\boldsymbol{\alpha}, \boldsymbol{h(x)}>}}{N \prod_{i=1}^t Z_i}</script>又因为有$\sum_{i=1}^N w_{t+1i} = 1$,对上式求和后可得：<script type="math/tex; mode=display">
+  \prod_{i=1}^t Z_i = \frac{1}{N} \sum_{i=1}^N e^{-y_i <\boldsymbol{\alpha}, \boldsymbol{h(x)}>}</script>需要注意的是，$&lt;\boldsymbol{\alpha}, \boldsymbol{h(x)}&gt;$刚好是使用AdaBoost最终得到模型的预测结果(未取sign)，下面考虑两种情况：<script type="math/tex; mode=display">
+  \begin{aligned}
+      &If \quad sign(<\boldsymbol{\alpha}, \boldsymbol{h(x_i)}>) = h(x_i) = y_i \Rightarrow <\boldsymbol{\alpha}, \boldsymbol{h(x)}> \cdot y_i = c \geq 0  , 0 \leq e^{-c}  \\
+      &If \quad sign(<\boldsymbol{\alpha}, \boldsymbol{h(x_i)}>) = h(x_i) \neq y_i \Rightarrow <\boldsymbol{\alpha}, \boldsymbol{h(x)}> \cdot y_i = c \leq 0  , 1 \leq e^{-c} 
+  \end{aligned}</script>而AdaBoost最终训练得到的模型的分类误差为:<script type="math/tex; mode=display">
+  \epsilon  = \frac{1}{N}\sum_{i=1}^N \epsilon_i, \epsilon_i = \begin{cases}
+      1 & h(x_i) \neq y_i \\
+      0 & h(x_i) = y_i
+  \end{cases}</script>从前面两种分类讨论可以得到:<script type="math/tex; mode=display">
+  \epsilon_i \leq e^{-y_i <\boldsymbol{\alpha}, \boldsymbol{h(x_i)}>}</script>由此便可以得到AdaBoost分类器的<strong>分类错误率上界</strong>：<script type="math/tex; mode=display">
+\epsilon = \frac{1}{N}\sum_{i=1}^N \epsilon_i \leq \frac{1}{N} \sum_{i=1}^N e^{-y_i <\boldsymbol{\alpha}, \boldsymbol{h(x_i)}>}  = \prod_{i=1}^t Z_i</script><h5 id="alpha-t-ast-推导"><a href="#alpha-t-ast-推导" class="headerlink" title="$\alpha_t^\ast$ 推导"></a>$\alpha_t^\ast$ 推导</h5>需要注意的是，我们上面并未指定权重$\alpha$的表达式，那么现在我们考虑这样一个问题:<blockquote>
+<p>$\alpha$取什么值时分类错误率的上界可以尽可能小</p>
+</blockquote>
+</li>
 </ul>
-<p>首先来推导下AdaBoost的训练误差界，样本$x_i$ 在第$t$轮训练时的权重，由样本点权重递推公式可以得到：</p>
+<p>因为$Z_i$的大小依赖于$\alpha_i$，而且它们都是迭代过程中的变量，因此可以考虑将上述问题转化为:</p>
+<blockquote>
+<p>如何在每一步迭代中选择合适的$\alpha_t$使得$Z_t$尽可能小 </p>
+</blockquote>
+<p>$Z_t$的表达式如下:</p>
 <script type="math/tex; mode=display">
-    w_{ti} = w_{t-1i} \frac{e^{-\alpha_t y_i h_t(i)}}{Z_{t-1}} = \dots = w_{1i} \frac{e^{-y_i \sum_{j=1}^t \alpha_j h_j(t)}}{\prod_{i=1}^{t-1} Z_i}</script><p>其中$w_{1i} = \frac{1}{N}$</p>
+    Z_t = \sum_{i=1}^N w_{ti} e^{-\alpha_t y_i h_t(x_i)}</script><p>这是一个凸函数，因此可以直接求导令导数等于0：</p>
+<script type="math/tex; mode=display">
+    \frac{\partial Z_t}{\partial \alpha_t} = -\sum_{i=1}^N w_{ti} y_i h_t(x_i) e^{-\alpha_t y_i h_t(x_i)} = 0</script><p>下面考虑两个集合：</p>
+<script type="math/tex; mode=display">
+    A = y_i h_t(x_i) = 1, \bar{A} = y_i h_t(x_i) = -1</script><p>据此，上面的偏导可以写成:</p>
+<script type="math/tex; mode=display">
+    \frac{\partial Z_t}{\partial \alpha_t} = -\sum_{x_i \in A} w_{ti} e^{-\alpha_t} + \sum_{x_i \in \bar{A}} w_{ti} e^{\alpha} = 0</script><p>由此可得:</p>
+<script type="math/tex; mode=display">
+    e^{2\alpha_t} = \frac{\sum_{x_i \in A} w_{ti}}{\sum_{x_i \in \bar{A}} w_{ti}} = \frac{1 -\epsilon_t}{\epsilon_t}</script><p>求得$\alpha_t$的最优取值为:</p>
+<script type="math/tex; mode=display">
+    \alpha_t^\ast = \frac{1}{2} \log \frac{1 - \epsilon_t}{\epsilon_t}</script><p>至此我们便理解了每一步迭代$\alpha_t$表达式的来源，该表达式刚好可以保证最终得到的分类器错误率上界尽可能小(局部最小)。</p>
+<h5 id="训练误差界-二分类问题"><a href="#训练误差界-二分类问题" class="headerlink" title="训练误差界(二分类问题)"></a>训练误差界(二分类问题)</h5><p>对于一个二分类问题，则可以将$Z_t$的表达式直接写出:</p>
+<script type="math/tex; mode=display">
+    Z_t = 2 \sqrt{e_t(1 - e_t)}</script><p>令$e_t = \frac{1}{2} - \gamma_t$,则可得：</p>
+<script type="math/tex; mode=display">
+    Z_t = \sqrt{1 - 4 \gamma_t^2} \leq e^{-2 \gamma_t^2}</script><p>由此便可得分类错误率上界为:</p>
+<script type="math/tex; mode=display">
+    \prod_{i=1}^t Z_i \leq e^{-2 \sum_{i=1}^t \gamma_t^2}</script><p>据此可以得到推论:</p>
+<blockquote>
+<p><strong>推论：</strong> 如果存在$\gamma &gt;0$,对所有$i$有，$\gamma_i \geq \gamma$,则有：</p>
+<script type="math/tex; mode=display">
+    \frac{1}{N} \sum_{i=1}^N I(h(x_i) \neq y_i) \leq \exp(-2N\gamma^2)</script><p>这说明对于二分类问题，AdaBoost的训练误差是指数速率下降的。</p>
+</blockquote>
+<p><strong>tips:</strong> </p>
+<ul>
+<li>对于无法接受带权样本的基学习算法，可以通过重采样法来处理，即在每一轮学习中，根据样本分布对训练集重新进行采样，变相实现带权样本，两种做法没有本质区别。</li>
+<li>Boosting算法在训练的每一轮都需要检查当前生成的基学习器是否满足条件(比随机猜测要好)，若不满足，则抛弃该基学习器，学习过程停止，若采用”重采样法”，则可获得“重启动机会”，避免算法过早停止。</li>
+</ul>
+<h3 id="随机森林"><a href="#随机森林" class="headerlink" title="随机森林"></a>随机森林</h3><p>随机森林算法其实就是以决策树算法作为基学习算法，选用Bagging策略作为提升策略，最终得到的一个算法，可以这么理解:</p>
+<script type="math/tex; mode=display">
+    随机森林 = 决策树 + Bagging</script><p>随机森林算法简单、容易实现、计算开销小，令人惊奇的是，它在很多现实任务中展现了强大的性能，被誉为“代表集成学习技术水平的方法”。<br>不过传统的Bagging算法仅仅是在训练样本上引入随机性，而随机森林往往考虑在属性选择上引入随机性，具体做法是:原始的决策树算法是从该节点所有属性中选择一个最优属性进行节点分裂，而作为基学习器，为进一步引入随机性，一般会规定从当前节点所有属性中随机选$k$个，然后从这$k$个属性中选择一个最优的来分裂节点，若该节点有$d$个属性，常见的$k$的取值为$k = \log_2 d$</p>
+<h3 id="提升算法解释"><a href="#提升算法解释" class="headerlink" title="提升算法解释"></a>提升算法解释</h3><p>学习器结合可能会从三个方面带来好处:</p>
+<ul>
+<li>从统计的方面来看，由于学习任务的假设空间往往非常大，此时若使用单学习器可能因误选而导致泛化性能不佳，结合多个学习器会减少这一风险。</li>
+<li>从计算角度来看，学习算法往往会陷入局部极小，有的局部极小点所对应的泛化性能可能非常糟糕，而通过多次运行之后进行结合，可降低陷入糟糕极小点的风险。</li>
+<li>从表示的方面来看，某些学习任务的真实假设可能不在当前学习算法s所考虑的假设空间中，此时若使用单学习器肯定无效，而通过结合多个学习器，由于相应的假设空间有所扩大，有可能学得更好的近似。</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/Ensemble.png" alt="集成学习解释"></p>
 
     </div>
 
@@ -425,7 +486,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Bagging"><span class="nav-number">1.</span> <span class="nav-text">Bagging</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AdaBoost"><span class="nav-number">2.</span> <span class="nav-text">AdaBoost</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#算法流程"><span class="nav-number">2.1.</span> <span class="nav-text">算法流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#算法理论说明"><span class="nav-number">2.2.</span> <span class="nav-text">算法理论说明</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Bagging"><span class="nav-number">1.</span> <span class="nav-text">Bagging</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AdaBoost"><span class="nav-number">2.</span> <span class="nav-text">AdaBoost</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#算法流程"><span class="nav-number">2.1.</span> <span class="nav-text">算法流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#算法理论说明"><span class="nav-number">2.2.</span> <span class="nav-text">算法理论说明</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#AdaBoost算法训练误差界"><span class="nav-number">2.2.1.</span> <span class="nav-text">AdaBoost算法训练误差界</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#alpha-t-ast-推导"><span class="nav-number">2.2.2.</span> <span class="nav-text">$\alpha_t^\ast$ 推导</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#训练误差界-二分类问题"><span class="nav-number">2.2.3.</span> <span class="nav-text">训练误差界(二分类问题)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#随机森林"><span class="nav-number">3.</span> <span class="nav-text">随机森林</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#提升算法解释"><span class="nav-number">4.</span> <span class="nav-text">提升算法解释</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
