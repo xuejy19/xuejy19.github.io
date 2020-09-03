@@ -1,0 +1,6 @@
+body {
+ 	background:url(/background/Bayes.jpeg);
+ 	background-repeat: no-repeat;
+    background-attachment:fixed;
+    background-position:50% 50%;
+}
