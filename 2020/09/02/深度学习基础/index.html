@@ -20,20 +20,29 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="近些年来，神经网络算法家族蓬勃发展，本部分主要介绍一下这些算法的一些通用原理基础，该部分按照以下结构组织:  神经元模型 多层神经网络 反向传播算法(BP) 目前常用网络模型介绍">
+  <meta name="description" content="近些年来，神经网络算法家族蓬勃发展，本部分主要介绍一下这些算法的一些通用原理基础，该部分按照以下结构组织:  神经元模型 多层神经网络 反向传播算法(BP) 网络训练中常见问题 常见网络模型介绍">
 <meta property="og:type" content="article">
 <meta property="og:title" content="深度学习基础">
 <meta property="og:url" content="http://yoursite.com/2020/09/02/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/index.html">
 <meta property="og:site_name" content="风之声">
-<meta property="og:description" content="近些年来，神经网络算法家族蓬勃发展，本部分主要介绍一下这些算法的一些通用原理基础，该部分按照以下结构组织:  神经元模型 多层神经网络 反向传播算法(BP) 目前常用网络模型介绍">
+<meta property="og:description" content="近些年来，神经网络算法家族蓬勃发展，本部分主要介绍一下这些算法的一些通用原理基础，该部分按照以下结构组织:  神经元模型 多层神经网络 反向传播算法(BP) 网络训练中常见问题 常见网络模型介绍">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/Neuro-model1.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/Neuro-model.jpg">
 <meta property="og:image" content="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/act_function.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/Perceptron.jpg">
 <meta property="og:image" content="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/MLP.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/sigmoid.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/relu.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/BN.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/deep.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/res.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/min.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/CNN.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/conv.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/Pooling.png">
 <meta property="article:published_time" content="2020-09-02T07:24:51.000Z">
-<meta property="article:modified_time" content="2020-09-03T00:42:48.923Z">
+<meta property="article:modified_time" content="2020-09-03T09:58:41.712Z">
 <meta property="article:author" content="思考猫">
 <meta property="article:tag" content="BP算法， 深度学习， CNN">
 <meta name="twitter:card" content="summary">
@@ -207,7 +216,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-03 08:42:48" itemprop="dateModified" datetime="2020-09-03T08:42:48+08:00">2020-09-03</time>
+                <time title="修改时间：2020-09-03 17:58:41" itemprop="dateModified" datetime="2020-09-03T17:58:41+08:00">2020-09-03</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -249,7 +258,8 @@
 <li>神经元模型</li>
 <li>多层神经网络</li>
 <li><strong>反向传播算法(BP)</strong></li>
-<li>目前常用网络模型介绍</li>
+<li>网络训练中常见问题</li>
+<li>常见网络模型介绍</li>
 </ul>
 <a id="more"></a>
 <h3 id="神经元模型"><a href="#神经元模型" class="headerlink" title="神经元模型"></a>神经元模型</h3><p>时至今日，神经网络已经是一个相当大的、多学科交叉的学科领域，下面给出神经网络的定义：</p>
@@ -279,7 +289,7 @@
 <script type="math/tex; mode=display">
     w_{hj} \rightarrow  \beta_j \rightarrow \hat{y}_j^k \rightarrow E_k</script><p>因此由链式法则，可得:</p>
 <script type="math/tex; mode=display">
-    \frac{\partial E_k}{\partial w_{hj}} = \frac{\partial E_k}{\partial \hat{y}_j^k} \frac{ \partial \hat{y}_j^k}{\partial \beta_j} \frac{\partial \beta_j}{\partial w_{hj}} = (\hat{y}_j^k - y_j^k) \hat{y}_j^k (1 - \hat{y}_j^k) b_h</script><p>其中$\frac{ \partial \hat{y}_j^k}{\partial \beta_j} $应用了Sigmoid函数$f’(x) = f(x)(1 - f(x))$的性质，由此梯度下降算法原理，可得：</p>
+    \frac{\partial E_k}{\partial w_{hj}} = \frac{\partial E_k}{\partial \hat{y}_j^k} \frac{ \partial \hat{y}_j^k}{\partial \beta_j} \frac{\partial \beta_j}{\partial w_{hj}} = (\hat{y}_j^k - y_j^k) \hat{y}_j^k (1 - \hat{y}_j^k) b_h</script><p>$\frac{ \partial \hat{y}_j^k}{\partial \beta_j} $应用了Sigmoid函数$f’(x) = f(x)(1 - f(x))$的性质，由此梯度下降算法原理，可得：</p>
 <script type="math/tex; mode=display">
     \Delta w_{hj} = -\eta \frac{\partial E_k}{\partial w_{hj}}</script><p>下面给出$v_{ih}$的前向变量传递路径：</p>
 <script type="math/tex; mode=display">
@@ -288,7 +298,72 @@
     \begin{aligned}
          \Delta v_{ih} &= -\eta \frac{\partial E_k}{b_h} \frac{\partial b_h}{\partial \alpha_h} \frac{\partial \alpha_h}{\partial v_{ih}}  \\
          &= -\eta [\sum_{j=1}^l \frac{\partial E_k}{\partial \beta_j} \frac{\partial \beta_j}{\partial b_h}] f'(\alpha_h - \gamma_h) x_i 
-    \end{aligned}</script><p>其他参数更新也都是同样思路，在这里便不做过多赘述，其实BP算法就只是应用链式求导法则反向计算梯度(更新权重)的方法。与随机梯度下降以及批梯度下降相对应，BP算法也可以分为标准BP算法(一次更新一个实例)，累积BP算法(一次更新所有样例)，在实际中训练时往往采取折中的策略，每次取一批数据进行权重更新。<br>正是由于BP网络具有强大的表示能力，BP神经网络经常遭遇过拟合，即随着训练的进行，训练误差进一步降低，但测试误差却可能上升。过拟合11</p>
+    \end{aligned}</script><p>其他参数更新也都是同样思路，在这里便不做过多赘述，其实BP算法就只是应用链式求导法则反向计算梯度(更新权重)的方法。与随机梯度下降以及批梯度下降相对应，BP算法也可以分为标准BP算法(一次更新一个实例)，累积BP算法(一次更新所有样例)，在实际中训练时往往采取折中的策略，每次取一批数据进行权重更新。</p>
+<h3 id="网络训练中常见问题"><a href="#网络训练中常见问题" class="headerlink" title="网络训练中常见问题"></a>网络训练中常见问题</h3><p>对于这样一个简单BP网络，在训练中也会面临很多问题，这些问题是神经网络算法所固有的一些问题，很多研究也是以解决这些问题为出发点，这部分主要介绍三个问题:</p>
+<ul>
+<li>过拟合问题</li>
+<li>梯度消失与梯度爆炸</li>
+<li>局部极小值问题</li>
+</ul>
+<h4 id="过拟合问题"><a href="#过拟合问题" class="headerlink" title="过拟合问题"></a>过拟合问题</h4><p>正是由于BP网络具有强大的表示能力，BP神经网络经常遭遇过拟合，即随着训练的进行，训练误差进一步降低，但测试误差却可能上升。有两种策略可以缓解过拟合问题：</p>
+<ul>
+<li>早停：将数据划分为训练集和验证集，训练集用来计算梯度、更新连接权和阈值，验证集用来估计误差，若训练集误差降低但验证集误差升高，则停止训练，并返回具有最小验证集误差的连接权和阈值。</li>
+<li>正则化： 在目标误差函数中增加一个用于描述网络复杂度的部分，例如连接权和阈值的平方和，仍令$E_k$表示第$k$个训练样例上的误差，$w_i$表示连接权和阈值，则对于批反向传播的误差函数可以写为:<script type="math/tex; mode=display">
+  E = \lambda \frac{1}{m} \sum_{k=1}^m E_k + (1 - \lambda) \sum_i w_i^2</script>其中$\lambda$用于对经验误差和网络复杂度进行折中，常通过交叉验证法进行估计。</li>
+</ul>
+<h4 id="梯度消失与梯度爆炸"><a href="#梯度消失与梯度爆炸" class="headerlink" title="梯度消失与梯度爆炸"></a>梯度消失与梯度爆炸</h4><p>我们在反向计算梯度时实际上是一个链式求导的过程，假设有一个层数为5的神经网络(包含输入层和输出层)，假设我们欲更新输入层到第一隐层的一个权重$w$，中间需要经过若干变量($w_1,\dots,w_k$)才能到达损失函数,则进行反向传播时，损失函数$L$对$w$求偏导是一个连乘积的形式：</p>
+<script type="math/tex; mode=display">
+    \frac{\partial L}{\partial w} = \frac{\partial L}{\partial w_k} \cdot \frac{\partial w_k}{\partial w_{k-1}} \dots \frac{\partial w_1}{\partial w}</script><p>若这些连乘积每一项都大于1，则就出现了梯度爆炸情况，导致参数更新不稳定，若连乘积每一项都小于1，则连乘之后就会是一个非常小的值，也就是说出现了梯度消失。<br>梯度在反向传播过程中，没经过一层就会经过一次对激活函数求导的过程，加入选的是Sigmoid函数作为激活函数，其导数$f’(x) \leq 0.25$,因此随着网络的变深，使用Sigmoid函数作为激活函数会不可避免地导致出现梯度消失。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/sigmoid.png" alt="sigmoid"><br>下面介绍三个解决梯度消失/爆炸问题的思路。</p>
+<h5 id="Relu激活函数"><a href="#Relu激活函数" class="headerlink" title="Relu激活函数"></a>Relu激活函数</h5><p>为解决使用Sigmoid激活函数导致梯度消失的问题，在深层神经网络的训练中人们往往采用另一种激活函数——Relu以及它的变形Leakage-Relu，函数图像如下图所示:<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/relu.jpg" alt="relu"><br>可以看到，Relu函数在被激活后($&gt;0$),梯度恒为1，既不会导致梯度消失也不会导致梯度爆炸，但relu函数有一个明显的缺点:当relu的输入值为负时，输出始终为0，这样会导致神经元不能够更新参数，也就是该神经元无法学习了，为了解决relu函数这个问题，在relu的负半区引入了一个泄漏值，也就是说当输入小于0时仍旧有一个小的梯度，该泄漏值可以指定也可以作为一个参数与神经网络其他参数一同被学习。</p>
+<h5 id="Batchnorm"><a href="#Batchnorm" class="headerlink" title="Batchnorm"></a>Batchnorm</h5><p>机器学习领域有一个非常重要的假设:IID，即独立同分布假设， 假设训练数据和测试数据是满足相同分布的，这也是通过训练数据获得的模型能够在测试集获得好的效果的一个基本保障，而：</p>
+<blockquote>
+<p><strong>Batchnorm就是在深度神经网络训练过程中使每一层神经网络的输入保持相同分布。</strong></p>
+</blockquote>
+<p>由于深度神经网络往往具有复杂的网络结构，在进行训练过程中，各层神经元的参数都在变化，导致各层神经元的输入分布不断发生偏移，BN的思想相当直观，之所以训练收敛慢，一般是整体分布逐渐往非线性函数取值区间的上下限两端端靠近，这就导致向后传播时低层神经网络出现梯度消失现象，这是训练神经网络收敛越来越慢的本质原因，而BN就是通过一定规范化手段，把每层神经网络任意神经元的输入值强行拉回到均值为0，方差为1的正态分布，这样使得激活函数的输入落在非线性函数对输入较为敏感的区域(以Sigmoid函数为例，落在0附近区域)，这样进行梯度反向传播时求导得到的梯度值就会较大，一定程度上缓和了梯度消失现象。</p>
+<p>但是很明显，从Sigmoid函数图像可以看出，0附近区域其实是接近线性的，如果把所有的输入都拉到Sigmoid函数的线性区域内，那么不就相当于是激活函数是线性函数了么，而我们知道多层线性网络与一层线性网络其实是等价的，所以BN为了保持激活函数的非线性，对norm之后的输入又做了一步变换:</p>
+<script type="math/tex; mode=display">
+    y_i = \gamma \hat{x}_i +    \beta</script><p>每个神经元增加了两个参数：尺度参数$\gamma$，偏移参数$\beta$,这等价于让输入从线性区域向非线性区域移动了一点，引入这两个参数本质上是想找到一个线性和非线性的平衡点，使得网络既具有非线性的强表达能力，又在一定程度上减轻了梯度消失问题。<br>下面给出Batchnorm的具体流程:<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/BN.png" alt="Batchnorm"></p>
+<h5 id="残差结构"><a href="#残差结构" class="headerlink" title="残差结构"></a>残差结构</h5><p>首先来谈一谈深层网络的退化问题，理论上来说，深层网络的性能应当不会比浅层网络性能更差，因为深层网络可以考虑对浅层网络进行拷贝，然后剩下来的层作为一个恒等映射，这样最起码深层网络的性能应当与浅层网络性能一致，然而事实却并非这样，实验表明，深层网络表现并不总是优于浅层网络。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/deep.png" alt="网络性能对比"></p>
+<p>深度网络的退化说明深度网络不易训练，前面讨论到深层网络往往并不能够通过建立恒等映射的形式来达到与浅层网络相同的性能，因此何凯明等考虑显式的引入该恒等映射，而让中间的网络学习一个残差，假设我们希望一个堆叠非线性层(stacked nonlinear layers)学习的映射是$\mathcal{H(x)}$,我们现在让该堆叠非线性层学习另一个映射$\mathcal{F(x)} = \mathcal{H(x)} - x$，通过$\mathcal{F(x)}+x$来重构期望映射， 而在网络中实现这个目的的操作则是“跳连”(shortcut connection)，如下图所示：<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/res.png" alt="resnet"></p>
+<p>上图所示的结构一般被称为一个残差单元，下面我们来仔细讨论下这样的结构为什么可以解决梯度消失问题，假设上述残差单元的输入为$x$,则残差单元的输出可以表示为:</p>
+<script type="math/tex; mode=display">
+    \boldsymbol{y} = \mathcal{F(\boldsymbol{x},\{(\boldsymbol{W_i})\})} + \boldsymbol{x}，i=1,2,\dots,k</script><p>$k$表示该残差单元包含几个权重层，需要说明的是，一个残差单元至少应该包含两个层，若只有一个层，则会出现:</p>
+<script type="math/tex; mode=display">
+    \boldsymbol{y} = \boldsymbol{W_1^T x + x} = \boldsymbol{(W_1^T + 1)x}</script><p>而若包含两层，则残差单元的输出写做:</p>
+<script type="math/tex; mode=display">
+    \boldsymbol{y} = \boldsymbol{W_2^T \sigma(W_1^Tx) + \boldsymbol{x}}</script><p>其中,假设$\boldsymbol{x} \in \mathbb{R}^d$,残差单元第一层有$n_1$个神经元，则上式中$\boldsymbol{W_1} \in \mathbb{R}^{d \times n_1}, \boldsymbol{W_2} \in \mathbb{R}^{n_1 \times d}$,损失函数到$\boldsymbol{y}$的梯度为$\frac{\partial L}{\partial \boldsymbol{y}}$,那么我们可以用该梯度表示$\frac{\partial L}{\partial \boldsymbol{x}}$:</p>
+<script type="math/tex; mode=display">
+    \frac{\partial L}{\partial \boldsymbol{x}} = \frac{\partial L}{\partial \boldsymbol{y}} \frac{\partial \boldsymbol{y}}{\partial \boldsymbol{x}} = \frac{\partial L}{\partial \boldsymbol{y}} (\boldsymbol{I} +  \boldsymbol{(W_1 W_2)^T})</script><p>其中激活函数取得Relu激活函数，可以看到，在进行反向传播过程中，到$\boldsymbol{y}$的梯度会无损再传递到其前层的$\boldsymbol{x}$，哪怕是残差梯度等于0或者是一个大于$-1$的负值，也可以保证有梯度传递到前面的层，这使得Resnet相对于普通的神经网络更不容易发生梯度消失现象。<br>何凯明博士这篇提出Resnet的论文也因为其突出贡献获得了2016年CVPR最佳论文奖，整篇论文非常简洁易懂，非常建议大家去读一下，这里给出论文链接<a href="https://openaccess.thecvf.com/content_cvpr_2016/papers/He_Deep_Residual_Learning_CVPR_2016_paper.pdf" target="_blank" rel="noopener">Deep Residual Learning for Image Recognition</a></p>
+<h4 id="局部极小值问题"><a href="#局部极小值问题" class="headerlink" title="局部极小值问题"></a>局部极小值问题</h4><p>神经网络训练过程其实就是一个参数寻优的过程，反向传播算法可以看作是在神经网络这种架构下梯度下降法的实现形式，因此最终收敛的点往往具有梯度为0的特点，这是一个局部极小点，若优化问题是一个凸问题，则局部极小点同时也是全局极小值，而神经网络的优化大多数情况都是一个非凸优化问题，这也就意味着最终训练收敛的点大概率只是一个“局部极小值点”，而非“全局极小值”点,如下图所示:<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/min.png" alt="局部极小与全局极小"><br>在现实任务中，人们常采用以下策略试图跳出局部极小，到达全局极小：</p>
+<ul>
+<li>以多组不同参数值初始化多个网络，按标准方法训练后，取其中误差最小的解作为最终参数，这相当于从多个不同的初始点开始搜索，这样就可能陷入不同的局部极小，从中进行选择有可能获得更接近全局最小的结果。</li>
+<li>使用“模拟退火”策略，模拟退火在每一步都以一定概率接受比当前解更差的结果，从而有助于跳出局部极小，在迭代过程中，接受“次优解“的概率要随着时间推移而逐渐降低，从而保证算法稳定。</li>
+<li>使用随机梯度下降(SGD)算法，即便陷入了局部极小点，所计算出的梯度仍可能不为0，这样就有机会跳出局部极小继续搜索。</li>
+</ul>
+<h3 id="常见网络模型介绍"><a href="#常见网络模型介绍" class="headerlink" title="常见网络模型介绍"></a>常见网络模型介绍</h3><p>神经网络家族成员庞杂，除了前面介绍的BP神经网络外，还有很多类型的神经网络，这部分就一些常见的做简要介绍，后面用到的话再补充。</p>
+<h4 id="卷积神经网络"><a href="#卷积神经网络" class="headerlink" title="卷积神经网络"></a>卷积神经网络</h4><p>卷积神经网络在图像处理领域有着广泛应用，一个完整的卷积神经网络其实包含两个部分:</p>
+<ul>
+<li><strong>特征提取</strong></li>
+<li>分类</li>
+</ul>
+<p>后面分类所用的网络其实就是前面所讨论的全连接神经网络或者它的一些变形，卷积神经网络名字的由来则主要是在特征提取阶段，下面就以图片处理为例重点讲解一下特征提取过程。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/CNN.png" alt="CNN"><br>其实我们不论做什么样的机器学习任务，都可以分为特征提取和算法学习两个阶段，而CNN则将这两个阶段结合了起来，然后一起优化，是一种“end2end”的算法，对于一张$n \times n$像素的黑白图像，其实该图像所有信息都包含在$n \times n$个值当中，若要完成一个分类任务，最简单粗暴的方法可能是直接将这$n \times n$个值直接作为特征输入到到全连接层来进行分类，但是这样做有以下两个缺点:</p>
+<ul>
+<li>输入特征维度非常高，因此网络的规模会很大，参数量会非常大，计算开销会非常大，训练困难。</li>
+<li>单个像素值本身并不具备什么意义，最终神经网络结果很有可能并不理想。</li>
+</ul>
+<p>卷积神经网络的出发点也是为了解决这样一个问题，特征提取部分主要包含三种操作:</p>
+<ul>
+<li>卷积层</li>
+<li>ReLu层</li>
+<li>池化层</li>
+</ul>
+<h4 id="卷积层"><a href="#卷积层" class="headerlink" title="卷积层"></a>卷积层</h4><p>一个图像中的单个像素点并不具备什么含义，但是一簇像素点(比如一幅图像中的眼睛区域)可能就具备某种含义了，而卷积层的出发点就是希望能够提取图像中某部分区域的信息，而具体操作则是通过卷积核与图像区域进行加权求和，这其实本质上就是一个线性映射，如下图所示，图像处理中的卷积与信号处理中的卷积不同之处在于其仅仅只有加权求和操作，而并没有翻转操作。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/conv.png" alt="图像卷积"><br>上图中所示的是一个$3 \times 3$的卷积核，可以看出该卷积核对于一个区域左上角像素与有下降像素更加关注，而一正一负操作则表明该卷积核更关注的是左上角像素值与由下角像素值的差。选用不同的卷积核可以从原始图像中提取不同的特征，因此在实际应用中，一般会选用多个大小不一的卷积核以全面捕捉不同大小的区域所包含的信息。</p>
+<h4 id="ReLu层"><a href="#ReLu层" class="headerlink" title="ReLu层"></a>ReLu层</h4><p>经过Relu层则主要是为了实现非线性变换，以提高网络的表示能力，比如上图中的-8经过ReLu层之后就变成了0。</p>
+<h4 id="池化层"><a href="#池化层" class="headerlink" title="池化层"></a>池化层</h4><p>经过卷积操作之后，我们得到了一张张有着不同值的特征图(feature map)，尽管数据量比原图少了很多，但还是过于庞大，而池化层的作用就是进一步减少数据量,扩大特征图的感受野。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/Pooling.png" alt="池化"><br>池化一般有两种操作，一种是Max pooling,一种是Average pooling,前一种就是取一个区域的最大值，而后一种则是取一个区域的平均值。</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>以上这三种操作就是就是卷积神经网络特征提取部分的三个基本单元，对这三种基本单元进行组合便可以组成特征提取部分，需要说明的是卷积神经网络中一个非常重要的操作就是<strong>共享权重</strong>：</p>
+<blockquote>
+<p>假设输入图像为$32 \times 32$,用两个$5 \times 5$</p>
+</blockquote>
 
     </div>
 
@@ -390,7 +465,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#神经元模型"><span class="nav-number">1.</span> <span class="nav-text">神经元模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多层感知机"><span class="nav-number">2.</span> <span class="nav-text">多层感知机</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#定义"><span class="nav-number">2.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多层感知机逼近能力"><span class="nav-number">2.2.</span> <span class="nav-text">多层感知机逼近能力</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#反向传播算法"><span class="nav-number">3.</span> <span class="nav-text">反向传播算法</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#神经元模型"><span class="nav-number">1.</span> <span class="nav-text">神经元模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多层感知机"><span class="nav-number">2.</span> <span class="nav-text">多层感知机</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#定义"><span class="nav-number">2.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多层感知机逼近能力"><span class="nav-number">2.2.</span> <span class="nav-text">多层感知机逼近能力</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#反向传播算法"><span class="nav-number">3.</span> <span class="nav-text">反向传播算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网络训练中常见问题"><span class="nav-number">4.</span> <span class="nav-text">网络训练中常见问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#过拟合问题"><span class="nav-number">4.1.</span> <span class="nav-text">过拟合问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#梯度消失与梯度爆炸"><span class="nav-number">4.2.</span> <span class="nav-text">梯度消失与梯度爆炸</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Relu激活函数"><span class="nav-number">4.2.1.</span> <span class="nav-text">Relu激活函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Batchnorm"><span class="nav-number">4.2.2.</span> <span class="nav-text">Batchnorm</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#残差结构"><span class="nav-number">4.2.3.</span> <span class="nav-text">残差结构</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#局部极小值问题"><span class="nav-number">4.3.</span> <span class="nav-text">局部极小值问题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常见网络模型介绍"><span class="nav-number">5.</span> <span class="nav-text">常见网络模型介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#卷积神经网络"><span class="nav-number">5.1.</span> <span class="nav-text">卷积神经网络</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#卷积层"><span class="nav-number">5.2.</span> <span class="nav-text">卷积层</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ReLu层"><span class="nav-number">5.3.</span> <span class="nav-text">ReLu层</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#池化层"><span class="nav-number">5.4.</span> <span class="nav-text">池化层</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结"><span class="nav-number">5.5.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
