@@ -69,7 +69,7 @@ $$
 2. 对于各个路径，将沿路径所有边相乘 
 3. 将各个路径计算结果相加
 
- ### 低阶API和高阶API
+### 低阶API和高阶API
 我们在使用pytorch时主要接触到的pytorch的包的架构如下图所示:
 ![pytorch主要包](https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/Pytorch-package-hierarchy.jpg)
 对于一个三层的全连结网络，我们可以仅仅使用tensor来实现，不过这种情况下需要手写梯度，下面我就一步步介绍如何用api来使你的代码变得简洁高效:
@@ -465,7 +465,7 @@ for t in range(500):
 >    pred = model(xb)
 > ```
 
-#### MNIST数据集CNN代
+#### MNIST数据集CNN代码
 有了应用上面的那些封装好的api，在MNIST数据集上实现一个CNN代码便不再困难，下面给出代码：
 ```python
 from pathlib import Path
