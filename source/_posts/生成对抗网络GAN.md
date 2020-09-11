@@ -450,5 +450,19 @@ if __name__ == '__main__':
     fit(args.epoches, dataloader,args.device, netG, netD, optimizerG, optimizerD)
 ```
 最后附上一些结果图：
+**celeb-A faces Dataset**
 ![Loss](https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/Loss.png) 
 ![fake_image](https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/fake_image.png)
+
+**MNIST** 
+![Loss](https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/Loss_mn.png) 
+![fake_msist](https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/mnist_gan.png)
+
+网络结构比较简单，真正在使用时应当需要根据任务来进行调整，参数初始化以及部分超参数选择，**沃兹基**曾经说过：
+> 深度神经网络理论学习是一门学问，代码实现又是一门学问，网络调参更是一门学问，想把神经网络搞掂，三种学问缺一不可。
+
+GAN目前还面临很多问题，比如训练困难，在图像处理之外的领域效果并不理想，同时在理论支撑方面也不够扎实，如果想进一步学习GAN，可以阅读下面几篇文章：
+- [这份攻略帮你「稳住」反复无常的 GAN](https://zhuanlan.zhihu.com/p/56943597)
+- [海量案例！生成对抗网络（GAN）的18个绝妙应用](https://zhuanlan.zhihu.com/p/75789936)
+
+
