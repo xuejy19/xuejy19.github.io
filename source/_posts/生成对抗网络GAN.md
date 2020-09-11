@@ -42,17 +42,17 @@ $$
 而$\theta$的求解其实就是一个优化问题:
 $$
     \begin{aligned}
-        \theta^* &= \argmax L(X|\theta) \\
-        &= \argmax \ln L(X|\theta) \\  
-        &= \argmax \frac{1}{N} L(X|\theta) \\
-        &= \argmax \frac{1}{N} \sum_{i=1}^N \ln p(x_i|\theta) \\
-        &= \argmax E_{x \sim p(x)} \ln p(x|\theta)  \\
-        &= \argmax \int_{x} p(x) \ln p(x|\theta) dx
+        \theta^* &= argmax L(X|\theta) \\
+        &= argmax \ln L(X|\theta) \\  
+        &= argmax \frac{1}{N} L(X|\theta) \\
+        &= argmax \frac{1}{N} \sum_{i=1}^N \ln p(x_i|\theta) \\
+        &= argmax E_{x \sim p(x)} \ln p(x|\theta)  \\
+        &= argmax \int_{x} p(x) \ln p(x|\theta) dx
     \end{aligned}
 $$
 这里需要特别说明一下这一步：
 $$
-    \argmax \frac{1}{N} \sum_{i=1}^N \ln p(x_i|\theta) \Leftrightarrow \argmax E_{x \sim p(x)} \ln p(x|\theta)
+    argmax \frac{1}{N} \sum_{i=1}^N \ln p(x_i|\theta) \Leftrightarrow argmax E_{x \sim p(x)} \ln p(x|\theta)
 $$
 当样本数量足够大时，空间中每个样本点都被覆盖，而具体空间中某一个点$x_i$会落入多少样本点则取决于数据分布$p(x)$在该点概率密度函数的大小，换句话说，如果从采样的角度，要对某点的概率密度函数进行估计，那么只需要原始数据进行采样，采样$N$个点，若最终有$n_{x_i}$个点落在了$x_i$处，那么该点的概率密度函数就可以估计为:
 $$
@@ -68,17 +68,17 @@ $$
 $$
 最大似然函数估计的目的是找到一组最合适的参数$\theta$使得分布$p(x|\theta)$更加符合数据分布，但是能够应用最大似然估计的场合一般是对数据分布有一个假设，这样才有参数可以优化，搜索空间限制在$\mathcal{p(x|\theta)}$,现在我们将这个约束去掉，在所有可能分布中找到一个分布$q(x)$,使得$q(x)$能够尽可能接近原始数据分布$p_{data}(x)$。 至此我们证明了：
 $$
-    \theta^* = \argmax L(X|\theta)  \Leftrightarrow  \argmax E_{x \sim p(x)} \ln q(x)
+    \theta^* = argmax L(X|\theta)  \Leftrightarrow  argmax E_{x \sim p(x)} \ln q(x)
 $$
 
 #### 最大似然估计与KL散度
 紧接上文，我们来看下$E_{x \sim p(x)} \ln q(x)$:
 $$
     \begin{aligned}
-    \argmax_{q(x)}    E_{x \sim p(x)} \ln q(x) &= \argmax_{q(x)}\int_x p(x) \ln q(x) dx  \\ 
-    &= \argmin_{q(x)} -\int_x p(x) \ln q(x) dx  \\
-    &= \argmin_{q(x)} -\int_x p(x) \ln q(x) dx + \int_x p(x) \ln p(x) dx \\
-    &= \argmin_{q(x)} D_{KL}(p(x)||q(x))
+    argmax_{q(x)}    E_{x \sim p(x)} \ln q(x) &= argmax_{q(x)}\int_x p(x) \ln q(x) dx  \\ 
+    &= argmin_{q(x)} -\int_x p(x) \ln q(x) dx  \\
+    &= argmin_{q(x)} -\int_x p(x) \ln q(x) dx + \int_x p(x) \ln p(x) dx \\
+    &= argmin_{q(x)} D_{KL}(p(x)||q(x))
     \end{aligned}
 $$
 这说明我们要找到一个分布$q(x)$使得其对于原始分布$p(x)$产生数据的极大似然函数最大就等价于找到一个分布$q(x)$使得两个分布之间的KL散度最小(不知道啥是KL散度的，来[这里](https://xuejy19.github.io/2020/08/26/%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83%E4%B8%AD%E7%9A%84%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F/#more)补课)。同时中间结果则是也等价于最小化交叉熵，所以我们又得到了一个有用的结论:
