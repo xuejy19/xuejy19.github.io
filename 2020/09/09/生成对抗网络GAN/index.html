@@ -29,7 +29,9 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 4.2.1"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"><script src="/js/prism.js"></script>
+<script src="/js/prism-line-numbers.min.js"></script></head>
 
 
 <body>
@@ -528,7 +530,7 @@
     &= argmin_{q(x)} -\int_x p(x) \ln q(x) dx  \\
     &= argmin_{q(x)} -\int_x p(x) \ln q(x) dx + \int_x p(x) \ln p(x) dx \\
     &= argmin_{q(x)} D_{KL}(p(x)||q(x))
-    \end{aligned}</script><p>这说明我们要找到一个分布$q(x)$使得其对于原始分布$p(x)$产生数据的极大似然函数最大就等价于找到一个分布$q(x)$使得两个分布之间的KL散度最小(不知道啥是KL散度的，来<a href="https://xuejy19.github.io/2020/08/26/%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83%E4%B8%AD%E7%9A%84%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F/#more" target="_blank" rel="noopener">这里</a>补课)。同时中间结果则是也等价于最小化交叉熵，所以我们又得到了一个有用的结论:</p>
+    \end{aligned}</script><p>这说明我们要找到一个分布$q(x)$使得其对于原始分布$p(x)$产生数据的极大似然函数最大就等价于找到一个分布$q(x)$使得两个分布之间的KL散度最小(不知道啥是KL散度的，来<a href="https://xuejy19.github.io/2020/08/26/%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83%E4%B8%AD%E7%9A%84%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F/#more">这里</a>补课)。同时中间结果则是也等价于最小化交叉熵，所以我们又得到了一个有用的结论:</p>
 <blockquote>
 <p>最大化似然函数 $\Leftrightarrow$ 最小化交叉熵 $\Leftrightarrow$ 最小化KL散度</p>
 </blockquote>
@@ -583,7 +585,281 @@
 <blockquote>
 <p><strong>判别器：</strong><br>真实样本、虚假样本(生成器生成) $\rightarrow$ 判别器网络D $\rightarrow$  predict $\rightarrow$ Loss_D<br><strong>生成器：</strong><br>虚假样本 $\rightarrow$ 生成器网络 $\rightarrow$ 虚假样本 $\rightarrow$ 判别器 $\rightarrow$ predict $\rightarrow$ Loss_G  </p>
 </blockquote>
-<h4 id="pytoch-代码实现"><a href="#pytoch-代码实现" class="headerlink" title="pytoch 代码实现"></a><code>pytoch</code> 代码实现</h4><p>数据集采用的是<a href="http://mmlab.ie.cuhk.edu.hk/projects/CelebA.html" target="_blank" rel="noopener">celeb-A faces Dataset</a>,代码实现如下:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> argparse</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> matplotlib.animation</span><br><span class="line"><span class="keyword">from</span> tqdm <span class="keyword">import</span> tqdm   </span><br><span class="line"><span class="keyword">from</span> IPython.display <span class="keyword">import</span> HTML</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> torch </span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> torch.nn.parallel</span><br><span class="line"><span class="keyword">import</span> torch.backends.cudnn <span class="keyword">as</span> cudnn</span><br><span class="line"><span class="keyword">import</span> torch.optim <span class="keyword">as</span> optim</span><br><span class="line"><span class="keyword">import</span> torch.utils.data </span><br><span class="line"><span class="keyword">import</span> torchvision.datasets <span class="keyword">as</span> datasets</span><br><span class="line"><span class="keyword">import</span> torchvision.transforms <span class="keyword">as</span> transforms</span><br><span class="line"><span class="keyword">import</span> torchvision.utils <span class="keyword">as</span> vision_utils</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">matplotlib_imshow</span><span class="params">(img , one_channel = False)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> one_channel:</span><br><span class="line">        img = img.mean(dim = <span class="number">0</span>)</span><br><span class="line">    img = img/<span class="number">2</span> + <span class="number">0.5</span></span><br><span class="line">    npimg = img.numpy()</span><br><span class="line">    <span class="keyword">if</span> one_channel:</span><br><span class="line">        plt.imshow(img, cmap = <span class="string">'Greys'</span>) </span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        npimg  = np.transpose(npimg, (<span class="number">1</span>,<span class="number">2</span>,<span class="number">0</span>)) </span><br><span class="line">        plt.imshow(npimg)</span><br><span class="line">    plt.show()</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">load_data</span><span class="params">(dataroot, image_size, batch_size, num_workers)</span>:</span></span><br><span class="line">    transform = transforms.Compose([</span><br><span class="line">                   transforms.Resize(image_size) ,</span><br><span class="line">                   transforms.CenterCrop(image_size),</span><br><span class="line">                   transforms.ToTensor(),</span><br><span class="line">                   transforms.Normalize((<span class="number">0.5</span>,<span class="number">0.5</span>,<span class="number">0.5</span>),(<span class="number">0.5</span>,<span class="number">0.5</span>,<span class="number">0.5</span>))])</span><br><span class="line">    dataset = datasets.ImageFolder(root = dataroot, transform = transform) </span><br><span class="line">    <span class="comment"># Create the dataloader</span></span><br><span class="line">    dataloader = torch.utils.data.DataLoader(dataset, batch_size = batch_size, </span><br><span class="line">                                        shuffle = <span class="literal">True</span>, num_workers = num_workers)</span><br><span class="line">    <span class="comment"># plot some training images </span></span><br><span class="line">    <span class="comment"># real_batch, _ = iter(dataloader).next()</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">#batch_image = vision_utils.make_grid(real_batch, padding = 2) </span></span><br><span class="line">    <span class="comment">#matplotlib_imshow(batch_image)</span></span><br><span class="line">    <span class="keyword">return</span> dataloader</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">weights_init</span><span class="params">(model)</span>:</span></span><br><span class="line">    classname = model.__class__.__name__</span><br><span class="line">    <span class="keyword">if</span> classname.find(<span class="string">'Conv'</span>) != <span class="number">-1</span>:</span><br><span class="line">        nn.init.normal_(model.weight.data, <span class="number">0.0</span>, <span class="number">0.02</span>) </span><br><span class="line">    <span class="keyword">elif</span> classname.find(<span class="string">'BatchNorm'</span>) != <span class="number">-1</span>:</span><br><span class="line">        nn.init.normal_(model.weight.data, <span class="number">1.0</span>, <span class="number">0.02</span>)</span><br><span class="line">        nn.init.constant_(model.bias.data, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Generator</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, nz, ngf, nc)</span>:</span></span><br><span class="line">        super(Generator, self).__init__() </span><br><span class="line">        <span class="comment"># nz = 100 H_out = (H_in - 1)*stride - 2*padding + kernel_size</span></span><br><span class="line">        self.conv1 = nn.Sequential(</span><br><span class="line">            nn.ConvTranspose2d(nz, ngf*<span class="number">8</span>, <span class="number">4</span>, <span class="number">1</span>, <span class="number">0</span>, bias = <span class="literal">False</span>),</span><br><span class="line">            nn.BatchNorm2d(ngf*<span class="number">8</span>),</span><br><span class="line">            nn.ReLU())  </span><br><span class="line">        <span class="comment"># state size: (ngf*8)*4*4</span></span><br><span class="line">        self.conv2 = nn.Sequential(</span><br><span class="line">            nn.ConvTranspose2d(ngf*<span class="number">8</span>, ngf*<span class="number">4</span>, <span class="number">4</span>, <span class="number">2</span>, <span class="number">1</span>, bias = <span class="literal">False</span>),</span><br><span class="line">            nn.BatchNorm2d(ngf*<span class="number">4</span>),</span><br><span class="line">            nn.ReLU())</span><br><span class="line">        <span class="comment"># state size: (ngf*4)*8*8 </span></span><br><span class="line">        self.conv3 = nn.Sequential(</span><br><span class="line">            nn.ConvTranspose2d(ngf*<span class="number">4</span>, ngf*<span class="number">2</span>, <span class="number">4</span>, <span class="number">2</span>, <span class="number">1</span>, bias = <span class="literal">False</span>),</span><br><span class="line">            nn.BatchNorm2d(ngf*<span class="number">2</span>),</span><br><span class="line">            nn.ReLU())</span><br><span class="line">        <span class="comment"># state size: (ngf*2)*16*16 </span></span><br><span class="line">        self.conv4 = nn.Sequential(</span><br><span class="line">            nn.ConvTranspose2d(ngf*<span class="number">2</span>, ngf, <span class="number">4</span>, <span class="number">2</span>, <span class="number">1</span>, bias = <span class="literal">False</span>),</span><br><span class="line">            nn.BatchNorm2d(ngf),</span><br><span class="line">            nn.ReLU()) </span><br><span class="line">        <span class="comment"># state size: ngf*32*32 </span></span><br><span class="line">        self.conv5 = nn.Sequential(</span><br><span class="line">            nn.ConvTranspose2d(ngf, nc, <span class="number">4</span>, <span class="number">2</span>, <span class="number">1</span>, bias = <span class="literal">False</span>),</span><br><span class="line">            nn.Tanh())</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, x)</span>:</span></span><br><span class="line">        x = self.conv1(x)</span><br><span class="line">        x = self.conv2(x)</span><br><span class="line">        x = self.conv3(x)</span><br><span class="line">        x = self.conv4(x)</span><br><span class="line">        <span class="keyword">return</span> self.conv5(x)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Discriminator</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, nc, ndf)</span>:</span></span><br><span class="line">        super(Discriminator,self).__init__()</span><br><span class="line">        <span class="comment"># input size: nc*64*64 </span></span><br><span class="line">        self.conv1 = nn.Sequential(</span><br><span class="line">            nn.Conv2d(nc, ndf, <span class="number">4</span>, <span class="number">2</span>, <span class="number">1</span>, bias = <span class="literal">False</span>), </span><br><span class="line">            nn.LeakyReLU(<span class="number">0.2</span>)) </span><br><span class="line">        <span class="comment"># state size: ndf*32*32 </span></span><br><span class="line">        self.conv2 = nn.Sequential(</span><br><span class="line">            nn.Conv2d(ndf, <span class="number">2</span>*ndf, <span class="number">4</span>, <span class="number">2</span>, <span class="number">1</span>, bias = <span class="literal">False</span>),</span><br><span class="line">            nn.BatchNorm2d(<span class="number">2</span>*ndf),</span><br><span class="line">            nn.LeakyReLU(<span class="number">0.2</span>))  </span><br><span class="line">        <span class="comment"># state size: (ndf*2)*16*16 </span></span><br><span class="line">        self.conv3 = nn.Sequential(</span><br><span class="line">            nn.Conv2d(ndf*<span class="number">2</span>, ndf*<span class="number">4</span>, <span class="number">4</span>, <span class="number">2</span>, <span class="number">1</span>, bias = <span class="literal">False</span>),</span><br><span class="line">            nn.BatchNorm2d(ndf*<span class="number">4</span>),</span><br><span class="line">            nn.LeakyReLU(<span class="number">0.2</span>)) </span><br><span class="line">        <span class="comment"># state size: (ndf*4)*8*8 </span></span><br><span class="line">        self.conv4 = nn.Sequential(</span><br><span class="line">            nn.Conv2d(ndf*<span class="number">4</span>, ndf*<span class="number">8</span>, <span class="number">4</span>, <span class="number">2</span>, <span class="number">1</span>, bias = <span class="literal">False</span>),</span><br><span class="line">            nn.BatchNorm2d(ndf*<span class="number">8</span>),</span><br><span class="line">            nn.LeakyReLU(<span class="number">0.2</span>)) </span><br><span class="line">        <span class="comment"># state size: (ndf*8)*4*4</span></span><br><span class="line">        self.conv5 = nn.Sequential(</span><br><span class="line">            nn.Conv2d(ndf*<span class="number">8</span>,<span class="number">1</span>, <span class="number">4</span>,<span class="number">1</span>,<span class="number">0</span>,bias = <span class="literal">False</span>),</span><br><span class="line">            nn.Sigmoid()) </span><br><span class="line">        <span class="comment"># state size: 1*1 [0,1] </span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, x)</span>:</span></span><br><span class="line">        x = self.conv1(x) </span><br><span class="line">        x = self.conv2(x) </span><br><span class="line">        x = self.conv3(x)</span><br><span class="line">        x = self.conv4(x)</span><br><span class="line">        <span class="keyword">return</span> self.conv5(x)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_model</span><span class="params">()</span>:</span></span><br><span class="line">    device = args.device</span><br><span class="line">    netG = Generator(args.nz, args.ngf, args.channels).to(device)</span><br><span class="line">    netG.apply(weights_init)</span><br><span class="line">    netD = Discriminator(args.channels, args.ndf).to(device) </span><br><span class="line">    netD.apply(weights_init)</span><br><span class="line">    optimizerD = optim.Adam(netD.parameters(), lr=args.lr, betas = (args.beta1,<span class="number">0.999</span>))</span><br><span class="line">    optimizerG = optim.Adam(netG.parameters(), lr=args.lr, betas = (args.beta1,<span class="number">0.999</span>))</span><br><span class="line">    criterion = nn.BCELoss() </span><br><span class="line">    <span class="keyword">return</span> netG, netD, optimizerD, optimizerG, criterion</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">plot_figure</span><span class="params">(G_loss, D_loss, Dx, D_z1, D_z2, img_list)</span>:</span></span><br><span class="line">    plt.figure(figsize = (<span class="number">10</span>,<span class="number">5</span>)) </span><br><span class="line">    plt.title(<span class="string">'Generator and Discriminator Loss During Training'</span>) </span><br><span class="line">    plt.plot(G_loss, label = <span class="string">'G'</span>) </span><br><span class="line">    plt.plot(D_loss, label = <span class="string">'D'</span>) </span><br><span class="line">    plt.xlabel(<span class="string">'iterations'</span>) </span><br><span class="line">    plt.ylabel(<span class="string">'Loss'</span>) </span><br><span class="line">    plt.legend()</span><br><span class="line">    plt.savefig(<span class="string">'curve_folder/Loss.png'</span>)</span><br><span class="line">    plt.figure(figsize = (<span class="number">10</span>, <span class="number">5</span>)) </span><br><span class="line">    plt.title(<span class="string">'Dx and Dz'</span>) </span><br><span class="line">    plt.plot(Dx, label = <span class="string">'Dx'</span>) </span><br><span class="line">    plt.plot(D_z1, label = <span class="string">'Dz1'</span>)</span><br><span class="line">    plt.plot(D_z2, label = <span class="string">'Dz2'</span>) </span><br><span class="line">    plt.xlabel(<span class="string">'iterations'</span>)</span><br><span class="line">    plt.ylabel(<span class="string">'P'</span>) </span><br><span class="line">    plt.legend() </span><br><span class="line">    plt.savefig(<span class="string">'curve_folder/D.png'</span>) </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(img_list)):</span><br><span class="line">        fig = plt.figure(figsize = (<span class="number">8</span>,<span class="number">8</span>)) </span><br><span class="line">        plt.axis(<span class="string">'off'</span>) </span><br><span class="line">        plt.imshow(np.transpose(img_list[i], (<span class="number">1</span>,<span class="number">2</span>,<span class="number">0</span>))) </span><br><span class="line">        plt.savefig(<span class="string">'fake_image/fake_img'</span> + str(i) + <span class="string">'.png'</span>)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fit</span><span class="params">(epoches, dataloader, device, netG, netD, optimizerG, optimizerD)</span>:</span></span><br><span class="line">    <span class="comment"># Lists to keep track of progress </span></span><br><span class="line">    img_list = [] </span><br><span class="line">    G_losses = [] </span><br><span class="line">    D_losses = []</span><br><span class="line">    Dx_list = [] </span><br><span class="line">    Dz1_list = []</span><br><span class="line">    Dz2_list = []</span><br><span class="line">    iters = <span class="number">0</span></span><br><span class="line">    real_label = <span class="number">1.0</span></span><br><span class="line">    fake_label = <span class="number">0.0</span></span><br><span class="line">    fixed_noise = torch.randn(<span class="number">64</span>, args.nz, <span class="number">1</span>, <span class="number">1</span>, device = device)</span><br><span class="line">    print(<span class="string">'Starting Training Loop...'</span>) </span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> epoch <span class="keyword">in</span> range(epoches):</span><br><span class="line">        <span class="keyword">for</span> i, data <span class="keyword">in</span> enumerate(dataloader, <span class="number">0</span>):</span><br><span class="line">            <span class="comment"># Update D network: maximize log(D(x)) + log(1-D(G(z))) </span></span><br><span class="line">            <span class="comment">## Train with all real batch</span></span><br><span class="line">            netD.zero_grad() </span><br><span class="line">            image_batch = data[<span class="number">0</span>].to(device) </span><br><span class="line">            batch_size = image_batch.shape[<span class="number">0</span>] </span><br><span class="line">            label = torch.full((batch_size,), real_label, dtype = torch.float,device = device) </span><br><span class="line">            <span class="comment">#Forward pass real batch through D </span></span><br><span class="line">            output = netD(image_batch).view(<span class="number">-1</span>) </span><br><span class="line">            errD_real = criterion(output, label)</span><br><span class="line">            <span class="comment">#Calculate gradients for D in backward pass </span></span><br><span class="line">            errD_real.backward() </span><br><span class="line">            D_x = output.mean().item() </span><br><span class="line"></span><br><span class="line">            <span class="comment">## Train with all-fake batch </span></span><br><span class="line">            <span class="comment"># Generate batch of latent vectors  </span></span><br><span class="line">            noise = torch.randn(batch_size,args.nz, <span class="number">1</span>, <span class="number">1</span>, device = device)  </span><br><span class="line">            <span class="comment"># Generate fake image batch with G </span></span><br><span class="line">            fake = netG(noise) </span><br><span class="line">            label.fill_(fake_label)</span><br><span class="line">            <span class="comment"># Classify all fake batch with D </span></span><br><span class="line">            <span class="comment"># use detach() to make sure only change netD params </span></span><br><span class="line">            output = netD(fake.detach()).view(<span class="number">-1</span>)  </span><br><span class="line">            errD_fake = criterion(output, label) </span><br><span class="line">            errD_fake.backward() </span><br><span class="line">            D_G_z1 = output.mean().item() </span><br><span class="line">            errD = errD_real + errD_fake</span><br><span class="line">            <span class="comment"># update D </span></span><br><span class="line">            optimizerD.step() </span><br><span class="line"></span><br><span class="line">            <span class="comment">#############################</span></span><br><span class="line">            <span class="comment">#(2) Update G network: maximize log(D(G(z))) </span></span><br><span class="line">            <span class="comment">############################# </span></span><br><span class="line">            netG.zero_grad() </span><br><span class="line">            label.fill_(real_label) <span class="comment"># fake labels are real for generator cost</span></span><br><span class="line">            <span class="comment"># Since we just updated D, perform another forward pass of all fake</span></span><br><span class="line">            <span class="comment"># batch through D</span></span><br><span class="line">            output = netD(fake).view(<span class="number">-1</span>) </span><br><span class="line">            <span class="comment"># Calculate G's loss based on this output </span></span><br><span class="line">            errG = criterion(output, label) </span><br><span class="line">            <span class="comment"># Calculate gradients for  G</span></span><br><span class="line">            errG.backward() </span><br><span class="line">            D_G_z2 = output.mean().item() </span><br><span class="line">            <span class="comment"># Update G </span></span><br><span class="line">            optimizerG.step() </span><br><span class="line"></span><br><span class="line">            <span class="comment"># Output training stats </span></span><br><span class="line">            <span class="keyword">if</span> i%<span class="number">50</span> == <span class="number">0</span>:</span><br><span class="line">                print(<span class="string">'[%d/%d][%d/%d]\tLoss_D: %.4f\t Loss_G: %.4f\tD(x):%.4f\tD(G(z)): %.4f/%.4f'</span> % (epoch, epoches, i,</span><br><span class="line">                    len(dataloader), errD.item(), errG.item(), D_x, D_G_z1, D_G_z2))</span><br><span class="line">                <span class="comment"># Save Losses for plotting later</span></span><br><span class="line">                G_losses.append(errG.item()) </span><br><span class="line">                D_losses.append(errD.item()) </span><br><span class="line">                Dx_list.append(D_x) </span><br><span class="line">                Dz1_list.append(D_G_z1)</span><br><span class="line">                Dz2_list.append(D_G_z2)</span><br><span class="line">                <span class="comment"># Check how the generator is doing by saving G's output on</span></span><br><span class="line">                <span class="comment"># fixed noise</span></span><br><span class="line">                <span class="keyword">if</span> iters % <span class="number">50</span> == <span class="number">0</span>:</span><br><span class="line">                    <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">                        fake = netG(fixed_noise).detach().cpu()</span><br><span class="line">                    img_list.append(vision_utils.make_grid(fake[:<span class="number">64</span>], padding=<span class="number">2</span>,</span><br><span class="line">                        normalize = <span class="literal">True</span>)) </span><br><span class="line">                iters += <span class="number">1</span></span><br><span class="line">                    </span><br><span class="line">    plot_figure(G_losses, D_losses, Dx_list, Dz1_list, Dz2_list, img_list)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    manualSeed = <span class="number">999</span></span><br><span class="line">   <span class="comment"># print('Random Seed: ', manualSeed) </span></span><br><span class="line">    random.seed(manualSeed)</span><br><span class="line">    torch.manual_seed(manualSeed)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># argparse </span></span><br><span class="line">    parser = argparse.ArgumentParser(description = <span class="string">'Train DCGAN'</span>) </span><br><span class="line">    parser.add_argument(<span class="string">'--root'</span>, type = str, default = <span class="string">'data'</span>, </span><br><span class="line">                        help = <span class="string">'Root directory for dataset'</span>) </span><br><span class="line">    parser.add_argument(<span class="string">'--device'</span>, type = str, default= <span class="string">'cuda:0'</span>,</span><br><span class="line">                        help = <span class="string">'Choose the training device'</span>)</span><br><span class="line">    parser.add_argument(<span class="string">'--workers'</span>, type = int, default = <span class="number">2</span>, </span><br><span class="line">                        help = <span class="string">'Number of workers for dataloader'</span>)</span><br><span class="line">    parser.add_argument(<span class="string">'--batch_size'</span>, type = int, default = <span class="number">128</span>, </span><br><span class="line">                        help = <span class="string">'Batch size during training'</span>)</span><br><span class="line">    parser.add_argument(<span class="string">'--image_size'</span>, type = int, default = <span class="number">64</span>,</span><br><span class="line">                        help = <span class="string">'Spatial size of training images'</span>)</span><br><span class="line">    parser.add_argument(<span class="string">'--channels'</span>, type = int, default = <span class="number">3</span>,</span><br><span class="line">                        help = <span class="string">'Number of channels in the training images'</span>)</span><br><span class="line">    parser.add_argument(<span class="string">'--nz'</span>, type = int, default = <span class="number">100</span>,</span><br><span class="line">                        help = <span class="string">'Size of generator input'</span>)</span><br><span class="line">    parser.add_argument(<span class="string">'--ngf'</span>, type = int, default = <span class="number">64</span>,</span><br><span class="line">                        help = <span class="string">'Size of feature maps in generator'</span>) </span><br><span class="line">    parser.add_argument(<span class="string">'--ndf'</span>, type = int, default = <span class="number">64</span>,</span><br><span class="line">                        help = <span class="string">'Size of feature maps in discriminator'</span>) </span><br><span class="line">    parser.add_argument(<span class="string">'--epoches'</span>, type = int, default = <span class="number">10</span>,</span><br><span class="line">                        help = <span class="string">'Number of training epoches'</span>) </span><br><span class="line">    parser.add_argument(<span class="string">'--lr'</span>, type = float, default = <span class="number">2e-4</span>,</span><br><span class="line">                        help = <span class="string">'Learning rate for optimizer'</span>) </span><br><span class="line">    parser.add_argument(<span class="string">'--beta1'</span>, type = float, default = <span class="number">0.5</span>,</span><br><span class="line">                        help = <span class="string">'Beta1 hyperparam for Adam optimizer'</span>) </span><br><span class="line">    args = parser.parse_args() </span><br><span class="line">    dataloader = load_data(args.root, args.image_size, args.batch_size,</span><br><span class="line">                           args.workers)</span><br><span class="line">    netG, netD, optimizerD, optimizerG, criterion = get_model()</span><br><span class="line">    </span><br><span class="line">    fit(args.epoches, dataloader,args.device, netG, netD, optimizerG, optimizerD)</span><br></pre></td></tr></table></figure><br>最后附上一些结果图：<br><strong>celeb-A faces Dataset</strong><br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/Loss.png" alt="Loss"><br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/fake_image.png" alt="fake_image"></p>
+<h4 id="pytoch-代码实现"><a href="#pytoch-代码实现" class="headerlink" title="pytoch 代码实现"></a><code>pytoch</code> 代码实现</h4><p>数据集采用的是<a href="http://mmlab.ie.cuhk.edu.hk/projects/CelebA.html" target="_blank" rel="noopener">celeb-A faces Dataset</a>,代码实现如下:</p>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">import argparse
+import os
+import random
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.animation
+from tqdm import tqdm   
+from IPython.display import HTML
+
+import torch 
+import torch.nn as nn
+import torch.nn.parallel
+import torch.backends.cudnn as cudnn
+import torch.optim as optim
+import torch.utils.data 
+import torchvision.datasets as datasets
+import torchvision.transforms as transforms
+import torchvision.utils as vision_utils
+def matplotlib_imshow(img , one_channel = False):
+    if one_channel:
+        img = img.mean(dim = 0)
+    img = img/2 + 0.5
+    npimg = img.numpy()
+    if one_channel:
+        plt.imshow(img, cmap = 'Greys') 
+    else:
+        npimg  = np.transpose(npimg, (1,2,0)) 
+        plt.imshow(npimg)
+    plt.show()
+def load_data(dataroot, image_size, batch_size, num_workers):
+    transform = transforms.Compose([
+                   transforms.Resize(image_size) ,
+                   transforms.CenterCrop(image_size),
+                   transforms.ToTensor(),
+                   transforms.Normalize((0.5,0.5,0.5),(0.5,0.5,0.5))])
+    dataset = datasets.ImageFolder(root = dataroot, transform = transform) 
+    # Create the dataloader
+    dataloader = torch.utils.data.DataLoader(dataset, batch_size = batch_size, 
+                                        shuffle = True, num_workers = num_workers)
+    # plot some training images 
+    # real_batch, _ = iter(dataloader).next()
+
+    #batch_image = vision_utils.make_grid(real_batch, padding = 2) 
+    #matplotlib_imshow(batch_image)
+    return dataloader
+def weights_init(model):
+    classname = model.__class__.__name__
+    if classname.find('Conv') != -1:
+        nn.init.normal_(model.weight.data, 0.0, 0.02) 
+    elif classname.find('BatchNorm') != -1:
+        nn.init.normal_(model.weight.data, 1.0, 0.02)
+        nn.init.constant_(model.bias.data, 0)
+
+class Generator(nn.Module):
+    def __init__(self, nz, ngf, nc):
+        super(Generator, self).__init__() 
+        # nz = 100 H_out = (H_in - 1)*stride - 2*padding + kernel_size
+        self.conv1 = nn.Sequential(
+            nn.ConvTranspose2d(nz, ngf*8, 4, 1, 0, bias = False),
+            nn.BatchNorm2d(ngf*8),
+            nn.ReLU())  
+        # state size: (ngf*8)*4*4
+        self.conv2 = nn.Sequential(
+            nn.ConvTranspose2d(ngf*8, ngf*4, 4, 2, 1, bias = False),
+            nn.BatchNorm2d(ngf*4),
+            nn.ReLU())
+        # state size: (ngf*4)*8*8 
+        self.conv3 = nn.Sequential(
+            nn.ConvTranspose2d(ngf*4, ngf*2, 4, 2, 1, bias = False),
+            nn.BatchNorm2d(ngf*2),
+            nn.ReLU())
+        # state size: (ngf*2)*16*16 
+        self.conv4 = nn.Sequential(
+            nn.ConvTranspose2d(ngf*2, ngf, 4, 2, 1, bias = False),
+            nn.BatchNorm2d(ngf),
+            nn.ReLU()) 
+        # state size: ngf*32*32 
+        self.conv5 = nn.Sequential(
+            nn.ConvTranspose2d(ngf, nc, 4, 2, 1, bias = False),
+            nn.Tanh())
+    def forward(self, x):
+        x = self.conv1(x)
+        x = self.conv2(x)
+        x = self.conv3(x)
+        x = self.conv4(x)
+        return self.conv5(x)
+class Discriminator(nn.Module):
+    def __init__(self, nc, ndf):
+        super(Discriminator,self).__init__()
+        # input size: nc*64*64 
+        self.conv1 = nn.Sequential(
+            nn.Conv2d(nc, ndf, 4, 2, 1, bias = False), 
+            nn.LeakyReLU(0.2)) 
+        # state size: ndf*32*32 
+        self.conv2 = nn.Sequential(
+            nn.Conv2d(ndf, 2*ndf, 4, 2, 1, bias = False),
+            nn.BatchNorm2d(2*ndf),
+            nn.LeakyReLU(0.2))  
+        # state size: (ndf*2)*16*16 
+        self.conv3 = nn.Sequential(
+            nn.Conv2d(ndf*2, ndf*4, 4, 2, 1, bias = False),
+            nn.BatchNorm2d(ndf*4),
+            nn.LeakyReLU(0.2)) 
+        # state size: (ndf*4)*8*8 
+        self.conv4 = nn.Sequential(
+            nn.Conv2d(ndf*4, ndf*8, 4, 2, 1, bias = False),
+            nn.BatchNorm2d(ndf*8),
+            nn.LeakyReLU(0.2)) 
+        # state size: (ndf*8)*4*4
+        self.conv5 = nn.Sequential(
+            nn.Conv2d(ndf*8,1, 4,1,0,bias = False),
+            nn.Sigmoid()) 
+        # state size: 1*1 [0,1] 
+    def forward(self, x):
+        x = self.conv1(x) 
+        x = self.conv2(x) 
+        x = self.conv3(x)
+        x = self.conv4(x)
+        return self.conv5(x)
+def get_model():
+    device = args.device
+    netG = Generator(args.nz, args.ngf, args.channels).to(device)
+    netG.apply(weights_init)
+    netD = Discriminator(args.channels, args.ndf).to(device) 
+    netD.apply(weights_init)
+    optimizerD = optim.Adam(netD.parameters(), lr=args.lr, betas = (args.beta1,0.999))
+    optimizerG = optim.Adam(netG.parameters(), lr=args.lr, betas = (args.beta1,0.999))
+    criterion = nn.BCELoss() 
+    return netG, netD, optimizerD, optimizerG, criterion
+def plot_figure(G_loss, D_loss, Dx, D_z1, D_z2, img_list):
+    plt.figure(figsize = (10,5)) 
+    plt.title('Generator and Discriminator Loss During Training') 
+    plt.plot(G_loss, label = 'G') 
+    plt.plot(D_loss, label = 'D') 
+    plt.xlabel('iterations') 
+    plt.ylabel('Loss') 
+    plt.legend()
+    plt.savefig('curve_folder/Loss.png')
+    plt.figure(figsize = (10, 5)) 
+    plt.title('Dx and Dz') 
+    plt.plot(Dx, label = 'Dx') 
+    plt.plot(D_z1, label = 'Dz1')
+    plt.plot(D_z2, label = 'Dz2') 
+    plt.xlabel('iterations')
+    plt.ylabel('P') 
+    plt.legend() 
+    plt.savefig('curve_folder/D.png') 
+    for i in range(len(img_list)):
+        fig = plt.figure(figsize = (8,8)) 
+        plt.axis('off') 
+        plt.imshow(np.transpose(img_list[i], (1,2,0))) 
+        plt.savefig('fake_image/fake_img' + str(i) + '.png')
+def fit(epoches, dataloader, device, netG, netD, optimizerG, optimizerD):
+    # Lists to keep track of progress 
+    img_list = [] 
+    G_losses = [] 
+    D_losses = []
+    Dx_list = [] 
+    Dz1_list = []
+    Dz2_list = []
+    iters = 0
+    real_label = 1.0
+    fake_label = 0.0
+    fixed_noise = torch.randn(64, args.nz, 1, 1, device = device)
+    print('Starting Training Loop...') 
+
+    for epoch in range(epoches):
+        for i, data in enumerate(dataloader, 0):
+            # Update D network: maximize log(D(x)) + log(1-D(G(z))) 
+            ## Train with all real batch
+            netD.zero_grad() 
+            image_batch = data[0].to(device) 
+            batch_size = image_batch.shape[0] 
+            label = torch.full((batch_size,), real_label, dtype = torch.float,device = device) 
+            #Forward pass real batch through D 
+            output = netD(image_batch).view(-1) 
+            errD_real = criterion(output, label)
+            #Calculate gradients for D in backward pass 
+            errD_real.backward() 
+            D_x = output.mean().item() 
+
+            ## Train with all-fake batch 
+            # Generate batch of latent vectors  
+            noise = torch.randn(batch_size,args.nz, 1, 1, device = device)  
+            # Generate fake image batch with G 
+            fake = netG(noise) 
+            label.fill_(fake_label)
+            # Classify all fake batch with D 
+            # use detach() to make sure only change netD params 
+            output = netD(fake.detach()).view(-1)  
+            errD_fake = criterion(output, label) 
+            errD_fake.backward() 
+            D_G_z1 = output.mean().item() 
+            errD = errD_real + errD_fake
+            # update D 
+            optimizerD.step() 
+
+            #############################
+            #(2) Update G network: maximize log(D(G(z))) 
+            ############################# 
+            netG.zero_grad() 
+            label.fill_(real_label) # fake labels are real for generator cost
+            # Since we just updated D, perform another forward pass of all fake
+            # batch through D
+            output = netD(fake).view(-1) 
+            # Calculate G's loss based on this output 
+            errG = criterion(output, label) 
+            # Calculate gradients for  G
+            errG.backward() 
+            D_G_z2 = output.mean().item() 
+            # Update G 
+            optimizerG.step() 
+
+            # Output training stats 
+            if i%50 == 0:
+                print('[%d/%d][%d/%d]\tLoss_D: %.4f\t Loss_G: %.4f\tD(x):%.4f\tD(G(z)): %.4f/%.4f' % (epoch, epoches, i,
+                    len(dataloader), errD.item(), errG.item(), D_x, D_G_z1, D_G_z2))
+                # Save Losses for plotting later
+                G_losses.append(errG.item()) 
+                D_losses.append(errD.item()) 
+                Dx_list.append(D_x) 
+                Dz1_list.append(D_G_z1)
+                Dz2_list.append(D_G_z2)
+                # Check how the generator is doing by saving G's output on
+                # fixed noise
+                if iters % 50 == 0:
+                    with torch.no_grad():
+                        fake = netG(fixed_noise).detach().cpu()
+                    img_list.append(vision_utils.make_grid(fake[:64], padding=2,
+                        normalize = True)) 
+                iters += 1
+
+    plot_figure(G_losses, D_losses, Dx_list, Dz1_list, Dz2_list, img_list)
+
+if __name__ == '__main__':
+    manualSeed = 999
+   # print('Random Seed: ', manualSeed) 
+    random.seed(manualSeed)
+    torch.manual_seed(manualSeed)
+
+    # argparse 
+    parser = argparse.ArgumentParser(description = 'Train DCGAN') 
+    parser.add_argument('--root', type = str, default = 'data', 
+                        help = 'Root directory for dataset') 
+    parser.add_argument('--device', type = str, default= 'cuda:0',
+                        help = 'Choose the training device')
+    parser.add_argument('--workers', type = int, default = 2, 
+                        help = 'Number of workers for dataloader')
+    parser.add_argument('--batch_size', type = int, default = 128, 
+                        help = 'Batch size during training')
+    parser.add_argument('--image_size', type = int, default = 64,
+                        help = 'Spatial size of training images')
+    parser.add_argument('--channels', type = int, default = 3,
+                        help = 'Number of channels in the training images')
+    parser.add_argument('--nz', type = int, default = 100,
+                        help = 'Size of generator input')
+    parser.add_argument('--ngf', type = int, default = 64,
+                        help = 'Size of feature maps in generator') 
+    parser.add_argument('--ndf', type = int, default = 64,
+                        help = 'Size of feature maps in discriminator') 
+    parser.add_argument('--epoches', type = int, default = 10,
+                        help = 'Number of training epoches') 
+    parser.add_argument('--lr', type = float, default = 2e-4,
+                        help = 'Learning rate for optimizer') 
+    parser.add_argument('--beta1', type = float, default = 0.5,
+                        help = 'Beta1 hyperparam for Adam optimizer') 
+    args = parser.parse_args() 
+    dataloader = load_data(args.root, args.image_size, args.batch_size,
+                           args.workers)
+    netG, netD, optimizerD, optimizerG, criterion = get_model()
+
+    fit(args.epoches, dataloader,args.device, netG, netD, optimizerG, optimizerD)
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>最后附上一些结果图：<br><strong>celeb-A faces Dataset</strong><br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/Loss.png" alt="Loss"><br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/fake_image.png" alt="fake_image"></p>
 <p><strong>MNIST</strong><br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/Loss_mn.png" alt="Loss"><br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/mnist_gan.png" alt="fake_msist"></p>
 <p>网络结构比较简单，真正在使用时应当需要根据任务来进行调整，参数初始化以及部分超参数选择，<strong>沃兹基</strong>曾经说过：</p>
 <blockquote>
@@ -1055,6 +1331,13 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
 
 </main>
 
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
 
 
 
