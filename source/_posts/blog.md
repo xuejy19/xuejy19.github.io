@@ -1,6 +1,6 @@
 ---
 title:  我与历史之缘
-thumbnail: https://raw.githubusercontent.com/xuejy19/Images/master/im1.jpg
+img: https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E6%AD%A6%E5%A3%AB.jpg
 date: 2020-01-12 17:15:11
 tags:
 categories: 闲谈 
