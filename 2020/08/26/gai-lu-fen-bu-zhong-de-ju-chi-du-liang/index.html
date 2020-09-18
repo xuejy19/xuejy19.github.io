@@ -620,16 +620,16 @@
 <p>一维概率分布<br>高斯分布 </p>
 </blockquote>
 <p>对于两个离散的一维概率分布，可以直接使用<code>scipy.stats.Wasserstein_distance</code>函数:</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">import numpy as np
+<pre class=" language-lang-python"><code class="language-lang-python">import numpy as np
 from scipy.stats import wasserstein_distance
 p = [0,5,9]
 q = [2,5,7]
 w = wasserstein_distance(q,p)
 print(w)
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</code></pre>
 <p>输出:</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">1.3333333333333335
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class=" language-lang-python"><code class="language-lang-python">1.3333333333333335
+</code></pre>
 
             </div>
             <hr/>
