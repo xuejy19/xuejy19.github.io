@@ -48,19 +48,18 @@ post_asset_folder: false
 relative_link: false
 future: true
 
+# highlight:
+#   enable: true
+#   line_number: true
+#   auto_detect: true
+#   tab_replace: ''
+#   wrap: true
+#   hljs: false
 highlight:
   enable: false
-  line_number: true
-  auto_detect: true
-  tab_replace: ''
-  wrap: true
-  hljs: false
-# highlight:
-#   enable: false
 
 prism_plugin:
-  mode: 'preprocess'    # realtime/preprocess
-  auto_detect: true
+  mode: 'realtime'    # realtime/preprocess
   theme: 'default'
   line_number: true   # default false
   custom_css:
