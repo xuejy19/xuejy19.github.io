@@ -173,7 +173,7 @@ $$
 > **生成器：** 
 > 虚假样本 $\rightarrow$ 生成器网络 $\rightarrow$ 虚假样本 $\rightarrow$ 判别器 $\rightarrow$ predict $\rightarrow$ Loss_G  
 
-####   `pytoch` 代码实现
+####   `pytorch` 代码实现
 数据集采用的是[celeb-A faces Dataset](http://mmlab.ie.cuhk.edu.hk/projects/CelebA.html),代码实现如下:
 ```python
 import argparse

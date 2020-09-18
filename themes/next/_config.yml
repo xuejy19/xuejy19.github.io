@@ -117,6 +117,8 @@ darkmode: false
 # External url should start with http:// or https://
 menu:
   home: / || fa fa-home
+  时间轴: /timeline/ || fa fa-key
+  # timeline: /timeline/ || fa-user
   about: /about/ || fa fa-user
   tags: /tags/ || fa fa-tags
   categories: /categories/ || fa fa-th
