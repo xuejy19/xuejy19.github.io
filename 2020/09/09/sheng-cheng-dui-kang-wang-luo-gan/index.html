@@ -29,8 +29,9 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 4.2.1"><link rel="stylesheet" href="/css/prism.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<meta name="generator" content="Hexo 5.2.0"><link rel="stylesheet" href="/css/prism.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"><script src="/js/prism.js"></script>
+<script src="/js/prism-line-numbers.min.js"></script></head>
 
 
 <body>
@@ -505,7 +506,7 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>这一部分介绍一种特殊的神经网路模型——生成对抗网络(GAN)，生成对抗网络由<a href="https://en.wikipedia.org/wiki/Ian_Goodfellow" target="_blank" rel="noopener">Lan Goodfellow</a>于2014年提出，该算法在形式上表现为两个神经网络的彼此对抗，对于生成对抗网络，我们可以从以下几个角度来对其进行限定：</p>
+                <p>这一部分介绍一种特殊的神经网路模型——生成对抗网络(GAN)，生成对抗网络由<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Ian_Goodfellow">Lan Goodfellow</a>于2014年提出，该算法在形式上表现为两个神经网络的彼此对抗，对于生成对抗网络，我们可以从以下几个角度来对其进行限定：</p>
 <ul>
 <li><strong>本质：</strong> 学习训练数据集的分布  </li>
 <li><strong>作用：</strong> 产生新的样本，对于小样本任务可以起到数据增强的作用 </li>
@@ -617,7 +618,7 @@
 <blockquote>
 <p><strong>判别器：</strong><br>真实样本、虚假样本(生成器生成) $\rightarrow$ 判别器网络D $\rightarrow$  predict $\rightarrow$ Loss_D<br><strong>生成器：</strong><br>虚假样本 $\rightarrow$ 生成器网络 $\rightarrow$ 虚假样本 $\rightarrow$ 判别器 $\rightarrow$ predict $\rightarrow$ Loss_G  </p>
 </blockquote>
-<h4 id="pytorch-代码实现"><a href="#pytorch-代码实现" class="headerlink" title="pytorch 代码实现"></a><code>pytorch</code> 代码实现</h4><p>数据集采用的是<a href="http://mmlab.ie.cuhk.edu.hk/projects/CelebA.html" target="_blank" rel="noopener">celeb-A faces Dataset</a>,代码实现如下:</p>
+<h4 id="pytorch-代码实现"><a href="#pytorch-代码实现" class="headerlink" title="pytorch 代码实现"></a><code>pytorch</code> 代码实现</h4><p>数据集采用的是<a target="_blank" rel="noopener" href="http://mmlab.ie.cuhk.edu.hk/projects/CelebA.html">celeb-A faces Dataset</a>,代码实现如下:</p>
 <pre class="line-numbers language-lang-python"><code class="language-lang-python">import argparse
 import os
 import random
@@ -899,8 +900,8 @@ if __name__ == '__main__':
 </blockquote>
 <p>GAN目前还面临很多问题，比如训练困难，在图像处理之外的领域效果并不理想，同时在理论支撑方面也不够扎实，如果想进一步学习GAN，可以阅读下面几篇文章：</p>
 <ul>
-<li><a href="https://zhuanlan.zhihu.com/p/56943597" target="_blank" rel="noopener">这份攻略帮你「稳住」反复无常的 GAN</a></li>
-<li><a href="https://zhuanlan.zhihu.com/p/75789936" target="_blank" rel="noopener">海量案例！生成对抗网络（GAN）的18个绝妙应用</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/56943597">这份攻略帮你「稳住」反复无常的 GAN</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/75789936">海量案例！生成对抗网络（GAN）的18个绝妙应用</a></li>
 </ul>
 
             </div>
@@ -1830,6 +1831,11 @@ $(function () {
     <script src="/libs/instantpage/instantpage.js" type="module"></script>
     
 
-</body>
+<script type="text/javascript"> //只在桌面版网页启用特效 
+    var windowWidth = $(window).width(); 
+    if (windowWidth > 768) { document.write('<script type="text/javascript" src="/js/sakura.js"><\/script>'); 
+    } 
+</script> 
 
+</body>
 </html>

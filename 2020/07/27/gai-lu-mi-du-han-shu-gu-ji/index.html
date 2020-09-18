@@ -29,8 +29,9 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 4.2.1"><link rel="stylesheet" href="/css/prism.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<meta name="generator" content="Hexo 5.2.0"><link rel="stylesheet" href="/css/prism.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"><script src="/js/prism.js"></script>
+<script src="/js/prism-line-numbers.min.js"></script></head>
 
 
 <body>
@@ -609,9 +610,9 @@
 - 不知道分布函数形式
 - $N$个样本服从独立同分布
 
-假设样本点$\mathbf{x}$落在$d$维空间中，在$d$维空间中有一个超立方体$\mathcal{R}$,点$\mathbf{x}$落到该超立方体中的概率记做$P$:</script><pre><code>P = \int_{\mathcal{R}} p(x) dx 
+假设样本点$\mathbf{x}$落在$d$维空间中，在$d$维空间中有一个超立方体$\mathcal{R}$,点$\mathbf{x}$落到该超立方体中的概率记做$P$:</script><pre><code>P = \int_&#123;\mathcal&#123;R&#125;&#125; p(x) dx 
 </code></pre><script type="math/tex; mode=display">
-若$N$个样本是从密度为$p(x)$的总体中独立抽取的，则$N$个样本中有$k$个落入区域$\mathcal{R}$中的概率符合二项分布，该概率可以写做：</script><pre><code>P_k = C_N^k P^k(1-P)^{N-k}
+若$N$个样本是从密度为$p(x)$的总体中独立抽取的，则$N$个样本中有$k$个落入区域$\mathcal{R}$中的概率符合二项分布，该概率可以写做：</script><pre><code>P_k = C_N^k P^k(1-P)^&#123;N-k&#125;
 </code></pre><script type="math/tex; mode=display">
 根据二项分布的性质，$k$的期望为：</script><pre><code>E(k) = NP 
 </code></pre><script type="math/tex; mode=display">
@@ -1583,6 +1584,11 @@ $(function () {
     <script src="/libs/instantpage/instantpage.js" type="module"></script>
     
 
-</body>
+<script type="text/javascript"> //只在桌面版网页启用特效 
+    var windowWidth = $(window).width(); 
+    if (windowWidth > 768) { document.write('<script type="text/javascript" src="/js/sakura.js"><\/script>'); 
+    } 
+</script> 
 
+</body>
 </html>

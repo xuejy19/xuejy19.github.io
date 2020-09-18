@@ -29,8 +29,9 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 4.2.1"><link rel="stylesheet" href="/css/prism.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<meta name="generator" content="Hexo 5.2.0"><link rel="stylesheet" href="/css/prism.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"><script src="/js/prism.js"></script>
+<script src="/js/prism-line-numbers.min.js"></script></head>
 
 
 <body>
@@ -511,7 +512,7 @@
 <li>一个神经网络有着大量的参数，对计算机的计算能力要求非常高，而GPU是计算机中有着大量计算资源的部分，如何将这部分计算资源调动起来完成一个深度神经网络的训练是另一个难题。<a id="more"></a>
 </li>
 </ul>
-<p>为了解决上述两个问题，深度学习框架便诞生了，目前主流的深度学习框架主要下图所示的这些:<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/framework.jpeg" alt="主流框架"><br>这些框架比较如下图所示:<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/framework1.png" alt="深度学习框架"><br>目前在科研机构中应用较多的是Tensorflow和pytorch,本文便以pytorch为例来进行讲解，本文内容主要参考官方教程：<a href="https://pytorch.org/tutorials/beginner/blitz/tensor_tutorial.html#sphx-glr-beginner-blitz-tensor-tutorial-py" target="_blank" rel="noopener">pytorch官方教程</a>。建议英文阅读能力较强的人还是去阅读原版教程，如果对于算法的理论理解已经到位的话，整个教程还是非常简洁明了的。本文按照以下结构组织:</p>
+<p>为了解决上述两个问题，深度学习框架便诞生了，目前主流的深度学习框架主要下图所示的这些:<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/framework.jpeg" alt="主流框架"><br>这些框架比较如下图所示:<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/framework1.png" alt="深度学习框架"><br>目前在科研机构中应用较多的是Tensorflow和pytorch,本文便以pytorch为例来进行讲解，本文内容主要参考官方教程：<a target="_blank" rel="noopener" href="https://pytorch.org/tutorials/beginner/blitz/tensor_tutorial.html#sphx-glr-beginner-blitz-tensor-tutorial-py">pytorch官方教程</a>。建议英文阅读能力较强的人还是去阅读原版教程，如果对于算法的理论理解已经到位的话，整个教程还是非常简洁明了的。本文按照以下结构组织:</p>
 <ul>
 <li>pytorch简介</li>
 <li>张量和计算图 </li>
@@ -535,7 +536,7 @@
 <pre class="line-numbers language-lang-python"><code class="language-lang-python">tensor([[ 1.9335,  0.8795, -0.6964],
         [ 0.1573,  1.5692, -0.2320]])
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<p>tensor的大部分操作与numpy是差不多的，具体属性和方法参考<a href="https://pytorch.org/docs/stable/tensors.html?highlight=torch%20tensor#torch.Tensor" target="_blank" rel="noopener">torch.Tensor</a></p>
+<p>tensor的大部分操作与numpy是差不多的，具体属性和方法参考<a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/tensors.html?highlight=torch%20tensor#torch.Tensor">torch.Tensor</a></p>
 <h4 id="计算图"><a href="#计算图" class="headerlink" title="计算图"></a>计算图</h4><p>现代的神经网络架构可以拥有上百万个参数，从计算的角度看，训练神经网络包含两个阶段:</p>
 <ul>
 <li>用于计算损失函数值的正向传递</li>
@@ -2008,6 +2009,11 @@ $(function () {
     <script src="/libs/instantpage/instantpage.js" type="module"></script>
     
 
-</body>
+<script type="text/javascript"> //只在桌面版网页启用特效 
+    var windowWidth = $(window).width(); 
+    if (windowWidth > 768) { document.write('<script type="text/javascript" src="/js/sakura.js"><\/script>'); 
+    } 
+</script> 
 
+</body>
 </html>

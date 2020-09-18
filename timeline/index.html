@@ -29,8 +29,9 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 4.2.1"><link rel="stylesheet" href="/css/prism.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<meta name="generator" content="Hexo 5.2.0"><link rel="stylesheet" href="/css/prism.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"><script src="/js/prism.js"></script>
+<script src="/js/prism-line-numbers.min.js"></script></head>
 
 
 <body>
@@ -494,8 +495,7 @@
             <div id="articleContent">
                 <p><head>
   <script src="https://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
-<meta name="generator" content="Hexo 4.2.1"><link rel="stylesheet" href="/css/prism.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head><br>  <body>
+</head><br>  <body>
       <script>
         var img = "https://github.com/xuejy19/xuejy19.github.io/blob/source/Img/%E5%A4%B4%E5%83%8F.jpg"; //说说旁边显示的头像
         var appID = "11ox8JotioQitvDQGT3sIq6T";
@@ -1404,6 +1404,11 @@ $(function () {
     <script src="/libs/instantpage/instantpage.js" type="module"></script>
     
 
-</body>
+<script type="text/javascript"> //只在桌面版网页启用特效 
+    var windowWidth = $(window).width(); 
+    if (windowWidth > 768) { document.write('<script type="text/javascript" src="/js/sakura.js"><\/script>'); 
+    } 
+</script> 
 
+</body>
 </html>

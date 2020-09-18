@@ -29,8 +29,9 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 4.2.1"><link rel="stylesheet" href="/css/prism.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<meta name="generator" content="Hexo 5.2.0"><link rel="stylesheet" href="/css/prism.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"><script src="/js/prism.js"></script>
+<script src="/js/prism-line-numbers.min.js"></script></head>
 
 
 <body>
@@ -542,7 +543,7 @@
 <blockquote>
 <p>Hammersley-Clifford定理: 概率无向图模型的联合概率分布$P(Y)$可以表示为如下形式:</p>
 <script type="math/tex; mode=display">
-    P(Y) = \frac{1}{Z} \prod_C \varPhi_C(Y_C)</script><p>其中，$C$是无向图的最大团，$Y_C$是$C$的节点对应的随机变量，$\varPhi_C(Y_C)$是$C$上定义的严格正函数，乘积是在无向图所有的最大团上进行的，关于该定理的证明参考链接<a href="https://www.jianshu.com/p/dd27249b8c4a" target="_blank" rel="noopener">Hammersley-Clifford定理证明</a></p>
+    P(Y) = \frac{1}{Z} \prod_C \varPhi_C(Y_C)</script><p>其中，$C$是无向图的最大团，$Y_C$是$C$的节点对应的随机变量，$\varPhi_C(Y_C)$是$C$上定义的严格正函数，乘积是在无向图所有的最大团上进行的，关于该定理的证明参考链接<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/dd27249b8c4a">Hammersley-Clifford定理证明</a></p>
 </blockquote>
 <h3 id="条件随机场的定义与形式"><a href="#条件随机场的定义与形式" class="headerlink" title="条件随机场的定义与形式"></a>条件随机场的定义与形式</h3><h4 id="条件随机场的定义"><a href="#条件随机场的定义" class="headerlink" title="条件随机场的定义"></a>条件随机场的定义</h4><p>条件随机场是给定随机变量$X$条件下，随机变量$Y$的马尔可夫随机场。本文主要介绍线性链条件随机场，该模型可用于标注等问题。这时，在条件概率模型$P(Y|X)$中，$Y$是输出变量，表示标记序列(状态序列)，$X$是输入变量，表示需要标注的观测序列。学习时，利用训练数据集通过极大似然估计或正则化的极大似然估计得到条件概率模型$\hat{P}(Y|X)$;预测时，对于给定的输入序列$x$,求出条件概率$\hat{P}(y|x)$最大的输出序列$\hat{y}$。<br>首先给出一般的条件随机场的定义:</p>
 <blockquote>
@@ -1641,6 +1642,11 @@ $(function () {
     <script src="/libs/instantpage/instantpage.js" type="module"></script>
     
 
-</body>
+<script type="text/javascript"> //只在桌面版网页启用特效 
+    var windowWidth = $(window).width(); 
+    if (windowWidth > 768) { document.write('<script type="text/javascript" src="/js/sakura.js"><\/script>'); 
+    } 
+</script> 
 
+</body>
 </html>

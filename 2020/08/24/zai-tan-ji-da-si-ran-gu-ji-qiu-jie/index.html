@@ -29,8 +29,9 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 4.2.1"><link rel="stylesheet" href="/css/prism.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<meta name="generator" content="Hexo 5.2.0"><link rel="stylesheet" href="/css/prism.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"><script src="/js/prism.js"></script>
+<script src="/js/prism-line-numbers.min.js"></script></head>
 
 
 <body>
@@ -596,7 +597,7 @@
         &A(\theta) 凸 \rightarrow -A(\theta) 凹 \rightarrow \log(-A(\theta)) 凹 \\
         & log(p_\theta(x)) 凹  \rightarrow 对数似然函数 凹
     \end{aligned}</script><h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>从前面列出的指数分布族所包含的分布来看，我们日常所碰到的绝大多数概率分布都属于指数族分布，是可以直接通过求导等于0这种方法来得到参数估计，而对于不属于指数分布族的分布，则是有必要对对数似然函数进行分析，而不能直接通过求导来解最优参数估计值。</p>
-<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p>本文内容主要参考以下链接：<br>[1] <a href="https://www.zhihu.com/question/263423642/answer/269353169" target="_blank" rel="noopener">为什么极大似然估计求导为 0 就是要求的值呢？</a><br>[2] <a href="https://web.stanford.edu/class/stats311/Lectures/lec-07.pdf" target="_blank" rel="noopener">指数分布族函数</a></p>
+<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p>本文内容主要参考以下链接：<br>[1] <a target="_blank" rel="noopener" href="https://www.zhihu.com/question/263423642/answer/269353169">为什么极大似然估计求导为 0 就是要求的值呢？</a><br>[2] <a target="_blank" rel="noopener" href="https://web.stanford.edu/class/stats311/Lectures/lec-07.pdf">指数分布族函数</a></p>
 
             </div>
             <hr/>
@@ -1510,6 +1511,11 @@ $(function () {
     <script src="/libs/instantpage/instantpage.js" type="module"></script>
     
 
-</body>
+<script type="text/javascript"> //只在桌面版网页启用特效 
+    var windowWidth = $(window).width(); 
+    if (windowWidth > 768) { document.write('<script type="text/javascript" src="/js/sakura.js"><\/script>'); 
+    } 
+</script> 
 
+</body>
 </html>
