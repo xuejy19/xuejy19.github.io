@@ -10,7 +10,7 @@ menu:
   Categories:
     url: /categories
     icon: fas fa-bookmark
-  Archives:
+  时光轴:
     url: /archives
     icon: fas fa-archive
   About:
@@ -235,21 +235,18 @@ myProjects:
 mySkills:
   enable: true
   data:
-    Java:
+    matlab:
       background: 'linear-gradient(to right, #FF0066 0%, #FF00CC 100%)'
-      percent: 85%
-    JavaScript:
+      percent: 60%
+    python:
       background: 'linear-gradient(to right, #9900FF 0%, #CC66FF 100%)'
-      percent: 80%
-    HTML5:
+      percent: 85%
+    machine_learning:
       background: 'linear-gradient(to right, #2196F3 0%, #42A5F5 100%)'
       percent: 80%
-    CSS:
+    Eat:
       background: 'linear-gradient(to right, #00BCD4 0%, #80DEEA 100%)'
       percent: 70%
-    SQL:
-      background: 'linear-gradient(to right, #4CAF50 0%, #81C784 100%)'
-      percent: 90%
     程序设计:
       background: 'linear-gradient(to right, #FFEB3B 0%, #FFF176 100%)'
       percent: 75%

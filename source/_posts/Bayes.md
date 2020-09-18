@@ -1,7 +1,6 @@
 ---
 title: 贝叶斯理论
 date: 2020-07-23 10:32:46
-thumbnail: https://raw.githubusercontent.com/xuejy19/Images/master/Bayes.jpeg
 tags: 
 categories: 统计学习
 toc: true 
