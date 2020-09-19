@@ -583,7 +583,7 @@
 </table>
 <p>实际上以上四种类型可以粗分为两个类型: 字符串类型和时间戳格式，时间字符串直接转时间戳格式并不自然，因此在python中实现两者转化还需借助一个中间变量类型<code>struct_time</code>，时间格式变换流程如下:<br>
 $$<br>
-str \Leftrightarrow struct_time \Leftrightarrow stamp<br>
+str \Leftrightarrow struct , time \Leftrightarrow stamp<br>
 $$<br>
 字符串格式和时间戳格式通过我上面的讲解大家应该可以有一个基本认识，下面重点介绍下<code>struct_time</code>类型，它是一个具有命名元祖接口的对象:可以通过索引和属性名访问值，存在以下值:</p>
 <table>
