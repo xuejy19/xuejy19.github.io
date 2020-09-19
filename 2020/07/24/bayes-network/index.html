@@ -472,7 +472,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2020-07-25
+                    2020-09-19
                 </div>
                 
 
@@ -540,11 +540,11 @@
 
 <p>图中大写字母均代表随机变量，含义如下：</p>
 <ul>
-<li>$D:$课程难度，$Val(D) = \{d^0, d^1\}$</li>
-<li>$I:$智力，$Val(I) = \{i^0,i^1\}$</li>
-<li>$S:$SAT分数，$Val(S) = \{s^0,s^1\}$</li>
-<li>$G:$课程成绩，$Val(G) = \{g^0,g^1, g^2\}$</li>
-<li>$L:$推荐信，$Val(L) = \{l^0,l^1\}$</li>
+<li>$D:$课程难度，$Val(D) = {d^0, d^1}$</li>
+<li>$I:$智力，$Val(I) = {i^0,i^1}$</li>
+<li>$S:$SAT分数，$Val(S) = {s^0,s^1}$</li>
+<li>$G:$课程成绩，$Val(G) = {g^0,g^1, g^2}$</li>
+<li>$L:$推荐信，$Val(L) = {l^0,l^1}$</li>
 </ul>
 <p>假设$G$和$S$关于$I$条件独立，下面我们分析两种情况的条件参数化</p>
 <p>首先以$I$和$S$两个变量为例，我们既可以通过联合分布$P(I,S)$来进行描述，也可以通过$P(I)$和$P(S|I)$进行描述，两种描述均是三个独立参数，如下图所示。<br><img src="https://raw.githubusercontent.com/xuejy19/Images/master/eg2.png" alt=""></p>
@@ -555,7 +555,7 @@
 </ul>
 <h3 id="朴素贝叶斯模型"><a href="#朴素贝叶斯模型" class="headerlink" title="朴素贝叶斯模型"></a>朴素贝叶斯模型</h3><p>在这一部分对朴素贝叶斯模型做简要介绍，首先我们有两组变量：</p>
 <ul>
-<li>$C$:类别变量，$C = \{c_1,\dots, c_k\}$</li>
+<li>$C$:类别变量，$C = {c_1,\dots, c_k}$</li>
 <li>观测变量：$X_1,X_2,\dots, X_d$</li>
 </ul>
 <p>在朴素贝叶斯模型中，我们的目标便是利用观测变量来对类别进行预测/推理。所有这些变量其实可以看做一个联合概率分布$P(C,X_1,\dots,X_d)$,然而该概率分布很难计算，所需的参数量是指数级别，因此在朴素贝叶斯模型中有一个很强的假设：</p>
@@ -571,7 +571,7 @@
     (X_i \perp Nondesc(X_i)|Pa(X_i))</script><p><strong>独立性映射(I-Maps):</strong> 记$P$为一组变量$\mathbf{X}$的联合概率分布，$I(P)$为表征$P$中独立性的集合</p>
 <blockquote>
 <p>定义：$G$为贝叶斯网路，若$I(G) \subset I(P)$,则称$G$为$P$的一个独立映射</p>
-<p>分解定理：若$G$是$P$的独立映射 $\Leftrightarrow$ $P(X_1,\dots,X_d) = \prod \limits_{i=1}^d P(X_i|Pa(X_i))$,通过该分解定理可以将全局的概率分布用局部的条件概率来表示</p>
+<p>分解定理：若$G$是$P$的独立映射 $\Leftrightarrow$ $P(X<em>1,\dots,X_d) = \prod \limits</em>{i=1}^d P(X_i|Pa(X_i))$,通过该分解定理可以将全局的概率分布用局部的条件概率来表示</p>
 </blockquote>
 <p>下面分析下与联合概率分布相比，贝叶斯网络所需参数,以$n$个二值变量为例：</p>
 <ul>
@@ -584,7 +584,7 @@
 <li>两个节点直接相连：此时不存在一个节点使得这两个节点关于该节点条件独立<br>$e.g. X \rightarrow Y$</li>
 <li>两个节点间接相连：head2tail,head2head,tail2tail</li>
 <li>一般情况：对于图$G$中的路径$X_1 \leftrightarrow \dots \leftrightarrow X_n$关于节点集合$E$是激活的如果<ul>
-<li>对于每个V状结构$X_{i-1} \rightarrow X_i \leftarrow X_{i+1},X_i$或者其后代<br>在集合$E$中</li>
+<li>对于每个V状结构$X<em>{i-1} \rightarrow X_i \leftarrow X</em>{i+1},X_i$或者其后代<br>在集合$E$中</li>
 <li>路径上的点不在集合$E$中</li>
 </ul>
 </li>
@@ -1382,7 +1382,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">71.3k</span>&nbsp;字
+                class="white-color">71.8k</span>&nbsp;字
             
             
             

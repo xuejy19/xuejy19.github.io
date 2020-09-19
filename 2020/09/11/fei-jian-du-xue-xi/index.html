@@ -476,7 +476,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2020-09-12
+                    2020-09-19
                 </div>
                 
 
@@ -518,7 +518,7 @@
 <li>数据聚类 </li>
 </ul>
 <a id="more"></a>
-<h3 id="无监督学习思想"><a href="#无监督学习思想" class="headerlink" title="无监督学习思想"></a>无监督学习思想</h3><p>无监督学习是从无标注的数据中学习数据的统计规律或者说内在结构的机器学习，主要包括聚类、降维、概率估计，<strong>无监督学习可以用于数据分析或者监督学习预处理</strong>。<br>无监督学习使用无标注数据$U = \{ x_1, x_2, \dots, x_N\}$学习或训练，其中$x_i，i = 1,2,\dots,N$, 是样本，由特征向量组成。无监督学习的模型是函数$z = g_{\theta}(x)$ , 条件概率分布$P_{\theta}(z|x)$，或条件概率分布$P_{\theta}(x|z)$。其中$x \in X$是输入，表示样本； $z \in Z$是输出，表示对样本的分析结果，可以是类别、转换、概率；$\theta$是参数。<br>无监督学习是一个困难的任务，因为数据没有标注，也就是没有人为的引导，机器需要自己从数据中找出规律。模型的输入$x$在数据中可以观测，而输出$z$隐藏在数据中。无监督学习通常需要大量的数据，因为对数据隐藏的规律的发现需要足够的观测。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/Unsupervised.jpg" alt="机器学习算法划分"></p>
+<h3 id="无监督学习思想"><a href="#无监督学习思想" class="headerlink" title="无监督学习思想"></a>无监督学习思想</h3><p>无监督学习是从无标注的数据中学习数据的统计规律或者说内在结构的机器学习，主要包括聚类、降维、概率估计，<strong>无监督学习可以用于数据分析或者监督学习预处理</strong>。<br>无监督学习使用无标注数据$U = { x<em>1, x_2, \dots, x_N}$学习或训练，其中$x_i，i = 1,2,\dots,N$, 是样本，由特征向量组成。无监督学习的模型是函数$z = g</em>{\theta}(x)$ , 条件概率分布$P<em>{\theta}(z|x)$，或条件概率分布$P</em>{\theta}(x|z)$。其中$x \in X$是输入，表示样本； $z \in Z$是输出，表示对样本的分析结果，可以是类别、转换、概率；$\theta$是参数。<br>无监督学习是一个困难的任务，因为数据没有标注，也就是没有人为的引导，机器需要自己从数据中找出规律。模型的输入$x$在数据中可以观测，而输出$z$隐藏在数据中。无监督学习通常需要大量的数据，因为对数据隐藏的规律的发现需要足够的观测。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/Unsupervised.jpg" alt="机器学习算法划分"></p>
 <h3 id="数据降维"><a href="#数据降维" class="headerlink" title="数据降维"></a>数据降维</h3><h4 id="问题定义"><a href="#问题定义" class="headerlink" title="问题定义"></a>问题定义</h4><p>降维是将训练数据中的样本(实例)从高维空间转换到低维空间。假设样本原本存在于低维空间，或者近似地存在于低维空间，通过降维则可以更好地表示样本数据的结构，即更好地表示样本之间的关系。高维空间通常是高维的欧式空间，而低维空间则是低维的欧式空间或者流形(manifold)。低维空间不是事先给定，而是从数据中自动发现，其维数通常是事先给定的。从高维到低维的降维中，要保证样本的信息损失最少。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/dimension.png" alt="降维"></p>
 <p>本文主要介绍四种降维方法：</p>
 <ul>
@@ -1022,50 +1022,40 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;本篇
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2020/09/11/fei-jian-du-xue-xi/">
+                <a href="/2020/09/19/python-shu-ju-chu-li-zhi-shi-jian-bian-huan/">
                     <div class="card-image">
                         
                         
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/4.png" class="responsive-img" alt="非监督学习">
+                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/5.jpg" class="responsive-img" alt="python数据处理之时间变换">
                         
-                        <span class="card-title">非监督学习</span>
+                        <span class="card-title">python数据处理之时间变换</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            这部分总结下传统统计学习的最后一部分内容——非监督学习，非监督学习又称无监督学习，我们前面讲的大部分算法都是需要样本的标签的，通过标签来构造损失函数，进而进行模型学习，但在有的情况下我们并没有数据的标签，这种情况下我们就什么都不能做了么？当
+                            本文将就python中对时间标识的处理做一点讲解，在进行数据分析时，有些时候我们需要对时间序列数据进行处理，比如像下面这样一组数据
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-09-11
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-09-19
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/" class="post-category">
-                                    统计学习
+                            <a href="/categories/python%E5%AD%A6%E4%B9%A0/" class="post-category">
+                                    python学习
                                 </a>
                             
                             
                         </span>
                     </div>
-                </div>
-
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/PCA-MDS-ISOMAP/">
-                        <span class="chip bg-color">PCA, MDS, ISOMAP</span>
-                    </a>
-                    
                 </div>
                 
             </div>
@@ -1328,7 +1318,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">71.3k</span>&nbsp;字
+                class="white-color">71.8k</span>&nbsp;字
             
             
             

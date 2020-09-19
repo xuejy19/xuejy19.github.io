@@ -530,7 +530,7 @@
     \hat{\sigma^2} &= \frac{1}{n} \sum_{i=1}^n (x_i - \hat{\mu})^2
 \end{aligned}</script><h3 id="贝叶斯估计"><a href="#贝叶斯估计" class="headerlink" title="贝叶斯估计"></a>贝叶斯估计</h3><p>首先回顾下贝叶斯决策：</p>
 <ul>
-<li>状态空间:$\Omega = \{ \omega_1, \omega_2, \dots , \omega_c \}$</li>
+<li>状态空间:$\Omega = { \omega_1, \omega_2, \dots , \omega_c }$</li>
 <li>待识别对象: $\mathbf{x} = [x_1,x_2,\dots, x_d]^T$</li>
 </ul>
 <p>设真实状态为$\omega_j$，而采取决策$a_i$所带来的损失为$\lambda(\omega_j,a_i)$,对于特定$\mathbf{x}$，采取决策$a_i$所带来的平均损失为:</p>
@@ -578,7 +578,7 @@
 <li>$p(\hat{\theta}|\mathcal{X})$计算</li>
 <li>损失函数$\lambda(\hat{\theta},\theta)$的选择 </li>
 </ul>
-<p>首先考虑$p(\hat{\theta}|\mathcal{X})$的计算，假设$\theta$的先验概率分布为$p(\theta)$,类条件概率密度函数为$p(\mathbf{x}|\theta)$,样本集$\mathcal{X} = \{ x_1,\dots, x_n \}$,似然函数$p(\mathcal{X}|\theta)$可以表示为：</p>
+<p>首先考虑$p(\hat{\theta}|\mathcal{X})$的计算，假设$\theta$的先验概率分布为$p(\theta)$,类条件概率密度函数为$p(\mathbf{x}|\theta)$,样本集$\mathcal{X} = { x_1,\dots, x_n }$,似然函数$p(\mathcal{X}|\theta)$可以表示为：</p>
 <script type="math/tex; mode=display">
     p(\mathcal{X}|\theta) = \prod_{i=1}^n p(\mathbf{x_i}|\theta)</script><p>由贝叶斯公式，后验概率可以表示为:</p>
 <script type="math/tex; mode=display">
@@ -586,7 +586,7 @@
 <ul>
 <li>均方误差函数:$\lambda(\hat{\theta},\theta) = (\theta - \hat{\theta})^2$</li>
 <li>绝对值误差函数: $\lambda(\hat{\theta},\theta) = |\theta - \hat{\theta}|$</li>
-<li>均匀函数: $\lambda(\hat{\theta}, \theta) = \begin{cases}<br>  0 &amp; x \in [-\frac{\Delta}{2}, \frac{\Delta}{2}] \\<br>  1 &amp; other<br>\end{cases}$</li>
+<li>均匀函数: $\lambda(\hat{\theta}, \theta) = \begin{cases}<br>  0 &amp; x \in [-\frac{\Delta}{2}, \frac{\Delta}{2}] \<br>  1 &amp; other<br>\end{cases}$</li>
 </ul>
 <p>在不同损失函数下，可以推导出不同的结果：</p>
 <ul>
@@ -599,9 +599,9 @@
 <li>$p(x|\mu) \sim N(\mu, \sigma^2)$</li>
 <li>$p(\mu) \sim N(\mu_0,\sigma_0^2)$ </li>
 </ul>
-<p>则后验概率密度函数$p(\theta|\mathcal{X})$为:<br>$$<br>\begin{aligned}<br>    p(\mu|\mathcal{X}) &amp;= \frac{p(\mathcal{X}|\mu)p(\mu)}{\int p(\mathcal{X}|\mu)p(\mu)d\mu}  \\\\<br>    &amp;= a exp\{ -\frac{1}{2}[\sum_{k=1}^N (\frac{\mu - x_k}{\sigma})^2 + (\frac{\mu - \mu_0}{\sigma_0})^2] \}<br>\end{aligned}</p>
+<p>则后验概率密度函数$p(\theta|\mathcal{X})$为:<br>$$<br>\begin{aligned}<br>    p(\mu|\mathcal{X}) &amp;= \frac{p(\mathcal{X}|\mu)p(\mu)}{\int p(\mathcal{X}|\mu)p(\mu)d\mu}  \\<br>    &amp;= a exp{ -\frac{1}{2}[\sum_{k=1}^N (\frac{\mu - x_k}{\sigma})^2 + (\frac{\mu - \mu_0}{\sigma_0})^2] }<br>\end{aligned}</p>
 <script type="math/tex; mode=display">
-由于该概率密度函数是$\mu$的二次函数指数形式，所以仍是一个正态密度，其均值和方差为：</script><p>\begin{aligned}<br>    \mu_N &amp;= \frac{N\sigma_0^2}{N\sigma_0^2 + \sigma^2} \frac{1}{N}\sum_{k=1}^N x_k + \frac{\sigma^2}{N\sigma_0^2 + \sigma^2} \mu_0  \\\\<br>    \sigma_N^2 &amp;= \frac{\sigma_0^2 \sigma^2}{N\sigma_0^2 + \sigma^2}<br>\end{aligned}</p>
+由于该概率密度函数是$\mu$的二次函数指数形式，所以仍是一个正态密度，其均值和方差为：</script><p>\begin{aligned}<br>    \mu<em>N &amp;= \frac{N\sigma_0^2}{N\sigma_0^2 + \sigma^2} \frac{1}{N}\sum</em>{k=1}^N x_k + \frac{\sigma^2}{N\sigma_0^2 + \sigma^2} \mu_0  \\<br>    \sigma_N^2 &amp;= \frac{\sigma_0^2 \sigma^2}{N\sigma_0^2 + \sigma^2}<br>\end{aligned}</p>
 <script type="math/tex; mode=display">
 因为误差函数为均方误差函数，则其参数估计值应当是后验概率密度意义上的均值，即$\mu_N$
 ### 非参数估计
@@ -1455,7 +1455,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">71.3k</span>&nbsp;字
+                class="white-color">71.8k</span>&nbsp;字
             
             
             

@@ -476,7 +476,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2020-08-22
+                    2020-09-19
                 </div>
                 
 
@@ -617,7 +617,7 @@ $$
 <p>高斯模型是描述数据分布的一种常见模型，但在有时候单一的高斯模型并不足以对数据进行描述，因此便考虑该数据分布有没有可能用多个高斯模型来描述，即任意一个数据点可能来自于某一个分模型。假设观测数据$y_1,y_2,\dots,y_N$由高斯混合模型生成：</p>
 <script type="math/tex; mode=display">
       P(y|\theta) = \sum_{k=1}^K \alpha_k \phi(y|\theta_k)</script><p>其中$\theta = (\alpha_1,\dots,\alpha_K;\theta_1,\dots,\theta_K)$,我们现在期望利用观测数据将这些参数估计出来。</p>
-<h4 id="隐变量定义"><a href="#隐变量定义" class="headerlink" title="隐变量定义"></a>隐变量定义</h4><p>首先来看对于这样一个模型，隐变量是什么，数据是这样产生的：首先依概率$\alpha_k$选择第$k$个高斯分布分模型，然后依第$k$个分模型的概率分布生成观测数据$y$。观测数据$y$是已知的，但是$y$究竟来自于哪个分模型是未知的，记该变量为隐变量$\gamma_{jk}$,其定义如下：</p>
+<h4 id="隐变量定义"><a href="#隐变量定义" class="headerlink" title="隐变量定义"></a>隐变量定义</h4><p>首先来看对于这样一个模型，隐变量是什么，数据是这样产生的：首先依概率$\alpha<em>k$选择第$k$个高斯分布分模型，然后依第$k$个分模型的概率分布生成观测数据$y$。观测数据$y$是已知的，但是$y$究竟来自于哪个分模型是未知的，记该变量为隐变量$\gamma</em>{jk}$,其定义如下：</p>
 <script type="math/tex; mode=display">
     \begin{aligned}
         \gamma_{jk} &= \begin{cases}
@@ -626,7 +626,7 @@ $$
         \end{cases}   
         \\\\
         j &= 1,\dots,N;k = 1,\dots,K
-    \end{aligned}</script><p>目前，我们的观测数据为$y_j$,未观测数据是$\gamma_{jk}$,完全数据是：</p>
+    \end{aligned}</script><p>目前，我们的观测数据为$y<em>j$,未观测数据是$\gamma</em>{jk}$,完全数据是：</p>
 <script type="math/tex; mode=display">
     (y_j,\gamma_{j_1},\dots,\gamma_{jk}),j=1,\dots,N</script><p>于是，可以写出完全数据的对数似然函数：</p>
 <script type="math/tex; mode=display">
@@ -635,9 +635,9 @@ $$
          &= \prod_{k=1}^K \prod_{j=1}^N [\alpha_k \phi(y_j|\theta_k)]^{\gamma_{jk} } \\\\
          &= \prod_{k=1}^K \alpha_k^{n_k} \prod_{j=1}^N [\alpha_k \phi(y_j|\theta_k)]^{\gamma_{jk} } \\\\
          &= \prod_{k=1}^K \alpha_k^{n_k} \prod_{j=1}^N [\frac{1}{\sqrt{2\pi}\sigma_k} exp(-\frac{(y_j-\mu_k)^2}{2\sigma_k^2})]^{\gamma_{jk}}
-    \end{aligned}</script><p>公式中$n_k = \sum_{j=1}^N \gamma_{jk},\sum_{k=1}^K n_k = N$,由此，便可以写出完全数据的对数似然函数：</p>
+    \end{aligned}</script><p>公式中$n<em>k = \sum</em>{j=1}^N \gamma<em>{jk},\sum</em>{k=1}^K n_k = N$,由此，便可以写出完全数据的对数似然函数：</p>
 <script type="math/tex; mode=display">
- logP(y,\gamma|\theta) = \sum_{k=1}^K \{ n_klog\alpha_k + \sum_{j=1}^N \gamma_{jk}[log(\frac{1}{\sqrt{2\pi}})-log\sigma_k - \frac{1}{2\sigma_k^2} (y_j-\mu_k)^2]\}</script><p><strong>E步</strong>：其实就是要在已知上次迭代参数估计值$\theta$和观测值$y$的情况下将$\gamma_{jk}$估计出来，然后代回完全数据的对数似然函数，下面就求解下$E(\gamma_{jk}|y,\theta)$:</p>
+ logP(y,\gamma|\theta) = \sum_{k=1}^K \{ n_klog\alpha_k + \sum_{j=1}^N \gamma_{jk}[log(\frac{1}{\sqrt{2\pi}})-log\sigma_k - \frac{1}{2\sigma_k^2} (y_j-\mu_k)^2]\}</script><p><strong>E步</strong>：其实就是要在已知上次迭代参数估计值$\theta$和观测值$y$的情况下将$\gamma<em>{jk}$估计出来，然后代回完全数据的对数似然函数，下面就求解下$E(\gamma</em>{jk}|y,\theta)$:</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
     \hat{\gamma}_{jk} &= E(\gamma_{jk}|y,\theta) = P(\gamma_{jk}|y,\theta)\\\\
@@ -648,7 +648,7 @@ $$
 <script type="math/tex; mode=display">
     Q(\theta,\theta^i) =  logP(y,\gamma|\theta) = \sum_{k=1}^K \{ n_klog\alpha_k + \sum_{j=1}^N \hat{\gamma}_{jk}[log(\frac{1}{\sqrt{2\pi}})-log\sigma_k - \frac{1}{2\sigma_k^2} (y_j-\mu_k)^2]\}</script><p><strong>M步</strong>：迭代的M步是求函数$Q(\theta,\theta^i)$对$\theta$的极大值，即求新一轮迭代的模型参数:</p>
 <script type="math/tex; mode=display">
-    \theta^{i+1} = \arg max_{\theta} Q(\theta,\theta^i)</script><p>该步只需分别对$\alpha_K,\mu_k,\sigma_k$求偏导，令偏导等于0,注意在求解$\alpha_k$时需要利用$\alpha_k$天然的约束条件$\sum_{k=1}^K \alpha_k = 1$,最终求解结果为:</p>
+    \theta^{i+1} = \arg max_{\theta} Q(\theta,\theta^i)</script><p>该步只需分别对$\alpha<em>K,\mu_k,\sigma_k$求偏导，令偏导等于0,注意在求解$\alpha_k$时需要利用$\alpha_k$天然的约束条件$\sum</em>{k=1}^K \alpha_k = 1$,最终求解结果为:</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
     \hat{\mu}_k &= \frac{\sum_{j=1}^N \hat{\gamma}_{jk}y_j}{\sum_{j=1}^N \hat{\gamma}_{jk}} \\\\
@@ -1456,7 +1456,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">71.3k</span>&nbsp;字
+                class="white-color">71.8k</span>&nbsp;字
             
             
             
