@@ -1254,6 +1254,7 @@ article .article-tags .chip {
 #articleContent table {
 	width: 100%;
     display: block;
+    margin: auto;
     border-collapse: collapse;
     border-spacing: 0;
     overflow: auto;
@@ -1357,6 +1358,9 @@ thead {
     margin-right: -2px;
     font-size: 0.5rem;
 }
+table {
+    margin: auto;
+    }
 
 .chip-default .tag-length {
     color: #e91e63;
