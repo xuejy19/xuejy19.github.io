@@ -515,111 +515,154 @@
 <li>KL散度(相对熵)</li>
 <li>交叉熵</li>
 <li>JS散度</li>
-<li>推土机理论与Wasserstein距离<a id="more"></a>
-</li>
+<li>推土机理论与Wasserstein距离</li>
 </ul>
-<h3 id="信息量与熵"><a href="#信息量与熵" class="headerlink" title="信息量与熵"></a>信息量与熵</h3><h4 id="信息量"><a href="#信息量" class="headerlink" title="信息量"></a>信息量</h4><p>任何事件都会承载着一定的信息量，包括已经发生的事件和未发生的事件，只是它们承载的信息量有所不同：</p>
+<a id="more"></a>
+<h3 id="信息量与熵">信息量与熵</h3>
+<h4 id="信息量">信息量</h4>
+<p>任何事件都会承载着一定的信息量，包括已经发生的事件和未发生的事件，只是它们承载的信息量有所不同：</p>
 <blockquote>
 <p>🌰：对于两个事件：昨天下雨与明天下雨。昨天下雨这个事件，因为已经发生，既定事实，那么它的信息量就为0；而对于明天会下雨这个事件，因为未有发生，那么该事件的信息量就大。</p>
 </blockquote>
-<p>从上面栗子可以看出信息量是一个与事件发生概率相关的概念，而且可以得出，事件发生的概率越小，其信息量越大。这也很好理解，因为所谓的“搞个大新闻”,也就是发生了不太可能发生的事情，”大新闻”则意味着该事件蕴含着更多的信息。从这个角度出发， 定义信息量:</p>
+<p>从上面栗子可以看出信息量是一个与事件发生概率相关的概念，而且可以得出，事件发生的概率越小，其信息量越大。这也很好理解，因为所谓的“搞个大新闻”,也就是发生了不太可能发生的事情，&quot;大新闻&quot;则意味着该事件蕴含着更多的信息。从这个角度出发， 定义信息量:</p>
 <blockquote>
-<p><strong>信息量:</strong> 假设$X$是一个离散型随机变量，其取值集合为$\mathcal{X}$，其概率分布为:</p>
-<script type="math/tex; mode=display">
-    p(x) = P(X = x), x \in \mathcal{X}</script><p>则定义事件$X = x_0$的信息量为:</p>
-<script type="math/tex; mode=display">
-    I(x_0) = -\log(p(x_0))</script></blockquote>
-<h4 id="熵"><a href="#熵" class="headerlink" title="熵"></a>熵</h4><p>首先给出熵的定义：</p>
+<p><strong>信息量:</strong> 假设$X$是一个离散型随机变量，其取值集合为$\mathcal{X}$，其概率分布为:<br>
+$$<br>
+p(x) = P(X = x), x \in \mathcal{X}<br>
+$$<br>
+则定义事件$X = x_0$的信息量为:<br>
+$$<br>
+I(x_0) = -\log(p(x_0))<br>
+$$</p>
+</blockquote>
+<h4 id="熵">熵</h4>
+<p>首先给出熵的定义：</p>
 <blockquote>
-<p>在信息论与概率统计中，熵是表示<strong>随机变量不确定性</strong>的度量，设$X$是一个取有限个值的离散随机变量，其概率分布为:</p>
-<script type="math/tex; mode=display">
-    P(X = x_i) = p_i, \quad i =1,2,\dots,n</script><p>则随机变量$X$的熵定义为:</p>
-<script type="math/tex; mode=display">
-    H(X) = - \sum_{i=1}^n p_i \log p_i</script></blockquote>
-<p>有了信息量的定义后，再看关于熵的定义式可以看出，熵不过是在概率分布$P$下对信息量求的期望，所以说熵实际上就是<strong>事件信息量的期望</strong>。<br>若$p_i = 0$,则定义$0\log 0 =0$,式中的对数一般取以2为底或者以$e$为底，这时熵的单位被称作比特或纳特，由定义可知，熵只依赖于$X$的分布，而与$X$的取值无关，因此也可将$X$的熵记作$H(p)$,熵越大，随机变量的不确定性越大。因为$p_i \leq 0$,由$H(p)$函数性质(凹函数，应用拉格朗日乘子法可求最大值)可知:</p>
-<script type="math/tex; mode=display">
-    0 \leq H(p) \leq \log n</script><h3 id="KL散度-相对熵"><a href="#KL散度-相对熵" class="headerlink" title="KL散度(相对熵)"></a>KL散度(相对熵)</h3><p>KL散度又称相对熵，如果我们对同一个随机变量有两个独立的概率分布$P(x)$和$Q(x)$，我们可以使用KL散度来衡量这两个分布的差异,下面给出KL散度的定义式:</p>
+<p>在信息论与概率统计中，熵是表示<strong>随机变量不确定性</strong>的度量，设$X$是一个取有限个值的离散随机变量，其概率分布为:<br>
+$$<br>
+P(X = x_i) = p_i, \quad i =1,2,\dots,n<br>
+$$<br>
+则随机变量$X$的熵定义为:<br>
+$$<br>
+H(X) = - \sum_{i=1}^n p_i \log p_i<br>
+$$</p>
+</blockquote>
+<p>有了信息量的定义后，再看关于熵的定义式可以看出，熵不过是在概率分布$P$下对信息量求的期望，所以说熵实际上就是<strong>事件信息量的期望</strong>。<br>
+若$p_i = 0$,则定义$0\log 0 =0$,式中的对数一般取以2为底或者以$e$为底，这时熵的单位被称作比特或纳特，由定义可知，熵只依赖于$X$的分布，而与$X$的取值无关，因此也可将$X$的熵记作$H§$,熵越大，随机变量的不确定性越大。因为$p_i \leq 0$,由$H§$函数性质(凹函数，应用拉格朗日乘子法可求最大值)可知:<br>
+$$<br>
+0 \leq H§ \leq \log n<br>
+$$</p>
+<h3 id="KL散度-相对熵">KL散度(相对熵)</h3>
+<p>KL散度又称相对熵，如果我们对同一个随机变量有两个独立的概率分布$P(x)$和$Q(x)$，我们可以使用KL散度来衡量这两个分布的差异,下面给出KL散度的定义式:</p>
 <blockquote>
-<p>在机器学习中，$P$往往用来表示样本的真实分布，$Q$用来表示模型所预测的分布，那么$KL$散度就可以计算两个分布之间的差异，也就是Loss损失值:</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-         D_{KL}(P||Q) &= -\sum_{i=1}^n p(x_i) \log(\frac{q(x_i)}{p(x_i)}) \\
-            &= -\sum_{i=1}^n p(x_i) \log(q(x_i)) - (-\sum_{i=1}^n p(x_i) \log p(x_i))
-    \end{aligned}</script><p>由于$-\log x$为凸函数，由凸函数性质可知:</p>
-<script type="math/tex; mode=display">
-     -\sum_{i=1}^n p(x_i) \log(\frac{q(x_i)}{p(x_i)}) \geq  \log \sum_{i=1}^n q(x_i) = 0</script><p>这说明KL散度具有非负的性质，这也说明$P(x)$与其他分布的交叉熵恒大于熵。</p>
+<p>在机器学习中，$P$往往用来表示样本的真实分布，$Q$用来表示模型所预测的分布，那么$KL$散度就可以计算两个分布之间的差异，也就是Loss损失值:<br>
+$$<br>
+\begin{aligned}<br>
+D_{KL}(P||Q) &amp;= -\sum_{i=1}^n p(x_i) \log(\frac{q(x_i)}{p(x_i)}) \<br>
+&amp;= -\sum_{i=1}^n p(x_i) \log(q(x_i)) - (-\sum_{i=1}^n p(x_i) \log p(x_i))<br>
+\end{aligned}<br>
+$$<br>
+由于$-\log x$为凸函数，由凸函数性质可知:<br>
+$$<br>
+-\sum_{i=1}^n p(x_i) \log(\frac{q(x_i)}{p(x_i)}) \geq  \log \sum_{i=1}^n q(x_i) = 0<br>
+$$<br>
+这说明KL散度具有非负的性质，这也说明$P(x)$与其他分布的交叉熵恒大于熵。</p>
 </blockquote>
 <p>这里需要说明的是，虽然KL散度具有非负性，但其并不满足度量的另外两个性质:</p>
 <ul>
 <li>对称性</li>
 <li>三角不等式</li>
 </ul>
-<h3 id="交叉熵"><a href="#交叉熵" class="headerlink" title="交叉熵"></a>交叉熵</h3><p>KL散度由两部分组成，第一部分是交叉熵，第二部分则是$P(x)$的熵，$P(x)$因为是真实的分布，所以其熵为固定值。在机器学习任务中，我们需要评估样本固有label与我们算法的预测$predict$之间的差距，在优化过程中，我们只需关注交叉熵，所以在分类任务中，往往采用交叉熵作为loss函数。</p>
-<h3 id="JS散度"><a href="#JS散度" class="headerlink" title="JS散度"></a>JS散度</h3><p>JS散度只是KL散度的变形，其解决了KL散度的非对称问题，其表达式如下:</p>
-<script type="math/tex; mode=display">
-    JS(P||Q) = \frac{1}{2} KL(P(x)||\frac{P(x) + Q(x)}{2}) + \frac{1}{2}KL(Q(x)||\frac{P(x)+ Q(x)}{2})</script><p>若$\log$以2为底，则JS散度的范围为$[0,1]$,若$\log$以$e$为底，则JS散度范围为$[0,\ln 2]$。当两个分布完全相同时取下界，当两个分布完全不同时取上界。<br>这也就带来了一个问题，若优化时两个分布完全没有交集时,JS散度就是一个常数($1$或$\ln 2$),此时会出现梯度消失问题，导致无法进行优化。</p>
-<h3 id="Wasserstein距离"><a href="#Wasserstein距离" class="headerlink" title="Wasserstein距离"></a>Wasserstein距离</h3><p>首先说明下KL散度与JS散度存在的问题:</p>
+<h3 id="交叉熵">交叉熵</h3>
+<p>KL散度由两部分组成，第一部分是交叉熵，第二部分则是$P(x)$的熵，$P(x)$因为是真实的分布，所以其熵为固定值。在机器学习任务中，我们需要评估样本固有label与我们算法的预测$predict$之间的差距，在优化过程中，我们只需关注交叉熵，所以在分类任务中，往往采用交叉熵作为loss函数。</p>
+<h3 id="JS散度">JS散度</h3>
+<p>JS散度只是KL散度的变形，其解决了KL散度的非对称问题，其表达式如下:<br>
+$$<br>
+JS(P||Q) = \frac{1}{2} KL(P(x)||\frac{P(x) + Q(x)}{2}) + \frac{1}{2}KL(Q(x)||\frac{P(x)+ Q(x)}{2})<br>
+$$<br>
+若$\log$以2为底，则JS散度的范围为$[0,1]$,若$\log$以$e$为底，则JS散度范围为$[0,\ln 2]$。当两个分布完全相同时取下界，当两个分布完全不同时取上界。<br>
+这也就带来了一个问题，若优化时两个分布完全没有交集时,JS散度就是一个常数($1$或$\ln 2$),此时会出现梯度消失问题，导致无法进行优化。</p>
+<h3 id="Wasserstein距离">Wasserstein距离</h3>
+<p>首先说明下KL散度与JS散度存在的问题:</p>
 <blockquote>
 <p>若两个分布$P,Q$完全没有重叠，则会导致KL散度无意义($\log 0$),而JS散度是一个常数，也就是说出现了梯度消失问题。</p>
 </blockquote>
 <p>而Wasserstein距离可以一定程度上解决该问题。</p>
-<h4 id="思想"><a href="#思想" class="headerlink" title="思想"></a>思想</h4><p>对于两个分布$P$和$Q$，考虑从将一个分布转换成另一个分布所需的代价入手来定义概率分布的差异。下面以一个栗子来说明该距离的思想:</p>
+<h4 id="思想">思想</h4>
+<p>对于两个分布$P$和$Q$，考虑从将一个分布转换成另一个分布所需的代价入手来定义概率分布的差异。下面以一个栗子来说明该距离的思想:</p>
 <blockquote>
-<p>🌰: 考虑两个离散分布$P$和$Q$:</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        P_1 &= 3, P_2 = 2, P_3 = 1, P_4 = 4 \\
-        Q_1 &= 1, Q_2 = 2, Q_3 = 4, Q_4 = 3 
-    \end{aligned}</script><p>下面讨论应该如何”移土”，才能够使得两个分布相同:</p>
+<p>🌰: 考虑两个离散分布$P$和$Q$:<br>
+$$<br>
+\begin{aligned}<br>
+P_1 &amp;= 3, P_2 = 2, P_3 = 1, P_4 = 4 \<br>
+Q_1 &amp;= 1, Q_2 = 2, Q_3 = 4, Q_4 = 3<br>
+\end{aligned}<br>
+$$<br>
+下面讨论应该如何&quot;移土&quot;，才能够使得两个分布相同:</p>
 <ul>
-<li>为了让$P_1$与$Q_1$相同，我们需要把$P_1$的3分2到$P_2$去，这样$P_1$和$Q_1$都等于1，此时$P_2$等于4 </li>
+<li>为了让$P_1$与$Q_1$相同，我们需要把$P_1$的3分2到$P_2$去，这样$P_1$和$Q_1$都等于1，此时$P_2$等于4</li>
 <li>同理，为了让$P_2$和$Q_2$相同，需要将$P_2$的土填到$P_3$时，这一步将从$P_2$挖2分土填到$P_3$</li>
-<li>为了让$P<em>3,Q_3$相等，最后一步需要将$Q_3$的1分土挖给$Q_4$<br>每一步的代价计算公式为$\delta</em>{i+1} = \delta_i + P_i - Q_i$,由此可得:<script type="math/tex; mode=display">
-  \begin{aligned}
-      \delta_0 &= 0 \\
-      \delta_1 &= 0 +3 -1 = 2 \\
-      \delta_2 &= 2 + 2 - 2 = 2 \\
-      \delta_3 &= 2 + 1 -4 = -1 \\
-      \delta_4 &= -1 + 4 - 3 = 0 
-  \end{aligned}</script>所以最终的总代价，也就是Wasserstein距离为$W = \sum |\delta_i| = 5$。该栗子可以形象的用下图表示:<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/W_dis.png" alt="推土机距离"></li>
+<li>为了让$P_3,Q_3$相等，最后一步需要将$Q_3$的1分土挖给$Q_4$<br>
+每一步的代价计算公式为$\delta_{i+1} = \delta_i + P_i - Q_i$,由此可得:<br>
+$$<br>
+\begin{aligned}<br>
+\delta_0 &amp;= 0 \<br>
+\delta_1 &amp;= 0 +3 -1 = 2 \<br>
+\delta_2 &amp;= 2 + 2 - 2 = 2 \<br>
+\delta_3 &amp;= 2 + 1 -4 = -1 \<br>
+\delta_4 &amp;= -1 + 4 - 3 = 0<br>
+\end{aligned}<br>
+$$<br>
+所以最终的总代价，也就是Wasserstein距离为$W = \sum |\delta_i| = 5$。该栗子可以形象的用下图表示:<br>
+<img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/W_dis.png" alt="推土机距离"></li>
 </ul>
 </blockquote>
-<h4 id="公式"><a href="#公式" class="headerlink" title="公式"></a>公式</h4><p>从上面的离散栗子了解了Wasserstein距离的思想之后，下面给出一般连续分布Wasserstein距离计算公式:</p>
+<h4 id="公式">公式</h4>
+<p>从上面的离散栗子了解了Wasserstein距离的思想之后，下面给出一般连续分布Wasserstein距离计算公式:</p>
 <blockquote>
-<script type="math/tex; mode=display">
-    W(p_r,p_g) = \inf_{\gamma \in \prod(p_r,p_g)} \quad E_{(x,y)\sim \gamma}[||x-y||]</script><p>公式中$\prod(p_r,p_g)$指代$p_r$和$p_g$所有可能的联合概率分布$\gamma(x,y)$,直观上来说，$\gamma(x,y)$表示将分布$p_r$转化成$p_g$所需要多少“土”，Wasserstein指代花费最少的运输方案。</p>
+<p>$$<br>
+W(p_r,p_g) = \inf_{\gamma \in \prod(p_r,p_g)} \quad E_{(x,y)\sim \gamma}[||x-y||]<br>
+$$<br>
+公式中$\prod(p_r,p_g)$指代$p_r$和$p_g$所有可能的联合概率分布$\gamma(x,y)$,直观上来说，$\gamma(x,y)$表示将分布$p_r$转化成$p_g$所需要多少“土”，Wasserstein指代花费最少的运输方案。</p>
 </blockquote>
 <p>Wasserstein相对于传统的KL散度和JS散而言，当两个分布具有完全不同的支撑集合时，KL散度会是无穷，JS散度会是一个常值，而W距离此时仍能反映两个分布的远近。下面以一个栗子来说明Wasserstein距离的优势所在:</p>
 <blockquote>
-<p>🌰: 变量$Z \sim U[0,1]$,下面给出两个分布:</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        &P_0 (x_1), \quad x_1 = (0,Z) \in R^2  \\
-        & P_1(x_2), \quad x_2 = (\theta,z) \in R^2
-    \end{aligned}</script><p>对于这个简单的栗子，不同概率密度距离度量得到的数值如下:</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        W(P_0,P_1) &= |\theta| \\ 
-        JS(P_0,P_1) &= \begin{cases}
-             \log 2  & if \theta \neq 0 \\
-             0  & if \theta = 0  
-        \end{cases} \\
-        KL(P_0||P_1) &= \begin{cases}
-             +\infty  & if \theta \neq 0 \\
-             0  & if \theta = 0  
-        \end{cases}
-    \end{aligned}</script><p>在Wasserstein度量下，随着$\theta<em>t \rightarrow 0$,概率分布序列$(P</em>{\theta<em>t})</em>{t \in N}$ 收敛到$P_0$,但在其他度量下并不能收敛，W距离与JS散度在该问题中对比如下图所示:<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/W.png" alt="$W VS JS$"></p>
+<p>🌰: 变量$Z \sim U[0,1]$,下面给出两个分布:<br>
+$$<br>
+\begin{aligned}<br>
+&amp;P_0 (x_1), \quad x_1 = (0,Z) \in R^2  \<br>
+&amp; P_1(x_2), \quad x_2 = (\theta,z) \in R^2<br>
+\end{aligned}<br>
+$$<br>
+对于这个简单的栗子，不同概率密度距离度量得到的数值如下:<br>
+$$<br>
+\begin{aligned}<br>
+W(P_0,P_1) &amp;= |\theta| \<br>
+JS(P_0,P_1) &amp;= \begin{cases}<br>
+\log 2  &amp; if \theta \neq 0 \<br>
+0  &amp; if \theta = 0<br>
+\end{cases} \<br>
+KL(P_0||P_1) &amp;= \begin{cases}<br>
++\infty  &amp; if \theta \neq 0 \<br>
+0  &amp; if \theta = 0<br>
+\end{cases}<br>
+\end{aligned}<br>
+$$<br>
+在Wasserstein度量下，随着$\theta_t \rightarrow 0$,概率分布序列$(P_{\theta_t})_{t \in N}$ 收敛到$P_0$,但在其他度量下并不能收敛，W距离与JS散度在该问题中对比如下图所示:<br>
+<img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/W.png" alt="$W VS JS$"></p>
 </blockquote>
-<h4 id="计算"><a href="#计算" class="headerlink" title="计算"></a>计算</h4><p>尽管Wasserstein度量具有很多优点，但其缺点也十分明显：</p>
+<h4 id="计算">计算</h4>
+<p>尽管Wasserstein度量具有很多优点，但其缺点也十分明显：</p>
 <blockquote>
 <p>计算非常复杂，优化问题不易解</p>
 </blockquote>
 <p>目前能够显示计算出Wasserstein的只有两种情况：</p>
 <blockquote>
-<p>一维概率分布<br>高斯分布 </p>
+<p>一维概率分布<br>
+高斯分布</p>
 </blockquote>
 <p>对于两个离散的一维概率分布，可以直接使用<code>scipy.stats.Wasserstein_distance</code>函数:</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">import numpy as np
+<pre class="line-numbers language-language-python"><code class="language-language-python">import numpy as np
 from scipy.stats import wasserstein_distance
 p = [0,5,9]
 q = [2,5,7]
@@ -627,7 +670,7 @@ w = wasserstein_distance(q,p)
 print(w)
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>输出:</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">1.3333333333333335
+<pre class="line-numbers language-language-python"><code class="language-language-python">1.3333333333333335 
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
             </div>
@@ -1194,6 +1237,7 @@ print(w)
 $k$近邻算法
 压缩近邻法
 $k$近邻实现：$kd$树
+
                         
                     </div>
                     <div class="publish-info">
@@ -1430,7 +1474,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">71.8k</span>&nbsp;字
+                class="white-color">72.4k</span>&nbsp;字
             
             
             

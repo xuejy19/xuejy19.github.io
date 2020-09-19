@@ -508,57 +508,75 @@
                 <p>在前面介绍深度学习的理论知识时，相信大家可以感受到，神经网络的实现主要有以下两个难题：</p>
 <ul>
 <li>当网络结构复杂起来时，手写一个神经网络是非常困难(尤其是进行反向误差传播时)，也是十分费时的。</li>
-<li>一个神经网络有着大量的参数，对计算机的计算能力要求非常高，而GPU是计算机中有着大量计算资源的部分，如何将这部分计算资源调动起来完成一个深度神经网络的训练是另一个难题。<a id="more"></a>
-</li>
+<li>一个神经网络有着大量的参数，对计算机的计算能力要求非常高，而GPU是计算机中有着大量计算资源的部分，如何将这部分计算资源调动起来完成一个深度神经网络的训练是另一个难题。</li>
 </ul>
-<p>为了解决上述两个问题，深度学习框架便诞生了，目前主流的深度学习框架主要下图所示的这些:<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/framework.jpeg" alt="主流框架"><br>这些框架比较如下图所示:<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/framework1.png" alt="深度学习框架"><br>目前在科研机构中应用较多的是Tensorflow和pytorch,本文便以pytorch为例来进行讲解，本文内容主要参考官方教程：<a target="_blank" rel="noopener" href="https://pytorch.org/tutorials/beginner/blitz/tensor_tutorial.html#sphx-glr-beginner-blitz-tensor-tutorial-py">pytorch官方教程</a>。建议英文阅读能力较强的人还是去阅读原版教程，如果对于算法的理论理解已经到位的话，整个教程还是非常简洁明了的。本文按照以下结构组织:</p>
+<a id="more"></a>
+<p>为了解决上述两个问题，深度学习框架便诞生了，目前主流的深度学习框架主要下图所示的这些:<br>
+<img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/framework.jpeg" alt="主流框架"><br>
+这些框架比较如下图所示:<br>
+<img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/framework1.png" alt="深度学习框架"><br>
+目前在科研机构中应用较多的是Tensorflow和pytorch,本文便以pytorch为例来进行讲解，本文内容主要参考官方教程：<a target="_blank" rel="noopener" href="https://pytorch.org/tutorials/beginner/blitz/tensor_tutorial.html#sphx-glr-beginner-blitz-tensor-tutorial-py">pytorch官方教程</a>。建议英文阅读能力较强的人还是去阅读原版教程，如果对于算法的理论理解已经到位的话，整个教程还是非常简洁明了的。本文按照以下结构组织:</p>
 <ul>
 <li>pytorch简介</li>
-<li>张量和计算图 </li>
+<li>张量和计算图</li>
 <li>低级API和高级API</li>
 </ul>
-<h3 id="pytorch简介"><a href="#pytorch简介" class="headerlink" title="pytorch简介"></a>pytorch简介</h3><p>pytorch 是一个开源的python 机器学习库，基于Torch，底层由C++实现，应用于人工智能领域，如自然语言处理(nlp)。它最初由Facebook的人工智能研究团队开发，并且被用于Uber的概率编程软件Pyro.<br>Pytorch 具有以下两大特征:</p>
+<h3 id="pytorch简介">pytorch简介</h3>
+<p>pytorch 是一个开源的python 机器学习库，基于Torch，底层由C++实现，应用于人工智能领域，如自然语言处理(nlp)。它最初由Facebook的人工智能研究团队开发，并且被用于Uber的概率编程软件Pyro.<br>
+Pytorch 具有以下两大特征:</p>
 <blockquote>
 <ul>
 <li>提供类似于Numpy的张量计算，可使用gpu加速</li>
 <li>基于自动微分系统的深度神经网络</li>
 </ul>
 </blockquote>
-<h3 id="张量和计算图"><a href="#张量和计算图" class="headerlink" title="张量和计算图"></a>张量和计算图</h3><p>从caffee以来，基本上所有的深度学习框架都包含这两个概念，其实这两个关键概念也正是针对本文一开始提出的两个问题。 </p>
-<h4 id="张量"><a href="#张量" class="headerlink" title="张量"></a>张量</h4><blockquote>
+<h3 id="张量和计算图">张量和计算图</h3>
+<p>从caffee以来，基本上所有的深度学习框架都包含这两个概念，其实这两个关键概念也正是针对本文一开始提出的两个问题。</p>
+<h4 id="张量">张量</h4>
+<blockquote>
 <p><strong>张量：</strong> 张量可以看作gpu下 numpy的替代品，在应用传统机器学习算法时，和我们打交道最多python库就是numpy，但遗憾的是numpy并不能够在gpu下进行运算。</p>
 </blockquote>
 <p>输入:</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">torch.randn(2,3)
+<pre class="line-numbers language-language-python"><code class="language-language-python">torch.randn(2,3)
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>输出:</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">tensor([[ 1.9335,  0.8795, -0.6964],
+<pre class="line-numbers language-language-python"><code class="language-language-python">tensor([[ 1.9335,  0.8795, -0.6964],
         [ 0.1573,  1.5692, -0.2320]])
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>tensor的大部分操作与numpy是差不多的，具体属性和方法参考<a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/tensors.html?highlight=torch%20tensor#torch.Tensor">torch.Tensor</a></p>
-<h4 id="计算图"><a href="#计算图" class="headerlink" title="计算图"></a>计算图</h4><p>现代的神经网络架构可以拥有上百万个参数，从计算的角度看，训练神经网络包含两个阶段:</p>
+<h4 id="计算图">计算图</h4>
+<p>现代的神经网络架构可以拥有上百万个参数，从计算的角度看，训练神经网络包含两个阶段:</p>
 <ul>
 <li>用于计算损失函数值的正向传递</li>
 <li>向后传递以计算可学习参数的梯度</li>
 </ul>
 <p>正向传递计算是非常简单的，前一层神经网络的输出是下一层神经网络的输入。后向传递有些复杂，因为这要求我们应用求导的链式法则来计算损失函数的梯度。</p>
-<p>当一个神经网络的规模比较小(层数,各层神经元数)时，手算损失函数对各个参数的梯度是可行的，但随着神经网络规模的扩大，梯度的计算变得越来越困难，出于深度学习的这种现实需要，计算图便诞生了：<br>计算图属于有向无环图，计算图中的节点有两种，一种是基本数学运算符，另一种则是我们所定义的变量。比如下图就可以表示一个简单的神经网络:</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        b &= w_1 * a \\
-        c &= w_2 * a \\
-        d &= w_3 * b  + w_4 * c \\
-        L & = 10 - d
-    \end{aligned}</script><p>在图中，变量$b,c$和$d$都是数学运算的结果，而变量$a ,w_1,w_2,w_3,w_4$ 由用户自己初始化，由于它们不是由任何数学运算符创建的，因此与其创建相对应的节点由其名称本身表示。</p>
+<p>当一个神经网络的规模比较小(层数,各层神经元数)时，手算损失函数对各个参数的梯度是可行的，但随着神经网络规模的扩大，梯度的计算变得越来越困难，出于深度学习的这种现实需要，计算图便诞生了：<br>
+计算图属于有向无环图，计算图中的节点有两种，一种是基本数学运算符，另一种则是我们所定义的变量。比如下图就可以表示一个简单的神经网络:<br>
+$$<br>
+\begin{aligned}<br>
+b &amp;= w_1 * a \<br>
+c &amp;= w_2 * a \<br>
+d &amp;= w_3 * b  + w_4 * c \<br>
+L &amp; = 10 - d<br>
+\end{aligned}<br>
+$$<br>
+在图中，变量$b,c$和$d$都是数学运算的结果，而变量$a ,w_1,w_2,w_3,w_4$ 由用户自己初始化，由于它们不是由任何数学运算符创建的，因此与其创建相对应的节点由其名称本身表示。</p>
 <p><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/computation_graph.png" alt="计算图"></p>
-<p>下面来介绍如何使用计算图来进行梯度计算，首先我们计算在图中相连接的节点之间的梯度,将对应的梯度值写到边上，如下图所示:<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/full_graph.png" alt="梯度计算图"><br>要计算损失$L$到某个变量$w$的梯度只需要按照以下步骤:</p>
+<p>下面来介绍如何使用计算图来进行梯度计算，首先我们计算在图中相连接的节点之间的梯度,将对应的梯度值写到边上，如下图所示:<br>
+<img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/full_graph.png" alt="梯度计算图"><br>
+要计算损失$L$到某个变量$w$的梯度只需要按照以下步骤:</p>
 <ol>
 <li>找到从$L$到$w$所有可能的路径</li>
-<li>对于各个路径，将沿路径所有边相乘 </li>
+<li>对于各个路径，将沿路径所有边相乘</li>
 <li>将各个路径计算结果相加</li>
 </ol>
-<h3 id="低阶API和高阶API"><a href="#低阶API和高阶API" class="headerlink" title="低阶API和高阶API"></a>低阶API和高阶API</h3><p>我们在使用pytorch时主要接触到的pytorch的包的架构如下图所示:<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/Pytorch-package-hierarchy.jpg" alt="pytorch主要包"><br>对于一个三层的全连结网络，我们可以仅仅使用tensor来实现，不过这种情况下需要手写梯度，下面我就一步步介绍如何用api来使你的代码变得简洁高效:</p>
-<h4 id="tensor"><a href="#tensor" class="headerlink" title="tensor"></a>tensor</h4><pre class="line-numbers language-lang-python"><code class="language-lang-python"># -*- coding: utf-8 -*-
+<h3 id="低阶API和高阶API">低阶API和高阶API</h3>
+<p>我们在使用pytorch时主要接触到的pytorch的包的架构如下图所示:<br>
+<img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/Pytorch-package-hierarchy.jpg" alt="pytorch主要包"><br>
+对于一个三层的全连结网络，我们可以仅仅使用tensor来实现，不过这种情况下需要手写梯度，下面我就一步步介绍如何用api来使你的代码变得简洁高效:</p>
+<h4 id="tensor">tensor</h4>
+<pre class="line-numbers language-language-python"><code class="language-language-python"># -*- coding: utf-8 -*-
 
 import torch
 
@@ -603,8 +621,9 @@ for t in range(500):
     w1 -= learning_rate * grad_w1
     w2 -= learning_rate * grad_w2
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="autograd"><a href="#autograd" class="headerlink" title="autograd"></a>autograd</h4><p>这种情况下其实是没有显示的模型的概念的，只有自己定义的一个个参数。但当神经网络复杂之后，手算梯度变得不再现实，pytorch为解决这个问题提供了<code>autograd</code>这样一个好用的工具，如果我们将需要计算梯度的参数设置为<code>requires_grad = True</code>,那么在进行前向计算过程中，会定义一个计算图，同时会保存对应参数的梯度信息，也就是前面介绍的计算图中边上的梯度信息，通过<code>loss.backward()</code>操作，可以将损失对各个参数的梯度计算出来，由此可以重写上面的代码如下:</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python"># -*- coding: utf-8 -*-
+<h4 id="autograd">autograd</h4>
+<p>这种情况下其实是没有显示的模型的概念的，只有自己定义的一个个参数。但当神经网络复杂之后，手算梯度变得不再现实，pytorch为解决这个问题提供了<code>autograd</code>这样一个好用的工具，如果我们将需要计算梯度的参数设置为<code>requires_grad = True</code>,那么在进行前向计算过程中，会定义一个计算图，同时会保存对应参数的梯度信息，也就是前面介绍的计算图中边上的梯度信息，通过<code>loss.backward()</code>操作，可以将损失对各个参数的梯度计算出来，由此可以重写上面的代码如下:</p>
+<pre class="line-numbers language-language-python"><code class="language-language-python"># -*- coding: utf-8 -*-
 # -*- coding: utf-8 -*-
 import torch
 
@@ -664,8 +683,9 @@ for t in range(500):
         w1.grad.zero_()
         w2.grad.zero_()
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="Extend-autograd-function"><a href="#Extend-autograd-function" class="headerlink" title="Extend autograd function"></a>Extend autograd function</h4><p>可以看到，有了<code>autograd</code>这个工具后，复杂网络的反向梯度计算也很容易解决。虽然<code>autograd.Function</code>中已经基本包含了我们所经常用到的运算函数(自动微分算子)，但若我们希望将一个其中没有的函数也加入到计算图中，则需要对<code>autograd.Function</code>进行扩展，比如我们可以重写<code>ReLu</code>函数，然后将其纳入自动微分:</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python"># -*- coding: utf-8 -*-
+<h4 id="Extend-autograd-function">Extend autograd function</h4>
+<p>可以看到，有了<code>autograd</code>这个工具后，复杂网络的反向梯度计算也很容易解决。虽然<code>autograd.Function</code>中已经基本包含了我们所经常用到的运算函数(自动微分算子)，但若我们希望将一个其中没有的函数也加入到计算图中，则需要对<code>autograd.Function</code>进行扩展，比如我们可以重写<code>ReLu</code>函数，然后将其纳入自动微分:</p>
+<pre class="line-numbers language-language-python"><code class="language-language-python"># -*- coding: utf-8 -*-
 import torch
 
 
@@ -742,8 +762,9 @@ for t in range(500):
         w1.grad.zero_()
         w2.grad.zero_()
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="nn-Module"><a href="#nn-Module" class="headerlink" title="nn.Module"></a>nn.Module</h4><p>如果我们要构建一个深层神经网络，固然可以用这些基本的自动微分算子来构建，但这样做显得有些<code>low-level</code>，因为神经网络在进行理论推导时实际上就是<code>层的堆砌</code>，那么在进行编程实现时，可否沿用这个思想，将一些微分算子封装成神经网络层的形式，pytorch中实现这个功能是通过包<code>nn</code>，<code>nn</code>中除了定义了一系列模块<code>Modules</code>，同时还有大量的损失函数，下面我们就用<code>torch.nn.Sequential</code>来重新实现这样一个三层神经网络:</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">import torch
+<h4 id="nn-Module">nn.Module</h4>
+<p>如果我们要构建一个深层神经网络，固然可以用这些基本的自动微分算子来构建，但这样做显得有些<code>low-level</code>，因为神经网络在进行理论推导时实际上就是<code>层的堆砌</code>，那么在进行编程实现时，可否沿用这个思想，将一些微分算子封装成神经网络层的形式，pytorch中实现这个功能是通过包<code>nn</code>，<code>nn</code>中除了定义了一系列模块<code>Modules</code>，同时还有大量的损失函数，下面我们就用<code>torch.nn.Sequential</code>来重新实现这样一个三层神经网络:</p>
+<pre class="line-numbers language-language-python"><code class="language-language-python">import torch
 
 # N is batch size; D_in is input dimension;
 # H is hidden dimension; D_out is output dimension.
@@ -798,8 +819,9 @@ for t in range(500):
             param -= learning_rate * param.grad
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>可以看到，与不使用<code>nn</code>包相比，上面的代码实现一方面利用<code>nn.Module.Sequential</code>实现了对神经网络层的封装，另一方面应用<code>nn.MSELoss</code>来替代原始的手写损失函数，使得代码的可读性和简洁性进一步提升。同时需要注意的是，在进行反向传播之前通过<code>model.zero_grad()</code>将存储的梯度归0，在进行参数更新时必须要使用<code>with torch.no_grad()</code>上下文管理语句来避免在进行参数更新时仍记录梯度，提高计算速度。</p>
-<h4 id="optim"><a href="#optim" class="headerlink" title="optim"></a>optim</h4><p>在实际进行优化时，我们不仅会用到<code>SGD</code>这种常规的优化算法，同时也会用到一些复杂的优化算法如<code>AdaGrad</code>,<code>RMSprop</code>, <code>Adam</code>等，<code>torch.optim</code>提供了大部分常用的优化算法，同时应用优化器后也不需要再使用<code>with torch.no_grad()</code>语句，可以直接使用<code>optimizer.step()</code>来实现参数更新，重写这个三层神经网络:</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python"># -*- coding: utf-8 -*-
+<h4 id="optim">optim</h4>
+<p>在实际进行优化时，我们不仅会用到<code>SGD</code>这种常规的优化算法，同时也会用到一些复杂的优化算法如<code>AdaGrad</code>,<code>RMSprop</code>, <code>Adam</code>等，<code>torch.optim</code>提供了大部分常用的优化算法，同时应用优化器后也不需要再使用<code>with torch.no_grad()</code>语句，可以直接使用<code>optimizer.step()</code>来实现参数更新，重写这个三层神经网络:</p>
+<pre class="line-numbers language-language-python"><code class="language-language-python"># -*- coding: utf-8 -*-
 import torch
 
 # N is batch size; D_in is input dimension;
@@ -848,8 +870,9 @@ for t in range(500):
     # parameters
     optimizer.step()
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="Custom-nn-Modules"><a href="#Custom-nn-Modules" class="headerlink" title="Custom nn Modules"></a>Custom nn Modules</h4><p>在前面定义这个神经网络是通过<code>torch.nn.Sequential</code>将各层函数封装成一个模型，有时可能需要定义一个更加复杂的模型，而这个模型中的有些模块需要自己手动实现，此时可以通过定义一个继承<code>torch.nn.Module</code>的子类来实现这个功能：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python"># -*- coding: utf-8 -*-
+<h4 id="Custom-nn-Modules">Custom nn Modules</h4>
+<p>在前面定义这个神经网络是通过<code>torch.nn.Sequential</code>将各层函数封装成一个模型，有时可能需要定义一个更加复杂的模型，而这个模型中的有些模块需要自己手动实现，此时可以通过定义一个继承<code>torch.nn.Module</code>的子类来实现这个功能：</p>
+<pre class="line-numbers language-language-python"><code class="language-language-python"># -*- coding: utf-8 -*-
 import torch
 
 
@@ -905,32 +928,35 @@ for t in range(500):
     optimizer.step()
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>可以看到，这样做其实与直接使用<code>torch.nn.Sequential</code>来定义模型在有些情况下是差不多的，但通过继承<code>nn.Module</code>一方面可以使得自己的模型更具扩展性，同时代码的可读性也进一步加强，因为你自己的神经网络模型是以一个类的形式存在的。</p>
-<h4 id="TensorDataset"><a href="#TensorDataset" class="headerlink" title="TensorDataset"></a>TensorDataset</h4><p>在进行数据处理时，我们的数据基本都是<code>x_train,y_train,x_test,y_test</code>的形式，在进行迭代时可能必须要通过下标来进行迭代，而为了让迭代操作更加方便，<code>pytorch</code>引入了<code>torch.utils.data</code>来辅助进行数据处理，而其中<code>TensorDataset()</code>方法相当于是对<code>x,y</code>做了一个<code>wrap</code>操作，在进行迭代时可以一起迭代而不需要分别迭代：</p>
+<h4 id="TensorDataset">TensorDataset</h4>
+<p>在进行数据处理时，我们的数据基本都是<code>x_train,y_train,x_test,y_test</code>的形式，在进行迭代时可能必须要通过下标来进行迭代，而为了让迭代操作更加方便，<code>pytorch</code>引入了<code>torch.utils.data</code>来辅助进行数据处理，而其中<code>TensorDataset()</code>方法相当于是对<code>x,y</code>做了一个<code>wrap</code>操作，在进行迭代时可以一起迭代而不需要分别迭代：</p>
 <blockquote>
 <p>应用<code>TensorDataset()</code>方法:</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">train_ds = TensorDataset(x_train, y_train)
+<pre class="line-numbers language-language-python"><code class="language-language-python">train_ds = TensorDataset(x_train, y_train)
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>  应用前迭代：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">xb = x_train[start_i:end_i]
+<p>应用前迭代：</p>
+<pre class="line-numbers language-language-python"><code class="language-language-python">xb = x_train[start_i:end_i]
 yb = y_train[start_i:end_i]
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>应用后迭代：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">xb,yb = train_ds[i*bs : i*bs+bs]
+<pre class="line-numbers language-language-python"><code class="language-language-python">xb,yb = train_ds[i*bs : i*bs+bs]
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 </blockquote>
-<h4 id="DataLoader"><a href="#DataLoader" class="headerlink" title="DataLoader"></a>DataLoader</h4><p>虽然使用<code>TensorDataset</code>使得迭代运算变得简单，但我们还是按照<code>batch_size</code>的大小来对迭代下标进行维护，为了能够更方便地应用数据集进行训练，<code>torch.utils.data</code>又为我们提供了另一个好用的工具<code>DataLoader</code>,它可以将<code>warp</code>之后的数据集按照<code>batch_size</code>大小进行分割，然后在迭代时每次取一个<code>batch</code>的数据。</p>
+<h4 id="DataLoader">DataLoader</h4>
+<p>虽然使用<code>TensorDataset</code>使得迭代运算变得简单，但我们还是按照<code>batch_size</code>的大小来对迭代下标进行维护，为了能够更方便地应用数据集进行训练，<code>torch.utils.data</code>又为我们提供了另一个好用的工具<code>DataLoader</code>,它可以将<code>warp</code>之后的数据集按照<code>batch_size</code>大小进行分割，然后在迭代时每次取一个<code>batch</code>的数据。</p>
 <blockquote>
 <p>应用<code>DataLoader</code>对数据集进行处理：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">train_ds = TensorDataset(x_train, y_train)
+<pre class="line-numbers language-language-python"><code class="language-language-python">train_ds = TensorDataset(x_train, y_train)
 train_dl = DataLoader(train_ds, batch_size=bs)
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>对处理后的数据进行迭代：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">for xb,yb in train_dl:
+<pre class="line-numbers language-language-python"><code class="language-language-python">for xb,yb in train_dl:
    pred = model(xb)
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 </blockquote>
-<h4 id="MNIST数据集CNN代码"><a href="#MNIST数据集CNN代码" class="headerlink" title="MNIST数据集CNN代码"></a>MNIST数据集CNN代码</h4><p>有了应用上面的那些封装好的api，在MNIST数据集上实现一个CNN代码便不再困难，下面给出代码：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">from pathlib import Path
+<h4 id="MNIST数据集CNN代码">MNIST数据集CNN代码</h4>
+<p>有了应用上面的那些封装好的api，在MNIST数据集上实现一个CNN代码便不再困难，下面给出代码：</p>
+<pre class="line-numbers language-language-python"><code class="language-language-python">from pathlib import Path
 from matplotlib import pyplot as plt
 from IPython.core.debugger import set_trace
 from torch import nn
@@ -1034,9 +1060,9 @@ def cal_acur(model, train_dl, valid_dl):
     train_acur = train_pred_right.float()/(len(train_dl)*train_dl.batch_size) 
     valid_acur = valid_pred_right.float()/(len(valid_dl)*valid_dl.batch_size)
     return train_acur.item(), valid_acur.item()
+        
 
-
-
+		
 
 if __name__ == '__main__':
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
@@ -1056,8 +1082,10 @@ if __name__ == '__main__':
     valid_dl = WrappedDataLoader(valid_dl, preprocess, batch_size)
     model, opt = get_model()
     fit(epoches, model, loss_func, opt, train_dl, valid_dl)
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>最后总结一下<code>pytorch</code>中常用的包：</p>
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="总结">总结</h3>
+<p>最后总结一下<code>pytorch</code>中常用的包：</p>
 <ul>
 <li><code>torch.nn:</code>包含搭建神经网络层的模块(Modules)和一系列<code>loss</code>函数</li>
 <li><code>torch.nn.functional:</code>提供常用的激活函数，这算是一个比较低级的api，大部分激活函数在<code>nn</code>下都有封装</li>
@@ -1880,7 +1908,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">71.8k</span>&nbsp;字
+                class="white-color">72.4k</span>&nbsp;字
             
             
             
