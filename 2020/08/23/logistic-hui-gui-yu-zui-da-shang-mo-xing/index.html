@@ -483,14 +483,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    4k
+                    4.1k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    16 分
+                    17 分
                 </div>
                 
 
@@ -505,289 +505,151 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>在学习李航老师《统计学习》条件随机场章节时，对于学习算法感到有些陌生，后来发现在书中第六章“logistic回归与最大熵模型”有过一些介绍，因此本章节便总结一下相关知识，其中logistic回归模型做简要介绍，重点放在最大熵模型的学习算法上，本文按照如下结构组织：</p>
-<ul>
-<li>logistic回归</li>
-<li>最大熵模型</li>
-</ul>
-<a id="more"></a>
-<h3 id="logistic回归">logistic回归</h3>
-<h4 id="logistic分布">logistic分布</h4>
-<p>首先介绍下logistic分布：</p>
-<blockquote>
-<p><strong>logistic分布</strong>:设$X$是连续变量，$X$服从logistic分布是指$X$具有下列分布函数和密度函数：<br>
-$$<br>
-\begin{aligned}<br>
-F(x) &amp;= P(X \leq x) = \frac{1}{1 + e^{-\frac{x-\mu}{\gamma}}} \<br>
-f(x) &amp;= F’(x) = \frac{e^{-\frac{x-\mu}{\gamma}}}{\gamma(1+e^{-\frac{x-\mu}{\gamma}})^2}<br>
-\end{aligned}<br>
-$$<br>
-式中，$\mu$为位置参数，$\gamma&gt;0$为形状参数</p>
-</blockquote>
-<p>对于logistic分布，其概率密度函数和分布函数如下图所示：<br>
-<img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/logistic.jpeg" alt="logistic"><br>
-分布函数的图形是一条$S$形曲线，该曲线以点$(\mu,\frac{1}{2})$为中心对称，即满足:<br>
-$$<br>
-F(-x+\mu) - \frac{1}{2} = -F(x+\mu) +\frac{1}{2}<br>
-$$<br>
-曲线在中心增长速度较快，在两端增长速度慢，形状参数$\gamma$的值越小，曲线在中心附近增长得越快。</p>
-<h4 id="二项logistic回归模型">二项logistic回归模型</h4>
-<p>二项logistic回归模型是一种二分类模型，由条件概率分布$P(Y|X)$表示，形式为参数化的logistic分布，随机变量$X$的取值为实数，随机变量$Y$取值为1或0，下面给出logistic回归模型定义：</p>
-<blockquote>
-<p><strong>logistic回归模型</strong>：二项logistic回归模型是如下条件概率分布：<br>
-$$<br>
-\begin{aligned}<br>
-P(Y=1|x) &amp;= \frac{exp(w \cdot x + b)}{1 + exp(w \cdot x + b)} \<br>
-P(Y=0|x) &amp;= \frac{1}{1 + exp(w \cdot x + b)}<br>
-\end{aligned}<br>
-$$<br>
-其中，$x \in R^n$是输入，$Y \in {0,1}$是输出，$w \in R^n,b \in R$是参数。</p>
-</blockquote>
-<p>若我们已经有了logistic模型，则判断样本点$x$属于哪一类只需要比较两个概率值的大小，下面给出对数几率的定义:</p>
-<blockquote>
-<p><strong>对数几率</strong>：一个事件的几率是指该事件发生的概率与该事件不发生的概率的比值，如果一个事件发生的概率是$p$,那么该事件的几率是$\frac{p}{1-p}$,该事件的对数几率或logit函数是:<br>
-$$<br>
-logit§ = log \frac{p}{1-p}<br>
-$$</p>
-</blockquote>
-<p>对于logistic回归而言，事件$(Y=1|X)$的对数几率为：<br>
-$$<br>
-log \frac{P(Y=1|x)}{1 - P(Y=1|x)} = w \cdot x<br>
-$$<br>
-这说明，logistic回归模型可以看做是用线性回归模型去逼近真实标记的对数几率。因此logistic回归模型也被称为对数几率回归，可以看作是经过了如下的映射环节，将$R^n$空间中的$x$映射到了其标记的概率：<br>
-$$<br>
-x \in R^n  \rightarrow w \cdot x \in R \rightarrow P(Y=1|x) \in [0,1]<br>
-$$</p>
+                <p>在学习李航老师《统计学习》条件随机场章节时，对于学习算法感到有些陌生，后来发现在书中第六章“logistic回归与最大熵模型”有过一些介绍，因此本章节便总结一下相关知识，其中logistic回归模型做简要介绍，重点放在最大熵模型的学习算法上，本文按照如下结构组织： - logistic回归 - 最大熵模型 <a id="more"></a> ### logistic回归 #### logistic分布 首先介绍下logistic分布： &gt; <strong>logistic分布</strong>:设<span class="math inline">\(X\)</span>是连续变量，<span class="math inline">\(X\)</span>服从logistic分布是指<span class="math inline">\(X\)</span>具有下列分布函数和密度函数： &gt; <span class="math display">\[
+    \begin{aligned}
+        F(x) &amp;= P(X \leq x) = \frac{1}{1 + e^{-\frac{x-\mu}{\gamma}}} \\
+        f(x) &amp;= F&#39;(x) = \frac{e^{-\frac{x-\mu}{\gamma}}}{\gamma(1+e^{-\frac{x-\mu}{\gamma}})^2}
+    \end{aligned}
+&gt; \]</span> &gt; 式中，<span class="math inline">\(\mu\)</span>为位置参数，<span class="math inline">\(\gamma&gt;0\)</span>为形状参数</p>
+<p>对于logistic分布，其概率密度函数和分布函数如下图所示： <img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/logistic.jpeg" alt="logistic" /> 分布函数的图形是一条<span class="math inline">\(S\)</span>形曲线，该曲线以点<span class="math inline">\((\mu,\frac{1}{2})\)</span>为中心对称，即满足: <span class="math display">\[
+    F(-x+\mu) - \frac{1}{2} = -F(x+\mu) +\frac{1}{2}
+\]</span> 曲线在中心增长速度较快，在两端增长速度慢，形状参数<span class="math inline">\(\gamma\)</span>的值越小，曲线在中心附近增长得越快。 #### 二项logistic回归模型 二项logistic回归模型是一种二分类模型，由条件概率分布<span class="math inline">\(P(Y|X)\)</span>表示，形式为参数化的logistic分布，随机变量<span class="math inline">\(X\)</span>的取值为实数，随机变量<span class="math inline">\(Y\)</span>取值为1或0，下面给出logistic回归模型定义： &gt; <strong>logistic回归模型</strong>：二项logistic回归模型是如下条件概率分布： &gt; <span class="math display">\[
+    \begin{aligned}
+        P(Y=1|x) &amp;= \frac{exp(w \cdot x + b)}{1 + exp(w \cdot x + b)} \\
+        P(Y=0|x) &amp;= \frac{1}{1 + exp(w \cdot x + b)} 
+    \end{aligned}
+&gt; \]</span> &gt; 其中，<span class="math inline">\(x \in R^n\)</span>是输入，<span class="math inline">\(Y \in \{0,1\}\)</span>是输出，<span class="math inline">\(w \in R^n,b \in R\)</span>是参数。</p>
+<p>若我们已经有了logistic模型，则判断样本点<span class="math inline">\(x\)</span>属于哪一类只需要比较两个概率值的大小，下面给出对数几率的定义: &gt; <strong>对数几率</strong>：一个事件的几率是指该事件发生的概率与该事件不发生的概率的比值，如果一个事件发生的概率是<span class="math inline">\(p\)</span>,那么该事件的几率是<span class="math inline">\(\frac{p}{1-p}\)</span>,该事件的对数几率或logit函数是: &gt; <span class="math display">\[
+    logit(p) = log \frac{p}{1-p}
+&gt; \]</span></p>
+<p>对于logistic回归而言，事件<span class="math inline">\((Y=1|X)\)</span>的对数几率为： <span class="math display">\[
+    log \frac{P(Y=1|x)}{1 - P(Y=1|x)} = w \cdot x
+\]</span> 这说明，logistic回归模型可以看做是用线性回归模型去逼近真实标记的对数几率。因此logistic回归模型也被称为对数几率回归，可以看作是经过了如下的映射环节，将<span class="math inline">\(R^n\)</span>空间中的<span class="math inline">\(x\)</span>映射到了其标记的概率： <span class="math display">\[
+    x \in R^n  \rightarrow w \cdot x \in R \rightarrow P(Y=1|x) \in [0,1]
+\]</span></p>
 <h4 id="模型参数估计">模型参数估计</h4>
-<p>对于logistic回归模型，需要估计的参数是$w,b$,可以考虑将它们合并为一个$n+1$维向量:<br>
-$$<br>
-w = [w;b]<br>
-$$<br>
-同时，给输入向量加一维，表示为:<br>
-$$<br>
-x = [x;1]<br>
-$$<br>
-这样logistic回归模型就可以表示成更加紧凑的形式:<br>
-$$<br>
-\begin{aligned}<br>
-P(Y=1|x) &amp;=  \frac{exp(w \cdot x) }{1+exp(w \cdot x)} \<br>
-P(Y=0|x) &amp;=  \frac{1}{1 + exp(w \cdot x)}<br>
-\end{aligned}<br>
-$$<br>
-logistic模型参数学习属于有监督的模型学习问题范畴，利用极大似然法就可以解决，设：<br>
-$$<br>
-P(Y=1|x) = \pi(x), \quad P(Y=0|x) = 1- \pi(x)<br>
-$$<br>
-似然函数可以写成:<br>
-$$<br>
-\prod_{i=1}^N [\pi(x_i)]^{y_i} [1 - \pi(x_i)]^{1-y_i}<br>
-$$<br>
-对数似然函数为:<br>
-$$<br>
-\begin{aligned}<br>
-L(w) &amp;= \sum_{i=1}^N [y_i log \pi(x_i) + (1-y_i)log(1-\pi(x_i))] \<br>
-&amp;= \sum_{i=1}^N [y_i log \frac{\pi(x_i)}{1 - \pi(x_i)} + log(1-\pi(x_i))] \<br>
-&amp;= \sum_{i=1}^N [y_i(w \cdot x) - log(1 + exp(w \cdot x))]<br>
-\end{aligned}<br>
-$$<br>
-对$L(w)$求极大值，得到$w$的估计值，常用梯度下降法及拟牛顿法求解(后面专开一章讲解)。</p>
-<h4 id="多项logistic回归">多项logistic回归</h4>
-<p>上面介绍的是二项logistic模型，适用于二分类，可以将其推广为多项logistic分类模型，用于多类分类。假设离散型随机变量$Y$的取值集合是${1,2,\dots,K}$,那么多项logistic回归的模型是:<br>
-$$<br>
-\begin{aligned}<br>
-P(Y=k|x) &amp;= \frac{\exp(w_k \cdot x)}{1 + \sum_{k=1}^{K-1} \exp(w_k \cdot x)} \<br>
-P(Y=K|x) &amp;= \frac{1}{1 + \sum_{k=1}^{K-1} \exp(w_k \cdot x)}<br>
-\end{aligned}<br>
-$$<br>
-这里$x \in R^{n+1},w_k \in R^{n+1}$。二项logistic回归的参数估计法也可以推广到多项logistic回归</p>
+<p>对于logistic回归模型，需要估计的参数是<span class="math inline">\(w,b\)</span>,可以考虑将它们合并为一个<span class="math inline">\(n+1\)</span>维向量: <span class="math display">\[
+    w = [w;b]
+\]</span> 同时，给输入向量加一维，表示为: <span class="math display">\[
+    x = [x;1]
+\]</span> 这样logistic回归模型就可以表示成更加紧凑的形式: <span class="math display">\[
+    \begin{aligned}
+        P(Y=1|x) &amp;=  \frac{exp(w \cdot x) }{1+exp(w \cdot x)} \\
+        P(Y=0|x) &amp;=  \frac{1}{1 + exp(w \cdot x)}
+    \end{aligned}
+\]</span> logistic模型参数学习属于有监督的模型学习问题范畴，利用极大似然法就可以解决，设： <span class="math display">\[
+    P(Y=1|x) = \pi(x), \quad P(Y=0|x) = 1- \pi(x)
+\]</span> 似然函数可以写成: <span class="math display">\[
+    \prod_{i=1}^N [\pi(x_i)]^{y_i} [1 - \pi(x_i)]^{1-y_i}
+\]</span> 对数似然函数为: <span class="math display">\[
+    \begin{aligned}
+        L(w) &amp;= \sum_{i=1}^N [y_i log \pi(x_i) + (1-y_i)log(1-\pi(x_i))] \\
+            &amp;= \sum_{i=1}^N [y_i log \frac{\pi(x_i)}{1 - \pi(x_i)} + log(1-\pi(x_i))] \\
+            &amp;= \sum_{i=1}^N [y_i(w \cdot x) - log(1 + exp(w \cdot x))]
+    \end{aligned}
+\]</span> 对<span class="math inline">\(L(w)\)</span>求极大值，得到<span class="math inline">\(w\)</span>的估计值，常用梯度下降法及拟牛顿法求解(后面专开一章讲解)。 #### 多项logistic回归 上面介绍的是二项logistic模型，适用于二分类，可以将其推广为多项logistic分类模型，用于多类分类。假设离散型随机变量<span class="math inline">\(Y\)</span>的取值集合是<span class="math inline">\(\{1,2,\dots,K\}\)</span>,那么多项logistic回归的模型是: <span class="math display">\[
+    \begin{aligned}
+        P(Y=k|x) &amp;= \frac{\exp(w_k \cdot x)}{1 + \sum_{k=1}^{K-1} \exp(w_k \cdot x)} \\
+        P(Y=K|x) &amp;= \frac{1}{1 + \sum_{k=1}^{K-1} \exp(w_k \cdot x)}
+    \end{aligned}
+\]</span> 这里<span class="math inline">\(x \in R^{n+1},w_k \in R^{n+1}\)</span>。二项logistic回归的参数估计法也可以推广到多项logistic回归</p>
 <h3 id="最大熵模型">最大熵模型</h3>
-<p>最大熵模型，是由最大熵原理推导实现。本部分按照以下结构组织:</p>
-<ul>
-<li>最大熵原理</li>
-<li>最大熵模型推导</li>
-<li>最大熵模型学习</li>
-</ul>
+<p>最大熵模型，是由最大熵原理推导实现。本部分按照以下结构组织: - 最大熵原理 - 最大熵模型推导 - 最大熵模型学习</p>
 <h4 id="最大熵原理">最大熵原理</h4>
-<p>最大熵原理是概率模型学习的一个准则，最大熵原理认为：</p>
-<blockquote>
-<p>学习概率模型时，在所有可能的概率模型中，熵最大的模型是最好的模型。通常用约束条件来确定概率模型的集合，所以，最大熵原理也可以表述为在满足约束条件的模型集合中选取熵最大的模型。</p>
-</blockquote>
-<p>我们首先来复习下信息论中关于熵的定义：</p>
-<blockquote>
-<p>在信息论与概率统计中，熵是表示<strong>随机变量不确定性</strong>的度量，设$X$是一个取有限个值的离散随机变量，其概率分布为:<br>
-$$<br>
-P(X = x_i) = p_i, \quad i =1,2,\dots,n<br>
-$$<br>
-则随机变量$X$的熵定义为:<br>
-$$<br>
-H(X) = - \sum_{i=1}^n p_i \log p_i<br>
-$$</p>
-</blockquote>
-<p>若$p_i = 0$,则定义$0\log 0 =0$,式中的对数一般取以2为底或者以$e$为底，这时熵的单位被称作比特或纳特，由定义可知，熵只依赖于$X$的分布，而与$X$的取值无关，因此也可将$X$的熵记作$H§$,熵越大，随机变量的不确定性越大。因为$p_i \leq 0$,由$H§$函数性质(凹函数，应用拉格朗日乘子法可求最大值)可知:<br>
-$$<br>
-0 \leq H§ \leq \log n<br>
-$$<br>
-当且仅当$X$是均匀分布时右侧等号成立,也就是说，当$X$服从均匀分布时，熵最大，该随机变量的不确定性最大。下面给出条件熵的定义:</p>
-<blockquote>
-<p>设有随机变量$(X,Y)$,其联合概率分布为：<br>
-$$<br>
-P(X = x_i,Y = y_i) = p_{ij}\quad i = 1,2,\dots,n;\quad j = 1,2,\dots,m<br>
-$$<br>
-条件熵$H(Y|X)$表示在已知随机变量$X$条件下随机变量$Y$的不确定性。随机变量$X$给定的条件下随机变量$Y$的条件熵$H(Y|X)$,定义为$X$给定条件下$Y$的条件概率分布的熵对$X$的数学期望：<br>
-$$<br>
-H(Y|X) = \sum_{i=1}^n p_i H(Y|X = x_i)<br>
-$$<br>
-当熵和条件熵中的概率由数据估计得到时，所对应的熵与条件熵分别称为经验熵和经验条件熵</p>
-</blockquote>
-<p>直观的，最大熵原理认为要选择的概率模型首先必须满足已有的事实，即约束条件。在没有更多信息情况下，那些不确定的部分都是“等可能的”,最大熵原理通过熵的最大化来表示等可能性。下面通过一个简单的例子来介绍最大熵原理：</p>
-<blockquote>
-<p>🌰：假设随机变量$X$有五个取值${A,B,C,D,E }$,要估计取各个值的概率$P(A),P(B),P©,P(D),P(E)$</p>
-<ul>
-<li>不提供任何额外约束，则只有这些概率的固有约束<br>
-$$<br>
-P(A) + P(B) + P© + P(D) + P(E) = 1<br>
-$$<br>
-因为没有任何额外的信息，则根据最大熵原理，只能够认为该概率分布为均匀分布：<br>
-$$<br>
-P(A) = P(B) = P© = P(D) = P(E) = \frac{1}{5}<br>
-$$</li>
-<li>从一些先验知识中得到了一些对概率值的约束条件，如$P(A) + P(B) = \frac{3}{10}$,满足约束的概率分布仍旧有无穷多个，在缺少其他信息的情况下，可以认为$A$和$B$是等概率的，$C,D,E$等概率。</li>
-</ul>
-</blockquote>
+<p>最大熵原理是概率模型学习的一个准则，最大熵原理认为： &gt; 学习概率模型时，在所有可能的概率模型中，熵最大的模型是最好的模型。通常用约束条件来确定概率模型的集合，所以，最大熵原理也可以表述为在满足约束条件的模型集合中选取熵最大的模型。</p>
+<p>我们首先来复习下信息论中关于熵的定义： &gt; 在信息论与概率统计中，熵是表示<strong>随机变量不确定性</strong>的度量，设<span class="math inline">\(X\)</span>是一个取有限个值的离散随机变量，其概率分布为: &gt; <span class="math display">\[
+    P(X = x_i) = p_i, \quad i =1,2,\dots,n
+&gt; \]</span> 则随机变量<span class="math inline">\(X\)</span>的熵定义为: <span class="math display">\[
+    H(X) = - \sum_{i=1}^n p_i \log p_i 
+\]</span></p>
+<p>若<span class="math inline">\(p_i = 0\)</span>,则定义<span class="math inline">\(0\log 0 =0\)</span>,式中的对数一般取以2为底或者以<span class="math inline">\(e\)</span>为底，这时熵的单位被称作比特或纳特，由定义可知，熵只依赖于<span class="math inline">\(X\)</span>的分布，而与<span class="math inline">\(X\)</span>的取值无关，因此也可将<span class="math inline">\(X\)</span>的熵记作<span class="math inline">\(H(p)\)</span>,熵越大，随机变量的不确定性越大。因为<span class="math inline">\(p_i \leq 0\)</span>,由<span class="math inline">\(H(p)\)</span>函数性质(凹函数，应用拉格朗日乘子法可求最大值)可知: <span class="math display">\[
+    0 \leq H(p) \leq \log n
+\]</span> 当且仅当<span class="math inline">\(X\)</span>是均匀分布时右侧等号成立,也就是说，当<span class="math inline">\(X\)</span>服从均匀分布时，熵最大，该随机变量的不确定性最大。下面给出条件熵的定义: &gt; 设有随机变量<span class="math inline">\((X,Y)\)</span>,其联合概率分布为： <span class="math display">\[
+    P(X = x_i,Y = y_i) = p_{ij}\quad i = 1,2,\dots,n;\quad j = 1,2,\dots,m
+\]</span> 条件熵<span class="math inline">\(H(Y|X)\)</span>表示在已知随机变量<span class="math inline">\(X\)</span>条件下随机变量<span class="math inline">\(Y\)</span>的不确定性。随机变量<span class="math inline">\(X\)</span>给定的条件下随机变量<span class="math inline">\(Y\)</span>的条件熵<span class="math inline">\(H(Y|X)\)</span>,定义为<span class="math inline">\(X\)</span>给定条件下<span class="math inline">\(Y\)</span>的条件概率分布的熵对<span class="math inline">\(X\)</span>的数学期望： <span class="math display">\[
+    H(Y|X) = \sum_{i=1}^n p_i H(Y|X = x_i)
+\]</span> 当熵和条件熵中的概率由数据估计得到时，所对应的熵与条件熵分别称为经验熵和经验条件熵</p>
+<p>直观的，最大熵原理认为要选择的概率模型首先必须满足已有的事实，即约束条件。在没有更多信息情况下，那些不确定的部分都是“等可能的”,最大熵原理通过熵的最大化来表示等可能性。下面通过一个简单的例子来介绍最大熵原理： &gt; 🌰：假设随机变量<span class="math inline">\(X\)</span>有五个取值<span class="math inline">\(\{A,B,C,D,E \}\)</span>,要估计取各个值的概率<span class="math inline">\(P(A),P(B),P(C),P(D),P(E)\)</span> &gt; - 不提供任何额外约束，则只有这些概率的固有约束 &gt; <span class="math display">\[
+    P(A) + P(B) + P(C) + P(D) + P(E) = 1
+&gt; \]</span> &gt; 因为没有任何额外的信息，则根据最大熵原理，只能够认为该概率分布为均匀分布： &gt; <span class="math display">\[
+    P(A) = P(B) = P(C) = P(D) = P(E) = \frac{1}{5}
+&gt; \]</span> &gt; - 从一些先验知识中得到了一些对概率值的约束条件，如<span class="math inline">\(P(A) + P(B) = \frac{3}{10}\)</span>,满足约束的概率分布仍旧有无穷多个，在缺少其他信息的情况下，可以认为<span class="math inline">\(A\)</span>和<span class="math inline">\(B\)</span>是等概率的，<span class="math inline">\(C,D,E\)</span>等概率。</p>
 <p>实际上，最大熵原理就是为我们提供了一种选择最优概率模型的准则(保守)</p>
 <h4 id="最大熵模型的定义">最大熵模型的定义</h4>
-<p>最大熵原理是统计学习的一般原理，将它应用到分类得到最大熵模型。<br>
-假设分类模型是一个条件概率分布$P(Y|X)$,$X \in \mathcal{X} \subseteq R^n$表示输入，$Y \in \mathcal{Y}$表示输出，$\mathcal{X}$和$\mathcal{Y}$分别是输入和输出的集合，这个模型表示的是对于给定的输入$X$，以条件概率$P(Y|X)$输出$Y$。<br>
-给定一个训练数据集:<br>
-$$<br>
-T = {  (x_1,y_1), (x_2,y_2), \dots, (x_N,y_N)}<br>
-$$<br>
-学习的目标是应用最大熵模型选择最好的分类模型。首先考虑模型应该满足的条件，即该数据集为模型添加了哪些约束，给定训练数据集后，我们可以确定联合分布$P(X,Y)$的经验分布和边缘分布$P(X)$的经验分布，分别以$\tilde{P}(X,Y)$和$\tilde{P}(X)$表示:<br>
-$$<br>
-\begin{aligned}<br>
-\tilde{P}(X= x,Y=y) &amp;= \frac{\nu(X = x,Y = y)}{N} \<br>
-\tilde{P}(X = x) &amp;= \frac{\nu(X = x)}{N}<br>
-\end{aligned}<br>
-$$<br>
-式中$\nu(\cdot)$是频数统计函数，$N$表示训练样本容量。用特征函数$f(x,y)$描述输入$x$和输出$y$之间的某一个事实，其定义是:<br>
-$$<br>
-f(x,y) = \begin{cases}<br>
-1,  &amp;x和y满足某一事实 \<br>
-0,  &amp;else<br>
-\end{cases}<br>
-$$<br>
-特征函数$f(x,y)$关于经验分布$\tilde{P}(X,Y)$的期望值，用$E_{\tilde{P}}(f)$表示：<br>
-$$<br>
-E_{\tilde{P}}(f) = \sum_{x,y} \tilde{P}(x,y) f(x,y)<br>
-$$<br>
-特征函数$f(x,y)$关于模型$P(Y|X)$i与经验分布$\tilde{P}(X)$的期望值，用$E_P(f)$表示：<br>
-$$<br>
-E_P(f) = \sum_{x,y} \tilde{P}(x) P(y|x) f(x,y)<br>
-$$<br>
-如果模型能够获取训练数据中的信息，那么就可以假设这两个期望值相等，即：<br>
-$$<br>
-E_P(f) = E_{\tilde{P}}(f)<br>
-$$<br>
-将这作为模型学习的约束条件，假如有$n$个特征函数$f_i(x,y),i=1,2,\dots,n$,那么就有$n$个约束条件，下面给出最大熵模型的定义:</p>
-<blockquote>
-<p>最大熵模型:假设满足所有约束条件的模型集合为:<br>
-$$<br>
-C \equiv { P \in \mathcal{P} |E_P(f_i) = E_{\tilde{P}}(f_i), i = 1,2,\dots,n}<br>
-$$<br>
-定义在条件概率分布$P(Y|X)$上的条件熵为：<br>
-$$<br>
-H§ = -\sum_{x,y}  \tilde{P}(x)P(y|x) log P(y|x)<br>
-$$<br>
-则模型集合$C$中条件熵$H§$最大的模型称为最大熵模型</p>
-</blockquote>
-<p>从定义可以看出，最大熵模型是基于这样一种思想:</p>
-<blockquote>
-<p>当我们需要对一个事件(变量)的概率分布进行预测时，最大熵原理告诉我们所有的预测应当满足全部已知的条件(约束)，而对未知的情况不要做任何主观假设，保留模型最大的不确定性。</p>
-</blockquote>
+<p>最大熵原理是统计学习的一般原理，将它应用到分类得到最大熵模型。 假设分类模型是一个条件概率分布<span class="math inline">\(P(Y|X)\)</span>,<span class="math inline">\(X \in \mathcal{X} \subseteq R^n\)</span>表示输入，<span class="math inline">\(Y \in \mathcal{Y}\)</span>表示输出，<span class="math inline">\(\mathcal{X}\)</span>和<span class="math inline">\(\mathcal{Y}\)</span>分别是输入和输出的集合，这个模型表示的是对于给定的输入<span class="math inline">\(X\)</span>，以条件概率<span class="math inline">\(P(Y|X)\)</span>输出<span class="math inline">\(Y\)</span>。 给定一个训练数据集: <span class="math display">\[
+    T = \{  (x_1,y_1), (x_2,y_2), \dots, (x_N,y_N)\}
+\]</span> 学习的目标是应用最大熵模型选择最好的分类模型。首先考虑模型应该满足的条件，即该数据集为模型添加了哪些约束，给定训练数据集后，我们可以确定联合分布<span class="math inline">\(P(X,Y)\)</span>的经验分布和边缘分布<span class="math inline">\(P(X)\)</span>的经验分布，分别以<span class="math inline">\(\tilde{P}(X,Y)\)</span>和<span class="math inline">\(\tilde{P}(X)\)</span>表示: <span class="math display">\[
+    \begin{aligned}
+        \tilde{P}(X= x,Y=y) &amp;= \frac{\nu(X = x,Y = y)}{N} \\
+        \tilde{P}(X = x) &amp;= \frac{\nu(X = x)}{N} 
+    \end{aligned}
+\]</span> 式中<span class="math inline">\(\nu(\cdot)\)</span>是频数统计函数，<span class="math inline">\(N\)</span>表示训练样本容量。用特征函数<span class="math inline">\(f(x,y)\)</span>描述输入<span class="math inline">\(x\)</span>和输出<span class="math inline">\(y\)</span>之间的某一个事实，其定义是: <span class="math display">\[
+    f(x,y) = \begin{cases}
+        1,  &amp;x和y满足某一事实 \\
+        0,  &amp;else 
+    \end{cases}
+\]</span> 特征函数<span class="math inline">\(f(x,y)\)</span>关于经验分布<span class="math inline">\(\tilde{P}(X,Y)\)</span>的期望值，用<span class="math inline">\(E_{\tilde{P}}(f)\)</span>表示： <span class="math display">\[
+    E_{\tilde{P}}(f) = \sum_{x,y} \tilde{P}(x,y) f(x,y)
+\]</span> 特征函数<span class="math inline">\(f(x,y)\)</span>关于模型<span class="math inline">\(P(Y|X)\)</span>i与经验分布<span class="math inline">\(\tilde{P}(X)\)</span>的期望值，用<span class="math inline">\(E_P(f)\)</span>表示： <span class="math display">\[
+    E_P(f) = \sum_{x,y} \tilde{P}(x) P(y|x) f(x,y)
+\]</span> 如果模型能够获取训练数据中的信息，那么就可以假设这两个期望值相等，即： <span class="math display">\[
+    E_P(f) = E_{\tilde{P}}(f)
+\]</span> 将这作为模型学习的约束条件，假如有<span class="math inline">\(n\)</span>个特征函数<span class="math inline">\(f_i(x,y),i=1,2,\dots,n\)</span>,那么就有<span class="math inline">\(n\)</span>个约束条件，下面给出最大熵模型的定义: &gt; 最大熵模型:假设满足所有约束条件的模型集合为: &gt; <span class="math display">\[
+    C \equiv \{ P \in \mathcal{P} |E_P(f_i) = E_{\tilde{P}}(f_i), i = 1,2,\dots,n\} 
+&gt; \]</span> &gt; 定义在条件概率分布<span class="math inline">\(P(Y|X)\)</span>上的条件熵为： &gt; <span class="math display">\[
+    H(P) = -\sum_{x,y}  \tilde{P}(x)P(y|x) log P(y|x)
+&gt; \]</span> &gt; 则模型集合<span class="math inline">\(C\)</span>中条件熵<span class="math inline">\(H(P)\)</span>最大的模型称为最大熵模型</p>
+<p>从定义可以看出，最大熵模型是基于这样一种思想: &gt; 当我们需要对一个事件(变量)的概率分布进行预测时，最大熵原理告诉我们所有的预测应当满足全部已知的条件(约束)，而对未知的情况不要做任何主观假设，保留模型最大的不确定性。</p>
 <h4 id="最大熵模型的学习">最大熵模型的学习</h4>
-<p>最大熵模型的学习过程就是求解最大熵模型的过程。最大熵模型学习可以形式化为约束最优化问题。<br>
-对于给定的训练数据集$T = { (x_1,y_1), (x_2,y_2),\dots, (x_N,y_N)}$以及特征函数$f_i(x,y),i=1,2,\dots,n$,最大熵模型的学习等价于求解最优化问题:<br>
-$$<br>
-\begin{aligned}<br>
-&amp;\max_{P \in C} \quad H§ = -\sum_{x,y}  \tilde{P}(x)P(y|x) log P(y|x) \<br>
-&amp;s.t. \quad E_P(f_i) = E_{\tilde{P}}(f_i),\quad i =1,2,\dots,n \<br>
-&amp; \quad \quad \sum_y P(y|x) =1<br>
-\end{aligned}<br>
-$$<br>
-按照最优化问题的习惯，将求解最大值问题改为等价的求最小值问题:<br>
-$$<br>
-\begin{aligned}<br>
-&amp;\min_{P \in C} \quad -H§ = \sum_{x,y}  \tilde{P}(x)P(y|x) log P(y|x) \<br>
-&amp;s.t. \quad E_P(f_i) - E_{\tilde{P}}(f_i) = 0,\quad i =1,2,\dots,n \<br>
-&amp; \quad \quad \sum_y P(y|x) =1<br>
-\end{aligned}<br>
-$$<br>
-<strong>该优化问题按照李航老师《统计学习》中的说法是满足强对偶性的，但书中只是一带而过，并没有进行详细说明，此处留坑，后面的推导就先默认该优化问题满足强对偶性，后面我搞懂了再来填坑</strong></p>
-<hr>
-<p><strong>这个问题我又思考了一下，自变量是一个分布看似是一个很虚的东西，但它也不过是一个函数，若$X,Y$都是离散取值变量，那么这个条件概率分布只是一个有限长度的向量，而若$X,Y$取值连续，则该条件概率密度函数可以看作一个无限长的向量，这样来看原始待优化函数其实就是$\boldsymbol{x} \cdot \log \boldsymbol{x}$,这显然是一个凸函数，而约束条件也不过是待优化参数的线性组合，这显然是一个凸优化问题</strong></p>
-<hr>
-<p>该优化问题共有$n+1$个等式约束，因此考虑引入拉格朗日乘子$w_0,w_1,\dots,w_n$,定义拉格朗日函数$L(P,w)$:<br>
-$$<br>
-\begin{aligned}<br>
-L(P,w) &amp;= -H§ + w_0 (1 - \sum_y P(y|x)) + \sum_{i=1}^n w_i (E_{\tilde{P}}(f_i) - E_P(f_i)) \<br>
-&amp;= \sum_{x,y}  \tilde{P}(x)P(y|x) log P(y|x)  + w_0 (1 - \sum_y P(y|x)) \<br>
-&amp;+ \sum_{i=1}^n w_i(\sum_{x,y} \tilde{P}(x,y) f(x,y) - \sum_{x,y} \tilde{P}(x) P(y|x) f(x,y))<br>
-\end{aligned}<br>
-$$<br>
-原始优化问题的对偶问题写作：<br>
-$$<br>
-\max_{w} \min_{P} L(P,w)<br>
-$$<br>
-首先求解对偶函数$\phi(w)$,因为$L(P,w)$关于$P$是凸函数，因此直接通过求导令导数为0即可：<br>
-$$<br>
-\begin{aligned}<br>
-\frac{ \partial L(P,w)}{\partial P(y|x)} &amp;=  log P(y|x) +1 - w_0 - \sum_{i=1}^n w_i f_i (x,y) = 0<br>
-\end{aligned}<br>
-$$<br>
-在求导这一部分我不太认同李航老师书中的写法，因为$P(y|x)$本身可以看作是一个向量，因此求导相当于对该向量某个分量求导。由此可得$P(y|x)$的解析表达式:<br>
-$$<br>
-P(y|x) = \exp(\sum_{i=1}^n w_i f_i(x,y) + w_0 -1) = \frac{\exp(\sum_{i=1}^n w_i f_i(x,y))}{\exp(1-w_0)}<br>
-$$<br>
-又因为有概率密度函数的固有约束$\sum_y P(y|x) = 1$,可得:<br>
-$$\exp(1-w_0) = \sum_y \exp(\sum_{i=1}^n w_i f_i(x,y))$$<br>
-因此，$P_w(y|x)$的解析表达式写作:<br>
-$$<br>
-\begin{aligned}<br>
-P_w(y|x) &amp;= \frac{1}{Z_w(x)} \exp(\sum_{i=1}^n w_i f_i(x,y)) \<br>
-Z_w(x) &amp;= \sum_y \exp(\sum_{i=1}^n w_i f_i(x,y))<br>
-\end{aligned}<br>
-$$<br>
-至此，我们得到了对偶函数$\phi(w)$表达式：<br>
-$$<br>
-\begin{aligned}<br>
-\phi(w) &amp;= \sum_{x,y} \tilde{P}(x,y) \sum_{i=1}^n w_i f_i(x,y) + \sum_{x,y} \tilde{P}(x)P_w(y|x)(\log P_w(y|x) - \sum_{i=1}^n w_i f_i(x,y)) \<br>
-&amp;= \sum_{x,y} \tilde{P}(x,y) \sum_{i=1}^n w_i f_i(x,y) - \sum_{x,y} \tilde{P}(x)P_w(y|x) \log Z_w(x) \<br>
-&amp;= \sum_{x,y} \tilde{P}(x,y) \sum_{i=1}^n w_i f_i(x,y) - \sum_x \tilde{P}(x) \log Z_w(x)<br>
-\end{aligned}<br>
-$$<br>
-因此接下来便是求解对偶优化问题:<br>
-$$<br>
-\max \phi(w)<br>
-$$<br>
-得到$w^\ast$,然后回代$P_w(y|x)$,得到最大熵模型表达式:<br>
-$$<br>
-P_{w^\ast}(y|x)<br>
-$$</p>
-<h4 id="极大似然估计">极大似然估计</h4>
-<p>这一部分旨在证明一条性质:</p>
-<blockquote>
-<p>最大熵模型求解过程中，对偶函数的极大化等价于最大熵模型的极大似然估计</p>
-</blockquote>
-<p>首先写出对数似然函数的形式:<br>
-$$<br>
-\begin{aligned}<br>
-L_{\tilde{P}}(P_w) &amp;= \log \prod_{x,y} P(y|x)^{\tilde{P}(x,y)} = \sum_{x,y} \tilde{P}(x,y) \log P(y|x) \<br>
-&amp;= \sum_{x,y} \tilde{P}(x,y) \sum_{i=1}^n w_i f_i(x,)  - \sum_{x,y} \tilde{P}(x,y) \log Z_w(x) \<br>
-&amp;= \sum_{x,y} \tilde{P}(x,y) \sum_{i=1}^n w_i f_i(x,y)  - \sum_{x} \tilde{P}(x) \log Z_w(x)<br>
-\end{aligned}<br>
-$$<br>
-与对偶函数$\phi(w)$一致，这说明对对偶函数求最大等价于求最大熵模型的极大似然估计。<br>
-最大熵模型与logistic回归模型有类似的形式，它们又称为对数线性模型。模型学习就是对模型进行极大似然估计或者正则化的极大似然估计</p>
+<p>最大熵模型的学习过程就是求解最大熵模型的过程。最大熵模型学习可以形式化为约束最优化问题。 对于给定的训练数据集<span class="math inline">\(T = \{ (x_1,y_1), (x_2,y_2),\dots, (x_N,y_N)\}\)</span>以及特征函数<span class="math inline">\(f_i(x,y),i=1,2,\dots,n\)</span>,最大熵模型的学习等价于求解最优化问题: <span class="math display">\[
+    \begin{aligned}
+        &amp;\max_{P \in C} \quad H(P) = -\sum_{x,y}  \tilde{P}(x)P(y|x) log P(y|x) \\
+        &amp;s.t. \quad E_P(f_i) = E_{\tilde{P}}(f_i),\quad i =1,2,\dots,n \\  
+        &amp; \quad \quad \sum_y P(y|x) =1
+    \end{aligned}
+\]</span> 按照最优化问题的习惯，将求解最大值问题改为等价的求最小值问题: <span class="math display">\[
+    \begin{aligned}
+        &amp;\min_{P \in C} \quad -H(P) = \sum_{x,y}  \tilde{P}(x)P(y|x) log P(y|x) \\
+        &amp;s.t. \quad E_P(f_i) - E_{\tilde{P}}(f_i) = 0,\quad i =1,2,\dots,n \\  
+        &amp; \quad \quad \sum_y P(y|x) =1
+    \end{aligned}
+\]</span> <strong>该优化问题按照李航老师《统计学习》中的说法是满足强对偶性的，但书中只是一带而过，并没有进行详细说明，此处留坑，后面的推导就先默认该优化问题满足强对偶性，后面我搞懂了再来填坑</strong> <em><strong> </strong>这个问题我又思考了一下，自变量是一个分布看似是一个很虚的东西，但它也不过是一个函数，若<span class="math inline">\(X,Y\)</span>都是离散取值变量，那么这个条件概率分布只是一个有限长度的向量，而若<span class="math inline">\(X,Y\)</span>取值连续，则该条件概率密度函数可以看作一个无限长的向量，这样来看原始待优化函数其实就是<span class="math inline">\(\boldsymbol{x} \cdot \log \boldsymbol{x}\)</span>,这显然是一个凸函数，而约束条件也不过是待优化参数的线性组合，这显然是一个凸优化问题<strong> </strong></em> 该优化问题共有<span class="math inline">\(n+1\)</span>个等式约束，因此考虑引入拉格朗日乘子<span class="math inline">\(w_0,w_1,\dots,w_n\)</span>,定义拉格朗日函数<span class="math inline">\(L(P,w)\)</span>: <span class="math display">\[
+    \begin{aligned}
+        L(P,w) &amp;= -H(P) + w_0 (1 - \sum_y P(y|x)) + \sum_{i=1}^n w_i (E_{\tilde{P}}(f_i) - E_P(f_i)) \\
+        &amp;= \sum_{x,y}  \tilde{P}(x)P(y|x) log P(y|x)  + w_0 (1 - \sum_y P(y|x)) \\
+        &amp;+ \sum_{i=1}^n w_i(\sum_{x,y} \tilde{P}(x,y) f(x,y) - \sum_{x,y} \tilde{P}(x) P(y|x) f(x,y))
+    \end{aligned}
+\]</span> 原始优化问题的对偶问题写作： <span class="math display">\[
+    \max_{w} \min_{P} L(P,w)
+\]</span> 首先求解对偶函数<span class="math inline">\(\phi(w)\)</span>,因为<span class="math inline">\(L(P,w)\)</span>关于<span class="math inline">\(P\)</span>是凸函数，因此直接通过求导令导数为0即可： <span class="math display">\[
+    \begin{aligned}
+        \frac{ \partial L(P,w)}{\partial P(y|x)} &amp;=  log P(y|x) +1 - w_0 - \sum_{i=1}^n w_i f_i (x,y) = 0 
+    \end{aligned}
+\]</span> 在求导这一部分我不太认同李航老师书中的写法，因为<span class="math inline">\(P(y|x)\)</span>本身可以看作是一个向量，因此求导相当于对该向量某个分量求导。由此可得<span class="math inline">\(P(y|x)\)</span>的解析表达式: <span class="math display">\[
+    P(y|x) = \exp(\sum_{i=1}^n w_i f_i(x,y) + w_0 -1) = \frac{\exp(\sum_{i=1}^n w_i f_i(x,y))}{\exp(1-w_0)}
+\]</span> 又因为有概率密度函数的固有约束<span class="math inline">\(\sum_y P(y|x) = 1\)</span>,可得: <span class="math display">\[\exp(1-w_0) = \sum_y \exp(\sum_{i=1}^n w_i f_i(x,y))\]</span> 因此，<span class="math inline">\(P_w(y|x)\)</span>的解析表达式写作: <span class="math display">\[
+    \begin{aligned}
+        P_w(y|x) &amp;= \frac{1}{Z_w(x)} \exp(\sum_{i=1}^n w_i f_i(x,y)) \\
+        Z_w(x) &amp;= \sum_y \exp(\sum_{i=1}^n w_i f_i(x,y))
+    \end{aligned}
+\]</span> 至此，我们得到了对偶函数<span class="math inline">\(\phi(w)\)</span>表达式： <span class="math display">\[
+    \begin{aligned}
+        \phi(w) &amp;= \sum_{x,y} \tilde{P}(x,y) \sum_{i=1}^n w_i f_i(x,y) + \sum_{x,y} \tilde{P}(x)P_w(y|x)(\log P_w(y|x) - \sum_{i=1}^n w_i f_i(x,y)) \\
+        &amp;= \sum_{x,y} \tilde{P}(x,y) \sum_{i=1}^n w_i f_i(x,y) - \sum_{x,y} \tilde{P}(x)P_w(y|x) \log Z_w(x) \\
+        &amp;= \sum_{x,y} \tilde{P}(x,y) \sum_{i=1}^n w_i f_i(x,y) - \sum_x \tilde{P}(x) \log Z_w(x)
+    \end{aligned}
+\]</span> 因此接下来便是求解对偶优化问题: <span class="math display">\[
+    \max \phi(w)
+\]</span> 得到<span class="math inline">\(w^\ast\)</span>,然后回代<span class="math inline">\(P_w(y|x)\)</span>,得到最大熵模型表达式: <span class="math display">\[
+    P_{w^\ast}(y|x)
+\]</span> #### 极大似然估计 这一部分旨在证明一条性质: &gt; 最大熵模型求解过程中，对偶函数的极大化等价于最大熵模型的极大似然估计</p>
+<p>首先写出对数似然函数的形式: <span class="math display">\[
+    \begin{aligned}
+         L_{\tilde{P}}(P_w) &amp;= \log \prod_{x,y} P(y|x)^{\tilde{P}(x,y)} = \sum_{x,y} \tilde{P}(x,y) \log P(y|x) \\
+         &amp;= \sum_{x,y} \tilde{P}(x,y) \sum_{i=1}^n w_i f_i(x,)  - \sum_{x,y} \tilde{P}(x,y) \log Z_w(x) \\
+         &amp;= \sum_{x,y} \tilde{P}(x,y) \sum_{i=1}^n w_i f_i(x,y)  - \sum_{x} \tilde{P}(x) \log Z_w(x)
+    \end{aligned}
+\]</span> 与对偶函数<span class="math inline">\(\phi(w)\)</span>一致，这说明对对偶函数求最大等价于求最大熵模型的极大似然估计。 最大熵模型与logistic回归模型有类似的形式，它们又称为对数线性模型。模型学习就是对模型进行极大似然估计或者正则化的极大似然估计</p>
 
             </div>
             <hr/>
@@ -1299,11 +1161,8 @@ $$<br>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            首先我们思考这样一个问题：
-
-当我们用最大似然估计进行概率模型参数估计时，为什么基本都是直接求导，一阶导数等于0的点就是我们待求的最优估计?
-
-问到这个地方的时候，可能有一部分人就不知该如何回答了，因为一阶导数为0显然不是函数最大
+                            首先我们思考这样一个问题： &gt; 当我们用最大似然估计进行概率模型参数估计时，为什么基本都是直接求导，一阶导数等于0的点就是我们待求的最优估计?
+问到这个地方的时候，可能有一部分人就不知该如何回答了，因为一阶导数为0显然不是函
                         
                     </div>
                     <div class="publish-info">
@@ -1352,11 +1211,7 @@ $$<br>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            另一种常用模型为条件随机场(CRF)模型,条件随机场是给定一组输入随机变量条件下另一组输出随机变量的条件概率分布模型，其特点是假设输出随机变量构成马尔可夫随机场。本章节按照以下几部分组织：
-
-概率无向图模型
-条件随机场定义与形式
-条件随机场
+                            另一种常用模型为条件随机场(CRF)模型,条件随机场是给定一组输入随机变量条件下另一组输出随机变量的条件概率分布模型，其特点是假设输出随机变量构成马尔可夫随机场。本章节按照以下几部分组织： - 概率无向图模型 - 条件随机场定义与形式 - 
                         
                     </div>
                     <div class="publish-info">
@@ -1593,7 +1448,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">73.6k</span>&nbsp;字
+                class="white-color">74.4k</span>&nbsp;字
             
             
             
