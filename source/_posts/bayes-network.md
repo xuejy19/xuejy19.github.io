@@ -1,7 +1,6 @@
 ---
 title: 贝叶斯网络
 date: 2020-07-24 09:48:11
-thumbnail: https://raw.githubusercontent.com/xuejy19/Images/master/bayes-net.jpeg
 categories: 统计学习
 toc: true
 tags:

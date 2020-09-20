@@ -1,8 +1,6 @@
 ---
 title: 马尔可夫网络
 date: 2020-07-25 09:20:59
-thumbnail: https://raw.githubusercontent.com/xuejy19/Images/master/Markov_random.png
-tags: 
 categories: 统计学习
 toc: true
 mathjax: true

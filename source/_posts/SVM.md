@@ -4,7 +4,7 @@ date: 2020-08-12 09:26:20
 tags: 支持向量机
 categories: 统计学习
 toc: true
-img: https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/SVM.png
+#img: https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/SVM.png
 mathjax: true
 ---
 这部分将介绍支持向量机(SVM)算法，该部分将按照以下几部分进行组织：

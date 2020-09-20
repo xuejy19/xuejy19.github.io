@@ -4,6 +4,7 @@ date: 2020-09-09 23:34:49
 tags: GAN
 categories: 统计学习 
 mathjax: true
+#img: https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/thumbnail/GAN.jpg
 toc: true
 ---
 这一部分介绍一种特殊的神经网路模型——生成对抗网络(GAN)，生成对抗网络由[Lan Goodfellow](https://en.wikipedia.org/wiki/Ian_Goodfellow)于2014年提出，该算法在形式上表现为两个神经网络的彼此对抗，对于生成对抗网络，我们可以从以下几个角度来对其进行限定：

@@ -3,6 +3,7 @@ title: 隐马尔可夫模型
 date: 2020-08-17 08:22:44
 tags: 概率模型，HMM
 categories: 统计学习
+#img: https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/thumbnail/HMM.png
 toc: true
 mathjax: true
 ---
