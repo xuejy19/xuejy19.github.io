@@ -25,8 +25,9 @@ mathjax: true
 
 ### 常见日期时间类型 
 在进行时间序列数据处理时，常见的日期时间类型大概有以下四种:
+ 
 | 类型| 格式 |  示例 |
-| :-----:| :---- |:----|
+| :-----| :---- |:----:|
 | time | 时间格式 |  17:00:00| 
 | date | 日期格式 | 2019-09-19  | 
 | datetime | 日期时间格式 |  2019-09-19: 17:00:00  | 
@@ -37,6 +38,7 @@ $$
     str \Leftrightarrow struct \, time \Leftrightarrow stamp 
 $$
 字符串格式和时间戳格式通过我上面的讲解大家应该可以有一个基本认识，下面重点介绍下`struct_time`类型，它是一个具有命名元祖接口的对象:可以通过索引和属性名访问值，存在以下值:
+
 | index | attribute | values |
 | :-----:| :----: |:----:| 
 |    0   |    tm-year   | 年份  | 
@@ -85,19 +87,16 @@ print(time.strftime(format, struct_time))
 2020-09-19: 16:10:42 
 ```
 - `time.strptime(str, format)`: 与`strftime`作用相反，将一个时间字符串按照`format`格式解析成`struct_time`类型 
-
 ```python 
 >>>: 
 format = '%Y-%m-%d: %H:%M:%S'  
 time_str = '2020-9-19: 16:17:00' 
 print(time.strptime(time_str, format))  
-
 >>>: 
 time.struct_time(tm_year=2020, tm_mon=9, tm_mday=19, tm_hour=16, tm_min=17, tm_sec=0, tm_wday=5, tm_yday=263, tm_isdst=-1)
 ```
 
 - `time.mktime(struct_time)`: 将一个`struct_time`类型数据转化成`unxi_stample`, 该操作是`time.localtime()`的反操作，因此其默认输入的`struct_time`是本地时间
-
 ``` python 
 >>>: 
 format = '%Y-%m-%d: %H:%M:%S'  
@@ -106,7 +105,6 @@ time_struct = time.strptime(time_str, format)
 print(time_struct)
 print(time.mktime(time_struct)) 
 print(time.localtime(time.mktime(time_struct)))
-
 >>>:
 time.struct_time(tm_year=2020, tm_mon=9, tm_mday=19, tm_hour=16, tm_min=17, tm_sec=0, tm_wday=5, tm_yday=263, tm_isdst=-1)
 1600503420.0
