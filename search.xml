@@ -135,499 +135,6 @@ $$</p>
       </categories>
   </entry>
   <entry>
-    <title>马尔可夫网络</title>
-    <url>/2020/07/25/markov-network/</url>
-    <content><![CDATA[<p>在这一部分我将介绍另一种常见的概率图模型:马尔可夫网络，或称马尔可夫随机场。接下来分为以下几部分进行组织<a id="more"></a>：</p>
-<ul>
-<li>马尔可夫网络</li>
-<li>独立性假设</li>
-<li>势函数</li>
-</ul>
-<h3 id="马尔可夫网络">马尔可夫网络</h3>
-<p>首先给出维基百科上关于马尔可夫网络的定义：</p>
-<blockquote>
-<p>马尔可夫网络是一组有马尔可夫性质随机变量$X$的全联合概率分布模型。马尔可夫网络类似贝叶斯网络用于表示依赖关系。但是，一方面它可以表示贝叶斯网络无法表示的一些关系，如循环依赖；另一方面，它不能表示贝叶斯网络能够表示的某些关系，如推导关系。</p>
-</blockquote>
-<p>马尔可夫网络具有以下特征：</p>
-<ul>
-<li>无向图$H = (V,E)$</li>
-<li>每个顶点$v \in V$表示一个在集合$X$的随机变量，每条边${u,v}\in E$ 表示随机变量$u$和$v$之间的依赖关系</li>
-</ul>
-<h3 id="独立性假设">独立性假设</h3>
-<p>马尔可夫网络与贝叶斯网络类似，以图的形式对独立性假设进行编码，首先给出图中激活路径的概念：</p>
-<ul>
-<li>激活路径：一个路径$X_1,X_2,\dots,X_n$是激活的 $\Leftrightarrow$ 没有路径上的变量被观测到</li>
-</ul>
-<p>有了激活路径概念之后，便可以讨论图中的条件独立关系：</p>
-<ul>
-<li>在图$H$中，节点集$X$与节点集$Y$相对于是节点集$Z$是分离的 $\Leftrightarrow$ $X$与$Y$之间不存在激活路径</li>
-<li>表示为$sep_H(X;Y|Z)$,栗子如下图所示。</li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/xuejy19/Images/master/mav1.png" alt="栗子"></p>
-<h3 id="势函数">势函数</h3>
-<p>在贝叶斯网络中，节点之间的关系通过条件概率进行表征，而在马尔可夫网络中，节点之间的关系通过势函数来表征，势函数定义如下：</p>
-<blockquote>
-<p>一个函数集合$f_k$(也称为因子或者团因子有时也称为特征)，每一个$f_k$的定义域是图$G$的团或子团$k$,每一个$f_k$是从可能的特定联合的指派(到元素$k$)到非负实数的映射。</p>
-</blockquote>
-<p>总结而言，势函数具有以下特征：</p>
-<blockquote>
-<ul>
-<li>非负</li>
-<li>与条件概率不同，其求和不必为1</li>
-</ul>
-</blockquote>
-<h3 id="吉布斯分布">吉布斯分布</h3>
-<p>我们引入该图模型的目的在于：<strong>通过马尔可夫网络来对变量之间的独立性关系进行编码，然后获得对于联合概率分布更加紧凑的表示形式</strong>，而吉布斯分布便是将联合概率与势函数相连接的桥梁。<br>
-一个概率分布$P$可以分解为图$H$：</p>
-<blockquote>
-<ul>
-<li>$H$可以分为若干子团$D_i$</li>
-<li>在每个子团上相应定义了势函数$\pi_i$</li>
-</ul>
-</blockquote>
-<p>由此便可以写出吉布斯分布形式：<br>
-$$<br>
-\begin{aligned}<br>
-P(X_1,X_2,\dots,X_n) = \frac{1}{Z} f(X_1,X_2,\dots,X_n)<br>
-\end{aligned}<br>
-$$</p>
-<p>其中:</p>
-<blockquote>
-<ul>
-<li>$f(X_1,X_2,\dots,X_n) = \prod_{i=1}^m \pi_i(D_i)$</li>
-<li>$Z = \sum_{X_1,\dots,X_n} f(X_1,\dots,X_n)$</li>
-</ul>
-</blockquote>
-<p>每一个势函数定义了一个映射:$Sub(X) \rightarrow \mathcal{R^+}$ ,一个势函数的定义域相当于是一个集合，而这个集合中的变量彼此之间是直接依赖关系，从这个视角来看，条件概率可以看作是势函数的特例(仅仅表征两个变量之间依赖关系)。</p>
-<p>下面我们讨论下一个势函数(因子)应该定义在一个多大的集合上，首先考虑如果在每条边上均定义一个势函数，那么马尔可夫网络能否表征联合概率分布？答案是并不行，为此我以一个7个节点(均为二值变量)的全连接网络为例，分别讨论两种情况下具有的独立参数的数量：</p>
-<ul>
-<li>联合概率分布：$2^7 - 1 = 127$</li>
-<li>边上势函数：$4*C_7^2 = 84$</li>
-</ul>
-<p>显然对于全连接网络，若给予每个边一个势函数并不足以表征联合概率分布，在前面已经说明一个势函数定义域中的变量应当是两两直接相关，因此势函数的定义域应当是一个团(clique)。<br>
-$\Rightarrow$ <strong>马尔可夫网络中的局部结构是团</strong></p>
-<h3 id="马尔可夫网络分解">马尔可夫网络分解</h3>
-<p>首先给出$I-Map$的概念:$H$为一个马尔可夫网络，$P$为联合概率分布，若有$I(H) \subseteq I§$，则称马尔可夫网络$H$为分布$P$的一个$I-Map$。</p>
-<p>记$D_i$为马尔可夫网络$H$中的子团，Hammersley-Clifford定理如下：</p>
-<blockquote>
-<p>对于一个无向图$H$和分布$P$,$P$可以被分解成$P(X) = \frac{1}{Z}\prod \pi_i (D_i) \Leftrightarrow$ $H$是$P$的$I-Map$</p>
-</blockquote>
-<p>在实际进行分解时一般都是在最大团上定义势函数</p>
-<h3 id="对数表示">对数表示</h3>
-<p>在马尔可夫网络中，联合分布除了可以利用吉布斯分布来进行表示，也可以采取对数表示的方法，将原始的势函数$\pi_i(D_i)$ 表示成$exp(-\epsilon(D_i))$的形式，其中$\epsilon(D_i) = -log(\pi_i(D_i))$,据此，联合概率分布可以表示成：<br>
-$$<br>
-P(X_1,X_2,\dots,X_n) = \frac{1}{Z} exp(-\sum_{i=1}^m \epsilon(D_i))<br>
-$$<br>
-这种表示方法将连乘变成了连家，计算更加方便，同时有定理证明，若无向图$H$是分布$P$的一个独立映射，那么$\epsilon(D_i) = \omega_i \phi_i(D_i)$,此时$\phi$被称作特征函数，与势函数关系为：<br>
-$$<br>
-\pi_i(D_i) = exp(\omega_i \phi_i(D_i))<br>
-$$</p>
-]]></content>
-      <categories>
-        <category>统计学习</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>贝叶斯网络</title>
-    <url>/2020/07/24/bayes-network/</url>
-    <content><![CDATA[<p>在该部分对贝叶斯网络进行介绍，按照递进关系总结以下知识点：<a id="more"></a></p>
-<ul>
-<li>条件独立性</li>
-<li>条件参数化</li>
-<li>朴素贝叶斯模型</li>
-<li><strong>贝叶斯网络</strong></li>
-</ul>
-<hr>
-<h3 id="问题来源">问题来源</h3>
-<p>首先探讨下为什么我们需要利用变量之间的条件独立性性质，假设我们要描述的对象为$n$个二值变量：$X_1,\dots,X_n$,这些变量的联合分布为$P$,那么我们需要$\bf{2^n - 1}$个参数来描述联合分布$P$，所需参数量是$O(2^n)$级别，我们便考虑能否利用变量之间的某种性质使得$P$可以用更少的参数来描述，由此便引出了变量之间的独立性性质。</p>
-<h3 id="独立性">独立性</h3>
-<p>下面给出一些独立性等价的定义:</p>
-<blockquote>
-<ul>
-<li>若$P(X = x|Y = y) = P(X=x)$对于任意的$x,y$均成立 $\Rightarrow$ 变量$X$与$Y$相互独立</li>
-<li>若$P(X,Y) = P(X|Y)P(Y) = P(X)P(Y)$ $\Rightarrow$ 变量$X$与$Y$相互独立</li>
-</ul>
-</blockquote>
-<p>若问题来源中的$n$个变量相互独立，则联合分布:<br>
-$$<br>
-P(X_1,X_2,\dots,X_n) = P(X_1) P(X_2) \dots P(X_n)<br>
-$$<br>
-此时仅需$O(n)$个变量来对联合分布进行描述，参数花销大大减少，但在实际中，独立性是一个非常强的假设，往往不能够得到满足，由此便引出了条件独立性性质。</p>
-<h3 id="条件独立性">条件独立性</h3>
-<blockquote>
-<p>定义： 两个变量$X$和$Y$关于变量$Z$是条件独立的 $\Leftrightarrow$ 对于$\forall x,y,z$,$P(X = x|Y = y, Z = z) = P(X = x|Z = z)$ $\Leftrightarrow$ $P(X = x,Y = y|Z = z) = P(X = x|Z = z) \cdot P(Y=y|Z= z)$</p>
-</blockquote>
-<p>这里需要特别说明的是条件独立性并不能推出独立性，独立性也并不能推出条件独立性，下面给出两个反例：</p>
-<ul>
-<li>独立性 $\nRightarrow$ 条件独立性: 有两枚正反概率均为$50%$的硬币,设事件A为第一枚硬币为正面，事件B为第二枚硬币为正面，事件C为两枚硬币同面，若不考虑事件C，事件A与事件B显然独立;但若事件C已经发生，则此时A与B便不再独立，即A与B关于C不条件独立。</li>
-<li>条件独立性 $\nRightarrow$ 独立性: 有两枚硬币，一枚正面概率为$90%$,另一枚反面概率为$90%$,随机拿出一枚抛掷硬币两次, 事件A表示第一次为正面，事件B表示第二次为正面，事件C表示选择的是第一枚硬币，则抛开事件C，事件A与事件B并不独立($0.5 = P(B) \neq P(B|A) = 0.9802$),但若事件C发生，则相当于进行了两次独立重复实验，此时事件A与事件B独立。</li>
-</ul>
-<p>条件独立性符号表示：</p>
-<ul>
-<li>$Ind(X;Y|Z)$ or $(X \perp Y|Z)$</li>
-</ul>
-<h3 id="条件参数化">条件参数化</h3>
-<p>在了解了变量条件独立性后，下面以一个例子分析如何利用变量之间的条件独立性性质来减少描述联合分布所需的参数。</p>
-<div align=center>
-<p><img src="https://raw.githubusercontent.com/xuejy19/Images/master/Ind.png" alt="栗子"></p>
-</div>
-<p>图中大写字母均代表随机变量，含义如下：</p>
-<ul>
-<li>$D:$课程难度，$Val(D) = {d^0, d^1}$</li>
-<li>$I:$智力，$Val(I) = {i^0,i^1}$</li>
-<li>$S:$SAT分数，$Val(S) = {s^0,s^1}$</li>
-<li>$G:$课程成绩，$Val(G) = {g^0,g^1, g^2}$</li>
-<li>$L:$推荐信，$Val(L) = {l^0,l^1}$</li>
-</ul>
-<p>假设$G$和$S$关于$I$条件独立，下面我们分析两种情况的条件参数化</p>
-<p>首先以$I$和$S$两个变量为例，我们既可以通过联合分布$P(I,S)$来进行描述，也可以通过$P(I)$和$P(S|I)$进行描述，两种描述均是三个独立参数，如下图所示。<br>
-<img src="https://raw.githubusercontent.com/xuejy19/Images/master/eg2.png" alt=""></p>
-<p>接下来分析$I、D、G$三个变量的条件参数化，其中$I$与$D$相互独立，下面分析两种表示方法所需的参数个数：</p>
-<ul>
-<li>联合分布: $P(I,D,G)$,所需参数个数为$2 \times 2 \times 3 - 1=11$</li>
-<li>利用独立性条件: $P(I,D,G) = P(I)P(D)P(G|I,D)$,所需独立参数为$1+1+2\times 2 \times (3-1) =10 $<br>
-$\Rightarrow$ <strong>利用独立性可以减少表示联合分布所需的参数个数</strong></li>
-</ul>
-<h3 id="朴素贝叶斯模型">朴素贝叶斯模型</h3>
-<p>在这一部分对朴素贝叶斯模型做简要介绍，首先我们有两组变量：</p>
-<ul>
-<li>$C$:类别变量，$C = {c_1,\dots, c_k}$</li>
-<li>观测变量：$X_1,X_2,\dots, X_d$</li>
-</ul>
-<p>在朴素贝叶斯模型中，我们的目标便是利用观测变量来对类别进行预测/推理。所有这些变量其实可以看做一个联合概率分布$P(C,X_1,\dots,X_d)$,然而该概率分布很难计算，所需的参数量是指数级别，因此在朴素贝叶斯模型中有一个很强的假设：</p>
-<blockquote>
-<p>观测变量彼此之间关于类别变量$C$是相互独立的，据此联合概率分布便很容易计算：<br>
-$$   P(C,X_1,\dots,X_d) = P(X_1,\dots,X_d|C) P© = P(X_1|C)\dots P(X_d|C) P©  $$</p>
-</blockquote>
-<p>这是一个很强的假设，在真实世界中往往不能满足，同时因为没有充分利用变量之间的相关性性质，也造成了计算上的浪费。</p>
-<h3 id="贝叶斯网络">贝叶斯网络</h3>
-<blockquote>
-<p>贝叶斯网路定义：贝叶斯网络，又称信念网络，是一种概率图模型，记做$(G,P)$,借由有向无环图表示一组随机变量及它们之间的条件概率分布。</p>
-</blockquote>
-<p>贝叶斯网络是一种以有向无环图方式对独立性假设进行编码的手段，在贝叶斯网络中，任意变量与它的非后代变量对于其父节点变量是条件独立的：<br>
-$$<br>
-(X_i \perp Nondesc(X_i)|Pa(X_i))<br>
-$$<br>
-<strong>独立性映射(I-Maps):</strong> 记$P$为一组变量$\mathbf{X}$的联合概率分布，$I§$为表征$P$中独立性的集合</p>
-<blockquote>
-<p>定义：$G$为贝叶斯网路，若$I(G) \subset I§$,则称$G$为$P$的一个独立映射</p>
-</blockquote>
-<blockquote>
-<p>分解定理：若$G$是$P$的独立映射 $\Leftrightarrow$ $P(X_1,\dots,X_d) = \prod \limits_{i=1}^d P(X_i|Pa(X_i))$,通过该分解定理可以将全局的概率分布用局部的条件概率来表示</p>
-</blockquote>
-<p>下面分析下与联合概率分布相比，贝叶斯网络所需参数,以$n$个二值变量为例：</p>
-<ul>
-<li>联合概率分布：$2^n$</li>
-<li>贝叶斯网络(限制各个节点入度为$k$):$n2^k$</li>
-</ul>
-<h3 id="d-Separation-有向分离">d-Separation(有向分离)</h3>
-<p>在前面我们已经讨论了贝叶斯网络$G$编码了局部独立性假设，现在我们希望能够了解$G$是否还编码了其他独立性假设，因此我们需要一个方法来挖掘出$G$中所有的独立性假设<br>
-$\Rightarrow$ <strong>d-Separation</strong><br>
-下面分别讨论不分离两种情况：</p>
-<ul>
-<li>不分离
-<ul>
-<li>两个节点直接相连：此时不存在一个节点使得这两个节点关于该节点条件独立<br>
-$e.g. X \rightarrow Y$</li>
-<li>两个节点间接相连：head2tail,head2head,tail2tail</li>
-<li>一般情况：对于图$G$中的路径$X_1 \leftrightarrow \dots \leftrightarrow X_n$关于节点集合$E$是激活的如果
-<ul>
-<li>对于每个V状结构$X_{i-1} \rightarrow X_i \leftarrow X_{i+1},X_i$或者其后代<br>
-在集合$E$中</li>
-<li>路径上的点不在集合$E$中</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>分离：在贝叶斯网络$G$中，$X$和$Y$在给定$Z$条件下是d分离的$d-sep_G(X;Y|Z)$,如果<strong>不存在</strong>从集合$X$到$Y$的激活路径</li>
-</ul>
-<p>由此可以通过d分离来找到贝叶斯网络中所有独立性关系：<br>
-$$<br>
-I(G) = { (\mathbf{X \perp Y |Z}): d-sep_G(\mathbf{X;Y|Z})}<br>
-$$<br>
-简单总结而言，如果两个节点之间的路径被阻隔，则需要满足以下两个条件其一：</p>
-<ul>
-<li>若存在V形结构，则冲撞点及其后代不能出现在条件集中</li>
-<li>有路径中的点(非碰撞点)出现在条件集合中</li>
-</ul>
-<h3 id="Forward-VS-Backward">Forward VS Backward</h3>
-<p>直观上感觉，贝叶斯网络的反向过程(给出结果，推理原因)要比前向过程困难不少，这是因为子节点会激活其父母之间的路径，而这种相关性会进一步向上传播。<br>
-<strong>最小独立映射</strong>：对于一个图$G$和一个分布$P$，我们在图中哪怕仅仅去掉一个边都会导致$G$不再是$P$的一个独立映射，则称$G$是最小独立映射。<br>
-<strong>最佳映射</strong>：对于一个图$G$和一个分布$P$，若有$I§ = I(G)$，则称图$G$是$P$的一个最佳映射</p>
-]]></content>
-      <categories>
-        <category>统计学习</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>我与历史之缘</title>
-    <url>/2020/01/12/blog/</url>
-    <content><![CDATA[<blockquote>
-<ul>
-<li>初识历史</li>
-<li>求学之路</li>
-<li>心得体会</li>
-</ul>
-</blockquote>
-<h1><font size =5>初识历史</font></h1>
-<p> 我开始接触历史应该是从我小学时开始，<a id="more"></a>我的小学时光是在农村度过的，那时候也没有什么娱乐活动，家里有两本老版的三国演义，阅读三国演义便成为了我儿时娱乐活动中重要的一部分。那时候在我的脑海里，蜀国是正义的，为汉室存续而立；曹操是奸贼，挟天子以令诸侯，欲行篡位之事；孙权则是一代枭雄，在我眼里属于中立角色。那时候的我特别喜欢看第一部，因为第一部进本都是蜀迅速发展的故事，而像第二部后面我基本不太会看，关羽、张飞被害，刘备举兵伐吴，陆逊火烧连营，刘备白帝城托孤，这一段我真的看得好气啊，气那些卑鄙小人，气刘备不听诸葛之言，小不忍则乱大谋。到了后面诸葛亮第二次起兵伐魏，无奈内有佞臣，在形势大好之时将诸葛亮召回，真是令我扼腕叹息，叹那“扶不起的阿斗”，为孔明不值。五丈原诸葛镶星那一段简直看的我快要哭出来了，大骂魏延，为孔明叹息。<br>
- 虽然后面随着年龄的增长，我也了解到三国演义只是一本小说，其中有很多东西是虚构的，也有很多东西是经过夸张渲染的，但这本书无疑为我打开了一扇门，让我感受到了历史的魅力。小学时期我能够接触的其他历史则是我姐上学时留下来的一些历史教科书，像其他物理、数学、化学我是根本看不懂，也没什么兴趣看，唯独历史教科书可以一读，这或许也正是历史的魅力所在。</p>
-<h1><font size =5>求学之路</font></h1>
-<p> 在中学时期，我开始正式上历史课，基本就是框架则是一条纵线与一条横线：纵线则是按照时间顺序，从原始人开始，到夏商西周、春秋战国，然后到大一统的秦，中间还有若干朝代，最后则会讲到改革开放后的中国；同时还有着一条横线，则是讲在每一个历史阶段的政治制度、经济制度、文化，同时介绍一些推动了历史发展的人物。这一纵一横共同构成了我们看到的历史的面貌，那时候我开始觉得历史有些枯燥了，要背好多东西，历史那时候在我眼里变成了各种朝代、制度、人物的简单堆砌，变得毫无生气。那时候对于建国以后的那些历史我是最不感兴趣的，究其原因我觉得是多样的，一方面我觉得这段历史离我们太近，本着“得不到的永远在骚动，被偏爱的都有恃无恐”的态度，认为这段历没有古代历史有意思；同时也是因为我需要背的会议太多，那段历史变成了很多会议的简单堆砌，这就让这段历史更加索然无味。初中时候我还是主动去阅读了一些课外历史书籍的，主要是为了和班上同学争论，那时候我也尝试想去啃一些被奉为正史的一些书，但我记得那时候的我是被那晦涩难懂的文言文劝退了。<br>
- 高中的时候，我则阅读了一本对我影响挺大的书籍———当年明月的《明朝那些事》，我记得那时候我真的是特别迷这本书，拿到这本书的那天我硬是坚持看到了凌晨三点，才恋恋不舍地把这本书从手中拿开。那是我第一次认识到原来历史也可以如此有趣，历史人物也可以如此鲜活生动。这本书对我产生了挺大的影响，我记得当年明月曾说过历史本来就应该是很有趣的。直到现在，虽然我已经建立起了基本的历史框架，但这其中最鲜活，我最愿意谈的还是明朝那段历史。同时在这段时期我也认识到，历史之所以会变得枯燥，则是因为整个都已经变成了以年份为单位的重大事件的简单累计，这样固然可以用最小的篇幅来传达最重要的信息，但我认为这样恰恰是丢掉了历史最重要的部分———连续性。一个单纯的事件是无聊的，但是事件背后的那些人那些事是生动鲜活的，而能够给人以触动、带给人以启发的恰恰是这些事件背后的故事，单纯的某年某月发生何事是给人带不来任何触动的。</p>
-<h1><font size =5>心得体会</font></h1>
-<p> 现在回到一个关键性的问题：人为什么要学历史？这个问题我觉得可能就和人为什么要学哲学一样，让很多人感到困惑。但其实在我看来，人是社会性的，都是在与形形色色的人交往中不断构建现实中的自己，历史则为我们提供了这样一个平台，让你可以跨越你所处的层次，跨越你所处的时代，与处在不同时代、不同阶层的人对话，从他们身上学到经验与教训。历史为什么是有趣的，因为人与人之间构成的故事本身就是有趣的，我有时候真的感觉自己很幸运，可以处在这样一个历史时期，回头望去，有希腊文明、有诸子百家、有儒释道、有众多大师，同时处在后工业革命与信息革命时代的我们可以以一个全新的视角去审视过去的这些东西，从历史中学习，从历史中获得启发，读书最快乐的莫过于发现你曾经思考过的问题很多大师也曾经思考过，他们的答案往往会让你有眼前一亮之感。</p>
-]]></content>
-      <categories>
-        <category>闲谈</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>python数据处理之时间变换</title>
-    <url>/2020/09/19/python-shu-ju-chu-li-zhi-shi-jian-bian-huan/</url>
-    <content><![CDATA[<p>本文将就<code>python</code>中对时间标识的处理做一点讲解，在进行数据分析时，有些时候我们需要对时间序列数据进行处理，比如像下面这样一组数据<a id="more"></a>:</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">Time</th>
-<th style="text-align:center">feature1</th>
-<th style="text-align:center">…</th>
-<th style="text-align:center">feature n</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">2013年-01月-01日: 00时00分00秒</td>
-<td style="text-align:center">…</td>
-<td style="text-align:center">…</td>
-<td style="text-align:center">…</td>
-</tr>
-<tr>
-<td style="text-align:center">2013年-01月-01日: 02时00分00秒</td>
-<td style="text-align:center">…</td>
-<td style="text-align:center">…</td>
-<td style="text-align:center">…</td>
-</tr>
-<tr>
-<td style="text-align:center">…</td>
-<td style="text-align:center">…</td>
-<td style="text-align:center">…</td>
-<td style="text-align:center">…</td>
-</tr>
-<tr>
-<td style="text-align:center">2015年-01月-01日: 00时00分00秒</td>
-<td style="text-align:center">…</td>
-<td style="text-align:center">…</td>
-<td style="text-align:center">…</td>
-</tr>
-</tbody>
-</table>
-<p>对于这样一段时序数据，采样间隔2小时。当我们拿到这组数据之后，首先要考虑的问题就是这组数据有没有缺失，而判断数据记录有无缺失的关键在于其时间序列<code>Time</code>是否连续。我们一般采用<code>pandas.read_csv()</code>函数来进行<code>csv</code>文件中数据的读取，读取得到的第一列是一个字符串形式，通过这些字符串来判断时间是否连续是比较困难的，需要重新写一个函数来对字符串进行处理。但幸运的是，其实已经有函数可以帮我们完成这样一项工作了，下面介绍下本文的关键对象—<code>unix时间戳</code>：</p>
-<blockquote>
-<p><strong>unix时间戳:</strong> unix时间戳是一种跟踪时间（以秒为单位）的方式。此计数从1970年1月1日UTC的Unix Epoch开始。因此，unix时间戳仅仅是特定日期与Unix纪元之间的秒数。</p>
-</blockquote>
-<p>简而言之，unix时间戳就是一个<code>int</code>型的数据，其值代表了某个时间点距离<code>1997-01-01: 00:00:00</code>的秒数，那么如果我们能够将我们的时间字符串转换成unix时间戳，那么后面的数据拆分、数据缺失定位就更加得心应手了。本文按照以下结构进行组织:</p>
-<ul>
-<li>常见日期时间类型</li>
-<li>日期格式转换</li>
-<li>总结</li>
-</ul>
-<h3 id="常见日期时间类型">常见日期时间类型</h3>
-<p>在进行时间序列数据处理时，常见的日期时间类型大概有以下四种:</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">类型</th>
-<th style="text-align:left">格式</th>
-<th style="text-align:left">示例</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">time</td>
-<td style="text-align:left">时间格式</td>
-<td style="text-align:left">17:00:00</td>
-</tr>
-<tr>
-<td style="text-align:center">date</td>
-<td style="text-align:left">日期格式</td>
-<td style="text-align:left">2019-09-19</td>
-</tr>
-<tr>
-<td style="text-align:center">datetime</td>
-<td style="text-align:left">日期时间格式</td>
-<td style="text-align:left">2019-09-19: 17:00:00</td>
-</tr>
-<tr>
-<td style="text-align:center">timestamp</td>
-<td style="text-align:left">时间戳格式</td>
-<td style="text-align:left">1568912400</td>
-</tr>
-</tbody>
-</table>
-<p>实际上以上四种类型可以粗分为两个类型: 字符串类型和时间戳格式，时间字符串直接转时间戳格式并不自然，因此在python中实现两者转化还需借助一个中间变量类型<code>struct_time</code>，时间格式变换流程如下:<br>
-$$<br>
-str \Leftrightarrow struct , time \Leftrightarrow stamp<br>
-$$<br>
-字符串格式和时间戳格式通过我上面的讲解大家应该可以有一个基本认识，下面重点介绍下<code>struct_time</code>类型，它是一个具有命名元祖接口的对象:可以通过索引和属性名访问值，存在以下值:</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">index</th>
-<th style="text-align:center">attribute</th>
-<th style="text-align:center">values</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">0</td>
-<td style="text-align:center">tm-year</td>
-<td style="text-align:center">年份</td>
-</tr>
-<tr>
-<td style="text-align:center">1</td>
-<td style="text-align:center">tm-mon</td>
-<td style="text-align:center">月份range(1,12)</td>
-</tr>
-<tr>
-<td style="text-align:center">2</td>
-<td style="text-align:center">tm-mday</td>
-<td style="text-align:center">天数range(1,31)</td>
-</tr>
-<tr>
-<td style="text-align:center">3</td>
-<td style="text-align:center">tm-hour</td>
-<td style="text-align:center">小时range(0,23)</td>
-</tr>
-<tr>
-<td style="text-align:center">4</td>
-<td style="text-align:center">tm-min</td>
-<td style="text-align:center">分钟range(0,59)</td>
-</tr>
-<tr>
-<td style="text-align:center">5</td>
-<td style="text-align:center">tm-sec</td>
-<td style="text-align:center">秒数range(0,59)</td>
-</tr>
-<tr>
-<td style="text-align:center">6</td>
-<td style="text-align:center">tm-wday</td>
-<td style="text-align:center">星期range(0,6)</td>
-</tr>
-<tr>
-<td style="text-align:center">7</td>
-<td style="text-align:center">tm-yday</td>
-<td style="text-align:center">年中的一天range(1,366)</td>
-</tr>
-</tbody>
-</table>
-<p>而要实现这样的变换，则就要提到<code>python</code>中两个专门与时间打交道的模块<code>time</code>和<code>datetime</code>。</p>
-<h3 id="日期和格式转换">日期和格式转换</h3>
-<p>这部份将介绍以下<code>time</code>以及<code>datetime</code>中常用的一些方法。</p>
-<h4 id="time模块"><code>time</code>模块</h4>
-<p><a href="https://docs.python.org/3/library/time.html"><code>time</code></a>模块是操作系统层面上的， 与<code>os</code>模块类似，主要提供一些系统层面的与时间有关的操作，该模块是其他所有与时间相关模块的基础，我们用到该模块比较多的方法主要有以下几个:</p>
-<ul>
-<li><code>time.time()</code>: 返回当前时间的时间戳</li>
-</ul>
-<pre class="line-numbers language-language-python"><code class="language-language-python">>>>: 
-print(time.time())
-
->>>: 
-1600502127.7830698
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<ul>
-<li><code>time.loacltime()</code>: 将一个<code>unix stamp</code>转换为本地时间(东八区)的<code>struct_time</code>类型</li>
-</ul>
-<pre class="line-numbers language-language-python"><code class="language-language-python">>>>: 
-print(time.localtime(time.time())) 
-
->>>: 
-time.struct_time(tm_year=2020, tm_mon=9, tm_mday=19, tm_hour=16, tm_min=2, tm_sec=55, tm_wday=5, tm_yday=263, tm_isdst=0)
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<ul>
-<li><code>time.gmtime()</code>: 将一个<code>unix stamp</code>转换为格林威治时间的<code>struct_time</code>类型</li>
-</ul>
-<pre class="line-numbers language-language-python"><code class="language-language-python">>>>: 
-print(time.gmtime(time.time()))
-
->>>: 
-time.struct_time(tm_year=2020, tm_mon=9, tm_mday=19, tm_hour=8, tm_min=5, tm_sec=31, tm_wday=5, tm_yday=263, tm_isdst=0)
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<ul>
-<li><code>time.strftime(format, struct_time)</code>: 将一个<code>struct_time</code>类型输出转换为指定格式的字符串</li>
-</ul>
-<pre class="line-numbers language-language-python"><code class="language-language-python">>>>: 
-format = '%Y-%m-%d: %H:%M:%S' 
-struct_time = time.localtime(time.time()) 
-print(time.strftime(format, struct_time)) 
-
->>>: 
-2020-09-19: 16:10:42 
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<ul>
-<li><code>time.strptime(str, format)</code>: 与<code>strftime</code>作用相反，将一个时间字符串按照<code>format</code>格式解析成<code>struct_time</code>类型</li>
-</ul>
-<pre class="line-numbers language-language-python"><code class="language-language-python">>>>: 
-format = '%Y-%m-%d: %H:%M:%S'  
-time_str = '2020-9-19: 16:17:00' 
-print(time.strptime(time_str, format))  
-
->>>: 
-time.struct_time(tm_year=2020, tm_mon=9, tm_mday=19, tm_hour=16, tm_min=17, tm_sec=0, tm_wday=5, tm_yday=263, tm_isdst=-1)
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<ul>
-<li><code>time.mktime(struct_time)</code>: 将一个<code>struct_time</code>类型数据转化成<code>unxi_stample</code>, 该操作是<code>time.localtime()</code>的反操作，因此其默认输入的<code>struct_time</code>是本地时间</li>
-</ul>
-<pre class="line-numbers language-language-python"><code class="language-language-python">>>>: 
-format = '%Y-%m-%d: %H:%M:%S'  
-time_str = '2020-9-19: 16:17:00' 
-time_struct = time.strptime(time_str, format) 
-print(time_struct)
-print(time.mktime(time_struct)) 
-print(time.localtime(time.mktime(time_struct)))
-
->>>:
-time.struct_time(tm_year=2020, tm_mon=9, tm_mday=19, tm_hour=16, tm_min=17, tm_sec=0, tm_wday=5, tm_yday=263, tm_isdst=-1)
-1600503420.0
-time.struct_time(tm_year=2020, tm_mon=9, tm_mday=19, tm_hour=16, tm_min=17, tm_sec=0, tm_wday=5, tm_yday=263, tm_isdst=0)
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>上面这些方法实际上就已经完全可以实现我们的功能，大致是下面这样一张图:</p>
-<p><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/time.png" alt="转换方法"></p>
-<h4 id="datetime模块"><code>datetime</code>模块</h4>
-<p><code>datetime</code>模块可以看作是对<code>time</code>模块的一个封装和扩展，上面提到的<code>time</code>中常用方法在<code>datetime</code>中均有对应, 在<code>datetime</code>下主要有以下几个类：</p>
-<ul>
-<li><code>date</code>: 处理与日期相关的数据，属性: year, month, day</li>
-<li><code>time</code>: 处理与某天时间相对应的数据， 属性: hour, minute, second, microsecond, tzinfo</li>
-<li><code>datetime</code>: 日期和时间的组合，属性: year, month, day, hour, minute, second, microsecond, tzinfo</li>
-<li><code>timedelta</code>: 与持续时间计算有关</li>
-<li><code>tzinfo</code>: 时区信息类</li>
-</ul>
-<p><code>datetime</code>类基本已经可以实现上面<code>time</code>模块所能实现的功能，具体对应大家可以去官网<a href="https://docs.python.org/2/library/datetime.html">datetime</a>查看，我后面如果需要用到也会进行总结。</p>
-<h4 id="pandas-to-datetime"><code>pandas.to_datetime()</code></h4>
-<p>我们读取数据往往需要使用<code>pandas</code>库，得到<code>Dateframe</code>类型的数据，读取之后往往某一列就是时间序列，若用前面的方法来做转换，需要对每一个时间字符串操作，比较麻烦。为了解决该问题，就需要使用<code>pandas.to_datetime()</code>方法，使用该方法可以将变量变为<code>datetime</code>类型，方便后面进行操作。</p>
-<ul>
-<li>字符串时间转时间戳</li>
-</ul>
-<pre class="line-numbers language-language-python"><code class="language-language-python">data.time = pandas.to_datetime(data.time) 
-data.time = data.time.apply(lambda x: time.mktime(x.tuple))
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<ul>
-<li>时间戳转字符串</li>
-</ul>
-<pre class="line-numbers language-language-python"><code class="language-language-python">data.time = pandas.to_datetime(data.time) 
-data.time = data.time.apply(lambda x: time.strftime(format, x.tuple))
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<h3 id="总结">总结</h3>
-<p>在进行数据处理的时候我们往往不能够默认数据是“好数据”，因此就必须通过程序来对数据进行验证，而对于时序数据，时间信息的处理是绕不过去的，掌握了<code>python</code>中常用的对时间处理方法，后面处理时序数据可以更加得心应手。</p>
-]]></content>
-      <categories>
-        <category>python学习</category>
-      </categories>
-      <tags>
-        <tag>编程技能， 时序数据</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>EM</title>
     <url>/2020/07/30/em/</url>
     <content><![CDATA[<p>在前面概率密度函数估计中，若概率模型的变量都是可观测变量，那么给定数据，便可以直接用极大似然估计法或者贝叶斯估计法来直接估计模型参数。但是当模型中含有隐变量时，便不能直接使用这些估计方法，<strong>EM算法就是含有隐变量的概率模型参数的极大似然估计法</strong><a id="more"></a>,本文便围绕EM算法展开，主要包含以下几部分：</p>
@@ -846,6 +353,509 @@ $$</p>
       <tags>
         <tag>EM算法,隐变量,高斯混合模型</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>马尔可夫网络</title>
+    <url>/2020/07/25/markov-network/</url>
+    <content><![CDATA[<p>在这一部分我将介绍另一种常见的概率图模型:马尔可夫网络，或称马尔可夫随机场。接下来分为以下几部分进行组织<a id="more"></a>：</p>
+<ul>
+<li>马尔可夫网络</li>
+<li>独立性假设</li>
+<li>势函数</li>
+</ul>
+<h3 id="马尔可夫网络">马尔可夫网络</h3>
+<p>首先给出维基百科上关于马尔可夫网络的定义：</p>
+<blockquote>
+<p>马尔可夫网络是一组有马尔可夫性质随机变量$X$的全联合概率分布模型。马尔可夫网络类似贝叶斯网络用于表示依赖关系。但是，一方面它可以表示贝叶斯网络无法表示的一些关系，如循环依赖；另一方面，它不能表示贝叶斯网络能够表示的某些关系，如推导关系。</p>
+</blockquote>
+<p>马尔可夫网络具有以下特征：</p>
+<ul>
+<li>无向图$H = (V,E)$</li>
+<li>每个顶点$v \in V$表示一个在集合$X$的随机变量，每条边${u,v}\in E$ 表示随机变量$u$和$v$之间的依赖关系</li>
+</ul>
+<h3 id="独立性假设">独立性假设</h3>
+<p>马尔可夫网络与贝叶斯网络类似，以图的形式对独立性假设进行编码，首先给出图中激活路径的概念：</p>
+<ul>
+<li>激活路径：一个路径$X_1,X_2,\dots,X_n$是激活的 $\Leftrightarrow$ 没有路径上的变量被观测到</li>
+</ul>
+<p>有了激活路径概念之后，便可以讨论图中的条件独立关系：</p>
+<ul>
+<li>在图$H$中，节点集$X$与节点集$Y$相对于是节点集$Z$是分离的 $\Leftrightarrow$ $X$与$Y$之间不存在激活路径</li>
+<li>表示为$sep_H(X;Y|Z)$,栗子如下图所示。</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/xuejy19/Images/master/mav1.png" alt="栗子"></p>
+<h3 id="势函数">势函数</h3>
+<p>在贝叶斯网络中，节点之间的关系通过条件概率进行表征，而在马尔可夫网络中，节点之间的关系通过势函数来表征，势函数定义如下：</p>
+<blockquote>
+<p>一个函数集合$f_k$(也称为因子或者团因子有时也称为特征)，每一个$f_k$的定义域是图$G$的团或子团$k$,每一个$f_k$是从可能的特定联合的指派(到元素$k$)到非负实数的映射。</p>
+</blockquote>
+<p>总结而言，势函数具有以下特征：</p>
+<blockquote>
+<ul>
+<li>非负</li>
+<li>与条件概率不同，其求和不必为1</li>
+</ul>
+</blockquote>
+<h3 id="吉布斯分布">吉布斯分布</h3>
+<p>我们引入该图模型的目的在于：<strong>通过马尔可夫网络来对变量之间的独立性关系进行编码，然后获得对于联合概率分布更加紧凑的表示形式</strong>，而吉布斯分布便是将联合概率与势函数相连接的桥梁。<br>
+一个概率分布$P$可以分解为图$H$：</p>
+<blockquote>
+<ul>
+<li>$H$可以分为若干子团$D_i$</li>
+<li>在每个子团上相应定义了势函数$\pi_i$</li>
+</ul>
+</blockquote>
+<p>由此便可以写出吉布斯分布形式：<br>
+$$<br>
+\begin{aligned}<br>
+P(X_1,X_2,\dots,X_n) = \frac{1}{Z} f(X_1,X_2,\dots,X_n)<br>
+\end{aligned}<br>
+$$</p>
+<p>其中:</p>
+<blockquote>
+<ul>
+<li>$f(X_1,X_2,\dots,X_n) = \prod_{i=1}^m \pi_i(D_i)$</li>
+<li>$Z = \sum_{X_1,\dots,X_n} f(X_1,\dots,X_n)$</li>
+</ul>
+</blockquote>
+<p>每一个势函数定义了一个映射:$Sub(X) \rightarrow \mathcal{R^+}$ ,一个势函数的定义域相当于是一个集合，而这个集合中的变量彼此之间是直接依赖关系，从这个视角来看，条件概率可以看作是势函数的特例(仅仅表征两个变量之间依赖关系)。</p>
+<p>下面我们讨论下一个势函数(因子)应该定义在一个多大的集合上，首先考虑如果在每条边上均定义一个势函数，那么马尔可夫网络能否表征联合概率分布？答案是并不行，为此我以一个7个节点(均为二值变量)的全连接网络为例，分别讨论两种情况下具有的独立参数的数量：</p>
+<ul>
+<li>联合概率分布：$2^7 - 1 = 127$</li>
+<li>边上势函数：$4*C_7^2 = 84$</li>
+</ul>
+<p>显然对于全连接网络，若给予每个边一个势函数并不足以表征联合概率分布，在前面已经说明一个势函数定义域中的变量应当是两两直接相关，因此势函数的定义域应当是一个团(clique)。<br>
+$\Rightarrow$ <strong>马尔可夫网络中的局部结构是团</strong></p>
+<h3 id="马尔可夫网络分解">马尔可夫网络分解</h3>
+<p>首先给出$I-Map$的概念:$H$为一个马尔可夫网络，$P$为联合概率分布，若有$I(H) \subseteq I§$，则称马尔可夫网络$H$为分布$P$的一个$I-Map$。</p>
+<p>记$D_i$为马尔可夫网络$H$中的子团，Hammersley-Clifford定理如下：</p>
+<blockquote>
+<p>对于一个无向图$H$和分布$P$,$P$可以被分解成$P(X) = \frac{1}{Z}\prod \pi_i (D_i) \Leftrightarrow$ $H$是$P$的$I-Map$</p>
+</blockquote>
+<p>在实际进行分解时一般都是在最大团上定义势函数</p>
+<h3 id="对数表示">对数表示</h3>
+<p>在马尔可夫网络中，联合分布除了可以利用吉布斯分布来进行表示，也可以采取对数表示的方法，将原始的势函数$\pi_i(D_i)$ 表示成$exp(-\epsilon(D_i))$的形式，其中$\epsilon(D_i) = -log(\pi_i(D_i))$,据此，联合概率分布可以表示成：<br>
+$$<br>
+P(X_1,X_2,\dots,X_n) = \frac{1}{Z} exp(-\sum_{i=1}^m \epsilon(D_i))<br>
+$$<br>
+这种表示方法将连乘变成了连家，计算更加方便，同时有定理证明，若无向图$H$是分布$P$的一个独立映射，那么$\epsilon(D_i) = \omega_i \phi_i(D_i)$,此时$\phi$被称作特征函数，与势函数关系为：<br>
+$$<br>
+\pi_i(D_i) = exp(\omega_i \phi_i(D_i))<br>
+$$</p>
+]]></content>
+      <categories>
+        <category>统计学习</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>SVM</title>
+    <url>/2020/08/12/svm/</url>
+    <content><![CDATA[<p>这部分将介绍支持向量机(SVM)算法，该部分将按照以下几部分进行组织：</p>
+<ul>
+<li>算法历史</li>
+<li>线性可分支持向量机与硬间隔最大化</li>
+<li>线性支持向量机与软间隔最大化</li>
+<li>非线性支持向量机与核函数</li>
+<li>SVDD</li>
+</ul>
+<a id="more"></a>
+<h3 id="算法历史">算法历史</h3>
+<p>支持向量机算法是在机器学习领域非常著名的算法，在神经网络算法得到普及之前，支持向量机算法可以说是统治了机器学习领域的半壁江山，该算法由Vapnik在贝尔实验室开发，根据Vapnik和Chervonekis提出的统计学习框架或VC理论，它提出了一种最可靠的预测方法（ 1974年）和瓦普尼克（Vapnik）（1982年，1995年）。给定一组训练示例，每个训练示例都标记为属于两个类别中的一个或另一个，则SVM训练算法会构建一个模型，该模型将新示例分配给一个类别或另一个类别，使其成为非概率 二进制 线性分类器（尽管方法例如Platt缩放存在以在概率分类设置中使用SVM）。SVM模型是将示例表示为空间中的点，并进行了映射，以使各个类别的示例被尽可能宽的明显间隙分开。然后，将新示例映射到相同的空间，并根据它们落入的间隙的侧面来预测属于一个类别。<br>
+除执行线性分类外，SVM还可以使用所谓的内核技巧有效地执行非线性分类，将其输入隐式映射到高维特征空间。</p>
+<h3 id="线性可分支持向量机与硬间隔最大化">线性可分支持向量机与硬间隔最大化</h3>
+<p>对于线性可分数据，上一部分介绍的感知机算法便可以处理，但需要注意的是，感知机算法学习得到的超平面可能有无穷多个，那么这些超平面中哪个是最优的呢？支持向量机算法便回答了这一问题，该算法认为使两类样本点间隔最大的超平面是最优超平面。首先给出线性可分支持向量机的定义：</p>
+<blockquote>
+<p><strong>线性可分支持向量机</strong>:给定线性可分训练数据集，通过间隔最大化或者等价地求解相应的凸二次规划问题学习得到的分离超平面为：<br>
+$$<br>
+\omega^* \cdot x + b^* = 0<br>
+$$<br>
+以及相应的分类决策函数:<br>
+$$ f(x) = sign(\omega^* \cdot x + b^*)$$</p>
+</blockquote>
+<p>下面就结合下图来对支持向量机的算法思想进行阐述,图中红点与蓝点分别代表两个类别，我们现在期望找到一个超平面，使得两个类别的样本点都能够尽可能离该超平面距离远，也就是希望中间的margin尽可能大。<br>
+<img src="https://raw.githubusercontent.com/xuejy19/Images/master/SVM.png" alt="SVM"><br>
+这便是支持向量机的思想，下一步需要做的便是将这种想法翻译成一个数学问题，在这里首先引入两个间隔的概念：</p>
+<blockquote>
+<ul>
+<li>几何间隔：所谓几何间隔就是样本点$(x_i,y_i)$到超平面的实际距离，其计算公式为(此时样本点已经被超平面正确分类)：<br>
+$$ d = y_i \frac{\omega x_i + b}{||\omega||}$$</li>
+<li>函数间隔：不考虑几何间隔中$||\omega||$便得到了函数间隔：<br>
+$$ d = y_i(\omega x_i +b)$$</li>
+</ul>
+</blockquote>
+<p>需要注意的是，函数间隔可以表示分类预测的正确性及确信度，在感知机学习中，我们便是使用函数间隔，这是由于数据线性可分，最终目标函数都会收敛到0，使用几何间隔与函数间隔最终效果并无不同(两种间隔符号一致)。但在支持向量机算法中，我们希望间隔最大，这时显然函数间隔是不够的，因为只要成比例的增大$\omega,b$，超平面并没有改变，但是函数间隔却便为两倍，因此在该问题中，我们应当使用几何间隔,至此支持向量机的思想可以写成如下优化问题的形式：<br>
+$$<br>
+\begin{aligned}<br>
+&amp;max_{\omega,b} \quad \gamma  \<br>
+&amp;s.t. \quad y_i \frac{\omega x_i +b}{||\omega||} \geq \gamma,\quad i = 1,2,\dots,N<br>
+\end{aligned}<br>
+$$<br>
+上面是优化问题的原始形式，下面尝试对该优化问题进行等价转换以便于求解，首先根据几何间隔与函数间隔的关系，将优化问题转化为：<br>
+$$<br>
+\begin{aligned}<br>
+&amp;max_{\omega,b} \quad \frac{\hat{\gamma}}{||\omega||}  \<br>
+&amp;s.t. \quad y_i (\omega x_i +b) \geq \hat{\gamma},\quad i = 1,2,\dots,N<br>
+\end{aligned}<br>
+$$<br>
+此时可以注意到函数间隔$\hat{\gamma}$并不影响该优化问题求解，因此考虑将$\hat{\gamma}$置为1，注意到最大化$\frac{1}{||\omega||}$等价于最小化$\frac{1}{2}||\omega||^2$,因此优化问题最终可以表述为:<br>
+$$<br>
+\begin{aligned}<br>
+&amp;min_{\omega,b} \quad \frac{1}{2} ||\omega||^2 \\<br>
+&amp;s.t. \quad y_i (\omega x_i +b) \geq 1,\quad i = 1,2,\dots, N<br>
+\end{aligned}<br>
+$$<br>
+这是一个典型的凸二次规划问题，运用凸优化知识可进行求解。</p>
+<p>下面给出一个定理来说明最大间隔分离超平面唯一的定理：</p>
+<blockquote>
+<p>定理：若训练数据集$T$线性可分，则可将训练数据集中的样本点完全分开的最大间隔分离超平面存在且唯一</p>
+</blockquote>
+<h4 id="支持向量与间隔边界">支持向量与间隔边界</h4>
+<p>首先给出支持向量的定义:</p>
+<blockquote>
+<p>在线性可分情况下，训练数据集中样本点中与分离超平面距离最近的样本点的实例称为支持向量。</p>
+</blockquote>
+<p>反映在优化问题中，支持向量满足约束条件的等号,支持向量在超平面:<br>
+$$<br>
+\begin{aligned}<br>
+H_1&amp;: \omega \cdot x +b =1  \<br>
+H_2&amp;: \omega \cdot x +b = -1<br>
+\end{aligned}<br>
+$$<br>
+两个支撑超平面之间的距离称为间隔，该间隔距离为：<br>
+$$<br>
+d = \frac{2}{||\omega||}<br>
+$$<br>
+在决定分离超平面时只有支持向量起作用，而其他实例点并不起作用。</p>
+<h4 id="学习的对偶算法">学习的对偶算法</h4>
+<p>在进行求解时，我们往往考虑不直接求解原问题，而是求解原问题的对偶问题, 又因为原问题是一个凸优化问题，同时满足Slater约束品性，因此考虑求解其对偶问题。首先写出Lagrange函数：<br>
+$$<br>
+L(\omega,b,\alpha) = \frac{1}{2}||\omega^2|| - \sum_{i=1}^N \alpha_i y_i (\omega \cdot x_i +b) + \sum_{i=1}^N \alpha_i<br>
+$$<br>
+接下来求解对偶函数，对偶函数$g(\alpha)$表示为：<br>
+$$<br>
+g(\alpha) = \min_{\omega,b} L(\omega,b,\alpha)<br>
+$$<br>
+因为$L(\omega,b,\alpha)$是凸函数，因此只需要对$\omega,b$求偏导，令偏导等于0即可：<br>
+$$<br>
+\begin{aligned}<br>
+\frac{\partial L(\omega,b,\alpha)}{\partial \omega} &amp;= \omega - \sum_{i=1}^N \alpha_i y_i x_i = 0 \rightarrow \omega =  \sum_{i=1}^N \alpha_i y_i x_i  \\<br>
+\frac{\partial L(\omega,b,\alpha)}{\partial b} &amp;= -\sum_{i=1}^N \alpha_i y_i = 0 \rightarrow \sum_{i=1}^N \alpha_i y_i = 0<br>
+\end{aligned}<br>
+$$<br>
+回代拉格朗日函数，可得对偶函数：<br>
+$$<br>
+\begin{aligned}<br>
+g(\alpha) &amp;= \frac{1}{2} \sum_{i=1}^N \sum_{j=1}^N \alpha_i \alpha_j y_i y_i x_i^T x_j - \sum_{i=1}^N \sum_{j=1}^N \alpha_i \alpha_j y_i y_i x_i^T x_j + \sum_{i=1}^N \alpha_i  \\<br>
+&amp;= -\frac{1}{2} \sum_{i=1}^N \sum_{j=1}^N \alpha_i \alpha_j y_i y_i x_i^T x_j + \sum_{i=1}^N \alpha_i<br>
+\end{aligned}<br>
+$$<br>
+所以，对偶优化问题可以写做：<br>
+$$<br>
+\begin{aligned}<br>
+&amp;\max_{\alpha} \quad -\frac{1}{2} \sum_{i=1}^N \sum_{j=1}^N \alpha_i \alpha_j y_i y_i x_i^T x_j + \sum_{i=1}^N \alpha_i \\<br>
+&amp;s.t. \quad \sum_{i=1}^N \alpha_i y_i =0;\alpha_i \geq 0,i=1,\dots,N<br>
+\end{aligned}<br>
+$$<br>
+对于该问题的求解可以通过SMO(序列最小优化)算法进行求解，因为强对偶性成立,KKT条件满足：<br>
+$$<br>
+\begin{aligned}<br>
+&amp;\nabla_{\omega} L(\omega^<em>,b^</em>,\alpha^<em>) = \omega^</em> - \sum_{i=1}^N \alpha_i^* y_i x_i = 0 \<br>
+&amp;\nabla_{b} L(\omega^<em>,b^</em>,\alpha^<em>) = -\sum_{i=1}^N \alpha_i^</em> y_i = 0 \<br>
+&amp;\alpha_i^* (y_i(\omega^<em>x_i+b^</em>)-1) = 0 \<br>
+&amp;y_i(\omega^* x_i +b^<em>) - 1 \geq 0 \<br>
+&amp;\alpha_i^</em> \geq 0<br>
+\end{aligned}<br>
+$$<br>
+由此便可建立对偶问题最优解$\alpha^<em>$与原问题最优解$\omega^</em>,b^<em>$之间的关系，首先至少有一个$\alpha_j^</em>&gt;0$,这是因为若$\alpha^<em>$均为0，则$\omega^</em>$为0,这不是原始最优化问题的解，假设$\alpha_j^<em>&gt;0$,则由互补松弛条件，此时有$y_j(\omega^</em> x_j +b^<em>) = 1$,而$\omega^</em>$表达式是知道的，由此可得$\omega^<em>,b^</em>$表达式为：<br>
+$$<br>
+\begin{aligned}<br>
+\omega^* &amp;= \sum_{i=1}^N \alpha_i^* y_i x_i \<br>
+b^* &amp;=  y_j - \sum_{i=1}^N \alpha_i^* y_i(x_i\cdot x_j)<br>
+\end{aligned}<br>
+$$<br>
+至此，我们便通过求解对偶问题得到了原始问题的最优解，得到了超平面方程以及判决方程：<br>
+$$<br>
+\begin{aligned}<br>
+&amp;\omega^* \cdot x + b^* = 0 \<br>
+&amp;f(x) = sign(\omega^* \cdot x + b^*)<br>
+\end{aligned}<br>
+$$<br>
+通过引入对偶问题，我们便可以从数学的角度导出支持向量:</p>
+<blockquote>
+<p>训练数据集中对应于$\alpha_i^* &gt;0$的样本点称为支持向量</p>
+</blockquote>
+<h3 id="线性支持向量机与软间隔最大化">线性支持向量机与软间隔最大化</h3>
+<h4 id="原始问题">原始问题</h4>
+<p>前面介绍的算法是针对线性可分数据,那么对于大部分线性可分的数据集，支持向量机能否处理呢？答案是可以，但是需要对原始优化问题做适当变换,对于线性可分的数据，我们要求各个样本点到分类超平面的函数间隔都要大于1，对于不可分数据点，我们直观上的想法是考虑能否将该约束放松，因此我们考虑为每一个样本点引入一个松弛变量$\xi_i$,使得函数间隔加上松弛变量等于1。这样，约束条件变为:<br>
+$$<br>
+y_i(\omega \cdot x_i +b) \geq 1 - \xi_i<br>
+$$<br>
+但需要注意的人，该松弛变量的引入是有代价的，需要在目标函数中进行惩罚，因此考虑在目标函数中加入惩罚项$\xi_i$，将目标函数改写为：<br>
+$$<br>
+\frac{1}{2} ||\omega||^2  + C\sum_{i=1}^N \xi_i<br>
+$$<br>
+其中$C$是惩罚系数，$C$值大时对误分类惩罚增大。最小化该目标函数包含两层含义：使间隔尽量大；使误分类点尽量少。线性不可分支持向量机的学习问题变为如下凸二次规划问题：<br>
+$$<br>
+\begin{aligned}<br>
+&amp;\min_{\omega,b,\xi} \quad \frac{1}{2} ||\omega||^2 + C \sum_{i=1}^N \xi_i \\<br>
+&amp;s.t. \quad y_i(\omega x_i +b) \geq 1- \xi_i,i=1,2,\dots,N \\<br>
+&amp;\qquad \xi_i \geq 0,i=1,2,\dots,N<br>
+\end{aligned}<br>
+$$<br>
+对于该原始问题，可以证明$\omega$的解是唯一的，但$b$的解可能不唯一，而是存在一个区间。</p>
+<h4 id="对偶问题">对偶问题</h4>
+<p>在该部分便不进行对偶问题推导了，步骤与上一部分一致，最终得到的对偶问题形式为：<br>
+$$<br>
+\begin{aligned}<br>
+&amp;\max_{\alpha} \quad -\frac{1}{2} \sum_{i=1}^N \sum_{j=1}^N \alpha_i \alpha_j y_i y_i x_i^T x_j + \sum_{i=1}^N \alpha_i \\<br>
+&amp;s.t. \quad \sum_{i=1}^N \alpha_i y_i =0,i=1,\dots,N  \\<br>
+&amp; \qquad 0 \leq \alpha_i \leq C \quad i=1,2,\dots,N<br>
+\end{aligned}<br>
+$$<br>
+可以看到引入松弛变量后对偶问题形式基本未发生变化，仅仅约束条件中$\alpha_i$范围变了。需要注意的是将原始问题转化为对偶问题的过程中，引入了两个Lagrange算子$\alpha_i,\mu_i$，但由于存在$<br>
+\alpha_i + \mu_i = C $以及$\alpha_i \geq 0, \mu_i \geq 0 $,因此将这些约束条件简化为$0 \leq \alpha_i \leq C$。<br>
+下面讨论如何根据对偶问题最优解求解原问题最优解，与硬间隔支持向量机不同，在该问题中，互补松弛条件有两个:<br>
+$$<br>
+\begin{aligned}<br>
+&amp;\alpha_i^* (y_i(\omega^<em>x_i+b^</em>)-1 + \xi_i) = 0  \<br>
+&amp;\mu_i \xi_i = 0<br>
+\end{aligned}<br>
+$$<br>
+在求解$b^<em>$时，关键是要将支持向量确定出来，首先支持向量应当在支撑超平面上，这就要求$\alpha_i&gt;0$,同时松弛间隔$\xi_i$应当为0，由第二个互补松弛条件可知$\mu_i$不能够为0，因此$\alpha_i$必须小于$C$,换句话说，$\alpha^</em> = C$所对应的点均在支撑超平面以内，若$\xi_i&lt;1$,则仍能分类正确，若大于1，则就会分类错误。$\omega^<em>$和$b^</em>$表达式可以写做：<br>
+$$<br>
+\begin{aligned}<br>
+\omega^* &amp;= \sum_{i=1}^N \alpha_i^* y_i x_i \<br>
+b^* &amp;= y_j - \sum_{i=1}^N y_i \alpha_i^* (x_i \cdot x_j)<br>
+\end{aligned}<br>
+$$</p>
+<h4 id="非线性支持向量机与核函数">非线性支持向量机与核函数</h4>
+<p>支持向量机是解决线性分类问题的一种有效方法，但并不能解决非线性分类问题，那么非线性的数据就不能用线性的方法解决么？ 直观上我们有这样一个方法，考虑降维度线性不可分的数据映射到高维度，使映射后的数据在高维度线性可分，由此便引出了本节的核函数。</p>
+<h4 id="核函数">核函数</h4>
+<p>首先先举一个空间变换的栗子，设原空间为$\mathcal{X} \subset R^2,x = (x^1,x^2)^T$,新空间为$\mathcal{Z} \subset R^2,z = (z^1,z^2)^T$,定义从原空间到新空间的映射：<br>
+$$<br>
+z = \phi(x) = ((x^1)^2,(x^2)^2)^T<br>
+$$<br>
+经过这样一个变换原空间中的椭圆：<br>
+$$<br>
+w_1 (x^1)^2 + w_2 (x^2)^2 +b = 0<br>
+$$<br>
+变换为了新空间中的直线：<br>
+$$<br>
+w_1 z^1 + w_2 z^2 + b = 0<br>
+$$<br>
+这样，原空间的非线性可分问题就变成了新空间的线性可分问题。从该问题出发，我们可以总结出用线性分类方法求解非线性分类问题的步骤：</p>
+<ul>
+<li>首先使用一个变换将原空间中的数据映射到新空间</li>
+<li>在新空间中使用线性分类学习方法从训练数据中学习分类模型</li>
+</ul>
+<p>而在支持向量机中，达到这一目的的方法应用核技巧，下面首先给出核函数的定义：</p>
+<blockquote>
+<p>核函数：设$\mathcal{X}$是输入空间，又设$\mathcal{H}$为特征空间(希尔伯特空间),如果存在一个从$\mathcal{X}$到$\mathcal{H}$的映射：<br>
+$$<br>
+\phi(x):\mathcal{X} \rightarrow \mathcal{H}<br>
+$$<br>
+使得对所有$x,z \in \mathcal{X}$,函数$K(x,z)$满足条件:<br>
+$$<br>
+K(x,z) = \phi(x) \cdot \phi(z)<br>
+$$<br>
+则称$K(x,z)$为核函数，$\phi(x)$为映射函数</p>
+</blockquote>
+<p>核技巧的想法是，在学习与预测中只定义核函数$K(x,z)$,而不显式的定义映射函数$\phi$。同时，对于一个核$K(x,z)$,特征空间$\mathcal{H}$和映射函数$\phi$的取法并不唯一</p>
+<h4 id="非线性支持向量机">非线性支持向量机</h4>
+<p>在线性支持向量机的对偶问题中,无论是目标函数还是决策函数中均只包含实例的内积的形式，因此若用$K(x,y)$代替$x\cdot y$,实际上便是在对高维空间中的特征点设计线性分类器。那现在的关键问题便在于如何选择合适的核函数。</p>
+<p>关于核函数这部分的理论我后面会另开一个章节进行介绍学习，在这一部分便直接给出一些常用的核函数：</p>
+<ul>
+<li>多项式核函数:<br>
+$$ K(x,z) = (x\cdot z +1)^p$$</li>
+<li>高斯核函数(径向基函数)<br>
+$$ K(x,z) = exp(- \frac{||x-z||^2}{2\sigma^2})$$</li>
+</ul>
+<p>需要注意的是，在引入核函数后，又多引入了超参数，比如高斯核函数中的$\sigma$,而这些超参数的选择也会对分类效果产生影响。</p>
+<h3 id="一类分类器设计">一类分类器设计</h3>
+<p>在前面介绍的支持向量机算法中，针对的都是二分类情况，但当我们做故障检测时，往往就只有大量的正常样本点，现在我们需要根据这些正常样本点来设计一个分类器以对未出现的异常样本点进行检测。在这一部分介绍两种算法：</p>
+<ul>
+<li>OCSVM</li>
+<li>SVDD</li>
+</ul>
+<h4 id="OCSVM">OCSVM</h4>
+<p>在OCSVM中，将坐标原点作为唯一的异常点,最大化最优超平面到远点的距离，若记$\rho$为从原点到超平面的距离，$\xi_i$为松弛变量，则优化问题可以写做：<br>
+$$<br>
+\begin{aligned}<br>
+&amp;\max_{\omega,\rho,\xi_i} \rho - C\sum_{i=1}^N \xi_i \<br>
+&amp; s.t. \quad \omega \cdot x_i \geq \rho - \xi_i,\xi_i \geq 0,||\omega|| = 1<br>
+\end{aligned}<br>
+$$</p>
+<h4 id="SVDD">SVDD</h4>
+<p>SVDD的基本思想则是，对于$n$维空间中的数据点集，寻找最小超球面，使其成为所有点的边界，其对应优化问题的原问题为:<br>
+$$<br>
+\begin{aligned}<br>
+&amp;\min_{a,R,\xi} \quad R^2 + C\sum_{i=1}^N \xi_i \<br>
+&amp;s.t. \quad ||x_i -a||^2 \leq R^2 + \xi_i \<br>
+&amp;\qquad \quad \xi_i \geq 0<br>
+\end{aligned}<br>
+$$</p>
+]]></content>
+      <categories>
+        <category>统计学习</category>
+      </categories>
+      <tags>
+        <tag>支持向量机</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>贝叶斯网络</title>
+    <url>/2020/07/24/bayes-network/</url>
+    <content><![CDATA[<p>在该部分对贝叶斯网络进行介绍，按照递进关系总结以下知识点：<a id="more"></a></p>
+<ul>
+<li>条件独立性</li>
+<li>条件参数化</li>
+<li>朴素贝叶斯模型</li>
+<li><strong>贝叶斯网络</strong></li>
+</ul>
+<hr>
+<h3 id="问题来源">问题来源</h3>
+<p>首先探讨下为什么我们需要利用变量之间的条件独立性性质，假设我们要描述的对象为$n$个二值变量：$X_1,\dots,X_n$,这些变量的联合分布为$P$,那么我们需要$\bf{2^n - 1}$个参数来描述联合分布$P$，所需参数量是$O(2^n)$级别，我们便考虑能否利用变量之间的某种性质使得$P$可以用更少的参数来描述，由此便引出了变量之间的独立性性质。</p>
+<h3 id="独立性">独立性</h3>
+<p>下面给出一些独立性等价的定义:</p>
+<blockquote>
+<ul>
+<li>若$P(X = x|Y = y) = P(X=x)$对于任意的$x,y$均成立 $\Rightarrow$ 变量$X$与$Y$相互独立</li>
+<li>若$P(X,Y) = P(X|Y)P(Y) = P(X)P(Y)$ $\Rightarrow$ 变量$X$与$Y$相互独立</li>
+</ul>
+</blockquote>
+<p>若问题来源中的$n$个变量相互独立，则联合分布:<br>
+$$<br>
+P(X_1,X_2,\dots,X_n) = P(X_1) P(X_2) \dots P(X_n)<br>
+$$<br>
+此时仅需$O(n)$个变量来对联合分布进行描述，参数花销大大减少，但在实际中，独立性是一个非常强的假设，往往不能够得到满足，由此便引出了条件独立性性质。</p>
+<h3 id="条件独立性">条件独立性</h3>
+<blockquote>
+<p>定义： 两个变量$X$和$Y$关于变量$Z$是条件独立的 $\Leftrightarrow$ 对于$\forall x,y,z$,$P(X = x|Y = y, Z = z) = P(X = x|Z = z)$ $\Leftrightarrow$ $P(X = x,Y = y|Z = z) = P(X = x|Z = z) \cdot P(Y=y|Z= z)$</p>
+</blockquote>
+<p>这里需要特别说明的是条件独立性并不能推出独立性，独立性也并不能推出条件独立性，下面给出两个反例：</p>
+<ul>
+<li>独立性 $\nRightarrow$ 条件独立性: 有两枚正反概率均为$50%$的硬币,设事件A为第一枚硬币为正面，事件B为第二枚硬币为正面，事件C为两枚硬币同面，若不考虑事件C，事件A与事件B显然独立;但若事件C已经发生，则此时A与B便不再独立，即A与B关于C不条件独立。</li>
+<li>条件独立性 $\nRightarrow$ 独立性: 有两枚硬币，一枚正面概率为$90%$,另一枚反面概率为$90%$,随机拿出一枚抛掷硬币两次, 事件A表示第一次为正面，事件B表示第二次为正面，事件C表示选择的是第一枚硬币，则抛开事件C，事件A与事件B并不独立($0.5 = P(B) \neq P(B|A) = 0.9802$),但若事件C发生，则相当于进行了两次独立重复实验，此时事件A与事件B独立。</li>
+</ul>
+<p>条件独立性符号表示：</p>
+<ul>
+<li>$Ind(X;Y|Z)$ or $(X \perp Y|Z)$</li>
+</ul>
+<h3 id="条件参数化">条件参数化</h3>
+<p>在了解了变量条件独立性后，下面以一个例子分析如何利用变量之间的条件独立性性质来减少描述联合分布所需的参数。</p>
+<div align=center>
+<p><img src="https://raw.githubusercontent.com/xuejy19/Images/master/Ind.png" alt="栗子"></p>
+</div>
+<p>图中大写字母均代表随机变量，含义如下：</p>
+<ul>
+<li>$D:$课程难度，$Val(D) = {d^0, d^1}$</li>
+<li>$I:$智力，$Val(I) = {i^0,i^1}$</li>
+<li>$S:$SAT分数，$Val(S) = {s^0,s^1}$</li>
+<li>$G:$课程成绩，$Val(G) = {g^0,g^1, g^2}$</li>
+<li>$L:$推荐信，$Val(L) = {l^0,l^1}$</li>
+</ul>
+<p>假设$G$和$S$关于$I$条件独立，下面我们分析两种情况的条件参数化</p>
+<p>首先以$I$和$S$两个变量为例，我们既可以通过联合分布$P(I,S)$来进行描述，也可以通过$P(I)$和$P(S|I)$进行描述，两种描述均是三个独立参数，如下图所示。<br>
+<img src="https://raw.githubusercontent.com/xuejy19/Images/master/eg2.png" alt=""></p>
+<p>接下来分析$I、D、G$三个变量的条件参数化，其中$I$与$D$相互独立，下面分析两种表示方法所需的参数个数：</p>
+<ul>
+<li>联合分布: $P(I,D,G)$,所需参数个数为$2 \times 2 \times 3 - 1=11$</li>
+<li>利用独立性条件: $P(I,D,G) = P(I)P(D)P(G|I,D)$,所需独立参数为$1+1+2\times 2 \times (3-1) =10 $<br>
+$\Rightarrow$ <strong>利用独立性可以减少表示联合分布所需的参数个数</strong></li>
+</ul>
+<h3 id="朴素贝叶斯模型">朴素贝叶斯模型</h3>
+<p>在这一部分对朴素贝叶斯模型做简要介绍，首先我们有两组变量：</p>
+<ul>
+<li>$C$:类别变量，$C = {c_1,\dots, c_k}$</li>
+<li>观测变量：$X_1,X_2,\dots, X_d$</li>
+</ul>
+<p>在朴素贝叶斯模型中，我们的目标便是利用观测变量来对类别进行预测/推理。所有这些变量其实可以看做一个联合概率分布$P(C,X_1,\dots,X_d)$,然而该概率分布很难计算，所需的参数量是指数级别，因此在朴素贝叶斯模型中有一个很强的假设：</p>
+<blockquote>
+<p>观测变量彼此之间关于类别变量$C$是相互独立的，据此联合概率分布便很容易计算：<br>
+$$   P(C,X_1,\dots,X_d) = P(X_1,\dots,X_d|C) P© = P(X_1|C)\dots P(X_d|C) P©  $$</p>
+</blockquote>
+<p>这是一个很强的假设，在真实世界中往往不能满足，同时因为没有充分利用变量之间的相关性性质，也造成了计算上的浪费。</p>
+<h3 id="贝叶斯网络">贝叶斯网络</h3>
+<blockquote>
+<p>贝叶斯网路定义：贝叶斯网络，又称信念网络，是一种概率图模型，记做$(G,P)$,借由有向无环图表示一组随机变量及它们之间的条件概率分布。</p>
+</blockquote>
+<p>贝叶斯网络是一种以有向无环图方式对独立性假设进行编码的手段，在贝叶斯网络中，任意变量与它的非后代变量对于其父节点变量是条件独立的：<br>
+$$<br>
+(X_i \perp Nondesc(X_i)|Pa(X_i))<br>
+$$<br>
+<strong>独立性映射(I-Maps):</strong> 记$P$为一组变量$\mathbf{X}$的联合概率分布，$I§$为表征$P$中独立性的集合</p>
+<blockquote>
+<p>定义：$G$为贝叶斯网路，若$I(G) \subset I§$,则称$G$为$P$的一个独立映射</p>
+</blockquote>
+<blockquote>
+<p>分解定理：若$G$是$P$的独立映射 $\Leftrightarrow$ $P(X_1,\dots,X_d) = \prod \limits_{i=1}^d P(X_i|Pa(X_i))$,通过该分解定理可以将全局的概率分布用局部的条件概率来表示</p>
+</blockquote>
+<p>下面分析下与联合概率分布相比，贝叶斯网络所需参数,以$n$个二值变量为例：</p>
+<ul>
+<li>联合概率分布：$2^n$</li>
+<li>贝叶斯网络(限制各个节点入度为$k$):$n2^k$</li>
+</ul>
+<h3 id="d-Separation-有向分离">d-Separation(有向分离)</h3>
+<p>在前面我们已经讨论了贝叶斯网络$G$编码了局部独立性假设，现在我们希望能够了解$G$是否还编码了其他独立性假设，因此我们需要一个方法来挖掘出$G$中所有的独立性假设<br>
+$\Rightarrow$ <strong>d-Separation</strong><br>
+下面分别讨论不分离两种情况：</p>
+<ul>
+<li>不分离
+<ul>
+<li>两个节点直接相连：此时不存在一个节点使得这两个节点关于该节点条件独立<br>
+$e.g. X \rightarrow Y$</li>
+<li>两个节点间接相连：head2tail,head2head,tail2tail</li>
+<li>一般情况：对于图$G$中的路径$X_1 \leftrightarrow \dots \leftrightarrow X_n$关于节点集合$E$是激活的如果
+<ul>
+<li>对于每个V状结构$X_{i-1} \rightarrow X_i \leftarrow X_{i+1},X_i$或者其后代<br>
+在集合$E$中</li>
+<li>路径上的点不在集合$E$中</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>分离：在贝叶斯网络$G$中，$X$和$Y$在给定$Z$条件下是d分离的$d-sep_G(X;Y|Z)$,如果<strong>不存在</strong>从集合$X$到$Y$的激活路径</li>
+</ul>
+<p>由此可以通过d分离来找到贝叶斯网络中所有独立性关系：<br>
+$$<br>
+I(G) = { (\mathbf{X \perp Y |Z}): d-sep_G(\mathbf{X;Y|Z})}<br>
+$$<br>
+简单总结而言，如果两个节点之间的路径被阻隔，则需要满足以下两个条件其一：</p>
+<ul>
+<li>若存在V形结构，则冲撞点及其后代不能出现在条件集中</li>
+<li>有路径中的点(非碰撞点)出现在条件集合中</li>
+</ul>
+<h3 id="Forward-VS-Backward">Forward VS Backward</h3>
+<p>直观上感觉，贝叶斯网络的反向过程(给出结果，推理原因)要比前向过程困难不少，这是因为子节点会激活其父母之间的路径，而这种相关性会进一步向上传播。<br>
+<strong>最小独立映射</strong>：对于一个图$G$和一个分布$P$，我们在图中哪怕仅仅去掉一个边都会导致$G$不再是$P$的一个独立映射，则称$G$是最小独立映射。<br>
+<strong>最佳映射</strong>：对于一个图$G$和一个分布$P$，若有$I§ = I(G)$，则称图$G$是$P$的一个最佳映射</p>
+]]></content>
+      <categories>
+        <category>统计学习</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>我与历史之缘</title>
+    <url>/2020/01/12/blog/</url>
+    <content><![CDATA[<blockquote>
+<ul>
+<li>初识历史</li>
+<li>求学之路</li>
+<li>心得体会</li>
+</ul>
+</blockquote>
+<h1><font size =5>初识历史</font></h1>
+<p> 我开始接触历史应该是从我小学时开始，<a id="more"></a>我的小学时光是在农村度过的，那时候也没有什么娱乐活动，家里有两本老版的三国演义，阅读三国演义便成为了我儿时娱乐活动中重要的一部分。那时候在我的脑海里，蜀国是正义的，为汉室存续而立；曹操是奸贼，挟天子以令诸侯，欲行篡位之事；孙权则是一代枭雄，在我眼里属于中立角色。那时候的我特别喜欢看第一部，因为第一部进本都是蜀迅速发展的故事，而像第二部后面我基本不太会看，关羽、张飞被害，刘备举兵伐吴，陆逊火烧连营，刘备白帝城托孤，这一段我真的看得好气啊，气那些卑鄙小人，气刘备不听诸葛之言，小不忍则乱大谋。到了后面诸葛亮第二次起兵伐魏，无奈内有佞臣，在形势大好之时将诸葛亮召回，真是令我扼腕叹息，叹那“扶不起的阿斗”，为孔明不值。五丈原诸葛镶星那一段简直看的我快要哭出来了，大骂魏延，为孔明叹息。<br>
+ 虽然后面随着年龄的增长，我也了解到三国演义只是一本小说，其中有很多东西是虚构的，也有很多东西是经过夸张渲染的，但这本书无疑为我打开了一扇门，让我感受到了历史的魅力。小学时期我能够接触的其他历史则是我姐上学时留下来的一些历史教科书，像其他物理、数学、化学我是根本看不懂，也没什么兴趣看，唯独历史教科书可以一读，这或许也正是历史的魅力所在。</p>
+<h1><font size =5>求学之路</font></h1>
+<p> 在中学时期，我开始正式上历史课，基本就是框架则是一条纵线与一条横线：纵线则是按照时间顺序，从原始人开始，到夏商西周、春秋战国，然后到大一统的秦，中间还有若干朝代，最后则会讲到改革开放后的中国；同时还有着一条横线，则是讲在每一个历史阶段的政治制度、经济制度、文化，同时介绍一些推动了历史发展的人物。这一纵一横共同构成了我们看到的历史的面貌，那时候我开始觉得历史有些枯燥了，要背好多东西，历史那时候在我眼里变成了各种朝代、制度、人物的简单堆砌，变得毫无生气。那时候对于建国以后的那些历史我是最不感兴趣的，究其原因我觉得是多样的，一方面我觉得这段历史离我们太近，本着“得不到的永远在骚动，被偏爱的都有恃无恐”的态度，认为这段历没有古代历史有意思；同时也是因为我需要背的会议太多，那段历史变成了很多会议的简单堆砌，这就让这段历史更加索然无味。初中时候我还是主动去阅读了一些课外历史书籍的，主要是为了和班上同学争论，那时候我也尝试想去啃一些被奉为正史的一些书，但我记得那时候的我是被那晦涩难懂的文言文劝退了。<br>
+ 高中的时候，我则阅读了一本对我影响挺大的书籍———当年明月的《明朝那些事》，我记得那时候我真的是特别迷这本书，拿到这本书的那天我硬是坚持看到了凌晨三点，才恋恋不舍地把这本书从手中拿开。那是我第一次认识到原来历史也可以如此有趣，历史人物也可以如此鲜活生动。这本书对我产生了挺大的影响，我记得当年明月曾说过历史本来就应该是很有趣的。直到现在，虽然我已经建立起了基本的历史框架，但这其中最鲜活，我最愿意谈的还是明朝那段历史。同时在这段时期我也认识到，历史之所以会变得枯燥，则是因为整个都已经变成了以年份为单位的重大事件的简单累计，这样固然可以用最小的篇幅来传达最重要的信息，但我认为这样恰恰是丢掉了历史最重要的部分———连续性。一个单纯的事件是无聊的，但是事件背后的那些人那些事是生动鲜活的，而能够给人以触动、带给人以启发的恰恰是这些事件背后的故事，单纯的某年某月发生何事是给人带不来任何触动的。</p>
+<h1><font size =5>心得体会</font></h1>
+<p> 现在回到一个关键性的问题：人为什么要学历史？这个问题我觉得可能就和人为什么要学哲学一样，让很多人感到困惑。但其实在我看来，人是社会性的，都是在与形形色色的人交往中不断构建现实中的自己，历史则为我们提供了这样一个平台，让你可以跨越你所处的层次，跨越你所处的时代，与处在不同时代、不同阶层的人对话，从他们身上学到经验与教训。历史为什么是有趣的，因为人与人之间构成的故事本身就是有趣的，我有时候真的感觉自己很幸运，可以处在这样一个历史时期，回头望去，有希腊文明、有诸子百家、有儒释道、有众多大师，同时处在后工业革命与信息革命时代的我们可以以一个全新的视角去审视过去的这些东西，从历史中学习，从历史中获得启发，读书最快乐的莫过于发现你曾经思考过的问题很多大师也曾经思考过，他们的答案往往会让你有眼前一亮之感。</p>
+]]></content>
+      <categories>
+        <category>闲谈</category>
+      </categories>
   </entry>
   <entry>
     <title>logistic回归与最大熵模型</title>
@@ -1142,258 +1152,394 @@ $$<br>
       </tags>
   </entry>
   <entry>
-    <title>SVM</title>
-    <url>/2020/08/12/svm/</url>
-    <content><![CDATA[<p>这部分将介绍支持向量机(SVM)算法，该部分将按照以下几部分进行组织：</p>
+    <title>python数据处理之时间变换</title>
+    <url>/2020/09/19/python-shu-ju-chu-li-zhi-shi-jian-bian-huan/</url>
+    <content><![CDATA[<p>本文将就<code>python</code>中对时间标识的处理做一点讲解，在进行数据分析时，有些时候我们需要对时间序列数据进行处理，比如像下面这样一组数据<a id="more"></a>:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Time</th>
+<th style="text-align:center">feature1</th>
+<th style="text-align:center">…</th>
+<th style="text-align:center">feature n</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">2013年-01月-01日: 00时00分00秒</td>
+<td style="text-align:center">…</td>
+<td style="text-align:center">…</td>
+<td style="text-align:center">…</td>
+</tr>
+<tr>
+<td style="text-align:center">2013年-01月-01日: 02时00分00秒</td>
+<td style="text-align:center">…</td>
+<td style="text-align:center">…</td>
+<td style="text-align:center">…</td>
+</tr>
+<tr>
+<td style="text-align:center">…</td>
+<td style="text-align:center">…</td>
+<td style="text-align:center">…</td>
+<td style="text-align:center">…</td>
+</tr>
+<tr>
+<td style="text-align:center">2015年-01月-01日: 00时00分00秒</td>
+<td style="text-align:center">…</td>
+<td style="text-align:center">…</td>
+<td style="text-align:center">…</td>
+</tr>
+</tbody>
+</table>
+<p>对于这样一段时序数据，采样间隔2小时。当我们拿到这组数据之后，首先要考虑的问题就是这组数据有没有缺失，而判断数据记录有无缺失的关键在于其时间序列<code>Time</code>是否连续。我们一般采用<code>pandas.read_csv()</code>函数来进行<code>csv</code>文件中数据的读取，读取得到的第一列是一个字符串形式，通过这些字符串来判断时间是否连续是比较困难的，需要重新写一个函数来对字符串进行处理。但幸运的是，其实已经有函数可以帮我们完成这样一项工作了，下面介绍下本文的关键对象—<code>unix时间戳</code>：</p>
+<blockquote>
+<p><strong>unix时间戳:</strong> unix时间戳是一种跟踪时间（以秒为单位）的方式。此计数从1970年1月1日UTC的Unix Epoch开始。因此，unix时间戳仅仅是特定日期与Unix纪元之间的秒数。</p>
+</blockquote>
+<p>简而言之，unix时间戳就是一个<code>int</code>型的数据，其值代表了某个时间点距离<code>1997-01-01: 00:00:00</code>的秒数，那么如果我们能够将我们的时间字符串转换成unix时间戳，那么后面的数据拆分、数据缺失定位就更加得心应手了。本文按照以下结构进行组织:</p>
 <ul>
-<li>算法历史</li>
-<li>线性可分支持向量机与硬间隔最大化</li>
-<li>线性支持向量机与软间隔最大化</li>
-<li>非线性支持向量机与核函数</li>
-<li>SVDD</li>
+<li>常见日期时间类型</li>
+<li>日期格式转换</li>
+<li>总结</li>
+</ul>
+<h3 id="常见日期时间类型">常见日期时间类型</h3>
+<p>在进行时间序列数据处理时，常见的日期时间类型大概有以下四种:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">类型</th>
+<th style="text-align:left">格式</th>
+<th style="text-align:left">示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">time</td>
+<td style="text-align:left">时间格式</td>
+<td style="text-align:left">17:00:00</td>
+</tr>
+<tr>
+<td style="text-align:center">date</td>
+<td style="text-align:left">日期格式</td>
+<td style="text-align:left">2019-09-19</td>
+</tr>
+<tr>
+<td style="text-align:center">datetime</td>
+<td style="text-align:left">日期时间格式</td>
+<td style="text-align:left">2019-09-19: 17:00:00</td>
+</tr>
+<tr>
+<td style="text-align:center">timestamp</td>
+<td style="text-align:left">时间戳格式</td>
+<td style="text-align:left">1568912400</td>
+</tr>
+</tbody>
+</table>
+<p>实际上以上四种类型可以粗分为两个类型: 字符串类型和时间戳格式，时间字符串直接转时间戳格式并不自然，因此在python中实现两者转化还需借助一个中间变量类型<code>struct_time</code>，时间格式变换流程如下:<br>
+$$<br>
+str \Leftrightarrow struct , time \Leftrightarrow stamp<br>
+$$<br>
+字符串格式和时间戳格式通过我上面的讲解大家应该可以有一个基本认识，下面重点介绍下<code>struct_time</code>类型，它是一个具有命名元祖接口的对象:可以通过索引和属性名访问值，存在以下值:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">index</th>
+<th style="text-align:center">attribute</th>
+<th style="text-align:center">values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">tm-year</td>
+<td style="text-align:center">年份</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">tm-mon</td>
+<td style="text-align:center">月份range(1,12)</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td style="text-align:center">tm-mday</td>
+<td style="text-align:center">天数range(1,31)</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td style="text-align:center">tm-hour</td>
+<td style="text-align:center">小时range(0,23)</td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td style="text-align:center">tm-min</td>
+<td style="text-align:center">分钟range(0,59)</td>
+</tr>
+<tr>
+<td style="text-align:center">5</td>
+<td style="text-align:center">tm-sec</td>
+<td style="text-align:center">秒数range(0,59)</td>
+</tr>
+<tr>
+<td style="text-align:center">6</td>
+<td style="text-align:center">tm-wday</td>
+<td style="text-align:center">星期range(0,6)</td>
+</tr>
+<tr>
+<td style="text-align:center">7</td>
+<td style="text-align:center">tm-yday</td>
+<td style="text-align:center">年中的一天range(1,366)</td>
+</tr>
+</tbody>
+</table>
+<p>而要实现这样的变换，则就要提到<code>python</code>中两个专门与时间打交道的模块<code>time</code>和<code>datetime</code>。</p>
+<h3 id="日期和格式转换">日期和格式转换</h3>
+<p>这部份将介绍以下<code>time</code>以及<code>datetime</code>中常用的一些方法。</p>
+<h4 id="time模块"><code>time</code>模块</h4>
+<p><a href="https://docs.python.org/3/library/time.html"><code>time</code></a>模块是操作系统层面上的， 与<code>os</code>模块类似，主要提供一些系统层面的与时间有关的操作，该模块是其他所有与时间相关模块的基础，我们用到该模块比较多的方法主要有以下几个:</p>
+<ul>
+<li><code>time.time()</code>: 返回当前时间的时间戳</li>
+</ul>
+<pre class="line-numbers language-language-python"><code class="language-language-python">>>>: 
+print(time.time())
+
+>>>: 
+1600502127.7830698
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li><code>time.loacltime()</code>: 将一个<code>unix stamp</code>转换为本地时间(东八区)的<code>struct_time</code>类型</li>
+</ul>
+<pre class="line-numbers language-language-python"><code class="language-language-python">>>>: 
+print(time.localtime(time.time())) 
+
+>>>: 
+time.struct_time(tm_year=2020, tm_mon=9, tm_mday=19, tm_hour=16, tm_min=2, tm_sec=55, tm_wday=5, tm_yday=263, tm_isdst=0)
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li><code>time.gmtime()</code>: 将一个<code>unix stamp</code>转换为格林威治时间的<code>struct_time</code>类型</li>
+</ul>
+<pre class="line-numbers language-language-python"><code class="language-language-python">>>>: 
+print(time.gmtime(time.time()))
+
+>>>: 
+time.struct_time(tm_year=2020, tm_mon=9, tm_mday=19, tm_hour=8, tm_min=5, tm_sec=31, tm_wday=5, tm_yday=263, tm_isdst=0)
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li><code>time.strftime(format, struct_time)</code>: 将一个<code>struct_time</code>类型输出转换为指定格式的字符串</li>
+</ul>
+<pre class="line-numbers language-language-python"><code class="language-language-python">>>>: 
+format = '%Y-%m-%d: %H:%M:%S' 
+struct_time = time.localtime(time.time()) 
+print(time.strftime(format, struct_time)) 
+
+>>>: 
+2020-09-19: 16:10:42 
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li><code>time.strptime(str, format)</code>: 与<code>strftime</code>作用相反，将一个时间字符串按照<code>format</code>格式解析成<code>struct_time</code>类型</li>
+</ul>
+<pre class="line-numbers language-language-python"><code class="language-language-python">>>>: 
+format = '%Y-%m-%d: %H:%M:%S'  
+time_str = '2020-9-19: 16:17:00' 
+print(time.strptime(time_str, format))  
+
+>>>: 
+time.struct_time(tm_year=2020, tm_mon=9, tm_mday=19, tm_hour=16, tm_min=17, tm_sec=0, tm_wday=5, tm_yday=263, tm_isdst=-1)
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li><code>time.mktime(struct_time)</code>: 将一个<code>struct_time</code>类型数据转化成<code>unxi_stample</code>, 该操作是<code>time.localtime()</code>的反操作，因此其默认输入的<code>struct_time</code>是本地时间</li>
+</ul>
+<pre class="line-numbers language-language-python"><code class="language-language-python">>>>: 
+format = '%Y-%m-%d: %H:%M:%S'  
+time_str = '2020-9-19: 16:17:00' 
+time_struct = time.strptime(time_str, format) 
+print(time_struct)
+print(time.mktime(time_struct)) 
+print(time.localtime(time.mktime(time_struct)))
+
+>>>:
+time.struct_time(tm_year=2020, tm_mon=9, tm_mday=19, tm_hour=16, tm_min=17, tm_sec=0, tm_wday=5, tm_yday=263, tm_isdst=-1)
+1600503420.0
+time.struct_time(tm_year=2020, tm_mon=9, tm_mday=19, tm_hour=16, tm_min=17, tm_sec=0, tm_wday=5, tm_yday=263, tm_isdst=0)
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>上面这些方法实际上就已经完全可以实现我们的功能，大致是下面这样一张图:</p>
+<p><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/time.png" alt="转换方法"></p>
+<h4 id="datetime模块"><code>datetime</code>模块</h4>
+<p><code>datetime</code>模块可以看作是对<code>time</code>模块的一个封装和扩展，上面提到的<code>time</code>中常用方法在<code>datetime</code>中均有对应, 在<code>datetime</code>下主要有以下几个类：</p>
+<ul>
+<li><code>date</code>: 处理与日期相关的数据，属性: year, month, day</li>
+<li><code>time</code>: 处理与某天时间相对应的数据， 属性: hour, minute, second, microsecond, tzinfo</li>
+<li><code>datetime</code>: 日期和时间的组合，属性: year, month, day, hour, minute, second, microsecond, tzinfo</li>
+<li><code>timedelta</code>: 与持续时间计算有关</li>
+<li><code>tzinfo</code>: 时区信息类</li>
+</ul>
+<p><code>datetime</code>类基本已经可以实现上面<code>time</code>模块所能实现的功能，具体对应大家可以去官网<a href="https://docs.python.org/2/library/datetime.html">datetime</a>查看，我后面如果需要用到也会进行总结。</p>
+<h4 id="pandas-to-datetime"><code>pandas.to_datetime()</code></h4>
+<p>我们读取数据往往需要使用<code>pandas</code>库，得到<code>Dateframe</code>类型的数据，读取之后往往某一列就是时间序列，若用前面的方法来做转换，需要对每一个时间字符串操作，比较麻烦。为了解决该问题，就需要使用<code>pandas.to_datetime()</code>方法，使用该方法可以将变量变为<code>datetime</code>类型，方便后面进行操作。</p>
+<ul>
+<li>字符串时间转时间戳</li>
+</ul>
+<pre class="line-numbers language-language-python"><code class="language-language-python">data.time = pandas.to_datetime(data.time) 
+data.time = data.time.apply(lambda x: time.mktime(x.tuple))
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<ul>
+<li>时间戳转字符串</li>
+</ul>
+<pre class="line-numbers language-language-python"><code class="language-language-python">data.time = pandas.to_datetime(data.time) 
+data.time = data.time.apply(lambda x: time.strftime(format, x.tuple))
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h3 id="总结">总结</h3>
+<p>在进行数据处理的时候我们往往不能够默认数据是“好数据”，因此就必须通过程序来对数据进行验证，而对于时序数据，时间信息的处理是绕不过去的，掌握了<code>python</code>中常用的对时间处理方法，后面处理时序数据可以更加得心应手。</p>
+]]></content>
+      <categories>
+        <category>python学习</category>
+      </categories>
+      <tags>
+        <tag>编程技能， 时序数据</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>再谈极大似然估计求解</title>
+    <url>/2020/08/24/zai-tan-ji-da-si-ran-gu-ji-qiu-jie/</url>
+    <content><![CDATA[<p>首先我们思考这样一个问题：</p>
+<blockquote>
+<p>当我们用最大似然估计进行概率模型参数估计时，为什么基本都是直接求导，一阶导数等于0的点就是我们待求的最优估计?</p>
+</blockquote>
+<p>问到这个地方的时候，可能有一部分人就不知该如何回答了，因为一阶导数为0显然不是函数最大值点的充要条件，但我相信肯定有的答案是:</p>
+<blockquote>
+<p>因为碰到的对数似然函数是一个凹函数形式，这样一阶导数为0的点就与函数最大值点互为充要条件了</p>
+</blockquote>
+<p>这个答案是正确的，但是不够严谨，我相信基本没人会在应用最大似然进行参数估计时首先进行对数似然函数的凸性判定，这篇文章主要就是想通过严谨的数学推导来说明一类概率密度函数的对数似然函数是凹函数，可以直接利用求导等于0这种简单直接的方法寻找最优估计，而若碰到不属于这一类的概率密度函数，则在使用最大似然估计时还是先判断对数似然函数凹凸性为妙，本篇文章按照以下结构组织:</p>
+<ul>
+<li>指数分布族</li>
+<li>指数族函数举例</li>
+<li>对数似然函数凹凸性证明</li>
+<li>总结</li>
 </ul>
 <a id="more"></a>
-<h3 id="算法历史">算法历史</h3>
-<p>支持向量机算法是在机器学习领域非常著名的算法，在神经网络算法得到普及之前，支持向量机算法可以说是统治了机器学习领域的半壁江山，该算法由Vapnik在贝尔实验室开发，根据Vapnik和Chervonekis提出的统计学习框架或VC理论，它提出了一种最可靠的预测方法（ 1974年）和瓦普尼克（Vapnik）（1982年，1995年）。给定一组训练示例，每个训练示例都标记为属于两个类别中的一个或另一个，则SVM训练算法会构建一个模型，该模型将新示例分配给一个类别或另一个类别，使其成为非概率 二进制 线性分类器（尽管方法例如Platt缩放存在以在概率分类设置中使用SVM）。SVM模型是将示例表示为空间中的点，并进行了映射，以使各个类别的示例被尽可能宽的明显间隙分开。然后，将新示例映射到相同的空间，并根据它们落入的间隙的侧面来预测属于一个类别。<br>
-除执行线性分类外，SVM还可以使用所谓的内核技巧有效地执行非线性分类，将其输入隐式映射到高维特征空间。</p>
-<h3 id="线性可分支持向量机与硬间隔最大化">线性可分支持向量机与硬间隔最大化</h3>
-<p>对于线性可分数据，上一部分介绍的感知机算法便可以处理，但需要注意的是，感知机算法学习得到的超平面可能有无穷多个，那么这些超平面中哪个是最优的呢？支持向量机算法便回答了这一问题，该算法认为使两类样本点间隔最大的超平面是最优超平面。首先给出线性可分支持向量机的定义：</p>
+<p></p>
+<h3 id="指数分布族">指数分布族</h3>
+<p>首先给出指数分布族的定义：</p>
 <blockquote>
-<p><strong>线性可分支持向量机</strong>:给定线性可分训练数据集，通过间隔最大化或者等价地求解相应的凸二次规划问题学习得到的分离超平面为：<br>
+<p>指数分布族是一类概率分布的总称，这类分布的概率密度函数具有这样的形式：<br>
 $$<br>
-\omega^* \cdot x + b^* = 0<br>
+p_\theta(x) = h(x) \exp(\theta^T \phi(x) - A(\theta))<br>
 $$<br>
-以及相应的分类决策函数:<br>
-$$ f(x) = sign(\omega^* \cdot x + b^*)$$</p>
+式中，$x$是密度函数自变量，$x \in \mathcal{X}$;$\phi(x)$是充分统计量，可以看做是原始变量的一个映射:<br>
+$$<br>
+\phi: \mathcal{X} \rightarrow R^d<br>
+$$<br>
+$\theta$是模型参数向量，与充分统计量维度相同，$h(x)$是一个只与$x$有关的统计量，$A(\theta)$为配分函数，通过该函数来保证$p_\theta(x)$满足概率密度函数的定义：<br>
+$$<br>
+\int_{\mathcal{X}} p_{\theta}(x) dx = 1<br>
+$$<br>
+由此约束条件，我们可以得到$A(\theta)$的解析表达式：<br>
+$$<br>
+A(\theta) = \log (\int h(x) \exp(\theta^T \phi(x))dx )<br>
+$$</p>
 </blockquote>
-<p>下面就结合下图来对支持向量机的算法思想进行阐述,图中红点与蓝点分别代表两个类别，我们现在期望找到一个超平面，使得两个类别的样本点都能够尽可能离该超平面距离远，也就是希望中间的margin尽可能大。<br>
-<img src="https://raw.githubusercontent.com/xuejy19/Images/master/SVM.png" alt="SVM"><br>
-这便是支持向量机的思想，下一步需要做的便是将这种想法翻译成一个数学问题，在这里首先引入两个间隔的概念：</p>
-<blockquote>
+<h3 id="指数分布族函数举例">指数分布族函数举例</h3>
+<p>首先给出结论，按照笔者调研，属于指数分布族的分布有：</p>
 <ul>
-<li>几何间隔：所谓几何间隔就是样本点$(x_i,y_i)$到超平面的实际距离，其计算公式为(此时样本点已经被超平面正确分类)：<br>
-$$ d = y_i \frac{\omega x_i + b}{||\omega||}$$</li>
-<li>函数间隔：不考虑几何间隔中$||\omega||$便得到了函数间隔：<br>
-$$ d = y_i(\omega x_i +b)$$</li>
+<li>正态分布$N(\mu,\sigma^2)$</li>
+<li>伯努利分布(两点分布)$B(1,\pi)$</li>
+<li>二项分布$B(n,\pi)$</li>
+<li>泊松分布$P(\lambda)$</li>
+<li>伽马分布$G(\mu,v)$</li>
+<li>…</li>
 </ul>
-</blockquote>
-<p>需要注意的是，函数间隔可以表示分类预测的正确性及确信度，在感知机学习中，我们便是使用函数间隔，这是由于数据线性可分，最终目标函数都会收敛到0，使用几何间隔与函数间隔最终效果并无不同(两种间隔符号一致)。但在支持向量机算法中，我们希望间隔最大，这时显然函数间隔是不够的，因为只要成比例的增大$\omega,b$，超平面并没有改变，但是函数间隔却便为两倍，因此在该问题中，我们应当使用几何间隔,至此支持向量机的思想可以写成如下优化问题的形式：<br>
+<p>下面就将其中几个分布化成指数分布族的标准形式</p>
+<h4 id="伯努利分布">伯努利分布</h4>
+<p>对于伯努利分布，我们有$\mathcal{X} = { 0,1 }$,模型参数为$P(x = 1) = \pi,P(x = -1) = 1 - \pi$,因此我们有:<br>
 $$<br>
 \begin{aligned}<br>
-&amp;max_{\omega,b} \quad \gamma  \<br>
-&amp;s.t. \quad y_i \frac{\omega x_i +b}{||\omega||} \geq \gamma,\quad i = 1,2,\dots,N<br>
+P(X = x)  = \pi^x (1 - \pi)^{1-x} &amp;= \exp(x \log \pi + (1-x) \log(1-\pi) )  \<br>
+&amp;= \exp(x \log \frac{\pi}{1-\pi} + \log (1-\pi))<br>
 \end{aligned}<br>
 $$<br>
-上面是优化问题的原始形式，下面尝试对该优化问题进行等价转换以便于求解，首先根据几何间隔与函数间隔的关系，将优化问题转化为：<br>
+因此令$\theta = \log \frac{\pi}{1 - \pi}$, 则$P(X = x)$可以写做:<br>
+$$<br>
+P(X = x) = \exp(x\theta - \log(1 + e^\theta))<br>
+$$<br>
+因此对于伯努利分布$h(x) = 1,\phi(x) = x, \theta = log \frac{\pi}{1-\pi}, A(\theta) = log(1 + e^\theta)$</p>
+<h4 id="泊松分布">泊松分布</h4>
+<p>首先给出泊松分布的形式:<br>
+$$<br>
+P_\lambda(X = x) = \frac{\lambda^x}{x!} e^{- \lambda}<br>
+$$<br>
+下面将其转化成指数分布族标准形式:<br>
 $$<br>
 \begin{aligned}<br>
-&amp;max_{\omega,b} \quad \frac{\hat{\gamma}}{||\omega||}  \<br>
-&amp;s.t. \quad y_i (\omega x_i +b) \geq \hat{\gamma},\quad i = 1,2,\dots,N<br>
+P_\lambda(X = x) &amp;= \frac{\lambda^x}{x!} e^{- \lambda} \<br>
+&amp;= \frac{1}{x!} e^{x\log \lambda - \lambda}<br>
 \end{aligned}<br>
 $$<br>
-此时可以注意到函数间隔$\hat{\gamma}$并不影响该优化问题求解，因此考虑将$\hat{\gamma}$置为1，注意到最大化$\frac{1}{||\omega||}$等价于最小化$\frac{1}{2}||\omega||^2$,因此优化问题最终可以表述为:<br>
+因此，对于泊松分布，$h(x) = \frac{1}{x!}, \theta = \log \lambda,\phi(x) = x,A(\theta) = e^\theta$</p>
+<h4 id="高斯分布">高斯分布</h4>
+<p>高斯分布的概率密度函数形式如下:<br>
+$$<br>
+p_{\mu,\sigma}(x) = \frac{1}{\sqrt{2 \pi} \sigma} \exp(- \frac{(x-\mu)^2}{2\sigma^2})<br>
+$$<br>
+下面将其转化成指数分布族标准形式:<br>
 $$<br>
 \begin{aligned}<br>
-&amp;min_{\omega,b} \quad \frac{1}{2} ||\omega||^2 \\<br>
-&amp;s.t. \quad y_i (\omega x_i +b) \geq 1,\quad i = 1,2,\dots, N<br>
+p_{\mu,\sigma}(x) &amp;= \frac{1}{\sqrt{2 \pi} \sigma} \exp(- \frac{(x-\mu)^2}{2\sigma^2})  \<br>
+&amp;= \frac{1}{\sqrt{2 \pi} \sigma} \exp(\frac{-x^2}{2 \sigma^2} + \frac{x \mu}{\sigma^2} - \frac{\mu^2}{2\sigma^2}) \<br>
+&amp;= \frac{1}{\sqrt{2 \pi} } \exp(\frac{-x^2}{2 \sigma^2} + \frac{x \mu}{\sigma^2} - \frac{\mu^2}{2\sigma^2} + \log \sigma)<br>
 \end{aligned}<br>
 $$<br>
-这是一个典型的凸二次规划问题，运用凸优化知识可进行求解。</p>
-<p>下面给出一个定理来说明最大间隔分离超平面唯一的定理：</p>
-<blockquote>
-<p>定理：若训练数据集$T$线性可分，则可将训练数据集中的样本点完全分开的最大间隔分离超平面存在且唯一</p>
-</blockquote>
-<h4 id="支持向量与间隔边界">支持向量与间隔边界</h4>
-<p>首先给出支持向量的定义:</p>
-<blockquote>
-<p>在线性可分情况下，训练数据集中样本点中与分离超平面距离最近的样本点的实例称为支持向量。</p>
-</blockquote>
-<p>反映在优化问题中，支持向量满足约束条件的等号,支持向量在超平面:<br>
+因此，对于高斯分布:<br>
 $$<br>
 \begin{aligned}<br>
-H_1&amp;: \omega \cdot x +b =1  \<br>
-H_2&amp;: \omega \cdot x +b = -1<br>
-\end{aligned}<br>
-$$<br>
-两个支撑超平面之间的距离称为间隔，该间隔距离为：<br>
-$$<br>
-d = \frac{2}{||\omega||}<br>
-$$<br>
-在决定分离超平面时只有支持向量起作用，而其他实例点并不起作用。</p>
-<h4 id="学习的对偶算法">学习的对偶算法</h4>
-<p>在进行求解时，我们往往考虑不直接求解原问题，而是求解原问题的对偶问题, 又因为原问题是一个凸优化问题，同时满足Slater约束品性，因此考虑求解其对偶问题。首先写出Lagrange函数：<br>
-$$<br>
-L(\omega,b,\alpha) = \frac{1}{2}||\omega^2|| - \sum_{i=1}^N \alpha_i y_i (\omega \cdot x_i +b) + \sum_{i=1}^N \alpha_i<br>
-$$<br>
-接下来求解对偶函数，对偶函数$g(\alpha)$表示为：<br>
-$$<br>
-g(\alpha) = \min_{\omega,b} L(\omega,b,\alpha)<br>
-$$<br>
-因为$L(\omega,b,\alpha)$是凸函数，因此只需要对$\omega,b$求偏导，令偏导等于0即可：<br>
-$$<br>
-\begin{aligned}<br>
-\frac{\partial L(\omega,b,\alpha)}{\partial \omega} &amp;= \omega - \sum_{i=1}^N \alpha_i y_i x_i = 0 \rightarrow \omega =  \sum_{i=1}^N \alpha_i y_i x_i  \\<br>
-\frac{\partial L(\omega,b,\alpha)}{\partial b} &amp;= -\sum_{i=1}^N \alpha_i y_i = 0 \rightarrow \sum_{i=1}^N \alpha_i y_i = 0<br>
-\end{aligned}<br>
-$$<br>
-回代拉格朗日函数，可得对偶函数：<br>
-$$<br>
-\begin{aligned}<br>
-g(\alpha) &amp;= \frac{1}{2} \sum_{i=1}^N \sum_{j=1}^N \alpha_i \alpha_j y_i y_i x_i^T x_j - \sum_{i=1}^N \sum_{j=1}^N \alpha_i \alpha_j y_i y_i x_i^T x_j + \sum_{i=1}^N \alpha_i  \\<br>
-&amp;= -\frac{1}{2} \sum_{i=1}^N \sum_{j=1}^N \alpha_i \alpha_j y_i y_i x_i^T x_j + \sum_{i=1}^N \alpha_i<br>
-\end{aligned}<br>
-$$<br>
-所以，对偶优化问题可以写做：<br>
-$$<br>
-\begin{aligned}<br>
-&amp;\max_{\alpha} \quad -\frac{1}{2} \sum_{i=1}^N \sum_{j=1}^N \alpha_i \alpha_j y_i y_i x_i^T x_j + \sum_{i=1}^N \alpha_i \\<br>
-&amp;s.t. \quad \sum_{i=1}^N \alpha_i y_i =0;\alpha_i \geq 0,i=1,\dots,N<br>
-\end{aligned}<br>
-$$<br>
-对于该问题的求解可以通过SMO(序列最小优化)算法进行求解，因为强对偶性成立,KKT条件满足：<br>
-$$<br>
-\begin{aligned}<br>
-&amp;\nabla_{\omega} L(\omega^<em>,b^</em>,\alpha^<em>) = \omega^</em> - \sum_{i=1}^N \alpha_i^* y_i x_i = 0 \<br>
-&amp;\nabla_{b} L(\omega^<em>,b^</em>,\alpha^<em>) = -\sum_{i=1}^N \alpha_i^</em> y_i = 0 \<br>
-&amp;\alpha_i^* (y_i(\omega^<em>x_i+b^</em>)-1) = 0 \<br>
-&amp;y_i(\omega^* x_i +b^<em>) - 1 \geq 0 \<br>
-&amp;\alpha_i^</em> \geq 0<br>
-\end{aligned}<br>
-$$<br>
-由此便可建立对偶问题最优解$\alpha^<em>$与原问题最优解$\omega^</em>,b^<em>$之间的关系，首先至少有一个$\alpha_j^</em>&gt;0$,这是因为若$\alpha^<em>$均为0，则$\omega^</em>$为0,这不是原始最优化问题的解，假设$\alpha_j^<em>&gt;0$,则由互补松弛条件，此时有$y_j(\omega^</em> x_j +b^<em>) = 1$,而$\omega^</em>$表达式是知道的，由此可得$\omega^<em>,b^</em>$表达式为：<br>
-$$<br>
-\begin{aligned}<br>
-\omega^* &amp;= \sum_{i=1}^N \alpha_i^* y_i x_i \<br>
-b^* &amp;=  y_j - \sum_{i=1}^N \alpha_i^* y_i(x_i\cdot x_j)<br>
-\end{aligned}<br>
-$$<br>
-至此，我们便通过求解对偶问题得到了原始问题的最优解，得到了超平面方程以及判决方程：<br>
-$$<br>
-\begin{aligned}<br>
-&amp;\omega^* \cdot x + b^* = 0 \<br>
-&amp;f(x) = sign(\omega^* \cdot x + b^*)<br>
-\end{aligned}<br>
-$$<br>
-通过引入对偶问题，我们便可以从数学的角度导出支持向量:</p>
-<blockquote>
-<p>训练数据集中对应于$\alpha_i^* &gt;0$的样本点称为支持向量</p>
-</blockquote>
-<h3 id="线性支持向量机与软间隔最大化">线性支持向量机与软间隔最大化</h3>
-<h4 id="原始问题">原始问题</h4>
-<p>前面介绍的算法是针对线性可分数据,那么对于大部分线性可分的数据集，支持向量机能否处理呢？答案是可以，但是需要对原始优化问题做适当变换,对于线性可分的数据，我们要求各个样本点到分类超平面的函数间隔都要大于1，对于不可分数据点，我们直观上的想法是考虑能否将该约束放松，因此我们考虑为每一个样本点引入一个松弛变量$\xi_i$,使得函数间隔加上松弛变量等于1。这样，约束条件变为:<br>
-$$<br>
-y_i(\omega \cdot x_i +b) \geq 1 - \xi_i<br>
-$$<br>
-但需要注意的人，该松弛变量的引入是有代价的，需要在目标函数中进行惩罚，因此考虑在目标函数中加入惩罚项$\xi_i$，将目标函数改写为：<br>
-$$<br>
-\frac{1}{2} ||\omega||^2  + C\sum_{i=1}^N \xi_i<br>
-$$<br>
-其中$C$是惩罚系数，$C$值大时对误分类惩罚增大。最小化该目标函数包含两层含义：使间隔尽量大；使误分类点尽量少。线性不可分支持向量机的学习问题变为如下凸二次规划问题：<br>
-$$<br>
-\begin{aligned}<br>
-&amp;\min_{\omega,b,\xi} \quad \frac{1}{2} ||\omega||^2 + C \sum_{i=1}^N \xi_i \\<br>
-&amp;s.t. \quad y_i(\omega x_i +b) \geq 1- \xi_i,i=1,2,\dots,N \\<br>
-&amp;\qquad \xi_i \geq 0,i=1,2,\dots,N<br>
-\end{aligned}<br>
-$$<br>
-对于该原始问题，可以证明$\omega$的解是唯一的，但$b$的解可能不唯一，而是存在一个区间。</p>
-<h4 id="对偶问题">对偶问题</h4>
-<p>在该部分便不进行对偶问题推导了，步骤与上一部分一致，最终得到的对偶问题形式为：<br>
-$$<br>
-\begin{aligned}<br>
-&amp;\max_{\alpha} \quad -\frac{1}{2} \sum_{i=1}^N \sum_{j=1}^N \alpha_i \alpha_j y_i y_i x_i^T x_j + \sum_{i=1}^N \alpha_i \\<br>
-&amp;s.t. \quad \sum_{i=1}^N \alpha_i y_i =0,i=1,\dots,N  \\<br>
-&amp; \qquad 0 \leq \alpha_i \leq C \quad i=1,2,\dots,N<br>
-\end{aligned}<br>
-$$<br>
-可以看到引入松弛变量后对偶问题形式基本未发生变化，仅仅约束条件中$\alpha_i$范围变了。需要注意的是将原始问题转化为对偶问题的过程中，引入了两个Lagrange算子$\alpha_i,\mu_i$，但由于存在$<br>
-\alpha_i + \mu_i = C $以及$\alpha_i \geq 0, \mu_i \geq 0 $,因此将这些约束条件简化为$0 \leq \alpha_i \leq C$。<br>
-下面讨论如何根据对偶问题最优解求解原问题最优解，与硬间隔支持向量机不同，在该问题中，互补松弛条件有两个:<br>
-$$<br>
-\begin{aligned}<br>
-&amp;\alpha_i^* (y_i(\omega^<em>x_i+b^</em>)-1 + \xi_i) = 0  \<br>
-&amp;\mu_i \xi_i = 0<br>
-\end{aligned}<br>
-$$<br>
-在求解$b^<em>$时，关键是要将支持向量确定出来，首先支持向量应当在支撑超平面上，这就要求$\alpha_i&gt;0$,同时松弛间隔$\xi_i$应当为0，由第二个互补松弛条件可知$\mu_i$不能够为0，因此$\alpha_i$必须小于$C$,换句话说，$\alpha^</em> = C$所对应的点均在支撑超平面以内，若$\xi_i&lt;1$,则仍能分类正确，若大于1，则就会分类错误。$\omega^<em>$和$b^</em>$表达式可以写做：<br>
-$$<br>
-\begin{aligned}<br>
-\omega^* &amp;= \sum_{i=1}^N \alpha_i^* y_i x_i \<br>
-b^* &amp;= y_j - \sum_{i=1}^N y_i \alpha_i^* (x_i \cdot x_j)<br>
+h(x) &amp;= \frac{1}{\sqrt{2 \pi} \sigma}  \<br>
+\phi(x) &amp;= [\frac{x^2}{2}, x]^T \<br>
+\theta &amp;= [-\frac{1}{\sigma^2}, \frac{\mu}{\sigma^2}]^T \<br>
+A(\theta) &amp;= -\frac{1}{2} (log \theta^{(1)} + \theta^{(2)})<br>
 \end{aligned}<br>
 $$</p>
-<h4 id="非线性支持向量机与核函数">非线性支持向量机与核函数</h4>
-<p>支持向量机是解决线性分类问题的一种有效方法，但并不能解决非线性分类问题，那么非线性的数据就不能用线性的方法解决么？ 直观上我们有这样一个方法，考虑降维度线性不可分的数据映射到高维度，使映射后的数据在高维度线性可分，由此便引出了本节的核函数。</p>
-<h4 id="核函数">核函数</h4>
-<p>首先先举一个空间变换的栗子，设原空间为$\mathcal{X} \subset R^2,x = (x^1,x^2)^T$,新空间为$\mathcal{Z} \subset R^2,z = (z^1,z^2)^T$,定义从原空间到新空间的映射：<br>
-$$<br>
-z = \phi(x) = ((x^1)^2,(x^2)^2)^T<br>
-$$<br>
-经过这样一个变换原空间中的椭圆：<br>
-$$<br>
-w_1 (x^1)^2 + w_2 (x^2)^2 +b = 0<br>
-$$<br>
-变换为了新空间中的直线：<br>
-$$<br>
-w_1 z^1 + w_2 z^2 + b = 0<br>
-$$<br>
-这样，原空间的非线性可分问题就变成了新空间的线性可分问题。从该问题出发，我们可以总结出用线性分类方法求解非线性分类问题的步骤：</p>
-<ul>
-<li>首先使用一个变换将原空间中的数据映射到新空间</li>
-<li>在新空间中使用线性分类学习方法从训练数据中学习分类模型</li>
-</ul>
-<p>而在支持向量机中，达到这一目的的方法应用核技巧，下面首先给出核函数的定义：</p>
-<blockquote>
-<p>核函数：设$\mathcal{X}$是输入空间，又设$\mathcal{H}$为特征空间(希尔伯特空间),如果存在一个从$\mathcal{X}$到$\mathcal{H}$的映射：<br>
-$$<br>
-\phi(x):\mathcal{X} \rightarrow \mathcal{H}<br>
-$$<br>
-使得对所有$x,z \in \mathcal{X}$,函数$K(x,z)$满足条件:<br>
-$$<br>
-K(x,z) = \phi(x) \cdot \phi(z)<br>
-$$<br>
-则称$K(x,z)$为核函数，$\phi(x)$为映射函数</p>
-</blockquote>
-<p>核技巧的想法是，在学习与预测中只定义核函数$K(x,z)$,而不显式的定义映射函数$\phi$。同时，对于一个核$K(x,z)$,特征空间$\mathcal{H}$和映射函数$\phi$的取法并不唯一</p>
-<h4 id="非线性支持向量机">非线性支持向量机</h4>
-<p>在线性支持向量机的对偶问题中,无论是目标函数还是决策函数中均只包含实例的内积的形式，因此若用$K(x,y)$代替$x\cdot y$,实际上便是在对高维空间中的特征点设计线性分类器。那现在的关键问题便在于如何选择合适的核函数。</p>
-<p>关于核函数这部分的理论我后面会另开一个章节进行介绍学习，在这一部分便直接给出一些常用的核函数：</p>
-<ul>
-<li>多项式核函数:<br>
-$$ K(x,z) = (x\cdot z +1)^p$$</li>
-<li>高斯核函数(径向基函数)<br>
-$$ K(x,z) = exp(- \frac{||x-z||^2}{2\sigma^2})$$</li>
-</ul>
-<p>需要注意的是，在引入核函数后，又多引入了超参数，比如高斯核函数中的$\sigma$,而这些超参数的选择也会对分类效果产生影响。</p>
-<h3 id="一类分类器设计">一类分类器设计</h3>
-<p>在前面介绍的支持向量机算法中，针对的都是二分类情况，但当我们做故障检测时，往往就只有大量的正常样本点，现在我们需要根据这些正常样本点来设计一个分类器以对未出现的异常样本点进行检测。在这一部分介绍两种算法：</p>
-<ul>
-<li>OCSVM</li>
-<li>SVDD</li>
-</ul>
-<h4 id="OCSVM">OCSVM</h4>
-<p>在OCSVM中，将坐标原点作为唯一的异常点,最大化最优超平面到远点的距离，若记$\rho$为从原点到超平面的距离，$\xi_i$为松弛变量，则优化问题可以写做：<br>
+<h3 id="对数似然函数凹凸性证明">对数似然函数凹凸性证明</h3>
+<p>我们关心的是最终对数似然函数的凹凸性，因为最终的对数似然函数是各个样本的概率密度函数取对数后累加的形式，由保凸运算可知，若单个对数概率密度函数的凹凸性可以确定，那么最终对数似然函数的凹凸性也就确定了。对于指数族分布，单个样本的概率密度函数取对数如下:<br>
 $$<br>
 \begin{aligned}<br>
-&amp;\max_{\omega,\rho,\xi_i} \rho - C\sum_{i=1}^N \xi_i \<br>
-&amp; s.t. \quad \omega \cdot x_i \geq \rho - \xi_i,\xi_i \geq 0,||\omega|| = 1<br>
+\log p_{\theta}(x) &amp;= \log h(x) \exp(\theta^T \phi(x) - A(\theta)) \<br>
+&amp;= \log h(x) + \theta^T \phi(x) + \log(-A(\theta))<br>
 \end{aligned}<br>
-$$</p>
-<h4 id="SVDD">SVDD</h4>
-<p>SVDD的基本思想则是，对于$n$维空间中的数据点集，寻找最小超球面，使其成为所有点的边界，其对应优化问题的原问题为:<br>
+$$<br>
+第一项与$\theta$无关，第二项为$\theta$的线性组合，不影响函数的凹凸性，所以整个函数的凹凸性是由第三项来确定，对于外层函数是对数函数的对数函数$\log f(x)$而言:<br>
+$$<br>
+(\log f(x))^{’’} = \frac{f(x) f^{’’}(x) - f^{’}(x)^2}{f(x)^2}<br>
+$$<br>
+由对数函数性质有$f(x) &gt; 0$,因此，若$f(x)$是凹函数($f^{’’}(x) \leq 0$),则可推出$(\log f(x))^{’’} \leq 0$,即$\log f(x)$为凹函数，若$f(x)$为凸函数则不能有直接的结论，因此我们的重点放在讨论$A(\theta)$的凹凸性上。<br>
+下面证明$A(\theta)$为凸函数,从定义出发证明，记$\theta_{\lambda} = \lambda \theta_1 + (1 - \lambda) \theta_2$,其中$\theta_1,\theta_2 \in dom f, \lambda \in [0,1]$,由Hölder不等式，可知:<br>
 $$<br>
 \begin{aligned}<br>
-&amp;\min_{a,R,\xi} \quad R^2 + C\sum_{i=1}^N \xi_i \<br>
-&amp;s.t. \quad ||x_i -a||^2 \leq R^2 + \xi_i \<br>
-&amp;\qquad \quad \xi_i \geq 0<br>
+A(\theta_\lambda) &amp;= \log (\int h(x) \exp(\theta_{\lambda}^T \phi(x))dx ) \<br>
+&amp;= \log (\int \exp(\theta_{\lambda}^T \phi(x))d\mu(x)\<br>
+&amp;= \log (\int \exp[ (\lambda \theta_1 \phi(x) + (1-\lambda)\theta_2)\phi(x)]d\mu(x) ) \<br>
+&amp;= \log (\int \exp(\theta_1 \phi(x)^{\lambda}) \exp (\theta_2 \phi(x))^{1-\lambda} d \mu(x)) \<br>
+&amp;\leq \log (\int \exp(\theta_1 \phi(x))^{\frac{\lambda}{\lambda}} d\mu(x) )^\lambda (\int \exp(\theta_2 \phi(x))^{\frac{1-\lambda}{1- \lambda}}d\mu(x))^{1-\lambda}  (Hölder不等式) \<br>
+&amp;= \lambda \log (\int \exp(\theta_1 \phi(x)) d\mu(x) ) + (1-\lambda)<br>
+\log (\int \exp(\theta_2 \phi(x)) d\mu(x) ) \<br>
+&amp;= \lambda A(\theta_1) + (1-\lambda) A(\theta_2)<br>
+\end{aligned}<br>
+$$<br>
+从凸函数定义可知,$A(\theta)$为凸函数，至此我们便得到了对数似然函数的凹凸性:<br>
+$$<br>
+\begin{aligned}<br>
+&amp;A(\theta) 凸 \rightarrow -A(\theta) 凹 \rightarrow \log(-A(\theta)) 凹 \<br>
+&amp; log(p_\theta(x)) 凹  \rightarrow 对数似然函数 凹<br>
 \end{aligned}<br>
 $$</p>
+<h3 id="总结">总结</h3>
+<p>从前面列出的指数分布族所包含的分布来看，我们日常所碰到的绝大多数概率分布都属于指数族分布，是可以直接通过求导等于0这种方法来得到参数估计，而对于不属于指数分布族的分布，则是有必要对对数似然函数进行分析，而不能直接通过求导来解最优参数估计值。</p>
+<h4 id="参考">参考</h4>
+<p>本文内容主要参考以下链接：<br>
+[1] <a href="https://www.zhihu.com/question/263423642/answer/269353169">为什么极大似然估计求导为 0 就是要求的值呢？</a><br>
+[2] <a href="https://web.stanford.edu/class/stats311/Lectures/lec-07.pdf">指数分布族函数</a></p>
 ]]></content>
       <categories>
         <category>统计学习</category>
       </categories>
       <tags>
-        <tag>支持向量机</tag>
+        <tag>统计学习，凸优化</tag>
       </tags>
   </entry>
   <entry>
@@ -1643,595 +1789,6 @@ $$<br>
       </categories>
       <tags>
         <tag>无感而发</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>机器学习理论</title>
-    <url>/2020/07/06/ji-qi-xue-xi-li-lun/</url>
-    <content><![CDATA[<p>笔者近期想做一下<strong>机器学习</strong>相关理论总结<a id="more"></a>，计划划分为以下章节：</p>
-<blockquote>
-<ul>
-<li>贝叶斯理论</li>
-<li>概率密度函数估计</li>
-<li>EM算法</li>
-<li>线性判别——感知器</li>
-<li>支持向量机</li>
-<li>近邻法</li>
-<li>特征提取与特征选择</li>
-<li>神经网络</li>
-<li>RNN</li>
-<li>非监督学习</li>
-<li>决策树</li>
-<li>聚类</li>
-</ul>
-</blockquote>
-<p>各章节主要包含两部分：</p>
-<blockquote>
-<ul>
-<li>理论介绍</li>
-<li>代码实战</li>
-</ul>
-</blockquote>
-]]></content>
-      <categories>
-        <category>统计学习</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>再谈极大似然估计求解</title>
-    <url>/2020/08/24/zai-tan-ji-da-si-ran-gu-ji-qiu-jie/</url>
-    <content><![CDATA[<p>首先我们思考这样一个问题：</p>
-<blockquote>
-<p>当我们用最大似然估计进行概率模型参数估计时，为什么基本都是直接求导，一阶导数等于0的点就是我们待求的最优估计?</p>
-</blockquote>
-<p>问到这个地方的时候，可能有一部分人就不知该如何回答了，因为一阶导数为0显然不是函数最大值点的充要条件，但我相信肯定有的答案是:</p>
-<blockquote>
-<p>因为碰到的对数似然函数是一个凹函数形式，这样一阶导数为0的点就与函数最大值点互为充要条件了</p>
-</blockquote>
-<p>这个答案是正确的，但是不够严谨，我相信基本没人会在应用最大似然进行参数估计时首先进行对数似然函数的凸性判定，这篇文章主要就是想通过严谨的数学推导来说明一类概率密度函数的对数似然函数是凹函数，可以直接利用求导等于0这种简单直接的方法寻找最优估计，而若碰到不属于这一类的概率密度函数，则在使用最大似然估计时还是先判断对数似然函数凹凸性为妙，本篇文章按照以下结构组织:</p>
-<ul>
-<li>指数分布族</li>
-<li>指数族函数举例</li>
-<li>对数似然函数凹凸性证明</li>
-<li>总结</li>
-</ul>
-<a id="more"></a>
-<p></p>
-<h3 id="指数分布族">指数分布族</h3>
-<p>首先给出指数分布族的定义：</p>
-<blockquote>
-<p>指数分布族是一类概率分布的总称，这类分布的概率密度函数具有这样的形式：<br>
-$$<br>
-p_\theta(x) = h(x) \exp(\theta^T \phi(x) - A(\theta))<br>
-$$<br>
-式中，$x$是密度函数自变量，$x \in \mathcal{X}$;$\phi(x)$是充分统计量，可以看做是原始变量的一个映射:<br>
-$$<br>
-\phi: \mathcal{X} \rightarrow R^d<br>
-$$<br>
-$\theta$是模型参数向量，与充分统计量维度相同，$h(x)$是一个只与$x$有关的统计量，$A(\theta)$为配分函数，通过该函数来保证$p_\theta(x)$满足概率密度函数的定义：<br>
-$$<br>
-\int_{\mathcal{X}} p_{\theta}(x) dx = 1<br>
-$$<br>
-由此约束条件，我们可以得到$A(\theta)$的解析表达式：<br>
-$$<br>
-A(\theta) = \log (\int h(x) \exp(\theta^T \phi(x))dx )<br>
-$$</p>
-</blockquote>
-<h3 id="指数分布族函数举例">指数分布族函数举例</h3>
-<p>首先给出结论，按照笔者调研，属于指数分布族的分布有：</p>
-<ul>
-<li>正态分布$N(\mu,\sigma^2)$</li>
-<li>伯努利分布(两点分布)$B(1,\pi)$</li>
-<li>二项分布$B(n,\pi)$</li>
-<li>泊松分布$P(\lambda)$</li>
-<li>伽马分布$G(\mu,v)$</li>
-<li>…</li>
-</ul>
-<p>下面就将其中几个分布化成指数分布族的标准形式</p>
-<h4 id="伯努利分布">伯努利分布</h4>
-<p>对于伯努利分布，我们有$\mathcal{X} = { 0,1 }$,模型参数为$P(x = 1) = \pi,P(x = -1) = 1 - \pi$,因此我们有:<br>
-$$<br>
-\begin{aligned}<br>
-P(X = x)  = \pi^x (1 - \pi)^{1-x} &amp;= \exp(x \log \pi + (1-x) \log(1-\pi) )  \<br>
-&amp;= \exp(x \log \frac{\pi}{1-\pi} + \log (1-\pi))<br>
-\end{aligned}<br>
-$$<br>
-因此令$\theta = \log \frac{\pi}{1 - \pi}$, 则$P(X = x)$可以写做:<br>
-$$<br>
-P(X = x) = \exp(x\theta - \log(1 + e^\theta))<br>
-$$<br>
-因此对于伯努利分布$h(x) = 1,\phi(x) = x, \theta = log \frac{\pi}{1-\pi}, A(\theta) = log(1 + e^\theta)$</p>
-<h4 id="泊松分布">泊松分布</h4>
-<p>首先给出泊松分布的形式:<br>
-$$<br>
-P_\lambda(X = x) = \frac{\lambda^x}{x!} e^{- \lambda}<br>
-$$<br>
-下面将其转化成指数分布族标准形式:<br>
-$$<br>
-\begin{aligned}<br>
-P_\lambda(X = x) &amp;= \frac{\lambda^x}{x!} e^{- \lambda} \<br>
-&amp;= \frac{1}{x!} e^{x\log \lambda - \lambda}<br>
-\end{aligned}<br>
-$$<br>
-因此，对于泊松分布，$h(x) = \frac{1}{x!}, \theta = \log \lambda,\phi(x) = x,A(\theta) = e^\theta$</p>
-<h4 id="高斯分布">高斯分布</h4>
-<p>高斯分布的概率密度函数形式如下:<br>
-$$<br>
-p_{\mu,\sigma}(x) = \frac{1}{\sqrt{2 \pi} \sigma} \exp(- \frac{(x-\mu)^2}{2\sigma^2})<br>
-$$<br>
-下面将其转化成指数分布族标准形式:<br>
-$$<br>
-\begin{aligned}<br>
-p_{\mu,\sigma}(x) &amp;= \frac{1}{\sqrt{2 \pi} \sigma} \exp(- \frac{(x-\mu)^2}{2\sigma^2})  \<br>
-&amp;= \frac{1}{\sqrt{2 \pi} \sigma} \exp(\frac{-x^2}{2 \sigma^2} + \frac{x \mu}{\sigma^2} - \frac{\mu^2}{2\sigma^2}) \<br>
-&amp;= \frac{1}{\sqrt{2 \pi} } \exp(\frac{-x^2}{2 \sigma^2} + \frac{x \mu}{\sigma^2} - \frac{\mu^2}{2\sigma^2} + \log \sigma)<br>
-\end{aligned}<br>
-$$<br>
-因此，对于高斯分布:<br>
-$$<br>
-\begin{aligned}<br>
-h(x) &amp;= \frac{1}{\sqrt{2 \pi} \sigma}  \<br>
-\phi(x) &amp;= [\frac{x^2}{2}, x]^T \<br>
-\theta &amp;= [-\frac{1}{\sigma^2}, \frac{\mu}{\sigma^2}]^T \<br>
-A(\theta) &amp;= -\frac{1}{2} (log \theta^{(1)} + \theta^{(2)})<br>
-\end{aligned}<br>
-$$</p>
-<h3 id="对数似然函数凹凸性证明">对数似然函数凹凸性证明</h3>
-<p>我们关心的是最终对数似然函数的凹凸性，因为最终的对数似然函数是各个样本的概率密度函数取对数后累加的形式，由保凸运算可知，若单个对数概率密度函数的凹凸性可以确定，那么最终对数似然函数的凹凸性也就确定了。对于指数族分布，单个样本的概率密度函数取对数如下:<br>
-$$<br>
-\begin{aligned}<br>
-\log p_{\theta}(x) &amp;= \log h(x) \exp(\theta^T \phi(x) - A(\theta)) \<br>
-&amp;= \log h(x) + \theta^T \phi(x) + \log(-A(\theta))<br>
-\end{aligned}<br>
-$$<br>
-第一项与$\theta$无关，第二项为$\theta$的线性组合，不影响函数的凹凸性，所以整个函数的凹凸性是由第三项来确定，对于外层函数是对数函数的对数函数$\log f(x)$而言:<br>
-$$<br>
-(\log f(x))^{’’} = \frac{f(x) f^{’’}(x) - f^{’}(x)^2}{f(x)^2}<br>
-$$<br>
-由对数函数性质有$f(x) &gt; 0$,因此，若$f(x)$是凹函数($f^{’’}(x) \leq 0$),则可推出$(\log f(x))^{’’} \leq 0$,即$\log f(x)$为凹函数，若$f(x)$为凸函数则不能有直接的结论，因此我们的重点放在讨论$A(\theta)$的凹凸性上。<br>
-下面证明$A(\theta)$为凸函数,从定义出发证明，记$\theta_{\lambda} = \lambda \theta_1 + (1 - \lambda) \theta_2$,其中$\theta_1,\theta_2 \in dom f, \lambda \in [0,1]$,由Hölder不等式，可知:<br>
-$$<br>
-\begin{aligned}<br>
-A(\theta_\lambda) &amp;= \log (\int h(x) \exp(\theta_{\lambda}^T \phi(x))dx ) \<br>
-&amp;= \log (\int \exp(\theta_{\lambda}^T \phi(x))d\mu(x)\<br>
-&amp;= \log (\int \exp[ (\lambda \theta_1 \phi(x) + (1-\lambda)\theta_2)\phi(x)]d\mu(x) ) \<br>
-&amp;= \log (\int \exp(\theta_1 \phi(x)^{\lambda}) \exp (\theta_2 \phi(x))^{1-\lambda} d \mu(x)) \<br>
-&amp;\leq \log (\int \exp(\theta_1 \phi(x))^{\frac{\lambda}{\lambda}} d\mu(x) )^\lambda (\int \exp(\theta_2 \phi(x))^{\frac{1-\lambda}{1- \lambda}}d\mu(x))^{1-\lambda}  (Hölder不等式) \<br>
-&amp;= \lambda \log (\int \exp(\theta_1 \phi(x)) d\mu(x) ) + (1-\lambda)<br>
-\log (\int \exp(\theta_2 \phi(x)) d\mu(x) ) \<br>
-&amp;= \lambda A(\theta_1) + (1-\lambda) A(\theta_2)<br>
-\end{aligned}<br>
-$$<br>
-从凸函数定义可知,$A(\theta)$为凸函数，至此我们便得到了对数似然函数的凹凸性:<br>
-$$<br>
-\begin{aligned}<br>
-&amp;A(\theta) 凸 \rightarrow -A(\theta) 凹 \rightarrow \log(-A(\theta)) 凹 \<br>
-&amp; log(p_\theta(x)) 凹  \rightarrow 对数似然函数 凹<br>
-\end{aligned}<br>
-$$</p>
-<h3 id="总结">总结</h3>
-<p>从前面列出的指数分布族所包含的分布来看，我们日常所碰到的绝大多数概率分布都属于指数族分布，是可以直接通过求导等于0这种方法来得到参数估计，而对于不属于指数分布族的分布，则是有必要对对数似然函数进行分析，而不能直接通过求导来解最优参数估计值。</p>
-<h4 id="参考">参考</h4>
-<p>本文内容主要参考以下链接：<br>
-[1] <a href="https://www.zhihu.com/question/263423642/answer/269353169">为什么极大似然估计求导为 0 就是要求的值呢？</a><br>
-[2] <a href="https://web.stanford.edu/class/stats311/Lectures/lec-07.pdf">指数分布族函数</a></p>
-]]></content>
-      <categories>
-        <category>统计学习</category>
-      </categories>
-      <tags>
-        <tag>统计学习，凸优化</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>概率密度函数估计</title>
-    <url>/2020/07/27/gai-lu-mi-du-han-shu-gu-ji/</url>
-    <content><![CDATA[<p>在使用贝叶斯理论进行决策时，我们需要知道先验概率$P(\omega)$,类条件概率密度函数$p(x|\omega)$,而在这一部分，我们便讨论下如何从样本集中将这些所需的概率密度函数估计出来<a id="more"></a>，本文主要讨论以下几个问题：</p>
-<ul>
-<li>如何利用样本集估算$p(x|\omega)$和$P(\omega)$</li>
-<li>估计量性质</li>
-<li>利用样本集估算错误率</li>
-</ul>
-<p>从样本集推断总体概率分布的方法可以分为以下几种类型:</p>
-<ul>
-<li>监督参数估计——样本所属的类别以及总体概率密度函数的形式为已知，而概率密度函数的某些参数是未知的</li>
-<li>非监督参数估计——已知总体概率密度函数形式，但未知样本所属种类，要求推断出概率密度函数某些参数</li>
-<li>非参数估计——已知样本类别，但未知总体概率密度函数形式，要求我们直接推断概率密度函数本身</li>
-</ul>
-<h3 id="最大似然估计">最大似然估计</h3>
-<p>最大似然估计是进行参数估计的常用方法，它有两个假设：</p>
-<ul>
-<li>待估计的参数$\theta$是一个确定的、未知的量</li>
-<li>概率分布函数的形式已知</li>
-<li>样本为独立抽取</li>
-</ul>
-<p>若记$\theta$为待估计参数(比如正态分布中的$\mu,\sigma$),$\mathcal{X}$为样本集合：<br>
-$$ \mathcal{X} = { x_1,x_2, \dots, x_n} $$<br>
-概率密度函数形式已知，记做$p(x|\theta)$，由于假设样本为独立抽取，则似然函数可以写做：<br>
-$$ l(\theta) = p(\mathcal{X}|\theta) = \prod_{i=1}^n p(x_i|\theta)$$<br>
-对数似然函数为：<br>
-$$  H(\theta) = ln(l(\theta)) = \sum_{i=1}^n lnp(x_i|\theta)$$<br>
-首先来看似然函数，它表征了在参数为$\theta$情况下，得到样本集合$\mathcal{X}$的概率，直观来看，这个概率越大，则证明估计得到的参数更好,至于为何使用对数似然函数，这是因为我们需要求$l(\theta)$的最大值，但连乘积求导非常复杂，而取对数运算是单调的，并不改变最值位置，同时计算上大大简化。因此最终最大似然估计值为:</p>
-<p>$$  \frac{\partial H(\theta)}{\theta} = 0  $$</p>
-<p>实践中常见的概率分布为正态分布，其最大似然估计值为：<br>
-$$<br>
-\begin{aligned}<br>
-\hat{\mu} &amp;= \frac{1}{n} \sum_{i=1}^n x_i \\<br>
-\hat{\sigma^2} &amp;= \frac{1}{n} \sum_{i=1}^n (x_i - \hat{\mu})^2<br>
-\end{aligned}<br>
-$$</p>
-<h3 id="贝叶斯估计">贝叶斯估计</h3>
-<p>首先回顾下贝叶斯决策：</p>
-<ul>
-<li>状态空间:$\Omega = { \omega_1, \omega_2, \dots , \omega_c }$</li>
-<li>待识别对象: $\mathbf{x} = [x_1,x_2,\dots, x_d]^T$</li>
-</ul>
-<p>设真实状态为$\omega_j$，而采取决策$a_i$所带来的损失为$\lambda(\omega_j,a_i)$,对于特定$\mathbf{x}$，采取决策$a_i$所带来的平均损失为:<br>
-$$  R(a_i|\mathbf{x}) = \sum_{j=1}^c \lambda(a_i,\omega_j) p(\omega_j|x)$$<br>
-整体损失则需要再对$\mathbf{x}$进行积分，在进行贝叶斯决策时，若想使得整体损失最小，则只需要对任意的$\mathbf{x}$，$R(a_i|\mathbf{x})$。<br>
-下面我们考虑参数估计问题:现在有一个样本集$\mathcal{X}$，要求我们找到最优估计量$\hat{\theta}$(对比决策$a_i$),使得带来的贝叶斯风险最小。由此可见，与贝叶斯决策相比，贝叶斯估计也是立足于使得贝叶斯风险最小，两者对比如下图所示：</p>
-<table>
-<thead>
-<tr>
-<th>决策问题</th>
-<th style="text-align:right">估计问题</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>样本$\mathbf{x}$</td>
-<td style="text-align:right">样本集$\mathcal{X}$</td>
-</tr>
-<tr>
-<td>决策量$a_i$</td>
-<td style="text-align:right">待估计值$\hat{\theta}$</td>
-</tr>
-<tr>
-<td>真实状态$\omega_j$</td>
-<td style="text-align:right">真实参数$\theta$</td>
-</tr>
-<tr>
-<td>状态空间$\mathcal{A}$是离散空间</td>
-<td style="text-align:right">参数空间$\Theta$是连续空间</td>
-</tr>
-<tr>
-<td>先验概率$P(\omega_j)$</td>
-<td style="text-align:right">参数的先验分布$p(\theta)$</td>
-</tr>
-</tbody>
-</table>
-<p>对于样本集$\mathcal{X}$，参数估计值为$\hat{\theta}$所带来的平均损失为：<br>
-$$<br>
-R(\hat{\theta}|\mathcal{X}) = \int_{\Theta} \lambda(\hat{\theta},\theta) p(\hat{\theta}|\mathcal{X}) d\theta<br>
-$$<br>
-从上式中可以也可以看出贝叶斯决策与贝叶斯估计的区别:</p>
-<blockquote>
-<p>贝叶斯决策是立足于每一个样本$\mathbf{x}$，只需要保证对每一个样本均做出最优决策，便可保证整体决策最优；而贝叶斯估计则是立足于样本集$\mathcal{X}$</p>
-</blockquote>
-<p>现在我们要想获得贝叶斯估计，便转化为寻找合适的估计值$\hat{\theta}$,使得$R(\hat{\theta}｜\mathcal{X})$最小，这需要解决两个问题：</p>
-<ul>
-<li>$p(\hat{\theta}|\mathcal{X})$计算</li>
-<li>损失函数$\lambda(\hat{\theta},\theta)$的选择</li>
-</ul>
-<p>首先考虑$p(\hat{\theta}|\mathcal{X})$的计算，假设$\theta$的先验概率分布为$p(\theta)$,类条件概率密度函数为$p(\mathbf{x}|\theta)$,样本集$\mathcal{X} = { x_1,\dots, x_n }$,似然函数$p(\mathcal{X}|\theta)$可以表示为：<br>
-$$<br>
-p(\mathcal{X}|\theta) = \prod_{i=1}^n p(\mathbf{x_i}|\theta)<br>
-$$<br>
-由贝叶斯公式，后验概率可以表示为:<br>
-$$<br>
-p(\hat{\theta}|\mathcal{X}) = \frac{p(\mathcal{X}|\hat{\theta})p(\hat{\theta})}{ \int p(\mathcal{X}|\theta)p(\theta) d\theta}<br>
-$$<br>
-损失函数$\lambda(\hat{\theta},\theta)$常见的有三种选择:</p>
-<ul>
-<li>均方误差函数:$\lambda(\hat{\theta},\theta) = (\theta - \hat{\theta})^2$</li>
-<li>绝对值误差函数: $\lambda(\hat{\theta},\theta) = |\theta - \hat{\theta}|$</li>
-<li>均匀函数: $\lambda(\hat{\theta}, \theta) = \begin{cases}<br>
-0 &amp; x \in [-\frac{\Delta}{2}, \frac{\Delta}{2}] \<br>
-1 &amp; other<br>
-\end{cases}$</li>
-</ul>
-<p>在不同损失函数下，可以推导出不同的结果：</p>
-<ul>
-<li>均方误差函数:<br>
-$$ \hat{\theta}<em>{MS} = \int</em>{-\infty}^\infty \theta p(\theta| \mathcal{X})d\theta$$</li>
-<li>绝对值误差函数:<br>
-$$  \int_{-\infty}^{\hat{\theta_{ABS}}} p(\theta|\mathcal{X}) d\theta = \int_{\hat{\theta_{ABS}}}^{\infty} p(\theta|\mathcal{X}) d\theta $$</li>
-<li>均匀误差函数: $\theta_{MAP}$应当取在后验概率密度函数最大之处</li>
-</ul>
-<p>下面以均方误差函数为例，假设:</p>
-<ul>
-<li>$p(x|\mu) \sim N(\mu, \sigma^2)$</li>
-<li>$p(\mu) \sim N(\mu_0,\sigma_0^2)$</li>
-</ul>
-<p>则后验概率密度函数$p(\theta|\mathcal{X})$为:<br>
-$$<br>
-\begin{aligned}<br>
-p(\mu|\mathcal{X}) &amp;= \frac{p(\mathcal{X}|\mu)p(\mu)}{\int p(\mathcal{X}|\mu)p(\mu)d\mu}  \\<br>
-&amp;= a exp{ -\frac{1}{2}[\sum_{k=1}^N (\frac{\mu - x_k}{\sigma})^2 + (\frac{\mu - \mu_0}{\sigma_0})^2] }<br>
-\end{aligned}<br>
-$$<br>
-由于该概率密度函数是$\mu$的二次函数指数形式，所以仍是一个正态密度，其均值和方差为：<br>
-$$<br>
-\begin{aligned}<br>
-\mu_N &amp;= \frac{N\sigma_0^2}{N\sigma_0^2 + \sigma^2} \frac{1}{N}\sum_{k=1}^N x_k + \frac{\sigma^2}{N\sigma_0^2 + \sigma^2} \mu_0  \\<br>
-\sigma_N^2 &amp;= \frac{\sigma_0^2 \sigma^2}{N\sigma_0^2 + \sigma^2}<br>
-\end{aligned}<br>
-$$<br>
-因为误差函数为均方误差函数，则其参数估计值应当是后验概率密度意义上的均值，即$\mu_N$</p>
-<h3 id="非参数估计">非参数估计</h3>
-<p>在使用最大似然估计或者贝叶斯估计进行参数估计时，需要对类条件概率密度函数$p(\mathbf{x}|\omega)$形式已知，但在某些情况下，我们仅仅拥有样本，但并没有这些先验知识，此时若想要进行概率密度函数的估计，则就用到了非参数估计的方法，该类方法具有以下几点假设：</p>
-<ul>
-<li>不知道分布函数形式</li>
-<li>$N$个样本服从独立同分布</li>
-</ul>
-<p>假设样本点$\mathbf{x}$落在$d$维空间中，在$d$维空间中有一个超立方体$\mathcal{R}$,点$\mathbf{x}$落到该超立方体中的概率记做$P$:<br>
-$$<br>
-P = \int_{\mathcal{R}} p(x) dx<br>
-$$<br>
-若$N$个样本是从密度为$p(x)$的总体中独立抽取的，则$N$个样本中有$k$个落入区域$\mathcal{R}$中的概率符合二项分布，该概率可以写做：<br>
-$$<br>
-P_k = C_N^k P^k(1-P)^{N-k}<br>
-$$<br>
-根据二项分布的性质，$k$的期望为：<br>
-$$<br>
-E(k) = NP<br>
-$$<br>
-我们的目的是想获得关于$P$的估计值，因此考虑：<br>
-$$ \hat{P} = \frac{k}{N}$$<br>
-若超立方体$\mathcal{R}$很小，则可以假设在该超球内概率密度函数$p(x)$为定值，此时：<br>
-$$<br>
-P = \int_{\mathcal{R}} p(x) dx  = p(x)V<br>
-$$<br>
-由此我们便可以获得$p(x)$的估计值：<br>
-$$<br>
-\hat{p}(x) = \frac{P}{V} = \frac{k}{NV}<br>
-$$<br>
-下面讨论下体积$V$的大小及样本数量多少之间的关系。如果把体积$V$固定，样本数取得越来越多，则比值$\frac{k}{N}$将在概率上收敛，最终得到的$p(x)$估计是在超立方体$\mathcal{R}$上的平均估计，而若想要得到$p(x)$的点估计，则需要区间尽可能小，但区间取得过小又会导致一些区间内没有样本点，这种估计也是没有意义的。<br>
-下面给出概率密度函数估计值$p_N(x)$收敛于真实概率密度函数$p(x)$的条件：</p>
-<ul>
-<li>$\lim_{N \rightarrow \infty} V_N = 0$</li>
-<li>$\lim_{N \rightarrow \infty} k_N = \infty$</li>
-<li>$\lim_{N \rightarrow \infty} \frac{k_N}{N} = 0$</li>
-</ul>
-<p>第一个条件可以使空间平均$\frac{P}{V}$收敛于$p(x)$,第二个条件可以使频数比在概率意义上收敛于概率$P$。满足以上三个条件的区域序列的选择有两种：</p>
-<ul>
-<li>Parzen窗法： 使区域序列$V_N$ 以$N$的某个函数的关系不断缩小，但此时需要对$k_N$和$\frac{k_N}{N}$加些限制条件</li>
-<li>$k_N$近邻估计，让$k_N$为$N$的某个函数，而$V_N$的选取是使相应的$\mathcal{R_N}$正好包含$x$的$k_N$个近邻。</li>
-</ul>
-<h4 id="Parzen窗法">Parzen窗法</h4>
-<p>假设$\mathcal{R_N}$为一个超立方体，其棱长为$h_N$,则此时超立方体体积$V_N = h_N^d$,定义窗函数$\phi(\mu)$：<br>
-$$<br>
-\phi(\mu) = \begin{cases}<br>
-1, if |\mu_j| \leq \frac{1}{2} \<br>
-0, other<br>
-\end{cases}<br>
-$$<br>
-引入窗函数的的目的主要是对落入区间的样本数$k$进行显示表达，当$x_i$落入以$x$为中心，体积为$V_N$的超立方体内时，$\phi(\mu) = \phi(\frac{x-x_i}{h_N}) = 1$，否则为0，此时落入该超立方体内的样本数为：<br>
-$$<br>
-k_N = \sum_{i=1}^N \phi(\frac{x-x_i}{h_N})<br>
-$$<br>
-由此便可以得到概率密度函数估计：<br>
-$$<br>
-p_N(x) = \frac{k_N}{V_NN} = \frac{1}{N} \sum_{i=1}^N \frac{1}{V_N} \phi(\frac{x-x_i}{h_N})<br>
-$$<br>
-事实上，窗函数的主要作用是内插，反映了每一样本$x_i$对$x$点处的概率密度函数的贡献<br>
-下面我们讨论下，若要使得$p_N(x)$满足概率密度函数特性(在整个空间上积分为1),则窗函数应当具有什么特性:<br>
-$$<br>
-\begin{aligned}<br>
-\int p_N(x)dx &amp;= \frac{1}{NV_N} \int \sum_{i=1}^N\phi(\frac{x-x_i}{h_N})dx  \\<br>
-&amp;= \frac{1}{N} \sum_{i=1}^N \int \phi(\mu)d\mu \\<br>
-&amp; = 1<br>
-\end{aligned}<br>
-$$<br>
-因此考虑到$p_N(x)$非负且积分为1,则窗函数应当具备一般概率密度函数所具有的特征：</p>
-<ul>
-<li>$\phi(\mu) \geq 0 $</li>
-<li>$\int \phi(\mu) d\mu = 1$</li>
-</ul>
-<p>常见的窗函数有以下三种：</p>
-<ul>
-<li>方窗函数</li>
-<li>正态窗函数:$\phi(\mu) = \frac{1}{\sqrt{2\pi}} exp(-\frac{1}{2}\mu^2)$</li>
-<li>指数窗函数:$\phi(\mu) = \frac{1}{2} exp(-|\mu|)$</li>
-</ul>
-<p>窗宽$h_d$的选择非常重要，若$h_d$选择过大，则会使得估计的分辨力降低，若选的过小，又会导致估计的稳定性下降，反映在估计得到的概率密度函数上就是毛刺很多，一般需要折中考虑。<br>
-下面讨论估计量$p_N(x)$的统计性质，可以证明在某些限制条件下，估计量是渐进无偏和平方误差一致的，限制条件为:</p>
-<ul>
-<li>总体密度函数$p(x)$在$x$点连续</li>
-<li>窗函数满足以下条件：<br>
-$$ \phi(\mu) \geq 0, \int \phi(\mu) d\mu = 1, sup_{u} \phi(\mu)&lt;\infty$$</li>
-<li>窗宽满足: $$ \lim_{N \rightarrow \infty} V_N= 0,\lim_{N \rightarrow \infty} NV_N = \infty $$</li>
-</ul>
-<h4 id="k-N-近邻估计">$k_N$近邻估计</h4>
-<p>parzen窗估计是对体积序列进行限制，而$k_N$近邻估计则是对$k_N$序列做出限制</p>
-<h3 id="概率密度函数估计的准确性与分类器性能的关系">概率密度函数估计的准确性与分类器性能的关系</h3>
-<p>因为概率密度函数的估计最终还是需要服务于一些下游任务，比如应用贝叶斯决策进行分类，因此这部分主要讨论分类器的误差来源，误差来源主要有以下几种：</p>
-<ul>
-<li>贝叶斯误差：这种误差是由于不同的类条件概率分布函数之间的相互重叠引起的，这种误差是问题本身所固有的，在分类器设计阶段无法消除</li>
-<li>模型误差：指因为选择了不正确的模型导致的误差</li>
-<li>估计误差： 由于采用有限样本进行估计所带来的误差</li>
-</ul>
-]]></content>
-      <categories>
-        <category>统计学习</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>概率分布中的距离度量</title>
-    <url>/2020/08/26/gai-lu-fen-bu-zhong-de-ju-chi-du-liang/</url>
-    <content><![CDATA[<p>在$k$近邻章节中，我总结了在样本空间中常用的两种距离度量:$L_p$距离以及马氏距离。但在一些机器学习任务中，我们期望能够得到一个分布与目标分布尽可能接近，这也就引出了一个新的问题:</p>
-<blockquote>
-<p>如何度量两个概率分布之间的距离(差异程度)？</p>
-</blockquote>
-<p>本文将介绍一些常见的概率分布之间的距离度量，按照以下结构组织:</p>
-<ul>
-<li>信息量与熵</li>
-<li>KL散度(相对熵)</li>
-<li>交叉熵</li>
-<li>JS散度</li>
-<li>推土机理论与Wasserstein距离</li>
-</ul>
-<a id="more"></a>
-<h3 id="信息量与熵">信息量与熵</h3>
-<h4 id="信息量">信息量</h4>
-<p>任何事件都会承载着一定的信息量，包括已经发生的事件和未发生的事件，只是它们承载的信息量有所不同：</p>
-<blockquote>
-<p>🌰：对于两个事件：昨天下雨与明天下雨。昨天下雨这个事件，因为已经发生，既定事实，那么它的信息量就为0；而对于明天会下雨这个事件，因为未有发生，那么该事件的信息量就大。</p>
-</blockquote>
-<p>从上面栗子可以看出信息量是一个与事件发生概率相关的概念，而且可以得出，事件发生的概率越小，其信息量越大。这也很好理解，因为所谓的“搞个大新闻”,也就是发生了不太可能发生的事情，&quot;大新闻&quot;则意味着该事件蕴含着更多的信息。从这个角度出发， 定义信息量:</p>
-<blockquote>
-<p><strong>信息量:</strong> 假设$X$是一个离散型随机变量，其取值集合为$\mathcal{X}$，其概率分布为:<br>
-$$<br>
-p(x) = P(X = x), x \in \mathcal{X}<br>
-$$<br>
-则定义事件$X = x_0$的信息量为:<br>
-$$<br>
-I(x_0) = -\log(p(x_0))<br>
-$$</p>
-</blockquote>
-<h4 id="熵">熵</h4>
-<p>首先给出熵的定义：</p>
-<blockquote>
-<p>在信息论与概率统计中，熵是表示<strong>随机变量不确定性</strong>的度量，设$X$是一个取有限个值的离散随机变量，其概率分布为:<br>
-$$<br>
-P(X = x_i) = p_i, \quad i =1,2,\dots,n<br>
-$$<br>
-则随机变量$X$的熵定义为:<br>
-$$<br>
-H(X) = - \sum_{i=1}^n p_i \log p_i<br>
-$$</p>
-</blockquote>
-<p>有了信息量的定义后，再看关于熵的定义式可以看出，熵不过是在概率分布$P$下对信息量求的期望，所以说熵实际上就是<strong>事件信息量的期望</strong>。<br>
-若$p_i = 0$,则定义$0\log 0 =0$,式中的对数一般取以2为底或者以$e$为底，这时熵的单位被称作比特或纳特，由定义可知，熵只依赖于$X$的分布，而与$X$的取值无关，因此也可将$X$的熵记作$H§$,熵越大，随机变量的不确定性越大。因为$p_i \leq 0$,由$H§$函数性质(凹函数，应用拉格朗日乘子法可求最大值)可知:<br>
-$$<br>
-0 \leq H§ \leq \log n<br>
-$$</p>
-<h3 id="KL散度-相对熵">KL散度(相对熵)</h3>
-<p>KL散度又称相对熵，如果我们对同一个随机变量有两个独立的概率分布$P(x)$和$Q(x)$，我们可以使用KL散度来衡量这两个分布的差异,下面给出KL散度的定义式:</p>
-<blockquote>
-<p>在机器学习中，$P$往往用来表示样本的真实分布，$Q$用来表示模型所预测的分布，那么$KL$散度就可以计算两个分布之间的差异，也就是Loss损失值:<br>
-$$<br>
-\begin{aligned}<br>
-D_{KL}(P||Q) &amp;= -\sum_{i=1}^n p(x_i) \log(\frac{q(x_i)}{p(x_i)}) \<br>
-&amp;= -\sum_{i=1}^n p(x_i) \log(q(x_i)) - (-\sum_{i=1}^n p(x_i) \log p(x_i))<br>
-\end{aligned}<br>
-$$<br>
-由于$-\log x$为凸函数，由凸函数性质可知:<br>
-$$<br>
--\sum_{i=1}^n p(x_i) \log(\frac{q(x_i)}{p(x_i)}) \geq  \log \sum_{i=1}^n q(x_i) = 0<br>
-$$<br>
-这说明KL散度具有非负的性质，这也说明$P(x)$与其他分布的交叉熵恒大于熵。</p>
-</blockquote>
-<p>这里需要说明的是，虽然KL散度具有非负性，但其并不满足度量的另外两个性质:</p>
-<ul>
-<li>对称性</li>
-<li>三角不等式</li>
-</ul>
-<h3 id="交叉熵">交叉熵</h3>
-<p>KL散度由两部分组成，第一部分是交叉熵，第二部分则是$P(x)$的熵，$P(x)$因为是真实的分布，所以其熵为固定值。在机器学习任务中，我们需要评估样本固有label与我们算法的预测$predict$之间的差距，在优化过程中，我们只需关注交叉熵，所以在分类任务中，往往采用交叉熵作为loss函数。</p>
-<h3 id="JS散度">JS散度</h3>
-<p>JS散度只是KL散度的变形，其解决了KL散度的非对称问题，其表达式如下:<br>
-$$<br>
-JS(P||Q) = \frac{1}{2} KL(P(x)||\frac{P(x) + Q(x)}{2}) + \frac{1}{2}KL(Q(x)||\frac{P(x)+ Q(x)}{2})<br>
-$$<br>
-若$\log$以2为底，则JS散度的范围为$[0,1]$,若$\log$以$e$为底，则JS散度范围为$[0,\ln 2]$。当两个分布完全相同时取下界，当两个分布完全不同时取上界。<br>
-这也就带来了一个问题，若优化时两个分布完全没有交集时,JS散度就是一个常数($1$或$\ln 2$),此时会出现梯度消失问题，导致无法进行优化。</p>
-<h3 id="Wasserstein距离">Wasserstein距离</h3>
-<p>首先说明下KL散度与JS散度存在的问题:</p>
-<blockquote>
-<p>若两个分布$P,Q$完全没有重叠，则会导致KL散度无意义($\log 0$),而JS散度是一个常数，也就是说出现了梯度消失问题。</p>
-</blockquote>
-<p>而Wasserstein距离可以一定程度上解决该问题。</p>
-<h4 id="思想">思想</h4>
-<p>对于两个分布$P$和$Q$，考虑从将一个分布转换成另一个分布所需的代价入手来定义概率分布的差异。下面以一个栗子来说明该距离的思想:</p>
-<blockquote>
-<p>🌰: 考虑两个离散分布$P$和$Q$:<br>
-$$<br>
-\begin{aligned}<br>
-P_1 &amp;= 3, P_2 = 2, P_3 = 1, P_4 = 4 \<br>
-Q_1 &amp;= 1, Q_2 = 2, Q_3 = 4, Q_4 = 3<br>
-\end{aligned}<br>
-$$<br>
-下面讨论应该如何&quot;移土&quot;，才能够使得两个分布相同:</p>
-<ul>
-<li>为了让$P_1$与$Q_1$相同，我们需要把$P_1$的3分2到$P_2$去，这样$P_1$和$Q_1$都等于1，此时$P_2$等于4</li>
-<li>同理，为了让$P_2$和$Q_2$相同，需要将$P_2$的土填到$P_3$时，这一步将从$P_2$挖2分土填到$P_3$</li>
-<li>为了让$P_3,Q_3$相等，最后一步需要将$Q_3$的1分土挖给$Q_4$<br>
-每一步的代价计算公式为$\delta_{i+1} = \delta_i + P_i - Q_i$,由此可得:<br>
-$$<br>
-\begin{aligned}<br>
-\delta_0 &amp;= 0 \<br>
-\delta_1 &amp;= 0 +3 -1 = 2 \<br>
-\delta_2 &amp;= 2 + 2 - 2 = 2 \<br>
-\delta_3 &amp;= 2 + 1 -4 = -1 \<br>
-\delta_4 &amp;= -1 + 4 - 3 = 0<br>
-\end{aligned}<br>
-$$<br>
-所以最终的总代价，也就是Wasserstein距离为$W = \sum |\delta_i| = 5$。该栗子可以形象的用下图表示:<br>
-<img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/W_dis.png" alt="推土机距离"></li>
-</ul>
-</blockquote>
-<h4 id="公式">公式</h4>
-<p>从上面的离散栗子了解了Wasserstein距离的思想之后，下面给出一般连续分布Wasserstein距离计算公式:</p>
-<blockquote>
-<p>$$<br>
-W(p_r,p_g) = \inf_{\gamma \in \prod(p_r,p_g)} \quad E_{(x,y)\sim \gamma}[||x-y||]<br>
-$$<br>
-公式中$\prod(p_r,p_g)$指代$p_r$和$p_g$所有可能的联合概率分布$\gamma(x,y)$,直观上来说，$\gamma(x,y)$表示将分布$p_r$转化成$p_g$所需要多少“土”，Wasserstein指代花费最少的运输方案。</p>
-</blockquote>
-<p>Wasserstein相对于传统的KL散度和JS散而言，当两个分布具有完全不同的支撑集合时，KL散度会是无穷，JS散度会是一个常值，而W距离此时仍能反映两个分布的远近。下面以一个栗子来说明Wasserstein距离的优势所在:</p>
-<blockquote>
-<p>🌰: 变量$Z \sim U[0,1]$,下面给出两个分布:<br>
-$$<br>
-\begin{aligned}<br>
-&amp;P_0 (x_1), \quad x_1 = (0,Z) \in R^2  \<br>
-&amp; P_1(x_2), \quad x_2 = (\theta,z) \in R^2<br>
-\end{aligned}<br>
-$$<br>
-对于这个简单的栗子，不同概率密度距离度量得到的数值如下:<br>
-$$<br>
-\begin{aligned}<br>
-W(P_0,P_1) &amp;= |\theta| \<br>
-JS(P_0,P_1) &amp;= \begin{cases}<br>
-\log 2  &amp; if \theta \neq 0 \<br>
-0  &amp; if \theta = 0<br>
-\end{cases} \<br>
-KL(P_0||P_1) &amp;= \begin{cases}<br>
-+\infty  &amp; if \theta \neq 0 \<br>
-0  &amp; if \theta = 0<br>
-\end{cases}<br>
-\end{aligned}<br>
-$$<br>
-在Wasserstein度量下，随着$\theta_t \rightarrow 0$,概率分布序列$(P_{\theta_t})_{t \in N}$ 收敛到$P_0$,但在其他度量下并不能收敛，W距离与JS散度在该问题中对比如下图所示:<br>
-<img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/W.png" alt="$W VS JS$"></p>
-</blockquote>
-<h4 id="计算">计算</h4>
-<p>尽管Wasserstein度量具有很多优点，但其缺点也十分明显：</p>
-<blockquote>
-<p>计算非常复杂，优化问题不易解</p>
-</blockquote>
-<p>目前能够显示计算出Wasserstein的只有两种情况：</p>
-<blockquote>
-<p>一维概率分布<br>
-高斯分布</p>
-</blockquote>
-<p>对于两个离散的一维概率分布，可以直接使用<code>scipy.stats.Wasserstein_distance</code>函数:</p>
-<pre class="line-numbers language-language-python"><code class="language-language-python">import numpy as np
-from scipy.stats import wasserstein_distance
-p = [0,5,9]
-q = [2,5,7]
-w = wasserstein_distance(q,p)
-print(w)
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>输出:</p>
-<pre class="line-numbers language-language-python"><code class="language-language-python">1.3333333333333335 
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-]]></content>
-      <categories>
-        <category>统计学习</category>
-      </categories>
-      <tags>
-        <tag>KL散度，JS散度，推土机距离</tag>
       </tags>
   </entry>
   <entry>
@@ -2495,22 +2052,447 @@ $$<br>
       </tags>
   </entry>
   <entry>
-    <title>疫中居家</title>
-    <url>/2020/02/17/yi-zhong-ju-jia/</url>
-    <content><![CDATA[<blockquote>
-<p>庚子年春，适新冠肆虐，余宅家无所事，聊以为文，以抒心意</p>
+    <title>机器学习理论</title>
+    <url>/2020/07/06/ji-qi-xue-xi-li-lun/</url>
+    <content><![CDATA[<p>笔者近期想做一下<strong>机器学习</strong>相关理论总结<a id="more"></a>，计划划分为以下章节：</p>
+<blockquote>
+<ul>
+<li>贝叶斯理论</li>
+<li>概率密度函数估计</li>
+<li>EM算法</li>
+<li>线性判别——感知器</li>
+<li>支持向量机</li>
+<li>近邻法</li>
+<li>特征提取与特征选择</li>
+<li>神经网络</li>
+<li>RNN</li>
+<li>非监督学习</li>
+<li>决策树</li>
+<li>聚类</li>
+</ul>
 </blockquote>
-<p> 新冠者，源于蝠属，起于武汉，适逢春运，以至蔓于天下，一时人心浮动，谈冠色变。遥忆己亥岁末，余初闻新冠，以其癣疥之疾，然须臾，武汉闭城，举国百姓皆锁足于室，医者仁心，挽袖前线。<br>
- 余宅家，手机为伴，藉网络以察新冠其事，或感动，或痛心，或苦笑。新冠者，镜也，映崇高精神，映无用之官，映复杂人心。余窃以为，此诚危急之秋也，宜上下一下，共度难关，则疫情之终，不日将至矣。<br>
- 宅家不可碌碌终日，会余察己日本史所知甚浅，故阅日本史数册以会其意。以吾观之，詹姆斯之《日本史》堪称佳作，然其古史不足，实为大憾；吴廷璆之《日本史》内容翔实，然书中偏见少许，是其瑕疵。纵观日本史，源义经、楠木正成者，皆兵败身殒，然以其悲情命运而传美名于后世；丰臣秀吉者，生前位极人臣，然其后嗣绝于家康之手；德川家康者，韬光养晦，创江户幕府基业，死后被视为神（东照大神），然200余年后，倒幕声起，幕府轰然倒地，故所谓千秋万代者，实为儿戏之言。历史之回响，不过“诸事无常”四字耳。<br>
- 愿新冠之终结，医者之凯旋，天下之安康</p>
+<p>各章节主要包含两部分：</p>
+<blockquote>
+<ul>
+<li>理论介绍</li>
+<li>代码实战</li>
+</ul>
+</blockquote>
 ]]></content>
       <categories>
-        <category>闲谈</category>
+        <category>统计学习</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>概率分布中的距离度量</title>
+    <url>/2020/08/26/gai-lu-fen-bu-zhong-de-ju-chi-du-liang/</url>
+    <content><![CDATA[<p>在$k$近邻章节中，我总结了在样本空间中常用的两种距离度量:$L_p$距离以及马氏距离。但在一些机器学习任务中，我们期望能够得到一个分布与目标分布尽可能接近，这也就引出了一个新的问题:</p>
+<blockquote>
+<p>如何度量两个概率分布之间的距离(差异程度)？</p>
+</blockquote>
+<p>本文将介绍一些常见的概率分布之间的距离度量，按照以下结构组织:</p>
+<ul>
+<li>信息量与熵</li>
+<li>KL散度(相对熵)</li>
+<li>交叉熵</li>
+<li>JS散度</li>
+<li>推土机理论与Wasserstein距离</li>
+</ul>
+<a id="more"></a>
+<h3 id="信息量与熵">信息量与熵</h3>
+<h4 id="信息量">信息量</h4>
+<p>任何事件都会承载着一定的信息量，包括已经发生的事件和未发生的事件，只是它们承载的信息量有所不同：</p>
+<blockquote>
+<p>🌰：对于两个事件：昨天下雨与明天下雨。昨天下雨这个事件，因为已经发生，既定事实，那么它的信息量就为0；而对于明天会下雨这个事件，因为未有发生，那么该事件的信息量就大。</p>
+</blockquote>
+<p>从上面栗子可以看出信息量是一个与事件发生概率相关的概念，而且可以得出，事件发生的概率越小，其信息量越大。这也很好理解，因为所谓的“搞个大新闻”,也就是发生了不太可能发生的事情，&quot;大新闻&quot;则意味着该事件蕴含着更多的信息。从这个角度出发， 定义信息量:</p>
+<blockquote>
+<p><strong>信息量:</strong> 假设$X$是一个离散型随机变量，其取值集合为$\mathcal{X}$，其概率分布为:<br>
+$$<br>
+p(x) = P(X = x), x \in \mathcal{X}<br>
+$$<br>
+则定义事件$X = x_0$的信息量为:<br>
+$$<br>
+I(x_0) = -\log(p(x_0))<br>
+$$</p>
+</blockquote>
+<h4 id="熵">熵</h4>
+<p>首先给出熵的定义：</p>
+<blockquote>
+<p>在信息论与概率统计中，熵是表示<strong>随机变量不确定性</strong>的度量，设$X$是一个取有限个值的离散随机变量，其概率分布为:<br>
+$$<br>
+P(X = x_i) = p_i, \quad i =1,2,\dots,n<br>
+$$<br>
+则随机变量$X$的熵定义为:<br>
+$$<br>
+H(X) = - \sum_{i=1}^n p_i \log p_i<br>
+$$</p>
+</blockquote>
+<p>有了信息量的定义后，再看关于熵的定义式可以看出，熵不过是在概率分布$P$下对信息量求的期望，所以说熵实际上就是<strong>事件信息量的期望</strong>。<br>
+若$p_i = 0$,则定义$0\log 0 =0$,式中的对数一般取以2为底或者以$e$为底，这时熵的单位被称作比特或纳特，由定义可知，熵只依赖于$X$的分布，而与$X$的取值无关，因此也可将$X$的熵记作$H§$,熵越大，随机变量的不确定性越大。因为$p_i \leq 0$,由$H§$函数性质(凹函数，应用拉格朗日乘子法可求最大值)可知:<br>
+$$<br>
+0 \leq H§ \leq \log n<br>
+$$</p>
+<h3 id="KL散度-相对熵">KL散度(相对熵)</h3>
+<p>KL散度又称相对熵，如果我们对同一个随机变量有两个独立的概率分布$P(x)$和$Q(x)$，我们可以使用KL散度来衡量这两个分布的差异,下面给出KL散度的定义式:</p>
+<blockquote>
+<p>在机器学习中，$P$往往用来表示样本的真实分布，$Q$用来表示模型所预测的分布，那么$KL$散度就可以计算两个分布之间的差异，也就是Loss损失值:<br>
+$$<br>
+\begin{aligned}<br>
+D_{KL}(P||Q) &amp;= -\sum_{i=1}^n p(x_i) \log(\frac{q(x_i)}{p(x_i)}) \<br>
+&amp;= -\sum_{i=1}^n p(x_i) \log(q(x_i)) - (-\sum_{i=1}^n p(x_i) \log p(x_i))<br>
+\end{aligned}<br>
+$$<br>
+由于$-\log x$为凸函数，由凸函数性质可知:<br>
+$$<br>
+-\sum_{i=1}^n p(x_i) \log(\frac{q(x_i)}{p(x_i)}) \geq  \log \sum_{i=1}^n q(x_i) = 0<br>
+$$<br>
+这说明KL散度具有非负的性质，这也说明$P(x)$与其他分布的交叉熵恒大于熵。</p>
+</blockquote>
+<p>这里需要说明的是，虽然KL散度具有非负性，但其并不满足度量的另外两个性质:</p>
+<ul>
+<li>对称性</li>
+<li>三角不等式</li>
+</ul>
+<h3 id="交叉熵">交叉熵</h3>
+<p>KL散度由两部分组成，第一部分是交叉熵，第二部分则是$P(x)$的熵，$P(x)$因为是真实的分布，所以其熵为固定值。在机器学习任务中，我们需要评估样本固有label与我们算法的预测$predict$之间的差距，在优化过程中，我们只需关注交叉熵，所以在分类任务中，往往采用交叉熵作为loss函数。</p>
+<h3 id="JS散度">JS散度</h3>
+<p>JS散度只是KL散度的变形，其解决了KL散度的非对称问题，其表达式如下:<br>
+$$<br>
+JS(P||Q) = \frac{1}{2} KL(P(x)||\frac{P(x) + Q(x)}{2}) + \frac{1}{2}KL(Q(x)||\frac{P(x)+ Q(x)}{2})<br>
+$$<br>
+若$\log$以2为底，则JS散度的范围为$[0,1]$,若$\log$以$e$为底，则JS散度范围为$[0,\ln 2]$。当两个分布完全相同时取下界，当两个分布完全不同时取上界。<br>
+这也就带来了一个问题，若优化时两个分布完全没有交集时,JS散度就是一个常数($1$或$\ln 2$),此时会出现梯度消失问题，导致无法进行优化。</p>
+<h3 id="Wasserstein距离">Wasserstein距离</h3>
+<p>首先说明下KL散度与JS散度存在的问题:</p>
+<blockquote>
+<p>若两个分布$P,Q$完全没有重叠，则会导致KL散度无意义($\log 0$),而JS散度是一个常数，也就是说出现了梯度消失问题。</p>
+</blockquote>
+<p>而Wasserstein距离可以一定程度上解决该问题。</p>
+<h4 id="思想">思想</h4>
+<p>对于两个分布$P$和$Q$，考虑从将一个分布转换成另一个分布所需的代价入手来定义概率分布的差异。下面以一个栗子来说明该距离的思想:</p>
+<blockquote>
+<p>🌰: 考虑两个离散分布$P$和$Q$:<br>
+$$<br>
+\begin{aligned}<br>
+P_1 &amp;= 3, P_2 = 2, P_3 = 1, P_4 = 4 \<br>
+Q_1 &amp;= 1, Q_2 = 2, Q_3 = 4, Q_4 = 3<br>
+\end{aligned}<br>
+$$<br>
+下面讨论应该如何&quot;移土&quot;，才能够使得两个分布相同:</p>
+<ul>
+<li>为了让$P_1$与$Q_1$相同，我们需要把$P_1$的3分2到$P_2$去，这样$P_1$和$Q_1$都等于1，此时$P_2$等于4</li>
+<li>同理，为了让$P_2$和$Q_2$相同，需要将$P_2$的土填到$P_3$时，这一步将从$P_2$挖2分土填到$P_3$</li>
+<li>为了让$P_3,Q_3$相等，最后一步需要将$Q_3$的1分土挖给$Q_4$<br>
+每一步的代价计算公式为$\delta_{i+1} = \delta_i + P_i - Q_i$,由此可得:<br>
+$$<br>
+\begin{aligned}<br>
+\delta_0 &amp;= 0 \<br>
+\delta_1 &amp;= 0 +3 -1 = 2 \<br>
+\delta_2 &amp;= 2 + 2 - 2 = 2 \<br>
+\delta_3 &amp;= 2 + 1 -4 = -1 \<br>
+\delta_4 &amp;= -1 + 4 - 3 = 0<br>
+\end{aligned}<br>
+$$<br>
+所以最终的总代价，也就是Wasserstein距离为$W = \sum |\delta_i| = 5$。该栗子可以形象的用下图表示:<br>
+<img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/W_dis.png" alt="推土机距离"></li>
+</ul>
+</blockquote>
+<h4 id="公式">公式</h4>
+<p>从上面的离散栗子了解了Wasserstein距离的思想之后，下面给出一般连续分布Wasserstein距离计算公式:</p>
+<blockquote>
+<p>$$<br>
+W(p_r,p_g) = \inf_{\gamma \in \prod(p_r,p_g)} \quad E_{(x,y)\sim \gamma}[||x-y||]<br>
+$$<br>
+公式中$\prod(p_r,p_g)$指代$p_r$和$p_g$所有可能的联合概率分布$\gamma(x,y)$,直观上来说，$\gamma(x,y)$表示将分布$p_r$转化成$p_g$所需要多少“土”，Wasserstein指代花费最少的运输方案。</p>
+</blockquote>
+<p>Wasserstein相对于传统的KL散度和JS散而言，当两个分布具有完全不同的支撑集合时，KL散度会是无穷，JS散度会是一个常值，而W距离此时仍能反映两个分布的远近。下面以一个栗子来说明Wasserstein距离的优势所在:</p>
+<blockquote>
+<p>🌰: 变量$Z \sim U[0,1]$,下面给出两个分布:<br>
+$$<br>
+\begin{aligned}<br>
+&amp;P_0 (x_1), \quad x_1 = (0,Z) \in R^2  \<br>
+&amp; P_1(x_2), \quad x_2 = (\theta,z) \in R^2<br>
+\end{aligned}<br>
+$$<br>
+对于这个简单的栗子，不同概率密度距离度量得到的数值如下:<br>
+$$<br>
+\begin{aligned}<br>
+W(P_0,P_1) &amp;= |\theta| \<br>
+JS(P_0,P_1) &amp;= \begin{cases}<br>
+\log 2  &amp; if \theta \neq 0 \<br>
+0  &amp; if \theta = 0<br>
+\end{cases} \<br>
+KL(P_0||P_1) &amp;= \begin{cases}<br>
++\infty  &amp; if \theta \neq 0 \<br>
+0  &amp; if \theta = 0<br>
+\end{cases}<br>
+\end{aligned}<br>
+$$<br>
+在Wasserstein度量下，随着$\theta_t \rightarrow 0$,概率分布序列$(P_{\theta_t})_{t \in N}$ 收敛到$P_0$,但在其他度量下并不能收敛，W距离与JS散度在该问题中对比如下图所示:<br>
+<img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/W.png" alt="$W VS JS$"></p>
+</blockquote>
+<h4 id="计算">计算</h4>
+<p>尽管Wasserstein度量具有很多优点，但其缺点也十分明显：</p>
+<blockquote>
+<p>计算非常复杂，优化问题不易解</p>
+</blockquote>
+<p>目前能够显示计算出Wasserstein的只有两种情况：</p>
+<blockquote>
+<p>一维概率分布<br>
+高斯分布</p>
+</blockquote>
+<p>对于两个离散的一维概率分布，可以直接使用<code>scipy.stats.Wasserstein_distance</code>函数:</p>
+<pre class="line-numbers language-language-python"><code class="language-language-python">import numpy as np
+from scipy.stats import wasserstein_distance
+p = [0,5,9]
+q = [2,5,7]
+w = wasserstein_distance(q,p)
+print(w)
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>输出:</p>
+<pre class="line-numbers language-language-python"><code class="language-language-python">1.3333333333333335 
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+]]></content>
+      <categories>
+        <category>统计学习</category>
       </categories>
       <tags>
-        <tag>疫中有感</tag>
+        <tag>KL散度，JS散度，推土机距离</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>概率密度函数估计</title>
+    <url>/2020/07/27/gai-lu-mi-du-han-shu-gu-ji/</url>
+    <content><![CDATA[<p>在使用贝叶斯理论进行决策时，我们需要知道先验概率$P(\omega)$,类条件概率密度函数$p(x|\omega)$,而在这一部分，我们便讨论下如何从样本集中将这些所需的概率密度函数估计出来<a id="more"></a>，本文主要讨论以下几个问题：</p>
+<ul>
+<li>如何利用样本集估算$p(x|\omega)$和$P(\omega)$</li>
+<li>估计量性质</li>
+<li>利用样本集估算错误率</li>
+</ul>
+<p>从样本集推断总体概率分布的方法可以分为以下几种类型:</p>
+<ul>
+<li>监督参数估计——样本所属的类别以及总体概率密度函数的形式为已知，而概率密度函数的某些参数是未知的</li>
+<li>非监督参数估计——已知总体概率密度函数形式，但未知样本所属种类，要求推断出概率密度函数某些参数</li>
+<li>非参数估计——已知样本类别，但未知总体概率密度函数形式，要求我们直接推断概率密度函数本身</li>
+</ul>
+<h3 id="最大似然估计">最大似然估计</h3>
+<p>最大似然估计是进行参数估计的常用方法，它有两个假设：</p>
+<ul>
+<li>待估计的参数$\theta$是一个确定的、未知的量</li>
+<li>概率分布函数的形式已知</li>
+<li>样本为独立抽取</li>
+</ul>
+<p>若记$\theta$为待估计参数(比如正态分布中的$\mu,\sigma$),$\mathcal{X}$为样本集合：<br>
+$$ \mathcal{X} = { x_1,x_2, \dots, x_n} $$<br>
+概率密度函数形式已知，记做$p(x|\theta)$，由于假设样本为独立抽取，则似然函数可以写做：<br>
+$$ l(\theta) = p(\mathcal{X}|\theta) = \prod_{i=1}^n p(x_i|\theta)$$<br>
+对数似然函数为：<br>
+$$  H(\theta) = ln(l(\theta)) = \sum_{i=1}^n lnp(x_i|\theta)$$<br>
+首先来看似然函数，它表征了在参数为$\theta$情况下，得到样本集合$\mathcal{X}$的概率，直观来看，这个概率越大，则证明估计得到的参数更好,至于为何使用对数似然函数，这是因为我们需要求$l(\theta)$的最大值，但连乘积求导非常复杂，而取对数运算是单调的，并不改变最值位置，同时计算上大大简化。因此最终最大似然估计值为:</p>
+<p>$$  \frac{\partial H(\theta)}{\theta} = 0  $$</p>
+<p>实践中常见的概率分布为正态分布，其最大似然估计值为：<br>
+$$<br>
+\begin{aligned}<br>
+\hat{\mu} &amp;= \frac{1}{n} \sum_{i=1}^n x_i \\<br>
+\hat{\sigma^2} &amp;= \frac{1}{n} \sum_{i=1}^n (x_i - \hat{\mu})^2<br>
+\end{aligned}<br>
+$$</p>
+<h3 id="贝叶斯估计">贝叶斯估计</h3>
+<p>首先回顾下贝叶斯决策：</p>
+<ul>
+<li>状态空间:$\Omega = { \omega_1, \omega_2, \dots , \omega_c }$</li>
+<li>待识别对象: $\mathbf{x} = [x_1,x_2,\dots, x_d]^T$</li>
+</ul>
+<p>设真实状态为$\omega_j$，而采取决策$a_i$所带来的损失为$\lambda(\omega_j,a_i)$,对于特定$\mathbf{x}$，采取决策$a_i$所带来的平均损失为:<br>
+$$  R(a_i|\mathbf{x}) = \sum_{j=1}^c \lambda(a_i,\omega_j) p(\omega_j|x)$$<br>
+整体损失则需要再对$\mathbf{x}$进行积分，在进行贝叶斯决策时，若想使得整体损失最小，则只需要对任意的$\mathbf{x}$，$R(a_i|\mathbf{x})$。<br>
+下面我们考虑参数估计问题:现在有一个样本集$\mathcal{X}$，要求我们找到最优估计量$\hat{\theta}$(对比决策$a_i$),使得带来的贝叶斯风险最小。由此可见，与贝叶斯决策相比，贝叶斯估计也是立足于使得贝叶斯风险最小，两者对比如下图所示：</p>
+<table>
+<thead>
+<tr>
+<th>决策问题</th>
+<th style="text-align:right">估计问题</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>样本$\mathbf{x}$</td>
+<td style="text-align:right">样本集$\mathcal{X}$</td>
+</tr>
+<tr>
+<td>决策量$a_i$</td>
+<td style="text-align:right">待估计值$\hat{\theta}$</td>
+</tr>
+<tr>
+<td>真实状态$\omega_j$</td>
+<td style="text-align:right">真实参数$\theta$</td>
+</tr>
+<tr>
+<td>状态空间$\mathcal{A}$是离散空间</td>
+<td style="text-align:right">参数空间$\Theta$是连续空间</td>
+</tr>
+<tr>
+<td>先验概率$P(\omega_j)$</td>
+<td style="text-align:right">参数的先验分布$p(\theta)$</td>
+</tr>
+</tbody>
+</table>
+<p>对于样本集$\mathcal{X}$，参数估计值为$\hat{\theta}$所带来的平均损失为：<br>
+$$<br>
+R(\hat{\theta}|\mathcal{X}) = \int_{\Theta} \lambda(\hat{\theta},\theta) p(\hat{\theta}|\mathcal{X}) d\theta<br>
+$$<br>
+从上式中可以也可以看出贝叶斯决策与贝叶斯估计的区别:</p>
+<blockquote>
+<p>贝叶斯决策是立足于每一个样本$\mathbf{x}$，只需要保证对每一个样本均做出最优决策，便可保证整体决策最优；而贝叶斯估计则是立足于样本集$\mathcal{X}$</p>
+</blockquote>
+<p>现在我们要想获得贝叶斯估计，便转化为寻找合适的估计值$\hat{\theta}$,使得$R(\hat{\theta}｜\mathcal{X})$最小，这需要解决两个问题：</p>
+<ul>
+<li>$p(\hat{\theta}|\mathcal{X})$计算</li>
+<li>损失函数$\lambda(\hat{\theta},\theta)$的选择</li>
+</ul>
+<p>首先考虑$p(\hat{\theta}|\mathcal{X})$的计算，假设$\theta$的先验概率分布为$p(\theta)$,类条件概率密度函数为$p(\mathbf{x}|\theta)$,样本集$\mathcal{X} = { x_1,\dots, x_n }$,似然函数$p(\mathcal{X}|\theta)$可以表示为：<br>
+$$<br>
+p(\mathcal{X}|\theta) = \prod_{i=1}^n p(\mathbf{x_i}|\theta)<br>
+$$<br>
+由贝叶斯公式，后验概率可以表示为:<br>
+$$<br>
+p(\hat{\theta}|\mathcal{X}) = \frac{p(\mathcal{X}|\hat{\theta})p(\hat{\theta})}{ \int p(\mathcal{X}|\theta)p(\theta) d\theta}<br>
+$$<br>
+损失函数$\lambda(\hat{\theta},\theta)$常见的有三种选择:</p>
+<ul>
+<li>均方误差函数:$\lambda(\hat{\theta},\theta) = (\theta - \hat{\theta})^2$</li>
+<li>绝对值误差函数: $\lambda(\hat{\theta},\theta) = |\theta - \hat{\theta}|$</li>
+<li>均匀函数: $\lambda(\hat{\theta}, \theta) = \begin{cases}<br>
+0 &amp; x \in [-\frac{\Delta}{2}, \frac{\Delta}{2}] \<br>
+1 &amp; other<br>
+\end{cases}$</li>
+</ul>
+<p>在不同损失函数下，可以推导出不同的结果：</p>
+<ul>
+<li>均方误差函数:<br>
+$$ \hat{\theta}<em>{MS} = \int</em>{-\infty}^\infty \theta p(\theta| \mathcal{X})d\theta$$</li>
+<li>绝对值误差函数:<br>
+$$  \int_{-\infty}^{\hat{\theta_{ABS}}} p(\theta|\mathcal{X}) d\theta = \int_{\hat{\theta_{ABS}}}^{\infty} p(\theta|\mathcal{X}) d\theta $$</li>
+<li>均匀误差函数: $\theta_{MAP}$应当取在后验概率密度函数最大之处</li>
+</ul>
+<p>下面以均方误差函数为例，假设:</p>
+<ul>
+<li>$p(x|\mu) \sim N(\mu, \sigma^2)$</li>
+<li>$p(\mu) \sim N(\mu_0,\sigma_0^2)$</li>
+</ul>
+<p>则后验概率密度函数$p(\theta|\mathcal{X})$为:<br>
+$$<br>
+\begin{aligned}<br>
+p(\mu|\mathcal{X}) &amp;= \frac{p(\mathcal{X}|\mu)p(\mu)}{\int p(\mathcal{X}|\mu)p(\mu)d\mu}  \\<br>
+&amp;= a exp{ -\frac{1}{2}[\sum_{k=1}^N (\frac{\mu - x_k}{\sigma})^2 + (\frac{\mu - \mu_0}{\sigma_0})^2] }<br>
+\end{aligned}<br>
+$$<br>
+由于该概率密度函数是$\mu$的二次函数指数形式，所以仍是一个正态密度，其均值和方差为：<br>
+$$<br>
+\begin{aligned}<br>
+\mu_N &amp;= \frac{N\sigma_0^2}{N\sigma_0^2 + \sigma^2} \frac{1}{N}\sum_{k=1}^N x_k + \frac{\sigma^2}{N\sigma_0^2 + \sigma^2} \mu_0  \\<br>
+\sigma_N^2 &amp;= \frac{\sigma_0^2 \sigma^2}{N\sigma_0^2 + \sigma^2}<br>
+\end{aligned}<br>
+$$<br>
+因为误差函数为均方误差函数，则其参数估计值应当是后验概率密度意义上的均值，即$\mu_N$</p>
+<h3 id="非参数估计">非参数估计</h3>
+<p>在使用最大似然估计或者贝叶斯估计进行参数估计时，需要对类条件概率密度函数$p(\mathbf{x}|\omega)$形式已知，但在某些情况下，我们仅仅拥有样本，但并没有这些先验知识，此时若想要进行概率密度函数的估计，则就用到了非参数估计的方法，该类方法具有以下几点假设：</p>
+<ul>
+<li>不知道分布函数形式</li>
+<li>$N$个样本服从独立同分布</li>
+</ul>
+<p>假设样本点$\mathbf{x}$落在$d$维空间中，在$d$维空间中有一个超立方体$\mathcal{R}$,点$\mathbf{x}$落到该超立方体中的概率记做$P$:<br>
+$$<br>
+P = \int_{\mathcal{R}} p(x) dx<br>
+$$<br>
+若$N$个样本是从密度为$p(x)$的总体中独立抽取的，则$N$个样本中有$k$个落入区域$\mathcal{R}$中的概率符合二项分布，该概率可以写做：<br>
+$$<br>
+P_k = C_N^k P^k(1-P)^{N-k}<br>
+$$<br>
+根据二项分布的性质，$k$的期望为：<br>
+$$<br>
+E(k) = NP<br>
+$$<br>
+我们的目的是想获得关于$P$的估计值，因此考虑：<br>
+$$ \hat{P} = \frac{k}{N}$$<br>
+若超立方体$\mathcal{R}$很小，则可以假设在该超球内概率密度函数$p(x)$为定值，此时：<br>
+$$<br>
+P = \int_{\mathcal{R}} p(x) dx  = p(x)V<br>
+$$<br>
+由此我们便可以获得$p(x)$的估计值：<br>
+$$<br>
+\hat{p}(x) = \frac{P}{V} = \frac{k}{NV}<br>
+$$<br>
+下面讨论下体积$V$的大小及样本数量多少之间的关系。如果把体积$V$固定，样本数取得越来越多，则比值$\frac{k}{N}$将在概率上收敛，最终得到的$p(x)$估计是在超立方体$\mathcal{R}$上的平均估计，而若想要得到$p(x)$的点估计，则需要区间尽可能小，但区间取得过小又会导致一些区间内没有样本点，这种估计也是没有意义的。<br>
+下面给出概率密度函数估计值$p_N(x)$收敛于真实概率密度函数$p(x)$的条件：</p>
+<ul>
+<li>$\lim_{N \rightarrow \infty} V_N = 0$</li>
+<li>$\lim_{N \rightarrow \infty} k_N = \infty$</li>
+<li>$\lim_{N \rightarrow \infty} \frac{k_N}{N} = 0$</li>
+</ul>
+<p>第一个条件可以使空间平均$\frac{P}{V}$收敛于$p(x)$,第二个条件可以使频数比在概率意义上收敛于概率$P$。满足以上三个条件的区域序列的选择有两种：</p>
+<ul>
+<li>Parzen窗法： 使区域序列$V_N$ 以$N$的某个函数的关系不断缩小，但此时需要对$k_N$和$\frac{k_N}{N}$加些限制条件</li>
+<li>$k_N$近邻估计，让$k_N$为$N$的某个函数，而$V_N$的选取是使相应的$\mathcal{R_N}$正好包含$x$的$k_N$个近邻。</li>
+</ul>
+<h4 id="Parzen窗法">Parzen窗法</h4>
+<p>假设$\mathcal{R_N}$为一个超立方体，其棱长为$h_N$,则此时超立方体体积$V_N = h_N^d$,定义窗函数$\phi(\mu)$：<br>
+$$<br>
+\phi(\mu) = \begin{cases}<br>
+1, if |\mu_j| \leq \frac{1}{2} \<br>
+0, other<br>
+\end{cases}<br>
+$$<br>
+引入窗函数的的目的主要是对落入区间的样本数$k$进行显示表达，当$x_i$落入以$x$为中心，体积为$V_N$的超立方体内时，$\phi(\mu) = \phi(\frac{x-x_i}{h_N}) = 1$，否则为0，此时落入该超立方体内的样本数为：<br>
+$$<br>
+k_N = \sum_{i=1}^N \phi(\frac{x-x_i}{h_N})<br>
+$$<br>
+由此便可以得到概率密度函数估计：<br>
+$$<br>
+p_N(x) = \frac{k_N}{V_NN} = \frac{1}{N} \sum_{i=1}^N \frac{1}{V_N} \phi(\frac{x-x_i}{h_N})<br>
+$$<br>
+事实上，窗函数的主要作用是内插，反映了每一样本$x_i$对$x$点处的概率密度函数的贡献<br>
+下面我们讨论下，若要使得$p_N(x)$满足概率密度函数特性(在整个空间上积分为1),则窗函数应当具有什么特性:<br>
+$$<br>
+\begin{aligned}<br>
+\int p_N(x)dx &amp;= \frac{1}{NV_N} \int \sum_{i=1}^N\phi(\frac{x-x_i}{h_N})dx  \\<br>
+&amp;= \frac{1}{N} \sum_{i=1}^N \int \phi(\mu)d\mu \\<br>
+&amp; = 1<br>
+\end{aligned}<br>
+$$<br>
+因此考虑到$p_N(x)$非负且积分为1,则窗函数应当具备一般概率密度函数所具有的特征：</p>
+<ul>
+<li>$\phi(\mu) \geq 0 $</li>
+<li>$\int \phi(\mu) d\mu = 1$</li>
+</ul>
+<p>常见的窗函数有以下三种：</p>
+<ul>
+<li>方窗函数</li>
+<li>正态窗函数:$\phi(\mu) = \frac{1}{\sqrt{2\pi}} exp(-\frac{1}{2}\mu^2)$</li>
+<li>指数窗函数:$\phi(\mu) = \frac{1}{2} exp(-|\mu|)$</li>
+</ul>
+<p>窗宽$h_d$的选择非常重要，若$h_d$选择过大，则会使得估计的分辨力降低，若选的过小，又会导致估计的稳定性下降，反映在估计得到的概率密度函数上就是毛刺很多，一般需要折中考虑。<br>
+下面讨论估计量$p_N(x)$的统计性质，可以证明在某些限制条件下，估计量是渐进无偏和平方误差一致的，限制条件为:</p>
+<ul>
+<li>总体密度函数$p(x)$在$x$点连续</li>
+<li>窗函数满足以下条件：<br>
+$$ \phi(\mu) \geq 0, \int \phi(\mu) d\mu = 1, sup_{u} \phi(\mu)&lt;\infty$$</li>
+<li>窗宽满足: $$ \lim_{N \rightarrow \infty} V_N= 0,\lim_{N \rightarrow \infty} NV_N = \infty $$</li>
+</ul>
+<h4 id="k-N-近邻估计">$k_N$近邻估计</h4>
+<p>parzen窗估计是对体积序列进行限制，而$k_N$近邻估计则是对$k_N$序列做出限制</p>
+<h3 id="概率密度函数估计的准确性与分类器性能的关系">概率密度函数估计的准确性与分类器性能的关系</h3>
+<p>因为概率密度函数的估计最终还是需要服务于一些下游任务，比如应用贝叶斯决策进行分类，因此这部分主要讨论分类器的误差来源，误差来源主要有以下几种：</p>
+<ul>
+<li>贝叶斯误差：这种误差是由于不同的类条件概率分布函数之间的相互重叠引起的，这种误差是问题本身所固有的，在分类器设计阶段无法消除</li>
+<li>模型误差：指因为选择了不正确的模型导致的误差</li>
+<li>估计误差： 由于采用有限样本进行估计所带来的误差</li>
+</ul>
+]]></content>
+      <categories>
+        <category>统计学习</category>
+      </categories>
   </entry>
   <entry>
     <title>线性判别分析</title>
@@ -2647,116 +2629,21 @@ $W$的闭式解则是$S_w^{-1} S_b$的$d’$个最大非零广义特征值所对
       </tags>
   </entry>
   <entry>
-    <title>规则学习</title>
-    <url>/2020/08/27/gui-ze-xue-xi/</url>
-    <content><![CDATA[<p>首先讲一个有意思的现象，早期的主流人工智能专注于以逻辑为基础来进行形式化和推理，但这样很难定量地对不确定事件进行表达和处理，后来随着机器学习算法的井喷，大家都更加关注于对定量的数据进行处理。但现在，很多人发现在解决某些任务的时候，加入一些行业中的常识知识可能会让任务解决地更好，而现在定性知识与定量数据之间似乎有着一道鸿沟，唯一的联系就是进行算法设计的人可能会依赖于他的领域知识来选择合适的算法并对算法进行调参。基于学习下定性知识如何表达的想法，这部分介绍下周志华老师🍉书的倒数第二章——规则学习，这部分内容安扎以下结构组织:</p>
-<ul>
-<li>基本概念</li>
-<li>序贯覆盖</li>
-<li>剪枝优化</li>
-<li>一阶规则学习</li>
-<li>归纳逻辑程序设计</li>
-</ul>
-<a id="more"></a>
-<h3 id="基本概念">基本概念</h3>
-<p>首先给出机器学习中规则和规则学习的概念：</p>
-<blockquote>
-<p><strong>规则:</strong> 在机器学习领域中，“规则”通常是指语义明确、能描述数据分布所隐含的客观规律或领域概念，可以写成&quot;若…,则…&quot;形式的逻辑规则。<br>
-<strong>规则学习:</strong> “规则学习”是从训练数据中学习出一组能用于对未见示例进行判别的规则。</p>
+    <title>疫中居家</title>
+    <url>/2020/02/17/yi-zhong-ju-jia/</url>
+    <content><![CDATA[<blockquote>
+<p>庚子年春，适新冠肆虐，余宅家无所事，聊以为文，以抒心意</p>
 </blockquote>
-<p>形式化来看，一条规则形如：<br>
-$$<br>
-\oplus \leftarrow f_1 \land f_2 \dots \land f_L<br>
-$$<br>
-公式中$\leftarrow$右侧部分称为&quot;规则体&quot;，表示该条规则的前提，左边部分称为&quot;规则头&quot;,表示该条规则的结果。规则体是由逻辑文字$f_k$所组成的合取式(conjuction)，每个文字$f_k$都是对示例属性进行检验的布尔表达式，例如&quot;(色泽 = 乌黑)“或者”$\neg$(根蒂 = 硬挺)&quot;。$L$是规则体中逻辑文字的个数,称为规则的长度,规则头的&quot;$\oplus$&quot;,同样是逻辑文字，一般用来表示所判定的目标的类别或概念，比如&quot;好瓜&quot;，这样的逻辑规则也被称为<strong>if-then规则</strong>。<br>
-与神经网络、支持向量机这样的&quot;黑箱模型&quot;相比，规则学习具有以下几个优点:</p>
-<ul>
-<li>可解释性较强</li>
-<li>很强的表达能力，绝大多数的人类知识都能够通过数理逻辑进行简洁的刻画和表达，例如&quot;父亲的父亲是爷爷&quot;这样的知识不易用函数式表达，而用一阶逻辑则可以方便地写为：<br>
-$$<br>
-爷爷(X,Y) \leftarrow 父亲(X,Z) \land 父亲(Z,Y)<br>
-$$</li>
-<li>逻辑规则的抽象描述能力在处理一些高度复杂的AI任务时具有显著的优势，例如在问答系统中有时可能遇到非常多、甚至无穷种可能的答案，此时若能基于逻辑规则进行抽象表述或者推理，则将带来极大的便利。</li>
-</ul>
-<p>假设我们从西瓜数据集中学得规则集合$\mathcal{R}$:<br>
-$$<br>
-\begin{aligned}<br>
-&amp;规则1: 好瓜 \leftarrow (根蒂 = 蜷缩) \land (脐部 = 凹陷) \<br>
-&amp;规则2: \neg好瓜 \leftarrow (纹理 = 模糊)<br>
-\end{aligned}<br>
-$$<br>
-规则集合中的每条规则都可看作一个子模型，规则集合是这些子模型的一个集成。当同一个示例被判别结果不同的多条规则覆盖时，则称发生了“冲突”，解决冲突的办法则称为&quot;冲突消解&quot;，常用的冲突消解的方法有投票法、排序法、元规则法，投票法就是常用的少数服从多数策略，排序法则是指定规则优先级，出现冲突时使用排序靠前的规则。所谓元规则，其实就是规则的规则，例如&quot;发生冲突时使用长度最小的规则“，然后根据元规则的指导来使用规则集。<br>
-此外，从训练集学得的规则集合也许并不能覆盖所有可能的未见示例，此时规则学习算法通常会设置一条默认规则，由它来处理规则集合未覆盖的样本；例如为$\mathcal{R}$增加一条默认规则：“未被规则1,2覆盖的都不是好瓜”。<br>
-从形式语言表达能力而言，规则可分为两类：“命题规则”和“一阶规则”：</p>
-<blockquote>
-<ul>
-<li>命题规则是由“原子命题(propositional atom)”和逻辑连接词“与($\land$)”、&quot;(或($\lor$))&quot;、“非($\neg$)”和“蕴含”($\leftarrow$)构成的简单陈述句；例如规则集$\mathcal{R}$就是一个命题规则集，“根蒂 = 蜷缩”，“脐部 = 凹陷”都是元子命题。</li>
-<li>一阶规则的基本成分是能表述事物的属性或关系的&quot;原子公式&quot;，例如表达父子关系的谓词(predict)“父亲$(X,Y)$”就是原子公式，再如表示加1操作&quot;$\sigma(X) = X+1$“的函数$\sigma(X)$也是原子公式。如果进一步使用谓词“自然数$(X)$”表示$X$是自然数，“$\forall X$”表示对任意$X$成立，”$\exists Y$“表示&quot;存在$Y$使之成立”,那么&quot;所有自然数加1都是自然数&quot;就可以写做:<br>
-$$<br>
-\forall X, \exists Y  \leftarrow 自然数(X) \land (Y = \sigma(X))<br>
-$$<br>
-或者表示成更加简洁的形式:<br>
-$$<br>
-\forall X, 自然数(\sigma(X)) \leftarrow 自然数(X)<br>
-$$<br>
-这样的规则就是一阶规则，其中$X$和$Y$称为逻辑变量，$\forall,\exists$用于限定变量的取值范围，称为&quot;量词&quot;，显然，一阶规则可以表达复杂的关系，因此也被称为“关系型规则”。若我们简单地把属性当作谓词来定义示例与属性值之间的关系，则命题规则集$\mathcal{R}$可以改写为一阶规则集$R’$:<br>
-$$<br>
-\begin{aligned}<br>
-&amp;规则1: 好瓜(X) \leftarrow 根蒂(X,蜷缩) \land 脐部(X,凹陷) \<br>
-&amp;规则2: \neg 好瓜(X) \leftarrow 纹理(X,模糊)<br>
-\end{aligned}<br>
-$$<br>
-从形式语言系统角度来看，命题规则是一阶规则的特例，因此一阶规则的学习比命题规则要复杂得多。</li>
-</ul>
-</blockquote>
-<h3 id="序贯覆盖">序贯覆盖</h3>
-<p>规则学习的目标是产生一个可以覆盖尽可能多样例的规则集，最直接的做法就是“序贯覆盖”，即逐条归纳:在训练集上每学到一条规则，就将该规则覆盖的训练样例去除，然后以剩下的训练样例组成训练集重复上述过程。由于每次只处理一部分数据，因此也被称为&quot;分治&quot;策略。<br>
-序贯覆盖法的关键是如何从训练集学出单条规则，显然，对规则学习目标$\oplus$ 产生一条规则就是寻找最优的一组逻辑文字构成规则体，这是一个搜索问题。形式化上来说，给定正例集合与反例集合，学习任务是基于候选文字集合$\mathcal{F} = { f_k }$来生成最优规则$r$。在命题规则学习中，候选文字是形如&quot;$R(属性_i,属性值_{ij})$“的布尔表达式，$R(x,y)$则是判断$x,y$是否满足关系$R$的二元布尔函数。<br>
-而具体的学习方法则是从空规则$”\oplus \leftarrow&quot;$开始，将正例类别作为规则头，再逐个遍历训练集中的每个属性及取值，尝试将其作为逻辑文字增加到规则体中，若能使当前规则体仅覆盖正例，由此产生一条规则，然后去除已被覆盖的正例并基于剩余样本生成下一个规则：通俗来说，这种方法的思想便是挑选出所有仅覆盖正例的特征和仅覆盖反例的特征。<br>
-而原始的穷尽搜索的做法在属性和候选值较多时会由于组合爆炸而不可行,现实任务中一般有两种策略来产生规则:</p>
-<ul>
-<li>自顶向下:从比较一般的规则开始，逐渐添加新文字以缩小规则覆盖范围，直到满足预定条件为止，该策略也称为“生成测试”法，是规则逐渐特化的过程。</li>
-<li>自底向上:从比较特殊的规则开始,逐渐删除文字以扩大规则覆盖范围，直到满足条件为止，该种策略是规则逐渐泛化的过程。</li>
-</ul>
-<h3 id="剪枝优化">剪枝优化</h3>
-<p>规则生成本质上是一个贪心搜索的过程，需有一定的机制来缓解过拟合的风险，最常见的做法是剪枝。与决策树相似，剪枝可以分为预剪枝与后剪枝。在实际操作时通常是基于某种性能度量指标来评估增/删逻辑文字前后的规则性能，或增/删规则集前后的规则集性能，从而判断是否需要进行剪枝。<br>
-经常使用的预剪枝算法为$CN2$算法，使用似然率统计量作为指标；后剪枝常用策略为“减错剪枝”，即将样例集进行划分，划分为训练集和验证集，根据在验证集上的表现优劣来对从训练集中学出的模型进行剪枝。、</p>
-<h3 id="一阶规则学习">一阶规则学习</h3>
-<p>命题逻辑的基本单元是“原子命题”，这也就导致命题规则学习很难处理对象之间的&quot;关系&quot;，而关系信息在很多任务中非常重要。例如，当我们在瓜摊挑瓜时,通常很难把水果摊上所有西瓜的特征用属性值表示出来，因为我们很难判断:色泽看起来多深才叫&quot;色泽青绿&quot;？敲起来声音多低才叫&quot;敲声沉闷&quot;？比较现实的做法是将西瓜进行比较，例如，“瓜1的颜色比瓜2更深，并且瓜1的根蒂比瓜2更蜷”，因此“瓜1比瓜2更好”。然而，这已经超越了命题逻辑的表达能力，需要用一阶逻辑来表达，并且要使用一阶规则进行学习。</p>
-<p>首先我们需要将命题逻辑数据转换为关系数据，比如对于瓜的色泽，我们可以定义:<br>
-$$<br>
-色泽深度：乌黑&gt;青绿&gt;浅白<br>
-$$<br>
-那么“瓜1色泽乌黑，是好瓜；瓜2色泽青绿，不是好瓜”，就可以表示为:<br>
-$$<br>
-色泽更深(瓜1，瓜2)，更好(瓜1，瓜2)<br>
-$$<br>
-这样的数据直接描述了样例之间的关系，称为“关系数据”，其中由原样本属性转化而来的“色泽更深”、“根蒂更蜷”等原子公式称为“背景知识”，而由样本类别转化而来的关于“更好”，“$\neg$更好”等原子数据称为关系数据样例，下面给出一个一阶规则示例：<br>
-$$<br>
-(\forall X,\forall Y)(更好(X,Y)) \leftarrow 根蒂更蜷(X,Y) \land 脐部更凹(X,Y)<br>
-$$<br>
-与命题规则相比，一阶规则的规则头、规则体都是一阶逻辑表达式，个体对象&quot;瓜1，瓜2&quot;被逻辑变量$X,Y$替换，全称量词$\forall$ 表示该规则对所有个体对象均成立；通常，在一阶规则中所有出现的变量都被全称量词限定，所以有时会将全称量词省去,一阶规则有着强大的表达能力，例如它能简洁地表达递归概念，如:<br>
-$$<br>
-更好(X,Y) \leftarrow 更好(X,Z) \land 更好(Z,Y)<br>
-$$<br>
-一阶规则学习能够容易地引入领域知识，这是它相对于命题规则学习的另一大优势。在命题规则学习乃至一般的统计学习中，若欲引入领域知识，通常有两种做法:<strong>在现有属性的基础上基于领域知识构造出新属性，或基于领域知识设计某种函数机制(如正则化)来对假设。</strong> 然而现实任务中并非所有的领域知识都能够容易地通过属性重构和函数约束来表达。例如，假定我们获得包含了某未知元素的化合物$X$，欲通过实验来发现它与已知化合物$Y$的化学表达式,我们可以重复多次实验，测出每次结果中化合物的组份含量，虽然我们对反应中的未知元素的性质一无所知，但知道一些普遍成立的化学原理，例如金属原子一般产生离子键、氢原子之间一般都是共价键，并且也了解已知元素间可能发生反应，这些领域知识非常重要，但往往很难在基于命题表示的学习中加以利用。<br>
-下面介绍一种著名的一阶规则学习算法</p>
-<h4 id="First-Order-inductive-Learner">First-Order inductive Learner</h4>
-<p>FOIL是著名的一阶规则学习算法，它遵循序贯覆盖框架且采用自顶向下的规则归纳策略，由于有逻辑变量的存在，FOIL在规则生成时需考虑不同的变量组合。这也是和命题规则所不同的地方,在命题规则的学习中只需要考虑原子命题之间的组合，而在一阶逻辑规则学习中，除了要考虑原子公式的组合，还应当考虑公式中变量的组合。<br>
-FOIL使用“FOIL增益”来选择文字:<br>
-$$<br>
-F_{Gain} = \hat{m}<em>+ \times (\log_2 \frac{\hat{m}</em>+}{\hat{m}<em>+ + \hat{m}</em>-}-\log_2 \frac{m_+}{m_+ + m_-})<br>
-$$</p>
-<h3 id="总结">总结</h3>
-<p>规则学习是&quot;符号主义学习&quot;，是最早开始研究的机器学习技术之一。序贯覆盖是规则学习的基本框架，CN2采用集述搜索，是最早考虑过拟合问题的规则学习算法，现实出后剪枝在缓解规则学习过拟合中的优势。<br>
-由于命题规则的表述能力有限，一阶逻辑学习开始发展，FOIL通过变量替换等操作把命题规则学习转化为一阶规则学习。<br>
-近年来随着机器学习技术进入更多应用领域，在富含结构信息和领域知识的任务中，逻辑表达的重要性逐渐凸显出来，因此出现了一些将规则学习与统计学习相结合的努力，例如给贝叶斯网中的节点赋予逻辑意义的“关系贝叶斯网络”、贝叶斯逻辑程序、马尔可夫逻辑网络，统称为&quot;统计关系学习&quot;。</p>
+<p> 新冠者，源于蝠属，起于武汉，适逢春运，以至蔓于天下，一时人心浮动，谈冠色变。遥忆己亥岁末，余初闻新冠，以其癣疥之疾，然须臾，武汉闭城，举国百姓皆锁足于室，医者仁心，挽袖前线。<br>
+ 余宅家，手机为伴，藉网络以察新冠其事，或感动，或痛心，或苦笑。新冠者，镜也，映崇高精神，映无用之官，映复杂人心。余窃以为，此诚危急之秋也，宜上下一下，共度难关，则疫情之终，不日将至矣。<br>
+ 宅家不可碌碌终日，会余察己日本史所知甚浅，故阅日本史数册以会其意。以吾观之，詹姆斯之《日本史》堪称佳作，然其古史不足，实为大憾；吴廷璆之《日本史》内容翔实，然书中偏见少许，是其瑕疵。纵观日本史，源义经、楠木正成者，皆兵败身殒，然以其悲情命运而传美名于后世；丰臣秀吉者，生前位极人臣，然其后嗣绝于家康之手；德川家康者，韬光养晦，创江户幕府基业，死后被视为神（东照大神），然200余年后，倒幕声起，幕府轰然倒地，故所谓千秋万代者，实为儿戏之言。历史之回响，不过“诸事无常”四字耳。<br>
+ 愿新冠之终结，医者之凯旋，天下之安康</p>
 ]]></content>
       <categories>
-        <category>统计学习</category>
+        <category>闲谈</category>
       </categories>
       <tags>
-        <tag>规则学习，定性关联</tag>
+        <tag>疫中有感</tag>
       </tags>
   </entry>
   <entry>
@@ -2871,6 +2758,124 @@ $$</li>
       <tags>
         <tag>线性判别,感知机</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>规则学习</title>
+    <url>/2020/08/27/gui-ze-xue-xi/</url>
+    <content><![CDATA[<p>首先讲一个有意思的现象，早期的主流人工智能专注于以逻辑为基础来进行形式化和推理，但这样很难定量地对不确定事件进行表达和处理，后来随着机器学习算法的井喷，大家都更加关注于对定量的数据进行处理。但现在，很多人发现在解决某些任务的时候，加入一些行业中的常识知识可能会让任务解决地更好，而现在定性知识与定量数据之间似乎有着一道鸿沟，唯一的联系就是进行算法设计的人可能会依赖于他的领域知识来选择合适的算法并对算法进行调参。基于学习下定性知识如何表达的想法，这部分介绍下周志华老师🍉书的倒数第二章——规则学习，这部分内容安扎以下结构组织:</p>
+<ul>
+<li>基本概念</li>
+<li>序贯覆盖</li>
+<li>剪枝优化</li>
+<li>一阶规则学习</li>
+<li>归纳逻辑程序设计</li>
+</ul>
+<a id="more"></a>
+<h3 id="基本概念">基本概念</h3>
+<p>首先给出机器学习中规则和规则学习的概念：</p>
+<blockquote>
+<p><strong>规则:</strong> 在机器学习领域中，“规则”通常是指语义明确、能描述数据分布所隐含的客观规律或领域概念，可以写成&quot;若…,则…&quot;形式的逻辑规则。<br>
+<strong>规则学习:</strong> “规则学习”是从训练数据中学习出一组能用于对未见示例进行判别的规则。</p>
+</blockquote>
+<p>形式化来看，一条规则形如：<br>
+$$<br>
+\oplus \leftarrow f_1 \land f_2 \dots \land f_L<br>
+$$<br>
+公式中$\leftarrow$右侧部分称为&quot;规则体&quot;，表示该条规则的前提，左边部分称为&quot;规则头&quot;,表示该条规则的结果。规则体是由逻辑文字$f_k$所组成的合取式(conjuction)，每个文字$f_k$都是对示例属性进行检验的布尔表达式，例如&quot;(色泽 = 乌黑)“或者”$\neg$(根蒂 = 硬挺)&quot;。$L$是规则体中逻辑文字的个数,称为规则的长度,规则头的&quot;$\oplus$&quot;,同样是逻辑文字，一般用来表示所判定的目标的类别或概念，比如&quot;好瓜&quot;，这样的逻辑规则也被称为<strong>if-then规则</strong>。<br>
+与神经网络、支持向量机这样的&quot;黑箱模型&quot;相比，规则学习具有以下几个优点:</p>
+<ul>
+<li>可解释性较强</li>
+<li>很强的表达能力，绝大多数的人类知识都能够通过数理逻辑进行简洁的刻画和表达，例如&quot;父亲的父亲是爷爷&quot;这样的知识不易用函数式表达，而用一阶逻辑则可以方便地写为：<br>
+$$<br>
+爷爷(X,Y) \leftarrow 父亲(X,Z) \land 父亲(Z,Y)<br>
+$$</li>
+<li>逻辑规则的抽象描述能力在处理一些高度复杂的AI任务时具有显著的优势，例如在问答系统中有时可能遇到非常多、甚至无穷种可能的答案，此时若能基于逻辑规则进行抽象表述或者推理，则将带来极大的便利。</li>
+</ul>
+<p>假设我们从西瓜数据集中学得规则集合$\mathcal{R}$:<br>
+$$<br>
+\begin{aligned}<br>
+&amp;规则1: 好瓜 \leftarrow (根蒂 = 蜷缩) \land (脐部 = 凹陷) \<br>
+&amp;规则2: \neg好瓜 \leftarrow (纹理 = 模糊)<br>
+\end{aligned}<br>
+$$<br>
+规则集合中的每条规则都可看作一个子模型，规则集合是这些子模型的一个集成。当同一个示例被判别结果不同的多条规则覆盖时，则称发生了“冲突”，解决冲突的办法则称为&quot;冲突消解&quot;，常用的冲突消解的方法有投票法、排序法、元规则法，投票法就是常用的少数服从多数策略，排序法则是指定规则优先级，出现冲突时使用排序靠前的规则。所谓元规则，其实就是规则的规则，例如&quot;发生冲突时使用长度最小的规则“，然后根据元规则的指导来使用规则集。<br>
+此外，从训练集学得的规则集合也许并不能覆盖所有可能的未见示例，此时规则学习算法通常会设置一条默认规则，由它来处理规则集合未覆盖的样本；例如为$\mathcal{R}$增加一条默认规则：“未被规则1,2覆盖的都不是好瓜”。<br>
+从形式语言表达能力而言，规则可分为两类：“命题规则”和“一阶规则”：</p>
+<blockquote>
+<ul>
+<li>命题规则是由“原子命题(propositional atom)”和逻辑连接词“与($\land$)”、&quot;(或($\lor$))&quot;、“非($\neg$)”和“蕴含”($\leftarrow$)构成的简单陈述句；例如规则集$\mathcal{R}$就是一个命题规则集，“根蒂 = 蜷缩”，“脐部 = 凹陷”都是元子命题。</li>
+<li>一阶规则的基本成分是能表述事物的属性或关系的&quot;原子公式&quot;，例如表达父子关系的谓词(predict)“父亲$(X,Y)$”就是原子公式，再如表示加1操作&quot;$\sigma(X) = X+1$“的函数$\sigma(X)$也是原子公式。如果进一步使用谓词“自然数$(X)$”表示$X$是自然数，“$\forall X$”表示对任意$X$成立，”$\exists Y$“表示&quot;存在$Y$使之成立”,那么&quot;所有自然数加1都是自然数&quot;就可以写做:<br>
+$$<br>
+\forall X, \exists Y  \leftarrow 自然数(X) \land (Y = \sigma(X))<br>
+$$<br>
+或者表示成更加简洁的形式:<br>
+$$<br>
+\forall X, 自然数(\sigma(X)) \leftarrow 自然数(X)<br>
+$$<br>
+这样的规则就是一阶规则，其中$X$和$Y$称为逻辑变量，$\forall,\exists$用于限定变量的取值范围，称为&quot;量词&quot;，显然，一阶规则可以表达复杂的关系，因此也被称为“关系型规则”。若我们简单地把属性当作谓词来定义示例与属性值之间的关系，则命题规则集$\mathcal{R}$可以改写为一阶规则集$R’$:<br>
+$$<br>
+\begin{aligned}<br>
+&amp;规则1: 好瓜(X) \leftarrow 根蒂(X,蜷缩) \land 脐部(X,凹陷) \<br>
+&amp;规则2: \neg 好瓜(X) \leftarrow 纹理(X,模糊)<br>
+\end{aligned}<br>
+$$<br>
+从形式语言系统角度来看，命题规则是一阶规则的特例，因此一阶规则的学习比命题规则要复杂得多。</li>
+</ul>
+</blockquote>
+<h3 id="序贯覆盖">序贯覆盖</h3>
+<p>规则学习的目标是产生一个可以覆盖尽可能多样例的规则集，最直接的做法就是“序贯覆盖”，即逐条归纳:在训练集上每学到一条规则，就将该规则覆盖的训练样例去除，然后以剩下的训练样例组成训练集重复上述过程。由于每次只处理一部分数据，因此也被称为&quot;分治&quot;策略。<br>
+序贯覆盖法的关键是如何从训练集学出单条规则，显然，对规则学习目标$\oplus$ 产生一条规则就是寻找最优的一组逻辑文字构成规则体，这是一个搜索问题。形式化上来说，给定正例集合与反例集合，学习任务是基于候选文字集合$\mathcal{F} = { f_k }$来生成最优规则$r$。在命题规则学习中，候选文字是形如&quot;$R(属性_i,属性值_{ij})$“的布尔表达式，$R(x,y)$则是判断$x,y$是否满足关系$R$的二元布尔函数。<br>
+而具体的学习方法则是从空规则$”\oplus \leftarrow&quot;$开始，将正例类别作为规则头，再逐个遍历训练集中的每个属性及取值，尝试将其作为逻辑文字增加到规则体中，若能使当前规则体仅覆盖正例，由此产生一条规则，然后去除已被覆盖的正例并基于剩余样本生成下一个规则：通俗来说，这种方法的思想便是挑选出所有仅覆盖正例的特征和仅覆盖反例的特征。<br>
+而原始的穷尽搜索的做法在属性和候选值较多时会由于组合爆炸而不可行,现实任务中一般有两种策略来产生规则:</p>
+<ul>
+<li>自顶向下:从比较一般的规则开始，逐渐添加新文字以缩小规则覆盖范围，直到满足预定条件为止，该策略也称为“生成测试”法，是规则逐渐特化的过程。</li>
+<li>自底向上:从比较特殊的规则开始,逐渐删除文字以扩大规则覆盖范围，直到满足条件为止，该种策略是规则逐渐泛化的过程。</li>
+</ul>
+<h3 id="剪枝优化">剪枝优化</h3>
+<p>规则生成本质上是一个贪心搜索的过程，需有一定的机制来缓解过拟合的风险，最常见的做法是剪枝。与决策树相似，剪枝可以分为预剪枝与后剪枝。在实际操作时通常是基于某种性能度量指标来评估增/删逻辑文字前后的规则性能，或增/删规则集前后的规则集性能，从而判断是否需要进行剪枝。<br>
+经常使用的预剪枝算法为$CN2$算法，使用似然率统计量作为指标；后剪枝常用策略为“减错剪枝”，即将样例集进行划分，划分为训练集和验证集，根据在验证集上的表现优劣来对从训练集中学出的模型进行剪枝。、</p>
+<h3 id="一阶规则学习">一阶规则学习</h3>
+<p>命题逻辑的基本单元是“原子命题”，这也就导致命题规则学习很难处理对象之间的&quot;关系&quot;，而关系信息在很多任务中非常重要。例如，当我们在瓜摊挑瓜时,通常很难把水果摊上所有西瓜的特征用属性值表示出来，因为我们很难判断:色泽看起来多深才叫&quot;色泽青绿&quot;？敲起来声音多低才叫&quot;敲声沉闷&quot;？比较现实的做法是将西瓜进行比较，例如，“瓜1的颜色比瓜2更深，并且瓜1的根蒂比瓜2更蜷”，因此“瓜1比瓜2更好”。然而，这已经超越了命题逻辑的表达能力，需要用一阶逻辑来表达，并且要使用一阶规则进行学习。</p>
+<p>首先我们需要将命题逻辑数据转换为关系数据，比如对于瓜的色泽，我们可以定义:<br>
+$$<br>
+色泽深度：乌黑&gt;青绿&gt;浅白<br>
+$$<br>
+那么“瓜1色泽乌黑，是好瓜；瓜2色泽青绿，不是好瓜”，就可以表示为:<br>
+$$<br>
+色泽更深(瓜1，瓜2)，更好(瓜1，瓜2)<br>
+$$<br>
+这样的数据直接描述了样例之间的关系，称为“关系数据”，其中由原样本属性转化而来的“色泽更深”、“根蒂更蜷”等原子公式称为“背景知识”，而由样本类别转化而来的关于“更好”，“$\neg$更好”等原子数据称为关系数据样例，下面给出一个一阶规则示例：<br>
+$$<br>
+(\forall X,\forall Y)(更好(X,Y)) \leftarrow 根蒂更蜷(X,Y) \land 脐部更凹(X,Y)<br>
+$$<br>
+与命题规则相比，一阶规则的规则头、规则体都是一阶逻辑表达式，个体对象&quot;瓜1，瓜2&quot;被逻辑变量$X,Y$替换，全称量词$\forall$ 表示该规则对所有个体对象均成立；通常，在一阶规则中所有出现的变量都被全称量词限定，所以有时会将全称量词省去,一阶规则有着强大的表达能力，例如它能简洁地表达递归概念，如:<br>
+$$<br>
+更好(X,Y) \leftarrow 更好(X,Z) \land 更好(Z,Y)<br>
+$$<br>
+一阶规则学习能够容易地引入领域知识，这是它相对于命题规则学习的另一大优势。在命题规则学习乃至一般的统计学习中，若欲引入领域知识，通常有两种做法:<strong>在现有属性的基础上基于领域知识构造出新属性，或基于领域知识设计某种函数机制(如正则化)来对假设。</strong> 然而现实任务中并非所有的领域知识都能够容易地通过属性重构和函数约束来表达。例如，假定我们获得包含了某未知元素的化合物$X$，欲通过实验来发现它与已知化合物$Y$的化学表达式,我们可以重复多次实验，测出每次结果中化合物的组份含量，虽然我们对反应中的未知元素的性质一无所知，但知道一些普遍成立的化学原理，例如金属原子一般产生离子键、氢原子之间一般都是共价键，并且也了解已知元素间可能发生反应，这些领域知识非常重要，但往往很难在基于命题表示的学习中加以利用。<br>
+下面介绍一种著名的一阶规则学习算法</p>
+<h4 id="First-Order-inductive-Learner">First-Order inductive Learner</h4>
+<p>FOIL是著名的一阶规则学习算法，它遵循序贯覆盖框架且采用自顶向下的规则归纳策略，由于有逻辑变量的存在，FOIL在规则生成时需考虑不同的变量组合。这也是和命题规则所不同的地方,在命题规则的学习中只需要考虑原子命题之间的组合，而在一阶逻辑规则学习中，除了要考虑原子公式的组合，还应当考虑公式中变量的组合。<br>
+FOIL使用“FOIL增益”来选择文字:<br>
+$$<br>
+F_{Gain} = \hat{m}<em>+ \times (\log_2 \frac{\hat{m}</em>+}{\hat{m}<em>+ + \hat{m}</em>-}-\log_2 \frac{m_+}{m_+ + m_-})<br>
+$$</p>
+<h3 id="总结">总结</h3>
+<p>规则学习是&quot;符号主义学习&quot;，是最早开始研究的机器学习技术之一。序贯覆盖是规则学习的基本框架，CN2采用集述搜索，是最早考虑过拟合问题的规则学习算法，现实出后剪枝在缓解规则学习过拟合中的优势。<br>
+由于命题规则的表述能力有限，一阶逻辑学习开始发展，FOIL通过变量替换等操作把命题规则学习转化为一阶规则学习。<br>
+近年来随着机器学习技术进入更多应用领域，在富含结构信息和领域知识的任务中，逻辑表达的重要性逐渐凸显出来，因此出现了一些将规则学习与统计学习相结合的努力，例如给贝叶斯网中的节点赋予逻辑意义的“关系贝叶斯网络”、贝叶斯逻辑程序、马尔可夫逻辑网络，统称为&quot;统计关系学习&quot;。</p>
+]]></content>
+      <categories>
+        <category>统计学习</category>
+      </categories>
+      <tags>
+        <tag>规则学习，定性关联</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>论时间驱动与事件驱动</title>
+    <url>/2020/08/24/lun-shi-jian-qu-dong-yu-shi-jian-qu-dong/</url>
+    <content><![CDATA[]]></content>
   </entry>
   <entry>
     <title>近邻法</title>
@@ -3052,11 +3057,6 @@ Step4: 用Store中样本作为近邻法设计集合</p>
       <tags>
         <tag>分类，k近邻</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>论时间驱动与事件驱动</title>
-    <url>/2020/08/24/lun-shi-jian-qu-dong-yu-shi-jian-qu-dong/</url>
-    <content><![CDATA[]]></content>
   </entry>
   <entry>
     <title>非监督学习</title>
