@@ -476,7 +476,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2020-09-19
+                    2020-09-20
                 </div>
                 
 
@@ -545,7 +545,7 @@
         &= argmax \int_{x} p(x) \ln p(x|\theta) dx
     \end{aligned}</script><p>这里需要特别说明一下这一步：</p>
 <script type="math/tex; mode=display">
-    argmax \frac{1}{N} \sum_{i=1}^N \ln p(x_i|\theta) \Leftrightarrow argmax E_{x \sim p(x)} \ln p(x|\theta)</script><p>当样本数量足够大时，空间中每个样本点都被覆盖，而具体空间中某一个点$x<em>i$会落入多少样本点则取决于数据分布$p(x)$在该点概率密度函数的大小，换句话说，如果从采样的角度，要对某点的概率密度函数进行估计，那么只需要原始数据进行采样，采样$N$个点，若最终有$n</em>{x_i}$个点落在了$x_i$处，那么该点的概率密度函数就可以估计为:</p>
+    argmax \frac{1}{N} \sum_{i=1}^N \ln p(x_i|\theta) \Leftrightarrow argmax E_{x \sim p(x)} \ln p(x|\theta)</script><p>当样本数量足够大时，空间中每个样本点都被覆盖，而具体空间中某一个点$x_i$会落入多少样本点则取决于数据分布$p(x)$在该点概率密度函数的大小，换句话说，如果从采样的角度，要对某点的概率密度函数进行估计，那么只需要原始数据进行采样，采样$N$个点，若最终有$n_{x_i}$个点落在了$x_i$处，那么该点的概率密度函数就可以估计为:</p>
 <script type="math/tex; mode=display">
     p(x_i) = \frac{n_{x_i}}{N}</script><p>于是上面的等价性也是可以按照这种思想推导出来：</p>
 <script type="math/tex; mode=display">
@@ -574,7 +574,7 @@
 <blockquote>
 <p>最大化似然函数 $\Leftrightarrow$ 最小化交叉熵 $\Leftrightarrow$ 最小化KL散度$\Leftrightarrow$ 最小化JS散度</p>
 </blockquote>
-<h4 id="生成对抗网络"><a href="#生成对抗网络" class="headerlink" title="生成对抗网络"></a>生成对抗网络</h4><p>之前进行分布拟合，一般通过假设分布是一个高斯分布(或混合高斯分布)，然后对参数进行优化，使得对数据有一个较好的拟合效果，但高斯分布假设很多时候并不满足，因此需要一个更大的模型搜索空间。随着神经网络科学的发展，人们开始思考，能否使用神经网络来将一个高斯分布映射为我们期望的分布$p<em>G$，但由于$p</em>{data}$是未知的，我们并不知道应该如何衡量两个分布之间的差异，因此就需要有一个判别器。GAN的目标函数如下:</p>
+<h4 id="生成对抗网络"><a href="#生成对抗网络" class="headerlink" title="生成对抗网络"></a>生成对抗网络</h4><p>之前进行分布拟合，一般通过假设分布是一个高斯分布(或混合高斯分布)，然后对参数进行优化，使得对数据有一个较好的拟合效果，但高斯分布假设很多时候并不满足，因此需要一个更大的模型搜索空间。随着神经网络科学的发展，人们开始思考，能否使用神经网络来将一个高斯分布映射为我们期望的分布$p_G$，但由于$p_{data}$是未知的，我们并不知道应该如何衡量两个分布之间的差异，因此就需要有一个判别器。GAN的目标函数如下:</p>
 <script type="math/tex; mode=display">
     V(D, G) = E_{x \sim data} \log D(x) + E_{x \sim p_G} \log (1 - D(x))</script><p>前一项中的$D(x)$表示判别器对来自训练集数据的评分，后一项中的$D(x)$表示判别器对来自生成器数据的评分，如果想提高判别器的性能，则要求判别器对来自训练数据集的数据评分较高，对来自生成器生成数据评分较低，因为$D(x) \in [0,1]$,因此$D(x)$也可以认为是一个样本是来自原始分布的概率。下面我们将$V(D,G)$写开:</p>
 <script type="math/tex; mode=display">
@@ -595,7 +595,7 @@
          &= -2\log2 + 2JS(p_{data}(x) || p_G(x)) 
     \end{aligned}</script><p>所以说我们接下来对生成器G的优化，其实就是:</p>
 <script type="math/tex; mode=display">
-    G^* = \arg \min_G V(D^*,G) = \arg \min_{G} JS(p_{data}(x)||p_G(x))</script><p>这说明我们对生成器进行优化，实质上就是期望能够找到一个分布，使得$p<em>G(x)$与原始数据分布$p</em>{data}(x)$的JS散度最小，由前面的等价性，其实就是找到一个分布使得对训练数据的最大似然函数最大。 因此整个优化问题可以写做:</p>
+    G^* = \arg \min_G V(D^*,G) = \arg \min_{G} JS(p_{data}(x)||p_G(x))</script><p>这说明我们对生成器进行优化，实质上就是期望能够找到一个分布，使得$p_G(x)$与原始数据分布$p_{data}(x)$的JS散度最小，由前面的等价性，其实就是找到一个分布使得对训练数据的最大似然函数最大。 因此整个优化问题可以写做:</p>
 <script type="math/tex; mode=display">
     \min_{G} \max_{D} V(D,G)</script><h4 id="GAN-Pytorch实现"><a href="#GAN-Pytorch实现" class="headerlink" title="GAN Pytorch实现"></a>GAN <code>Pytorch</code>实现</h4><p>在实现的时候需要关注的问题我觉得主要有以下几个：</p>
 <ul>

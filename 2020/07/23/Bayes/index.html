@@ -542,8 +542,8 @@
 <h3 id="最小错误率贝叶斯决策"><a href="#最小错误率贝叶斯决策" class="headerlink" title="最小错误率贝叶斯决策"></a>最小错误率贝叶斯决策</h3><p>从贝叶斯公式出发，通过比较后验概率大小，选择后验概率大的类别作为label。以而分类问题为例，$\omega_i(i=1,2)$是类别标签，$x$为特征相量，由贝叶斯公式，可得$P(\omega_i|x)$：</p>
 <script type="math/tex; mode=display">P(\omega_i|x) = \frac{P(x|\omega_i)P(\omega_i)}{\sum_{j=1}^2 P(x|\omega_j)P(\omega_j)}</script><p>最小错误率下等价的决策规则有：</p>
 <ul>
-<li>若$P(\omega<em>i|x) = max</em>{j=1,2}P(\omega_j|x)$,则$x \in \omega_i$</li>
-<li>若$P(x|\omega<em>i)P(\omega_i) = max</em>{j=1,2}P(x|\omega_j)P(\omega_j)$,则$x \in \omega_i$</li>
+<li>若$P(\omega_i|x) = max_{j=1,2}P(\omega_j|x)$,则$x \in \omega_i$</li>
+<li>若$P(x|\omega_i)P(\omega_i) = max_{j=1,2}P(x|\omega_j)P(\omega_j)$,则$x \in \omega_i$</li>
 <li>对于二分类问题，若$l(x) = \frac{P(x|\omega_1)}{P(x|\omega_2)} &gt; \frac{P(\omega_2)}{P(\omega_1)}$,则$x \in \omega_1$</li>
 </ul>
 </blockquote>

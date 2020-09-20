@@ -529,7 +529,7 @@
     \begin{aligned}
         P(Y=1|x) &= \frac{exp(w \cdot x + b)}{1 + exp(w \cdot x + b)} \\
         P(Y=0|x) &= \frac{1}{1 + exp(w \cdot x + b)} 
-    \end{aligned}</script><p>其中，$x \in R^n$是输入，$Y \in {0,1}$是输出，$w \in R^n,b \in R$是参数。</p>
+    \end{aligned}</script><p>其中，$x \in R^n$是输入，$Y \in \{0,1\}$是输出，$w \in R^n,b \in R$是参数。</p>
 </blockquote>
 <p>若我们已经有了logistic模型，则判断样本点$x$属于哪一类只需要比较两个概率值的大小，下面给出对数几率的定义:</p>
 <blockquote>
@@ -560,7 +560,7 @@
             &= \sum_{i=1}^N [y_i log \frac{\pi(x_i)}{1 - \pi(x_i)} + log(1-\pi(x_i))] \\
             &= \sum_{i=1}^N [y_i(w \cdot x) - log(1 + exp(w \cdot x))]
     \end{aligned}</script><p>对$L(w)$求极大值，得到$w$的估计值，常用梯度下降法及拟牛顿法求解(后面专开一章讲解)。</p>
-<h4 id="多项logistic回归"><a href="#多项logistic回归" class="headerlink" title="多项logistic回归"></a>多项logistic回归</h4><p>上面介绍的是二项logistic模型，适用于二分类，可以将其推广为多项logistic分类模型，用于多类分类。假设离散型随机变量$Y$的取值集合是${1,2,\dots,K}$,那么多项logistic回归的模型是:</p>
+<h4 id="多项logistic回归"><a href="#多项logistic回归" class="headerlink" title="多项logistic回归"></a>多项logistic回归</h4><p>上面介绍的是二项logistic模型，适用于二分类，可以将其推广为多项logistic分类模型，用于多类分类。假设离散型随机变量$Y$的取值集合是$\{1,2,\dots,K\}$,那么多项logistic回归的模型是:</p>
 <script type="math/tex; mode=display">
     \begin{aligned}
         P(Y=k|x) &= \frac{\exp(w_k \cdot x)}{1 + \sum_{k=1}^{K-1} \exp(w_k \cdot x)} \\
@@ -595,7 +595,7 @@
 </blockquote>
 <p>直观的，最大熵原理认为要选择的概率模型首先必须满足已有的事实，即约束条件。在没有更多信息情况下，那些不确定的部分都是“等可能的”,最大熵原理通过熵的最大化来表示等可能性。下面通过一个简单的例子来介绍最大熵原理：</p>
 <blockquote>
-<p>🌰：假设随机变量$X$有五个取值${A,B,C,D,E }$,要估计取各个值的概率$P(A),P(B),P(C),P(D),P(E)$</p>
+<p>🌰：假设随机变量$X$有五个取值$\{A,B,C,D,E \}$,要估计取各个值的概率$P(A),P(B),P(C),P(D),P(E)$</p>
 <ul>
 <li>不提供任何额外约束，则只有这些概率的固有约束<script type="math/tex; mode=display">
   P(A) + P(B) + P(C) + P(D) + P(E) = 1</script>因为没有任何额外的信息，则根据最大熵原理，只能够认为该概率分布为均匀分布：<script type="math/tex; mode=display">
@@ -634,7 +634,7 @@
 <blockquote>
 <p>当我们需要对一个事件(变量)的概率分布进行预测时，最大熵原理告诉我们所有的预测应当满足全部已知的条件(约束)，而对未知的情况不要做任何主观假设，保留模型最大的不确定性。</p>
 </blockquote>
-<h4 id="最大熵模型的学习"><a href="#最大熵模型的学习" class="headerlink" title="最大熵模型的学习"></a>最大熵模型的学习</h4><p>最大熵模型的学习过程就是求解最大熵模型的过程。最大熵模型学习可以形式化为约束最优化问题。<br>对于给定的训练数据集$T = { (x_1,y_1), (x_2,y_2),\dots, (x_N,y_N)}$以及特征函数$f_i(x,y),i=1,2,\dots,n$,最大熵模型的学习等价于求解最优化问题:</p>
+<h4 id="最大熵模型的学习"><a href="#最大熵模型的学习" class="headerlink" title="最大熵模型的学习"></a>最大熵模型的学习</h4><p>最大熵模型的学习过程就是求解最大熵模型的过程。最大熵模型学习可以形式化为约束最优化问题。<br>对于给定的训练数据集$T = \{ (x_1,y_1), (x_2,y_2),\dots, (x_N,y_N)\}$以及特征函数$f_i(x,y),i=1,2,\dots,n$,最大熵模型的学习等价于求解最优化问题:</p>
 <script type="math/tex; mode=display">
     \begin{aligned}
         &\max_{P \in C} \quad H(P) = -\sum_{x,y}  \tilde{P}(x)P(y|x) log P(y|x) \\

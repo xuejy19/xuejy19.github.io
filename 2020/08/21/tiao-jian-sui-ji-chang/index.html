@@ -517,7 +517,7 @@
 <h3 id="概率无向图模型"><a href="#概率无向图模型" class="headerlink" title="概率无向图模型"></a>概率无向图模型</h3><h4 id="概率无向图模型定义"><a href="#概率无向图模型定义" class="headerlink" title="概率无向图模型定义"></a>概率无向图模型定义</h4><p>图是由节点和及连接的边组成的集合，表示为$G = (V,E)$，若连接的边无方向，则称为无向图，反之则称为有向图。<br>概率图模型是由图表示的概率分布，图中的节点表示随机变量，节点之间的边表示变量之间的概率依赖关系。<br>给定一个联合概率分布$P(Y)$和表示它的无向图$G$,首先定义无向图表示的随机变量之间存在的成对马尔可夫性、局部马尔可夫性和全局马尔可夫性。</p>
 <blockquote>
 <ul>
-<li>成对马尔可夫性：设$\mu$和$v$是无向图$G$中任意两个没有边连接的节点，两个节点分别对应随机变量$Y<em>{\mu},Y_v$。其他所有节点的集合记做$O$,对应随机变量组是$Y_O$。成对马尔可夫性是指给定随机变量组$Y_O$的条件下，随机变量$Y</em>{\mu}$和$Y_v$是条件独立的,即：<script type="math/tex; mode=display">
+<li>成对马尔可夫性：设$\mu$和$v$是无向图$G$中任意两个没有边连接的节点，两个节点分别对应随机变量$Y_{\mu},Y_v$。其他所有节点的集合记做$O$,对应随机变量组是$Y_O$。成对马尔可夫性是指给定随机变量组$Y_O$的条件下，随机变量$Y_{\mu}$和$Y_v$是条件独立的,即：<script type="math/tex; mode=display">
   P(Y_{\mu},Y_v|Y_O) = P(Y_{\mu}|Y_O)P(Y_{v}|Y_O)</script></li>
 <li>局部马尔可夫性：设$v \in V$是无向图$G$中任意一个节点，$W$是与$v$有边连接的所有节点，$O$是$v$和$W$以外的其他所有节点。$v,W,O$对应的随机变量(组)记做$Y_v,Y_W,Y_O$,局部马尔可夫性是指在给定随机变量组$Y_W$条件下，随机变量$Y_v$与随机变量组$Y_O$是相互独立的:<script type="math/tex; mode=display">
   P(Y_{O},Y_v|Y_W) = P(Y_{v}|Y_W)P(Y_{O}|Y_W)</script>在$P(Y_O|Y_W)&gt;0$情况下，有：<script type="math/tex; mode=display">
@@ -536,7 +536,7 @@
 </blockquote>
 <p>将概率无向图模型的联合概率分布表示为其最大团上的随机变量的函数的乘积的操作，称为概率无向图模型的因子分解。<br>给定概率图模型，设其无向图为$G$，$C$为$G$上的最大团，$Y_C$表示$C$对应的随机变量，那么联合概率分布$P(Y)$可以表示成图中所有最大团$C$上函数$\varPhi_C(Y_C)$的<strong>连乘形式</strong>:</p>
 <script type="math/tex; mode=display">
-    P(Y) = \frac{1}{Z} \prod_{C} \varPhi_C(Y_C)</script><p>公式中$Z$是一个归一化因子$Z = \sum<em>Y \prod</em>{C} \varPhi_C(Y_C)$。函数$\varPhi_C(Y_C)$称为势函数。势函数通常定义为指数函数:</p>
+    P(Y) = \frac{1}{Z} \prod_{C} \varPhi_C(Y_C)</script><p>公式中$Z$是一个归一化因子$Z = \sum_Y \prod_{C} \varPhi_C(Y_C)$。函数$\varPhi_C(Y_C)$称为势函数。势函数通常定义为指数函数:</p>
 <script type="math/tex; mode=display">
     \varPhi_C(Y_C) = exp\{ -E(Y_C)\}</script><p>概率无向图的因子分解由Hammersley-Clifford定理保证:</p>
 <blockquote>
@@ -548,7 +548,7 @@
 <blockquote>
 <p><strong>条件随机场</strong>：设$X$和$Y$是随机变量，$P(Y|X)$是在给定$X$条件下$Y$的条件概率分布。若随机变量$Y$构成一个由无向图$G = (V,E)$表示的马尔可夫随机场，即：</p>
 <script type="math/tex; mode=display">
-    P(Y_v|X,Y_w,w \neq v) = P(Y_v|X,Y_w,w\sim v)</script><p>对任意节点$v$成立，则称条件概率分布$P(Y|X)$为条件随机场。公式中$w \sim v$表示在图$G = (V,E)$中与节点$v$有边连接的所有节点$w$,$w \neq v$表示节点$v$以外的所有节点，$Y<em>v,Y_w,Y</em>{\mu}$为节点$v,\mu,w$所对应的随机变量。</p>
+    P(Y_v|X,Y_w,w \neq v) = P(Y_v|X,Y_w,w\sim v)</script><p>对任意节点$v$成立，则称条件概率分布$P(Y|X)$为条件随机场。公式中$w \sim v$表示在图$G = (V,E)$中与节点$v$有边连接的所有节点$w$,$w \neq v$表示节点$v$以外的所有节点，$Y_v,Y_w,Y_{\mu}$为节点$v,\mu,w$所对应的随机变量。</p>
 </blockquote>
 <p>虽然在定义中并没有要求$X$和$Y$具有相同的结构，但在现实中，一般假设$X$和$Y$具有相同的结构，而对于线性链，则是图$G = (V,E)$可以表示成：</p>
 <script type="math/tex; mode=display">
@@ -563,7 +563,7 @@
 </blockquote>
 <p>定义中公式表示给定输入序列$x$，对输出序列$y$预测的条件概率。$t_k$是定义在边上的特征函数，称为转移特征，依赖于当前和前一个位置；$s_l$是定义在节点上的特征函数，称为状态特征，依赖于当前位置。$t_k$和$s_l$都依赖于位置，是局部特征函数。通常，特征函数$t_k$和$s_l$取值为0或1，当满足特征条件时取值为1，否则为0。条件随机场完全由特征函数$t_k,s_l$和对应的权值$\lambda_k,\mu_l$确定。<br>为便于理解，下面给出一个线性链条件随机场的栗子：</p>
 <blockquote>
-<p><strong>🌰：</strong> 设有一标注问题：输入观测序列为$X = (X_1,X_2,X_3)$,输出标记序列为$Y = (Y_1,Y_2,Y_3)$,输出标记取之于$\mathcal{Y} = { 1,2 }$<br>假设特征$t_k,s_l$和对应的权值$\lambda_k,\mu_l$如下：</p>
+<p><strong>🌰：</strong> 设有一标注问题：输入观测序列为$X = (X_1,X_2,X_3)$,输出标记序列为$Y = (Y_1,Y_2,Y_3)$,输出标记取之于$\mathcal{Y} = \{ 1,2 \}$<br>假设特征$t_k,s_l$和对应的权值$\lambda_k,\mu_l$如下：</p>
 <script type="math/tex; mode=display">
     \begin{aligned}
         t_1 &=  t_1(y_{i-1} = 1,y_i = 2,x,i) \quad i =2,3, \lambda_1 = 1 \\
@@ -601,16 +601,16 @@
 <script type="math/tex; mode=display">
     \boldsymbol{F(y,x)} = (f_1(y,x),f_2(y,x),\dots, f_K(y,x))^T</script><p>则条件随机场可以以两个向量内积的形式来表示:</p>
 <script type="math/tex; mode=display">
-    P_w(y|x) = \frac{exp(\boldsymbol{w \cdot F(y,x)})}{Z_w(x)}</script><h4 id="条件随机场的矩阵形式"><a href="#条件随机场的矩阵形式" class="headerlink" title="条件随机场的矩阵形式"></a>条件随机场的矩阵形式</h4><p>假设$P<em>w(y|x)$是线性链条件随机场，表示对给定观测序列，相应的标记序列$y$的条件概率。对每个标记序列引入特殊的起点和终点状态标记$y_0 = start$和$y</em>{n+1} = stop$,这时标注序列的概率可以通过矩阵形式表示并有效计算。<br>对观测序列$x$的每一个位置$i =1,2,\dots,n+1$,由于$y_{i-1}$和$y_i$在$m$个标记中取值，因此可以定义一个$m$阶矩阵随机变量：</p>
+    P_w(y|x) = \frac{exp(\boldsymbol{w \cdot F(y,x)})}{Z_w(x)}</script><h4 id="条件随机场的矩阵形式"><a href="#条件随机场的矩阵形式" class="headerlink" title="条件随机场的矩阵形式"></a>条件随机场的矩阵形式</h4><p>假设$P_w(y|x)$是线性链条件随机场，表示对给定观测序列，相应的标记序列$y$的条件概率。对每个标记序列引入特殊的起点和终点状态标记$y_0 = start$和$y_{n+1} = stop$,这时标注序列的概率可以通过矩阵形式表示并有效计算。<br>对观测序列$x$的每一个位置$i =1,2,\dots,n+1$,由于$y_{i-1}$和$y_i$在$m$个标记中取值，因此可以定义一个$m$阶矩阵随机变量：</p>
 <script type="math/tex; mode=display">
     M_i(x) = [M_i(y_{i-1},y_i|x)]</script><p>矩阵随机变量元素为:</p>
 <script type="math/tex; mode=display">
     \begin{aligned}
         M_i(y_{i-1},y_i|x) &= exp(W_i(y_{i-1},y_i|x)) \\
         W_i(y_{i-1},y_i|x) &= \sum_{k=1}^K w_k f_k(y_{i-1},y_i,x,i)
-    \end{aligned}</script><p>这样，给定观测序列$x$,相应的标记序列$y$的非规范概率可以通过该序列$n+1$个矩阵的适当元素的乘积<br>$\prod<em>{i=1}^{n+1} M_i(y</em>{i-1},y_i|x)$,于是，条件概率$P_w(y|x)$可以表示为：</p>
+    \end{aligned}</script><p>这样，给定观测序列$x$,相应的标记序列$y$的非规范概率可以通过该序列$n+1$个矩阵的适当元素的乘积<br>$\prod_{i=1}^{n+1} M_i(y_{i-1},y_i|x)$,于是，条件概率$P_w(y|x)$可以表示为：</p>
 <script type="math/tex; mode=display">
-    P_w(y|x) = \frac{1}{Z_w(x)} \prod_{i=1}^{n+1} M_i(y_{i-1},y_i|x)</script><p>其中$Z<em>w(x) = \sum_y \prod</em>{i=1}^{n+1} M<em>i(y</em>{i-1},y_i|x)$,可以证明，该归一化因子也可以表示成$n+1$个矩阵连乘积的矩阵的元素。<br>下面的部分依次介绍条件随机场的三个经典问题：</p>
+    P_w(y|x) = \frac{1}{Z_w(x)} \prod_{i=1}^{n+1} M_i(y_{i-1},y_i|x)</script><p>其中$Z_w(x) = \sum_y \prod_{i=1}^{n+1} M_i(y_{i-1},y_i|x)$,可以证明，该归一化因子也可以表示成$n+1$个矩阵连乘积的矩阵的元素。<br>下面的部分依次介绍条件随机场的三个经典问题：</p>
 <ul>
 <li>概率计算问题，即给点条件随机场$P(Y|X)$,输入序列$x$和输出序列$y$,计算相应条件概率的问题</li>
 <li>学习问题，即在给定训练数据集情况下估计条件随机场模型参数的问题</li>
@@ -627,7 +627,7 @@
 <script type="math/tex; mode=display">
     \alpha_i^T(y_i|x) = \alpha_{i-1}^T(y_{i-1}|x)[M_i(y_{i-1},y_i|x)],\quad i = 1,2,\dots,n+1</script><p>也可表示为：</p>
 <script type="math/tex; mode=display">
-    \alpha_i^T(x) = \alpha_{i-1}^T(x) M_i(x)</script><p>$\alpha<em>i(y_i|x)$表示在位置$i$的标记是$y_i$，并且从1到$i$的前部分标记序列的非规范化概率，$y_i$可以取的值有$m$个，在上述公式中，$\alpha</em>{i-1}(x)$是一个$m$维列向量，而$M<em>i(x)$是一个$m$阶矩阵，实际上$y_i$的任意取值均可能由$y</em>{n-1}$的$m$种状态转移过来，因此上述的计算实际上是对各种转移可能性的求和。<br>同样，对每个指标$i = 0,1,\dots,n+1$,定义后向向量$\beta_i(x)$:</p>
+    \alpha_i^T(x) = \alpha_{i-1}^T(x) M_i(x)</script><p>$\alpha_i(y_i|x)$表示在位置$i$的标记是$y_i$，并且从1到$i$的前部分标记序列的非规范化概率，$y_i$可以取的值有$m$个，在上述公式中，$\alpha_{i-1}(x)$是一个$m$维列向量，而$M_i(x)$是一个$m$阶矩阵，实际上$y_i$的任意取值均可能由$y_{n-1}$的$m$种状态转移过来，因此上述的计算实际上是对各种转移可能性的求和。<br>同样，对每个指标$i = 0,1,\dots,n+1$,定义后向向量$\beta_i(x)$:</p>
 <script type="math/tex; mode=display">
     \begin{aligned}
         \beta_{n+1}(y_{n+1|x}) &= \begin{cases}
@@ -638,7 +638,7 @@
     \end{aligned}</script><p>又可表示为：</p>
 <script type="math/tex; mode=display">
     \beta_i(x) = M_{i+1}(x) \beta_{i+1}(x)</script><p>$\beta_i(y_i|x)$表示在位置$i$的标记为$y_i$并且从$i+1$到$n$后半部分标记序列的非规范化序列。</p>
-<h4 id="概率计算"><a href="#概率计算" class="headerlink" title="概率计算"></a>概率计算</h4><p>按照前向后向概率的定义，很容易计算标记序列在位置$i$是标记$y<em>i$的条件概率和在位置$i-1$和$i$是标记$y</em>{i-1}$和$y_i$的条件概率：</p>
+<h4 id="概率计算"><a href="#概率计算" class="headerlink" title="概率计算"></a>概率计算</h4><p>按照前向后向概率的定义，很容易计算标记序列在位置$i$是标记$y_i$的条件概率和在位置$i-1$和$i$是标记$y_{i-1}$和$y_i$的条件概率：</p>
 <script type="math/tex; mode=display">
     \begin{aligned}
         P(Y_i = y_i|x) &= \frac{\alpha_i^T(y_i|x) \beta_i(y_i|x)}{Z(x)} \\

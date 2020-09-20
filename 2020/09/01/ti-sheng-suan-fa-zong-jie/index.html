@@ -555,7 +555,7 @@
 </ul>
 <p>AdaBoost算法流程如下:</p>
 <blockquote>
-<p><strong>AdaBoost算法</strong><br><strong>输入：</strong> 训练数据集$T = { (x_1,y_1), (x_2,y_2),\dots, (x_N,y_N)}$,其中$x_i \in R^n, y_i \in { -1, +1 }$,弱学习算法<br><strong>输出：</strong> 最终分类器$G(x)$ </p>
+<p><strong>AdaBoost算法</strong><br><strong>输入：</strong> 训练数据集$T = \{ (x_1,y_1), (x_2,y_2),\dots, (x_N,y_N)\}$,其中$x_i \in R^n, y_i \in \{ -1, +1 \}$,弱学习算法<br><strong>输出：</strong> 最终分类器$G(x)$ </p>
 <ol>
 <li>初始化训练数据的权值分布<script type="math/tex; mode=display">
  D_1 = (w_{11}, \dots, w_{1i}, \dots,w_{1N}), w_{1i} = \frac{1}{N}</script></li>
@@ -602,7 +602,7 @@
 <script type="math/tex; mode=display">
     \boldsymbol{\alpha} = [\alpha_1,\alpha_2,\dots, \alpha_t], \boldsymbol{h(x)} = [h_1(i),h_2(i),\dots, h_t(i)]</script><p>$w_{t+1i}$可以写成更加紧凑的形式:</p>
 <script type="math/tex; mode=display">
-    w_{t+1i} = \frac{e^{-y_i <\boldsymbol{\alpha}, \boldsymbol{h(x)}>}}{N \prod_{i=1}^t Z_i}</script><p>又因为有$\sum<em>{i=1}^N w</em>{t+1i} = 1$,对上式求和后可得：</p>
+    w_{t+1i} = \frac{e^{-y_i <\boldsymbol{\alpha}, \boldsymbol{h(x)}>}}{N \prod_{i=1}^t Z_i}</script><p>又因为有$\sum_{i=1}^N w_{t+1i} = 1$,对上式求和后可得：</p>
 <script type="math/tex; mode=display">
     \prod_{i=1}^t Z_i = \frac{1}{N} \sum_{i=1}^N e^{-y_i <\boldsymbol{\alpha}, \boldsymbol{h(x)}>}</script><p>需要注意的是，$&lt;\boldsymbol{\alpha}, \boldsymbol{h(x)}&gt;$刚好是使用AdaBoost最终得到模型的预测结果(未取sign)，下面考虑两种情况：</p>
 <script type="math/tex; mode=display">
