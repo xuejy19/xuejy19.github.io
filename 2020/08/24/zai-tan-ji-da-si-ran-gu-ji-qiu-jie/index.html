@@ -483,7 +483,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.8k
+                    1.7k
                 </div>
                 
 
@@ -518,128 +518,85 @@
 <li>指数分布族</li>
 <li>指数族函数举例</li>
 <li>对数似然函数凹凸性证明</li>
-<li>总结</li>
+<li>总结<a id="more"></a>
+<h3 id="指数分布族"><a href="#指数分布族" class="headerlink" title="指数分布族"></a>指数分布族</h3>首先给出指数分布族的定义：<blockquote>
+<p>指数分布族是一类概率分布的总称，这类分布的概率密度函数具有这样的形式：</p>
+<script type="math/tex; mode=display">
+  p_\theta(x) = h(x) \exp(\theta^T \phi(x) - A(\theta))</script><p>式中，$x$是密度函数自变量，$x \in \mathcal{X}$;$\phi(x)$是充分统计量，可以看做是原始变量的一个映射:</p>
+<script type="math/tex; mode=display">
+  \phi: \mathcal{X} \rightarrow R^d</script><p>$\theta$是模型参数向量，与充分统计量维度相同，$h(x)$是一个只与$x$有关的统计量，$A(\theta)$为配分函数，通过该函数来保证$p_\theta(x)$满足概率密度函数的定义：</p>
+<script type="math/tex; mode=display">
+   \int_{\mathcal{X}} p_{\theta}(x) dx = 1</script><p>由此约束条件，我们可以得到$A(\theta)$的解析表达式：</p>
+<script type="math/tex; mode=display">
+  A(\theta) = \log (\int h(x) \exp(\theta^T \phi(x))dx )</script></blockquote>
+</li>
 </ul>
-<a id="more"></a>
-<p></p>
-<h3 id="指数分布族">指数分布族</h3>
-<p>首先给出指数分布族的定义：</p>
-<blockquote>
-<p>指数分布族是一类概率分布的总称，这类分布的概率密度函数具有这样的形式：<br>
-$$<br>
-p_\theta(x) = h(x) \exp(\theta^T \phi(x) - A(\theta))<br>
-$$<br>
-式中，$x$是密度函数自变量，$x \in \mathcal{X}$;$\phi(x)$是充分统计量，可以看做是原始变量的一个映射:<br>
-$$<br>
-\phi: \mathcal{X} \rightarrow R^d<br>
-$$<br>
-$\theta$是模型参数向量，与充分统计量维度相同，$h(x)$是一个只与$x$有关的统计量，$A(\theta)$为配分函数，通过该函数来保证$p_\theta(x)$满足概率密度函数的定义：<br>
-$$<br>
-\int_{\mathcal{X}} p_{\theta}(x) dx = 1<br>
-$$<br>
-由此约束条件，我们可以得到$A(\theta)$的解析表达式：<br>
-$$<br>
-A(\theta) = \log (\int h(x) \exp(\theta^T \phi(x))dx )<br>
-$$</p>
-</blockquote>
-<h3 id="指数分布族函数举例">指数分布族函数举例</h3>
-<p>首先给出结论，按照笔者调研，属于指数分布族的分布有：</p>
+<h3 id="指数分布族函数举例"><a href="#指数分布族函数举例" class="headerlink" title="指数分布族函数举例"></a>指数分布族函数举例</h3><p>首先给出结论，按照笔者调研，属于指数分布族的分布有：</p>
 <ul>
 <li>正态分布$N(\mu,\sigma^2)$</li>
 <li>伯努利分布(两点分布)$B(1,\pi)$</li>
 <li>二项分布$B(n,\pi)$</li>
 <li>泊松分布$P(\lambda)$</li>
 <li>伽马分布$G(\mu,v)$</li>
-<li>…</li>
+<li>……. </li>
 </ul>
 <p>下面就将其中几个分布化成指数分布族的标准形式</p>
-<h4 id="伯努利分布">伯努利分布</h4>
-<p>对于伯努利分布，我们有$\mathcal{X} = { 0,1 }$,模型参数为$P(x = 1) = \pi,P(x = -1) = 1 - \pi$,因此我们有:<br>
-$$<br>
-\begin{aligned}<br>
-P(X = x)  = \pi^x (1 - \pi)^{1-x} &amp;= \exp(x \log \pi + (1-x) \log(1-\pi) )  \<br>
-&amp;= \exp(x \log \frac{\pi}{1-\pi} + \log (1-\pi))<br>
-\end{aligned}<br>
-$$<br>
-因此令$\theta = \log \frac{\pi}{1 - \pi}$, 则$P(X = x)$可以写做:<br>
-$$<br>
-P(X = x) = \exp(x\theta - \log(1 + e^\theta))<br>
-$$<br>
-因此对于伯努利分布$h(x) = 1,\phi(x) = x, \theta = log \frac{\pi}{1-\pi}, A(\theta) = log(1 + e^\theta)$</p>
-<h4 id="泊松分布">泊松分布</h4>
-<p>首先给出泊松分布的形式:<br>
-$$<br>
-P_\lambda(X = x) = \frac{\lambda^x}{x!} e^{- \lambda}<br>
-$$<br>
-下面将其转化成指数分布族标准形式:<br>
-$$<br>
-\begin{aligned}<br>
-P_\lambda(X = x) &amp;= \frac{\lambda^x}{x!} e^{- \lambda} \<br>
-&amp;= \frac{1}{x!} e^{x\log \lambda - \lambda}<br>
-\end{aligned}<br>
-$$<br>
-因此，对于泊松分布，$h(x) = \frac{1}{x!}, \theta = \log \lambda,\phi(x) = x,A(\theta) = e^\theta$</p>
-<h4 id="高斯分布">高斯分布</h4>
-<p>高斯分布的概率密度函数形式如下:<br>
-$$<br>
-p_{\mu,\sigma}(x) = \frac{1}{\sqrt{2 \pi} \sigma} \exp(- \frac{(x-\mu)^2}{2\sigma^2})<br>
-$$<br>
-下面将其转化成指数分布族标准形式:<br>
-$$<br>
-\begin{aligned}<br>
-p_{\mu,\sigma}(x) &amp;= \frac{1}{\sqrt{2 \pi} \sigma} \exp(- \frac{(x-\mu)^2}{2\sigma^2})  \<br>
-&amp;= \frac{1}{\sqrt{2 \pi} \sigma} \exp(\frac{-x^2}{2 \sigma^2} + \frac{x \mu}{\sigma^2} - \frac{\mu^2}{2\sigma^2}) \<br>
-&amp;= \frac{1}{\sqrt{2 \pi} } \exp(\frac{-x^2}{2 \sigma^2} + \frac{x \mu}{\sigma^2} - \frac{\mu^2}{2\sigma^2} + \log \sigma)<br>
-\end{aligned}<br>
-$$<br>
-因此，对于高斯分布:<br>
-$$<br>
-\begin{aligned}<br>
-h(x) &amp;= \frac{1}{\sqrt{2 \pi} \sigma}  \<br>
-\phi(x) &amp;= [\frac{x^2}{2}, x]^T \<br>
-\theta &amp;= [-\frac{1}{\sigma^2}, \frac{\mu}{\sigma^2}]^T \<br>
-A(\theta) &amp;= -\frac{1}{2} (log \theta^{(1)} + \theta^{(2)})<br>
-\end{aligned}<br>
-$$</p>
-<h3 id="对数似然函数凹凸性证明">对数似然函数凹凸性证明</h3>
-<p>我们关心的是最终对数似然函数的凹凸性，因为最终的对数似然函数是各个样本的概率密度函数取对数后累加的形式，由保凸运算可知，若单个对数概率密度函数的凹凸性可以确定，那么最终对数似然函数的凹凸性也就确定了。对于指数族分布，单个样本的概率密度函数取对数如下:<br>
-$$<br>
-\begin{aligned}<br>
-\log p_{\theta}(x) &amp;= \log h(x) \exp(\theta^T \phi(x) - A(\theta)) \<br>
-&amp;= \log h(x) + \theta^T \phi(x) + \log(-A(\theta))<br>
-\end{aligned}<br>
-$$<br>
-第一项与$\theta$无关，第二项为$\theta$的线性组合，不影响函数的凹凸性，所以整个函数的凹凸性是由第三项来确定，对于外层函数是对数函数的对数函数$\log f(x)$而言:<br>
-$$<br>
-(\log f(x))^{’’} = \frac{f(x) f^{’’}(x) - f^{’}(x)^2}{f(x)^2}<br>
-$$<br>
-由对数函数性质有$f(x) &gt; 0$,因此，若$f(x)$是凹函数($f^{’’}(x) \leq 0$),则可推出$(\log f(x))^{’’} \leq 0$,即$\log f(x)$为凹函数，若$f(x)$为凸函数则不能有直接的结论，因此我们的重点放在讨论$A(\theta)$的凹凸性上。<br>
-下面证明$A(\theta)$为凸函数,从定义出发证明，记$\theta_{\lambda} = \lambda \theta_1 + (1 - \lambda) \theta_2$,其中$\theta_1,\theta_2 \in dom f, \lambda \in [0,1]$,由Hölder不等式，可知:<br>
-$$<br>
-\begin{aligned}<br>
-A(\theta_\lambda) &amp;= \log (\int h(x) \exp(\theta_{\lambda}^T \phi(x))dx ) \<br>
-&amp;= \log (\int \exp(\theta_{\lambda}^T \phi(x))d\mu(x)\<br>
-&amp;= \log (\int \exp[ (\lambda \theta_1 \phi(x) + (1-\lambda)\theta_2)\phi(x)]d\mu(x) ) \<br>
-&amp;= \log (\int \exp(\theta_1 \phi(x)^{\lambda}) \exp (\theta_2 \phi(x))^{1-\lambda} d \mu(x)) \<br>
-&amp;\leq \log (\int \exp(\theta_1 \phi(x))^{\frac{\lambda}{\lambda}} d\mu(x) )^\lambda (\int \exp(\theta_2 \phi(x))^{\frac{1-\lambda}{1- \lambda}}d\mu(x))^{1-\lambda}  (Hölder不等式) \<br>
-&amp;= \lambda \log (\int \exp(\theta_1 \phi(x)) d\mu(x) ) + (1-\lambda)<br>
-\log (\int \exp(\theta_2 \phi(x)) d\mu(x) ) \<br>
-&amp;= \lambda A(\theta_1) + (1-\lambda) A(\theta_2)<br>
-\end{aligned}<br>
-$$<br>
-从凸函数定义可知,$A(\theta)$为凸函数，至此我们便得到了对数似然函数的凹凸性:<br>
-$$<br>
-\begin{aligned}<br>
-&amp;A(\theta) 凸 \rightarrow -A(\theta) 凹 \rightarrow \log(-A(\theta)) 凹 \<br>
-&amp; log(p_\theta(x)) 凹  \rightarrow 对数似然函数 凹<br>
-\end{aligned}<br>
-$$</p>
-<h3 id="总结">总结</h3>
-<p>从前面列出的指数分布族所包含的分布来看，我们日常所碰到的绝大多数概率分布都属于指数族分布，是可以直接通过求导等于0这种方法来得到参数估计，而对于不属于指数分布族的分布，则是有必要对对数似然函数进行分析，而不能直接通过求导来解最优参数估计值。</p>
-<h4 id="参考">参考</h4>
-<p>本文内容主要参考以下链接：<br>
-[1] <a target="_blank" rel="noopener" href="https://www.zhihu.com/question/263423642/answer/269353169">为什么极大似然估计求导为 0 就是要求的值呢？</a><br>
-[2] <a target="_blank" rel="noopener" href="https://web.stanford.edu/class/stats311/Lectures/lec-07.pdf">指数分布族函数</a></p>
+<h4 id="伯努利分布"><a href="#伯努利分布" class="headerlink" title="伯努利分布"></a>伯努利分布</h4><p>对于伯努利分布，我们有$\mathcal{X} = { 0,1 }$,模型参数为$P(x = 1) = \pi,P(x = -1) = 1 - \pi$,因此我们有:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        P(X = x)  = \pi^x (1 - \pi)^{1-x} &= \exp(x \log \pi + (1-x) \log(1-\pi) )  \\
+        &= \exp(x \log \frac{\pi}{1-\pi} + \log (1-\pi)) 
+    \end{aligned}</script><p>因此令$\theta = \log \frac{\pi}{1 - \pi}$, 则$P(X = x)$可以写做:</p>
+<script type="math/tex; mode=display">
+    P(X = x) = \exp(x\theta - \log(1 + e^\theta))</script><p>因此对于伯努利分布$h(x) = 1,\phi(x) = x, \theta = log \frac{\pi}{1-\pi}, A(\theta) = log(1 + e^\theta)$ </p>
+<h4 id="泊松分布"><a href="#泊松分布" class="headerlink" title="泊松分布"></a>泊松分布</h4><p>首先给出泊松分布的形式:</p>
+<script type="math/tex; mode=display">
+    P_\lambda(X = x) = \frac{\lambda^x}{x!} e^{- \lambda}</script><p>下面将其转化成指数分布族标准形式:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        P_\lambda(X = x) &= \frac{\lambda^x}{x!} e^{- \lambda} \\
+        &= \frac{1}{x!} e^{x\log \lambda - \lambda}
+    \end{aligned}</script><p>因此，对于泊松分布，$h(x) = \frac{1}{x!}, \theta = \log \lambda,\phi(x) = x,A(\theta) = e^\theta$   </p>
+<h4 id="高斯分布"><a href="#高斯分布" class="headerlink" title="高斯分布"></a>高斯分布</h4><p>高斯分布的概率密度函数形式如下:</p>
+<script type="math/tex; mode=display">
+    p_{\mu,\sigma}(x) = \frac{1}{\sqrt{2 \pi} \sigma} \exp(- \frac{(x-\mu)^2}{2\sigma^2})</script><p>下面将其转化成指数分布族标准形式: </p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+         p_{\mu,\sigma}(x) &= \frac{1}{\sqrt{2 \pi} \sigma} \exp(- \frac{(x-\mu)^2}{2\sigma^2})  \\
+         &= \frac{1}{\sqrt{2 \pi} \sigma} \exp(\frac{-x^2}{2 \sigma^2} + \frac{x \mu}{\sigma^2} - \frac{\mu^2}{2\sigma^2}) \\
+         &= \frac{1}{\sqrt{2 \pi} } \exp(\frac{-x^2}{2 \sigma^2} + \frac{x \mu}{\sigma^2} - \frac{\mu^2}{2\sigma^2} + \log \sigma)
+    \end{aligned}</script><p>因此，对于高斯分布:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        h(x) &= \frac{1}{\sqrt{2 \pi} \sigma}  \\
+        \phi(x) &= [\frac{x^2}{2}, x]^T \\
+        \theta &= [-\frac{1}{\sigma^2}, \frac{\mu}{\sigma^2}]^T \\
+        A(\theta) &= -\frac{1}{2} (log \theta^{(1)} + \theta^{(2)})
+    \end{aligned}</script><h3 id="对数似然函数凹凸性证明"><a href="#对数似然函数凹凸性证明" class="headerlink" title="对数似然函数凹凸性证明"></a>对数似然函数凹凸性证明</h3><p>我们关心的是最终对数似然函数的凹凸性，因为最终的对数似然函数是各个样本的概率密度函数取对数后累加的形式，由保凸运算可知，若单个对数概率密度函数的凹凸性可以确定，那么最终对数似然函数的凹凸性也就确定了。对于指数族分布，单个样本的概率密度函数取对数如下:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        \log p_{\theta}(x) &= \log h(x) \exp(\theta^T \phi(x) - A(\theta)) \\
+        &= \log h(x) + \theta^T \phi(x) + \log(-A(\theta))
+    \end{aligned}</script><p>第一项与$\theta$无关，第二项为$\theta$的线性组合，不影响函数的凹凸性，所以整个函数的凹凸性是由第三项来确定，对于外层函数是对数函数的对数函数$\log f(x)$而言:</p>
+<script type="math/tex; mode=display">
+    (\log f(x))^{''} = \frac{f(x) f^{''}(x) - f^{'}(x)^2}{f(x)^2}</script><p>由对数函数性质有$f(x) &gt; 0$,因此，若$f(x)$是凹函数($f^{‘’}(x) \leq 0$),则可推出$(\log f(x))^{‘’} \leq 0$,即$\log f(x)$为凹函数，若$f(x)$为凸函数则不能有直接的结论，因此我们的重点放在讨论$A(\theta)$的凹凸性上。<br>下面证明$A(\theta)$为凸函数,从定义出发证明，记$\theta_{\lambda} = \lambda \theta_1 + (1 - \lambda) \theta_2$,其中$\theta_1,\theta_2 \in dom f, \lambda \in [0,1]$,由Hölder不等式，可知:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        A(\theta_\lambda) &= \log (\int h(x) \exp(\theta_{\lambda}^T \phi(x))dx ) \\ 
+        &= \log (\int \exp(\theta_{\lambda}^T \phi(x))d\mu(x)\\
+        &= \log (\int \exp[ (\lambda \theta_1 \phi(x) + (1-\lambda)\theta_2)\phi(x)]d\mu(x) ) \\
+        &= \log (\int \exp(\theta_1 \phi(x)^{\lambda}) \exp (\theta_2 \phi(x))^{1-\lambda} d \mu(x)) \\
+        &\leq \log (\int \exp(\theta_1 \phi(x))^{\frac{\lambda}{\lambda}} d\mu(x) )^\lambda (\int \exp(\theta_2 \phi(x))^{\frac{1-\lambda}{1- \lambda}}d\mu(x))^{1-\lambda}  (Hölder不等式) \\
+        &= \lambda \log (\int \exp(\theta_1 \phi(x)) d\mu(x) ) + (1-\lambda)
+        \log (\int \exp(\theta_2 \phi(x)) d\mu(x) ) \\
+        &= \lambda A(\theta_1) + (1-\lambda) A(\theta_2)
+    \end{aligned}</script><p>从凸函数定义可知,$A(\theta)$为凸函数，至此我们便得到了对数似然函数的凹凸性:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        &A(\theta) 凸 \rightarrow -A(\theta) 凹 \rightarrow \log(-A(\theta)) 凹 \\
+        & log(p_\theta(x)) 凹  \rightarrow 对数似然函数 凹
+    \end{aligned}</script><h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>从前面列出的指数分布族所包含的分布来看，我们日常所碰到的绝大多数概率分布都属于指数族分布，是可以直接通过求导等于0这种方法来得到参数估计，而对于不属于指数分布族的分布，则是有必要对对数似然函数进行分析，而不能直接通过求导来解最优参数估计值。</p>
+<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p>本文内容主要参考以下链接：<br>[1] <a target="_blank" rel="noopener" href="https://www.zhihu.com/question/263423642/answer/269353169">为什么极大似然估计求导为 0 就是要求的值呢？</a><br>[2] <a target="_blank" rel="noopener" href="https://web.stanford.edu/class/stats311/Lectures/lec-07.pdf">指数分布族函数</a></p>
 
             </div>
             <hr/>
@@ -1425,7 +1382,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">73.6k</span>&nbsp;字
+                class="white-color">73k</span>&nbsp;字
             
             
             
@@ -1559,20 +1516,5 @@ $(function () {
     } 
 </script> 
 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>

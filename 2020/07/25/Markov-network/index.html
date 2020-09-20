@@ -507,8 +507,7 @@
 <li>独立性假设</li>
 <li>势函数</li>
 </ul>
-<h3 id="马尔可夫网络">马尔可夫网络</h3>
-<p>首先给出维基百科上关于马尔可夫网络的定义：</p>
+<h3 id="马尔可夫网络"><a href="#马尔可夫网络" class="headerlink" title="马尔可夫网络"></a>马尔可夫网络</h3><p>首先给出维基百科上关于马尔可夫网络的定义：</p>
 <blockquote>
 <p>马尔可夫网络是一组有马尔可夫性质随机变量$X$的全联合概率分布模型。马尔可夫网络类似贝叶斯网络用于表示依赖关系。但是，一方面它可以表示贝叶斯网络无法表示的一些关系，如循环依赖；另一方面，它不能表示贝叶斯网络能够表示的某些关系，如推导关系。</p>
 </blockquote>
@@ -517,10 +516,9 @@
 <li>无向图$H = (V,E)$</li>
 <li>每个顶点$v \in V$表示一个在集合$X$的随机变量，每条边${u,v}\in E$ 表示随机变量$u$和$v$之间的依赖关系</li>
 </ul>
-<h3 id="独立性假设">独立性假设</h3>
-<p>马尔可夫网络与贝叶斯网络类似，以图的形式对独立性假设进行编码，首先给出图中激活路径的概念：</p>
+<h3 id="独立性假设"><a href="#独立性假设" class="headerlink" title="独立性假设"></a>独立性假设</h3><p>马尔可夫网络与贝叶斯网络类似，以图的形式对独立性假设进行编码，首先给出图中激活路径的概念：</p>
 <ul>
-<li>激活路径：一个路径$X_1,X_2,\dots,X_n$是激活的 $\Leftrightarrow$ 没有路径上的变量被观测到</li>
+<li>激活路径：一个路径$X_1,X_2,\dots,X_n$是激活的 $\Leftrightarrow$ 没有路径上的变量被观测到  </li>
 </ul>
 <p>有了激活路径概念之后，便可以讨论图中的条件独立关系：</p>
 <ul>
@@ -528,8 +526,7 @@
 <li>表示为$sep_H(X;Y|Z)$,栗子如下图所示。</li>
 </ul>
 <p><img src="https://raw.githubusercontent.com/xuejy19/Images/master/mav1.png" alt="栗子"></p>
-<h3 id="势函数">势函数</h3>
-<p>在贝叶斯网络中，节点之间的关系通过条件概率进行表征，而在马尔可夫网络中，节点之间的关系通过势函数来表征，势函数定义如下：</p>
+<h3 id="势函数"><a href="#势函数" class="headerlink" title="势函数"></a>势函数</h3><p>在贝叶斯网络中，节点之间的关系通过条件概率进行表征，而在马尔可夫网络中，节点之间的关系通过势函数来表征，势函数定义如下：</p>
 <blockquote>
 <p>一个函数集合$f_k$(也称为因子或者团因子有时也称为特征)，每一个$f_k$的定义域是图$G$的团或子团$k$,每一个$f_k$是从可能的特定联合的指派(到元素$k$)到非负实数的映射。</p>
 </blockquote>
@@ -540,25 +537,21 @@
 <li>与条件概率不同，其求和不必为1</li>
 </ul>
 </blockquote>
-<h3 id="吉布斯分布">吉布斯分布</h3>
-<p>我们引入该图模型的目的在于：<strong>通过马尔可夫网络来对变量之间的独立性关系进行编码，然后获得对于联合概率分布更加紧凑的表示形式</strong>，而吉布斯分布便是将联合概率与势函数相连接的桥梁。<br>
-一个概率分布$P$可以分解为图$H$：</p>
+<h3 id="吉布斯分布"><a href="#吉布斯分布" class="headerlink" title="吉布斯分布"></a>吉布斯分布</h3><p>我们引入该图模型的目的在于：<strong>通过马尔可夫网络来对变量之间的独立性关系进行编码，然后获得对于联合概率分布更加紧凑的表示形式</strong>，而吉布斯分布便是将联合概率与势函数相连接的桥梁。<br>一个概率分布$P$可以分解为图$H$：</p>
 <blockquote>
 <ul>
 <li>$H$可以分为若干子团$D_i$</li>
 <li>在每个子团上相应定义了势函数$\pi_i$</li>
 </ul>
 </blockquote>
-<p>由此便可以写出吉布斯分布形式：<br>
-$$<br>
-\begin{aligned}<br>
-P(X_1,X_2,\dots,X_n) = \frac{1}{Z} f(X_1,X_2,\dots,X_n)<br>
-\end{aligned}<br>
-$$</p>
-<p>其中:</p>
+<p>由此便可以写出吉布斯分布形式：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+     P(X_1,X_2,\dots,X_n) = \frac{1}{Z} f(X_1,X_2,\dots,X_n) 
+\end{aligned}</script><p>其中:</p>
 <blockquote>
 <ul>
-<li>$f(X_1,X_2,\dots,X_n) = \prod_{i=1}^m \pi_i(D_i)$</li>
+<li>$f(X<em>1,X_2,\dots,X_n) = \prod</em>{i=1}^m \pi_i(D_i)$</li>
 <li>$Z = \sum_{X_1,\dots,X_n} f(X_1,\dots,X_n)$</li>
 </ul>
 </blockquote>
@@ -568,25 +561,18 @@ $$</p>
 <li>联合概率分布：$2^7 - 1 = 127$</li>
 <li>边上势函数：$4*C_7^2 = 84$</li>
 </ul>
-<p>显然对于全连接网络，若给予每个边一个势函数并不足以表征联合概率分布，在前面已经说明一个势函数定义域中的变量应当是两两直接相关，因此势函数的定义域应当是一个团(clique)。<br>
-$\Rightarrow$ <strong>马尔可夫网络中的局部结构是团</strong></p>
-<h3 id="马尔可夫网络分解">马尔可夫网络分解</h3>
-<p>首先给出$I-Map$的概念:$H$为一个马尔可夫网络，$P$为联合概率分布，若有$I(H) \subseteq I§$，则称马尔可夫网络$H$为分布$P$的一个$I-Map$。</p>
+<p>显然对于全连接网络，若给予每个边一个势函数并不足以表征联合概率分布，在前面已经说明一个势函数定义域中的变量应当是两两直接相关，因此势函数的定义域应当是一个团(clique)。<br>$\Rightarrow$ <strong>马尔可夫网络中的局部结构是团</strong></p>
+<h3 id="马尔可夫网络分解"><a href="#马尔可夫网络分解" class="headerlink" title="马尔可夫网络分解"></a>马尔可夫网络分解</h3><p>首先给出$I-Map$的概念:$H$为一个马尔可夫网络，$P$为联合概率分布，若有$I(H) \subseteq I(P)$，则称马尔可夫网络$H$为分布$P$的一个$I-Map$。 </p>
 <p>记$D_i$为马尔可夫网络$H$中的子团，Hammersley-Clifford定理如下：</p>
 <blockquote>
 <p>对于一个无向图$H$和分布$P$,$P$可以被分解成$P(X) = \frac{1}{Z}\prod \pi_i (D_i) \Leftrightarrow$ $H$是$P$的$I-Map$</p>
 </blockquote>
 <p>在实际进行分解时一般都是在最大团上定义势函数</p>
-<h3 id="对数表示">对数表示</h3>
-<p>在马尔可夫网络中，联合分布除了可以利用吉布斯分布来进行表示，也可以采取对数表示的方法，将原始的势函数$\pi_i(D_i)$ 表示成$exp(-\epsilon(D_i))$的形式，其中$\epsilon(D_i) = -log(\pi_i(D_i))$,据此，联合概率分布可以表示成：<br>
-$$<br>
-P(X_1,X_2,\dots,X_n) = \frac{1}{Z} exp(-\sum_{i=1}^m \epsilon(D_i))<br>
-$$<br>
-这种表示方法将连乘变成了连家，计算更加方便，同时有定理证明，若无向图$H$是分布$P$的一个独立映射，那么$\epsilon(D_i) = \omega_i \phi_i(D_i)$,此时$\phi$被称作特征函数，与势函数关系为：<br>
-$$<br>
-\pi_i(D_i) = exp(\omega_i \phi_i(D_i))<br>
-$$</p>
-
+<h3 id="对数表示"><a href="#对数表示" class="headerlink" title="对数表示"></a>对数表示</h3><p>在马尔可夫网络中，联合分布除了可以利用吉布斯分布来进行表示，也可以采取对数表示的方法，将原始的势函数$\pi_i(D_i)$ 表示成$exp(-\epsilon(D_i))$的形式，其中$\epsilon(D_i) = -log(\pi_i(D_i))$,据此，联合概率分布可以表示成：</p>
+<script type="math/tex; mode=display">
+    P(X_1,X_2,\dots,X_n) = \frac{1}{Z} exp(-\sum_{i=1}^m \epsilon(D_i))</script><p>这种表示方法将连乘变成了连家，计算更加方便，同时有定理证明，若无向图$H$是分布$P$的一个独立映射，那么$\epsilon(D_i) = \omega_i \phi_i(D_i)$,此时$\phi$被称作特征函数，与势函数关系为：</p>
+<script type="math/tex; mode=display">
+    \pi_i(D_i) = exp(\omega_i \phi_i(D_i))</script>
             </div>
             <hr/>
 
@@ -1363,7 +1349,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">73.6k</span>&nbsp;字
+                class="white-color">73k</span>&nbsp;字
             
             
             
@@ -1497,20 +1483,5 @@ $(function () {
     } 
 </script> 
 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>
