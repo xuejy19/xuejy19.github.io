@@ -505,146 +505,250 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>这部分将介绍支持向量机(SVM)算法，该部分将按照以下几部分进行组织： - 算法历史 - 线性可分支持向量机与硬间隔最大化 - 线性支持向量机与软间隔最大化 - 非线性支持向量机与核函数 - SVDD <a id="more"></a></p>
+                <p>这部分将介绍支持向量机(SVM)算法，该部分将按照以下几部分进行组织：</p>
+<ul>
+<li>算法历史</li>
+<li>线性可分支持向量机与硬间隔最大化</li>
+<li>线性支持向量机与软间隔最大化</li>
+<li>非线性支持向量机与核函数</li>
+<li>SVDD</li>
+</ul>
+<a id="more"></a>
 <h3 id="算法历史">算法历史</h3>
-<p>支持向量机算法是在机器学习领域非常著名的算法，在神经网络算法得到普及之前，支持向量机算法可以说是统治了机器学习领域的半壁江山，该算法由Vapnik在贝尔实验室开发，根据Vapnik和Chervonekis提出的统计学习框架或VC理论，它提出了一种最可靠的预测方法（ 1974年）和瓦普尼克（Vapnik）（1982年，1995年）。给定一组训练示例，每个训练示例都标记为属于两个类别中的一个或另一个，则SVM训练算法会构建一个模型，该模型将新示例分配给一个类别或另一个类别，使其成为非概率 二进制 线性分类器（尽管方法例如Platt缩放存在以在概率分类设置中使用SVM）。SVM模型是将示例表示为空间中的点，并进行了映射，以使各个类别的示例被尽可能宽的明显间隙分开。然后，将新示例映射到相同的空间，并根据它们落入的间隙的侧面来预测属于一个类别。 除执行线性分类外，SVM还可以使用所谓的内核技巧有效地执行非线性分类，将其输入隐式映射到高维特征空间。</p>
+<p>支持向量机算法是在机器学习领域非常著名的算法，在神经网络算法得到普及之前，支持向量机算法可以说是统治了机器学习领域的半壁江山，该算法由Vapnik在贝尔实验室开发，根据Vapnik和Chervonekis提出的统计学习框架或VC理论，它提出了一种最可靠的预测方法（ 1974年）和瓦普尼克（Vapnik）（1982年，1995年）。给定一组训练示例，每个训练示例都标记为属于两个类别中的一个或另一个，则SVM训练算法会构建一个模型，该模型将新示例分配给一个类别或另一个类别，使其成为非概率 二进制 线性分类器（尽管方法例如Platt缩放存在以在概率分类设置中使用SVM）。SVM模型是将示例表示为空间中的点，并进行了映射，以使各个类别的示例被尽可能宽的明显间隙分开。然后，将新示例映射到相同的空间，并根据它们落入的间隙的侧面来预测属于一个类别。<br>
+除执行线性分类外，SVM还可以使用所谓的内核技巧有效地执行非线性分类，将其输入隐式映射到高维特征空间。</p>
 <h3 id="线性可分支持向量机与硬间隔最大化">线性可分支持向量机与硬间隔最大化</h3>
-<p>对于线性可分数据，上一部分介绍的感知机算法便可以处理，但需要注意的是，感知机算法学习得到的超平面可能有无穷多个，那么这些超平面中哪个是最优的呢？支持向量机算法便回答了这一问题，该算法认为使两类样本点间隔最大的超平面是最优超平面。首先给出线性可分支持向量机的定义： &gt; <strong>线性可分支持向量机</strong>:给定线性可分训练数据集，通过间隔最大化或者等价地求解相应的凸二次规划问题学习得到的分离超平面为： <span class="math display">\[
-    \omega^* \cdot x + b^* = 0
-\]</span> 以及相应的分类决策函数: <span class="math display">\[ f(x) = sign(\omega^* \cdot x + b^*)\]</span></p>
-<p>下面就结合下图来对支持向量机的算法思想进行阐述,图中红点与蓝点分别代表两个类别，我们现在期望找到一个超平面，使得两个类别的样本点都能够尽可能离该超平面距离远，也就是希望中间的margin尽可能大。 <img src="https://raw.githubusercontent.com/xuejy19/Images/master/SVM.png" alt="SVM" /> 这便是支持向量机的思想，下一步需要做的便是将这种想法翻译成一个数学问题，在这里首先引入两个间隔的概念： &gt; - 几何间隔：所谓几何间隔就是样本点<span class="math inline">\((x_i,y_i)\)</span>到超平面的实际距离，其计算公式为(此时样本点已经被超平面正确分类)： <span class="math display">\[ d = y_i \frac{\omega x_i + b}{||\omega||}\]</span> &gt; - 函数间隔：不考虑几何间隔中<span class="math inline">\(||\omega||\)</span>便得到了函数间隔： <span class="math display">\[ d = y_i(\omega x_i +b)\]</span></p>
-<p>需要注意的是，函数间隔可以表示分类预测的正确性及确信度，在感知机学习中，我们便是使用函数间隔，这是由于数据线性可分，最终目标函数都会收敛到0，使用几何间隔与函数间隔最终效果并无不同(两种间隔符号一致)。但在支持向量机算法中，我们希望间隔最大，这时显然函数间隔是不够的，因为只要成比例的增大<span class="math inline">\(\omega,b\)</span>，超平面并没有改变，但是函数间隔却便为两倍，因此在该问题中，我们应当使用几何间隔,至此支持向量机的思想可以写成如下优化问题的形式： <span class="math display">\[
-    \begin{aligned}
-        &amp;max_{\omega,b} \quad \gamma  \\
-        &amp;s.t. \quad y_i \frac{\omega x_i +b}{||\omega||} \geq \gamma,\quad i = 1,2,\dots,N
-    \end{aligned}
-\]</span> 上面是优化问题的原始形式，下面尝试对该优化问题进行等价转换以便于求解，首先根据几何间隔与函数间隔的关系，将优化问题转化为： <span class="math display">\[
-    \begin{aligned}
-         &amp;max_{\omega,b} \quad \frac{\hat{\gamma}}{||\omega||}  \\
-        &amp;s.t. \quad y_i (\omega x_i +b) \geq \hat{\gamma},\quad i = 1,2,\dots,N
-    \end{aligned}
-\]</span> 此时可以注意到函数间隔<span class="math inline">\(\hat{\gamma}\)</span>并不影响该优化问题求解，因此考虑将<span class="math inline">\(\hat{\gamma}\)</span>置为1，注意到最大化<span class="math inline">\(\frac{1}{||\omega||}\)</span>等价于最小化<span class="math inline">\(\frac{1}{2}||\omega||^2\)</span>,因此优化问题最终可以表述为: <span class="math display">\[
-    \begin{aligned}
-        &amp;min_{\omega,b} \quad \frac{1}{2} ||\omega||^2 \\\\
-        &amp;s.t. \quad y_i (\omega x_i +b) \geq 1,\quad i = 1,2,\dots, N
-    \end{aligned}
-\]</span> 这是一个典型的凸二次规划问题，运用凸优化知识可进行求解。</p>
-<p>下面给出一个定理来说明最大间隔分离超平面唯一的定理： &gt; 定理：若训练数据集<span class="math inline">\(T\)</span>线性可分，则可将训练数据集中的样本点完全分开的最大间隔分离超平面存在且唯一</p>
+<p>对于线性可分数据，上一部分介绍的感知机算法便可以处理，但需要注意的是，感知机算法学习得到的超平面可能有无穷多个，那么这些超平面中哪个是最优的呢？支持向量机算法便回答了这一问题，该算法认为使两类样本点间隔最大的超平面是最优超平面。首先给出线性可分支持向量机的定义：</p>
+<blockquote>
+<p><strong>线性可分支持向量机</strong>:给定线性可分训练数据集，通过间隔最大化或者等价地求解相应的凸二次规划问题学习得到的分离超平面为：<br>
+$$<br>
+\omega^* \cdot x + b^* = 0<br>
+$$<br>
+以及相应的分类决策函数:<br>
+$$ f(x) = sign(\omega^* \cdot x + b^*)$$</p>
+</blockquote>
+<p>下面就结合下图来对支持向量机的算法思想进行阐述,图中红点与蓝点分别代表两个类别，我们现在期望找到一个超平面，使得两个类别的样本点都能够尽可能离该超平面距离远，也就是希望中间的margin尽可能大。<br>
+<img src="https://raw.githubusercontent.com/xuejy19/Images/master/SVM.png" alt="SVM"><br>
+这便是支持向量机的思想，下一步需要做的便是将这种想法翻译成一个数学问题，在这里首先引入两个间隔的概念：</p>
+<blockquote>
+<ul>
+<li>几何间隔：所谓几何间隔就是样本点$(x_i,y_i)$到超平面的实际距离，其计算公式为(此时样本点已经被超平面正确分类)：<br>
+$$ d = y_i \frac{\omega x_i + b}{||\omega||}$$</li>
+<li>函数间隔：不考虑几何间隔中$||\omega||$便得到了函数间隔：<br>
+$$ d = y_i(\omega x_i +b)$$</li>
+</ul>
+</blockquote>
+<p>需要注意的是，函数间隔可以表示分类预测的正确性及确信度，在感知机学习中，我们便是使用函数间隔，这是由于数据线性可分，最终目标函数都会收敛到0，使用几何间隔与函数间隔最终效果并无不同(两种间隔符号一致)。但在支持向量机算法中，我们希望间隔最大，这时显然函数间隔是不够的，因为只要成比例的增大$\omega,b$，超平面并没有改变，但是函数间隔却便为两倍，因此在该问题中，我们应当使用几何间隔,至此支持向量机的思想可以写成如下优化问题的形式：<br>
+$$<br>
+\begin{aligned}<br>
+&amp;max_{\omega,b} \quad \gamma  \<br>
+&amp;s.t. \quad y_i \frac{\omega x_i +b}{||\omega||} \geq \gamma,\quad i = 1,2,\dots,N<br>
+\end{aligned}<br>
+$$<br>
+上面是优化问题的原始形式，下面尝试对该优化问题进行等价转换以便于求解，首先根据几何间隔与函数间隔的关系，将优化问题转化为：<br>
+$$<br>
+\begin{aligned}<br>
+&amp;max_{\omega,b} \quad \frac{\hat{\gamma}}{||\omega||}  \<br>
+&amp;s.t. \quad y_i (\omega x_i +b) \geq \hat{\gamma},\quad i = 1,2,\dots,N<br>
+\end{aligned}<br>
+$$<br>
+此时可以注意到函数间隔$\hat{\gamma}$并不影响该优化问题求解，因此考虑将$\hat{\gamma}$置为1，注意到最大化$\frac{1}{||\omega||}$等价于最小化$\frac{1}{2}||\omega||^2$,因此优化问题最终可以表述为:<br>
+$$<br>
+\begin{aligned}<br>
+&amp;min_{\omega,b} \quad \frac{1}{2} ||\omega||^2 \\<br>
+&amp;s.t. \quad y_i (\omega x_i +b) \geq 1,\quad i = 1,2,\dots, N<br>
+\end{aligned}<br>
+$$<br>
+这是一个典型的凸二次规划问题，运用凸优化知识可进行求解。</p>
+<p>下面给出一个定理来说明最大间隔分离超平面唯一的定理：</p>
+<blockquote>
+<p>定理：若训练数据集$T$线性可分，则可将训练数据集中的样本点完全分开的最大间隔分离超平面存在且唯一</p>
+</blockquote>
 <h4 id="支持向量与间隔边界">支持向量与间隔边界</h4>
-<p>首先给出支持向量的定义: &gt; 在线性可分情况下，训练数据集中样本点中与分离超平面距离最近的样本点的实例称为支持向量。</p>
-<p>反映在优化问题中，支持向量满足约束条件的等号,支持向量在超平面: <span class="math display">\[
-    \begin{aligned}
-         H_1&amp;: \omega \cdot x +b =1  \\
-         H_2&amp;: \omega \cdot x +b = -1
-    \end{aligned}
-\]</span> 两个支撑超平面之间的距离称为间隔，该间隔距离为： <span class="math display">\[
-    d = \frac{2}{||\omega||}
-\]</span> 在决定分离超平面时只有支持向量起作用，而其他实例点并不起作用。</p>
+<p>首先给出支持向量的定义:</p>
+<blockquote>
+<p>在线性可分情况下，训练数据集中样本点中与分离超平面距离最近的样本点的实例称为支持向量。</p>
+</blockquote>
+<p>反映在优化问题中，支持向量满足约束条件的等号,支持向量在超平面:<br>
+$$<br>
+\begin{aligned}<br>
+H_1&amp;: \omega \cdot x +b =1  \<br>
+H_2&amp;: \omega \cdot x +b = -1<br>
+\end{aligned}<br>
+$$<br>
+两个支撑超平面之间的距离称为间隔，该间隔距离为：<br>
+$$<br>
+d = \frac{2}{||\omega||}<br>
+$$<br>
+在决定分离超平面时只有支持向量起作用，而其他实例点并不起作用。</p>
 <h4 id="学习的对偶算法">学习的对偶算法</h4>
-<p>在进行求解时，我们往往考虑不直接求解原问题，而是求解原问题的对偶问题, 又因为原问题是一个凸优化问题，同时满足Slater约束品性，因此考虑求解其对偶问题。首先写出Lagrange函数： <span class="math display">\[
-    L(\omega,b,\alpha) = \frac{1}{2}||\omega^2|| - \sum_{i=1}^N \alpha_i y_i (\omega \cdot x_i +b) + \sum_{i=1}^N \alpha_i
-\]</span> 接下来求解对偶函数，对偶函数<span class="math inline">\(g(\alpha)\)</span>表示为： <span class="math display">\[
-    g(\alpha) = \min_{\omega,b} L(\omega,b,\alpha)
-\]</span> 因为<span class="math inline">\(L(\omega,b,\alpha)\)</span>是凸函数，因此只需要对<span class="math inline">\(\omega,b\)</span>求偏导，令偏导等于0即可： <span class="math display">\[
-    \begin{aligned}
-        \frac{\partial L(\omega,b,\alpha)}{\partial \omega} &amp;= \omega - \sum_{i=1}^N \alpha_i y_i x_i = 0 \rightarrow \omega =  \sum_{i=1}^N \alpha_i y_i x_i  \\\\
-        \frac{\partial L(\omega,b,\alpha)}{\partial b} &amp;= -\sum_{i=1}^N \alpha_i y_i = 0 \rightarrow \sum_{i=1}^N \alpha_i y_i = 0
-    \end{aligned}
-\]</span> 回代拉格朗日函数，可得对偶函数： <span class="math display">\[
-    \begin{aligned}
-          g(\alpha) &amp;= \frac{1}{2} \sum_{i=1}^N \sum_{j=1}^N \alpha_i \alpha_j y_i y_i x_i^T x_j - \sum_{i=1}^N \sum_{j=1}^N \alpha_i \alpha_j y_i y_i x_i^T x_j + \sum_{i=1}^N \alpha_i  \\\\
-          &amp;= -\frac{1}{2} \sum_{i=1}^N \sum_{j=1}^N \alpha_i \alpha_j y_i y_i x_i^T x_j + \sum_{i=1}^N \alpha_i
-    \end{aligned}
-\]</span> 所以，对偶优化问题可以写做： <span class="math display">\[
-    \begin{aligned}
-        &amp;\max_{\alpha} \quad -\frac{1}{2} \sum_{i=1}^N \sum_{j=1}^N \alpha_i \alpha_j y_i y_i x_i^T x_j + \sum_{i=1}^N \alpha_i \\\\
-        &amp;s.t. \quad \sum_{i=1}^N \alpha_i y_i =0;\alpha_i \geq 0,i=1,\dots,N
-    \end{aligned}
-\]</span> 对于该问题的求解可以通过SMO(序列最小优化)算法进行求解，因为强对偶性成立,KKT条件满足： <span class="math display">\[
-    \begin{aligned}
-        &amp;\nabla_{\omega} L(\omega^*,b^*,\alpha^*) = \omega^* - \sum_{i=1}^N \alpha_i^* y_i x_i = 0 \\
-        &amp;\nabla_{b} L(\omega^*,b^*,\alpha^*) = -\sum_{i=1}^N \alpha_i^* y_i = 0 \\
-        &amp;\alpha_i^* (y_i(\omega^*x_i+b^*)-1) = 0 \\
-       &amp;y_i(\omega^* x_i +b^*) - 1 \geq 0 \\
-        &amp;\alpha_i^* \geq 0 
-    \end{aligned}
-\]</span> 由此便可建立对偶问题最优解<span class="math inline">\(\alpha^*\)</span>与原问题最优解<span class="math inline">\(\omega^*,b^*\)</span>之间的关系，首先至少有一个<span class="math inline">\(\alpha_j^*&gt;0\)</span>,这是因为若<span class="math inline">\(\alpha^*\)</span>均为0，则<span class="math inline">\(\omega^*\)</span>为0,这不是原始最优化问题的解，假设<span class="math inline">\(\alpha_j^*&gt;0\)</span>,则由互补松弛条件，此时有<span class="math inline">\(y_j(\omega^* x_j +b^*) = 1\)</span>,而<span class="math inline">\(\omega^*\)</span>表达式是知道的，由此可得<span class="math inline">\(\omega^*,b^*\)</span>表达式为： <span class="math display">\[
-    \begin{aligned}
-        \omega^* &amp;= \sum_{i=1}^N \alpha_i^* y_i x_i \\
-        b^* &amp;=  y_j - \sum_{i=1}^N \alpha_i^* y_i(x_i\cdot x_j)
-    \end{aligned}
-\]</span> 至此，我们便通过求解对偶问题得到了原始问题的最优解，得到了超平面方程以及判决方程： <span class="math display">\[
-\begin{aligned}
-    &amp;\omega^* \cdot x + b^* = 0 \\
-    &amp;f(x) = sign(\omega^* \cdot x + b^*)
-\end{aligned}
-\]</span> 通过引入对偶问题，我们便可以从数学的角度导出支持向量: &gt; 训练数据集中对应于<span class="math inline">\(\alpha_i^* &gt;0\)</span>的样本点称为支持向量</p>
+<p>在进行求解时，我们往往考虑不直接求解原问题，而是求解原问题的对偶问题, 又因为原问题是一个凸优化问题，同时满足Slater约束品性，因此考虑求解其对偶问题。首先写出Lagrange函数：<br>
+$$<br>
+L(\omega,b,\alpha) = \frac{1}{2}||\omega^2|| - \sum_{i=1}^N \alpha_i y_i (\omega \cdot x_i +b) + \sum_{i=1}^N \alpha_i<br>
+$$<br>
+接下来求解对偶函数，对偶函数$g(\alpha)$表示为：<br>
+$$<br>
+g(\alpha) = \min_{\omega,b} L(\omega,b,\alpha)<br>
+$$<br>
+因为$L(\omega,b,\alpha)$是凸函数，因此只需要对$\omega,b$求偏导，令偏导等于0即可：<br>
+$$<br>
+\begin{aligned}<br>
+\frac{\partial L(\omega,b,\alpha)}{\partial \omega} &amp;= \omega - \sum_{i=1}^N \alpha_i y_i x_i = 0 \rightarrow \omega =  \sum_{i=1}^N \alpha_i y_i x_i  \\<br>
+\frac{\partial L(\omega,b,\alpha)}{\partial b} &amp;= -\sum_{i=1}^N \alpha_i y_i = 0 \rightarrow \sum_{i=1}^N \alpha_i y_i = 0<br>
+\end{aligned}<br>
+$$<br>
+回代拉格朗日函数，可得对偶函数：<br>
+$$<br>
+\begin{aligned}<br>
+g(\alpha) &amp;= \frac{1}{2} \sum_{i=1}^N \sum_{j=1}^N \alpha_i \alpha_j y_i y_i x_i^T x_j - \sum_{i=1}^N \sum_{j=1}^N \alpha_i \alpha_j y_i y_i x_i^T x_j + \sum_{i=1}^N \alpha_i  \\<br>
+&amp;= -\frac{1}{2} \sum_{i=1}^N \sum_{j=1}^N \alpha_i \alpha_j y_i y_i x_i^T x_j + \sum_{i=1}^N \alpha_i<br>
+\end{aligned}<br>
+$$<br>
+所以，对偶优化问题可以写做：<br>
+$$<br>
+\begin{aligned}<br>
+&amp;\max_{\alpha} \quad -\frac{1}{2} \sum_{i=1}^N \sum_{j=1}^N \alpha_i \alpha_j y_i y_i x_i^T x_j + \sum_{i=1}^N \alpha_i \\<br>
+&amp;s.t. \quad \sum_{i=1}^N \alpha_i y_i =0;\alpha_i \geq 0,i=1,\dots,N<br>
+\end{aligned}<br>
+$$<br>
+对于该问题的求解可以通过SMO(序列最小优化)算法进行求解，因为强对偶性成立,KKT条件满足：<br>
+$$<br>
+\begin{aligned}<br>
+&amp;\nabla_{\omega} L(\omega^<em>,b^</em>,\alpha^<em>) = \omega^</em> - \sum_{i=1}^N \alpha_i^* y_i x_i = 0 \<br>
+&amp;\nabla_{b} L(\omega^<em>,b^</em>,\alpha^<em>) = -\sum_{i=1}^N \alpha_i^</em> y_i = 0 \<br>
+&amp;\alpha_i^* (y_i(\omega^<em>x_i+b^</em>)-1) = 0 \<br>
+&amp;y_i(\omega^* x_i +b^<em>) - 1 \geq 0 \<br>
+&amp;\alpha_i^</em> \geq 0<br>
+\end{aligned}<br>
+$$<br>
+由此便可建立对偶问题最优解$\alpha^<em>$与原问题最优解$\omega^</em>,b^<em>$之间的关系，首先至少有一个$\alpha_j^</em>&gt;0$,这是因为若$\alpha^<em>$均为0，则$\omega^</em>$为0,这不是原始最优化问题的解，假设$\alpha_j^<em>&gt;0$,则由互补松弛条件，此时有$y_j(\omega^</em> x_j +b^<em>) = 1$,而$\omega^</em>$表达式是知道的，由此可得$\omega^<em>,b^</em>$表达式为：<br>
+$$<br>
+\begin{aligned}<br>
+\omega^* &amp;= \sum_{i=1}^N \alpha_i^* y_i x_i \<br>
+b^* &amp;=  y_j - \sum_{i=1}^N \alpha_i^* y_i(x_i\cdot x_j)<br>
+\end{aligned}<br>
+$$<br>
+至此，我们便通过求解对偶问题得到了原始问题的最优解，得到了超平面方程以及判决方程：<br>
+$$<br>
+\begin{aligned}<br>
+&amp;\omega^* \cdot x + b^* = 0 \<br>
+&amp;f(x) = sign(\omega^* \cdot x + b^*)<br>
+\end{aligned}<br>
+$$<br>
+通过引入对偶问题，我们便可以从数学的角度导出支持向量:</p>
+<blockquote>
+<p>训练数据集中对应于$\alpha_i^* &gt;0$的样本点称为支持向量</p>
+</blockquote>
 <h3 id="线性支持向量机与软间隔最大化">线性支持向量机与软间隔最大化</h3>
 <h4 id="原始问题">原始问题</h4>
-<p>前面介绍的算法是针对线性可分数据,那么对于大部分线性可分的数据集，支持向量机能否处理呢？答案是可以，但是需要对原始优化问题做适当变换,对于线性可分的数据，我们要求各个样本点到分类超平面的函数间隔都要大于1，对于不可分数据点，我们直观上的想法是考虑能否将该约束放松，因此我们考虑为每一个样本点引入一个松弛变量<span class="math inline">\(\xi_i\)</span>,使得函数间隔加上松弛变量等于1。这样，约束条件变为: <span class="math display">\[
-    y_i(\omega \cdot x_i +b) \geq 1 - \xi_i
-\]</span> 但需要注意的人，该松弛变量的引入是有代价的，需要在目标函数中进行惩罚，因此考虑在目标函数中加入惩罚项<span class="math inline">\(\xi_i\)</span>，将目标函数改写为： <span class="math display">\[
-    \frac{1}{2} ||\omega||^2  + C\sum_{i=1}^N \xi_i
-\]</span> 其中<span class="math inline">\(C\)</span>是惩罚系数，<span class="math inline">\(C\)</span>值大时对误分类惩罚增大。最小化该目标函数包含两层含义：使间隔尽量大；使误分类点尽量少。线性不可分支持向量机的学习问题变为如下凸二次规划问题： <span class="math display">\[
-    \begin{aligned}
-        &amp;\min_{\omega,b,\xi} \quad \frac{1}{2} ||\omega||^2 + C \sum_{i=1}^N \xi_i \\\\
-        &amp;s.t. \quad y_i(\omega x_i +b) \geq 1- \xi_i,i=1,2,\dots,N \\\\
-        &amp;\qquad \xi_i \geq 0,i=1,2,\dots,N
-    \end{aligned}
-\]</span> 对于该原始问题，可以证明<span class="math inline">\(\omega\)</span>的解是唯一的，但<span class="math inline">\(b\)</span>的解可能不唯一，而是存在一个区间。</p>
+<p>前面介绍的算法是针对线性可分数据,那么对于大部分线性可分的数据集，支持向量机能否处理呢？答案是可以，但是需要对原始优化问题做适当变换,对于线性可分的数据，我们要求各个样本点到分类超平面的函数间隔都要大于1，对于不可分数据点，我们直观上的想法是考虑能否将该约束放松，因此我们考虑为每一个样本点引入一个松弛变量$\xi_i$,使得函数间隔加上松弛变量等于1。这样，约束条件变为:<br>
+$$<br>
+y_i(\omega \cdot x_i +b) \geq 1 - \xi_i<br>
+$$<br>
+但需要注意的人，该松弛变量的引入是有代价的，需要在目标函数中进行惩罚，因此考虑在目标函数中加入惩罚项$\xi_i$，将目标函数改写为：<br>
+$$<br>
+\frac{1}{2} ||\omega||^2  + C\sum_{i=1}^N \xi_i<br>
+$$<br>
+其中$C$是惩罚系数，$C$值大时对误分类惩罚增大。最小化该目标函数包含两层含义：使间隔尽量大；使误分类点尽量少。线性不可分支持向量机的学习问题变为如下凸二次规划问题：<br>
+$$<br>
+\begin{aligned}<br>
+&amp;\min_{\omega,b,\xi} \quad \frac{1}{2} ||\omega||^2 + C \sum_{i=1}^N \xi_i \\<br>
+&amp;s.t. \quad y_i(\omega x_i +b) \geq 1- \xi_i,i=1,2,\dots,N \\<br>
+&amp;\qquad \xi_i \geq 0,i=1,2,\dots,N<br>
+\end{aligned}<br>
+$$<br>
+对于该原始问题，可以证明$\omega$的解是唯一的，但$b$的解可能不唯一，而是存在一个区间。</p>
 <h4 id="对偶问题">对偶问题</h4>
-<p>在该部分便不进行对偶问题推导了，步骤与上一部分一致，最终得到的对偶问题形式为： <span class="math display">\[
-    \begin{aligned}
-        &amp;\max_{\alpha} \quad -\frac{1}{2} \sum_{i=1}^N \sum_{j=1}^N \alpha_i \alpha_j y_i y_i x_i^T x_j + \sum_{i=1}^N \alpha_i \\\\
-        &amp;s.t. \quad \sum_{i=1}^N \alpha_i y_i =0,i=1,\dots,N  \\\\
-        &amp; \qquad 0 \leq \alpha_i \leq C \quad i=1,2,\dots,N
-    \end{aligned}
-\]</span> 可以看到引入松弛变量后对偶问题形式基本未发生变化，仅仅约束条件中<span class="math inline">\(\alpha_i\)</span>范围变了。需要注意的是将原始问题转化为对偶问题的过程中，引入了两个Lagrange算子<span class="math inline">\(\alpha_i,\mu_i\)</span>，但由于存在$ _i + _i = C <span class="math inline">\(以及\)</span>_i 0, _i 0 $,因此将这些约束条件简化为<span class="math inline">\(0 \leq \alpha_i \leq C\)</span>。 下面讨论如何根据对偶问题最优解求解原问题最优解，与硬间隔支持向量机不同，在该问题中，互补松弛条件有两个: <span class="math display">\[
-    \begin{aligned}
-        &amp;\alpha_i^* (y_i(\omega^*x_i+b^*)-1 + \xi_i) = 0  \\
-        &amp;\mu_i \xi_i = 0 
-    \end{aligned}
-\]</span> 在求解<span class="math inline">\(b^*\)</span>时，关键是要将支持向量确定出来，首先支持向量应当在支撑超平面上，这就要求<span class="math inline">\(\alpha_i&gt;0\)</span>,同时松弛间隔<span class="math inline">\(\xi_i\)</span>应当为0，由第二个互补松弛条件可知<span class="math inline">\(\mu_i\)</span>不能够为0，因此<span class="math inline">\(\alpha_i\)</span>必须小于<span class="math inline">\(C\)</span>,换句话说，<span class="math inline">\(\alpha^* = C\)</span>所对应的点均在支撑超平面以内，若<span class="math inline">\(\xi_i&lt;1\)</span>,则仍能分类正确，若大于1，则就会分类错误。<span class="math inline">\(\omega^*\)</span>和<span class="math inline">\(b^*\)</span>表达式可以写做： <span class="math display">\[
-    \begin{aligned}
-        \omega^* &amp;= \sum_{i=1}^N \alpha_i^* y_i x_i \\
-        b^* &amp;= y_j - \sum_{i=1}^N y_i \alpha_i^* (x_i \cdot x_j)
-    \end{aligned}
-\]</span></p>
+<p>在该部分便不进行对偶问题推导了，步骤与上一部分一致，最终得到的对偶问题形式为：<br>
+$$<br>
+\begin{aligned}<br>
+&amp;\max_{\alpha} \quad -\frac{1}{2} \sum_{i=1}^N \sum_{j=1}^N \alpha_i \alpha_j y_i y_i x_i^T x_j + \sum_{i=1}^N \alpha_i \\<br>
+&amp;s.t. \quad \sum_{i=1}^N \alpha_i y_i =0,i=1,\dots,N  \\<br>
+&amp; \qquad 0 \leq \alpha_i \leq C \quad i=1,2,\dots,N<br>
+\end{aligned}<br>
+$$<br>
+可以看到引入松弛变量后对偶问题形式基本未发生变化，仅仅约束条件中$\alpha_i$范围变了。需要注意的是将原始问题转化为对偶问题的过程中，引入了两个Lagrange算子$\alpha_i,\mu_i$，但由于存在$<br>
+\alpha_i + \mu_i = C $以及$\alpha_i \geq 0, \mu_i \geq 0 $,因此将这些约束条件简化为$0 \leq \alpha_i \leq C$。<br>
+下面讨论如何根据对偶问题最优解求解原问题最优解，与硬间隔支持向量机不同，在该问题中，互补松弛条件有两个:<br>
+$$<br>
+\begin{aligned}<br>
+&amp;\alpha_i^* (y_i(\omega^<em>x_i+b^</em>)-1 + \xi_i) = 0  \<br>
+&amp;\mu_i \xi_i = 0<br>
+\end{aligned}<br>
+$$<br>
+在求解$b^<em>$时，关键是要将支持向量确定出来，首先支持向量应当在支撑超平面上，这就要求$\alpha_i&gt;0$,同时松弛间隔$\xi_i$应当为0，由第二个互补松弛条件可知$\mu_i$不能够为0，因此$\alpha_i$必须小于$C$,换句话说，$\alpha^</em> = C$所对应的点均在支撑超平面以内，若$\xi_i&lt;1$,则仍能分类正确，若大于1，则就会分类错误。$\omega^<em>$和$b^</em>$表达式可以写做：<br>
+$$<br>
+\begin{aligned}<br>
+\omega^* &amp;= \sum_{i=1}^N \alpha_i^* y_i x_i \<br>
+b^* &amp;= y_j - \sum_{i=1}^N y_i \alpha_i^* (x_i \cdot x_j)<br>
+\end{aligned}<br>
+$$</p>
 <h4 id="非线性支持向量机与核函数">非线性支持向量机与核函数</h4>
-<p>支持向量机是解决线性分类问题的一种有效方法，但并不能解决非线性分类问题，那么非线性的数据就不能用线性的方法解决么？ 直观上我们有这样一个方法，考虑降维度线性不可分的数据映射到高维度，使映射后的数据在高维度线性可分，由此便引出了本节的核函数。 #### 核函数 首先先举一个空间变换的栗子，设原空间为<span class="math inline">\(\mathcal{X} \subset R^2,x = (x^1,x^2)^T\)</span>,新空间为<span class="math inline">\(\mathcal{Z} \subset R^2,z = (z^1,z^2)^T\)</span>,定义从原空间到新空间的映射： <span class="math display">\[
-    z = \phi(x) = ((x^1)^2,(x^2)^2)^T
-\]</span> 经过这样一个变换原空间中的椭圆： <span class="math display">\[
-    w_1 (x^1)^2 + w_2 (x^2)^2 +b = 0
-\]</span> 变换为了新空间中的直线： <span class="math display">\[
-    w_1 z^1 + w_2 z^2 + b = 0
-\]</span> 这样，原空间的非线性可分问题就变成了新空间的线性可分问题。从该问题出发，我们可以总结出用线性分类方法求解非线性分类问题的步骤： - 首先使用一个变换将原空间中的数据映射到新空间 - 在新空间中使用线性分类学习方法从训练数据中学习分类模型</p>
-<p>而在支持向量机中，达到这一目的的方法应用核技巧，下面首先给出核函数的定义： &gt; 核函数：设<span class="math inline">\(\mathcal{X}\)</span>是输入空间，又设<span class="math inline">\(\mathcal{H}\)</span>为特征空间(希尔伯特空间),如果存在一个从<span class="math inline">\(\mathcal{X}\)</span>到<span class="math inline">\(\mathcal{H}\)</span>的映射： <span class="math display">\[
-    \phi(x):\mathcal{X} \rightarrow \mathcal{H}
-\]</span> 使得对所有<span class="math inline">\(x,z \in \mathcal{X}\)</span>,函数<span class="math inline">\(K(x,z)\)</span>满足条件: <span class="math display">\[
-    K(x,z) = \phi(x) \cdot \phi(z)
-\]</span> 则称<span class="math inline">\(K(x,z)\)</span>为核函数，<span class="math inline">\(\phi(x)\)</span>为映射函数</p>
-<p>核技巧的想法是，在学习与预测中只定义核函数<span class="math inline">\(K(x,z)\)</span>,而不显式的定义映射函数<span class="math inline">\(\phi\)</span>。同时，对于一个核<span class="math inline">\(K(x,z)\)</span>,特征空间<span class="math inline">\(\mathcal{H}\)</span>和映射函数<span class="math inline">\(\phi\)</span>的取法并不唯一</p>
+<p>支持向量机是解决线性分类问题的一种有效方法，但并不能解决非线性分类问题，那么非线性的数据就不能用线性的方法解决么？ 直观上我们有这样一个方法，考虑降维度线性不可分的数据映射到高维度，使映射后的数据在高维度线性可分，由此便引出了本节的核函数。</p>
+<h4 id="核函数">核函数</h4>
+<p>首先先举一个空间变换的栗子，设原空间为$\mathcal{X} \subset R^2,x = (x^1,x^2)^T$,新空间为$\mathcal{Z} \subset R^2,z = (z^1,z^2)^T$,定义从原空间到新空间的映射：<br>
+$$<br>
+z = \phi(x) = ((x^1)^2,(x^2)^2)^T<br>
+$$<br>
+经过这样一个变换原空间中的椭圆：<br>
+$$<br>
+w_1 (x^1)^2 + w_2 (x^2)^2 +b = 0<br>
+$$<br>
+变换为了新空间中的直线：<br>
+$$<br>
+w_1 z^1 + w_2 z^2 + b = 0<br>
+$$<br>
+这样，原空间的非线性可分问题就变成了新空间的线性可分问题。从该问题出发，我们可以总结出用线性分类方法求解非线性分类问题的步骤：</p>
+<ul>
+<li>首先使用一个变换将原空间中的数据映射到新空间</li>
+<li>在新空间中使用线性分类学习方法从训练数据中学习分类模型</li>
+</ul>
+<p>而在支持向量机中，达到这一目的的方法应用核技巧，下面首先给出核函数的定义：</p>
+<blockquote>
+<p>核函数：设$\mathcal{X}$是输入空间，又设$\mathcal{H}$为特征空间(希尔伯特空间),如果存在一个从$\mathcal{X}$到$\mathcal{H}$的映射：<br>
+$$<br>
+\phi(x):\mathcal{X} \rightarrow \mathcal{H}<br>
+$$<br>
+使得对所有$x,z \in \mathcal{X}$,函数$K(x,z)$满足条件:<br>
+$$<br>
+K(x,z) = \phi(x) \cdot \phi(z)<br>
+$$<br>
+则称$K(x,z)$为核函数，$\phi(x)$为映射函数</p>
+</blockquote>
+<p>核技巧的想法是，在学习与预测中只定义核函数$K(x,z)$,而不显式的定义映射函数$\phi$。同时，对于一个核$K(x,z)$,特征空间$\mathcal{H}$和映射函数$\phi$的取法并不唯一</p>
 <h4 id="非线性支持向量机">非线性支持向量机</h4>
-<p>在线性支持向量机的对偶问题中,无论是目标函数还是决策函数中均只包含实例的内积的形式，因此若用<span class="math inline">\(K(x,y)\)</span>代替<span class="math inline">\(x\cdot y\)</span>,实际上便是在对高维空间中的特征点设计线性分类器。那现在的关键问题便在于如何选择合适的核函数。</p>
-<p>关于核函数这部分的理论我后面会另开一个章节进行介绍学习，在这一部分便直接给出一些常用的核函数： - 多项式核函数: <span class="math display">\[ K(x,z) = (x\cdot z +1)^p\]</span> - 高斯核函数(径向基函数) <span class="math display">\[ K(x,z) = exp(- \frac{||x-z||^2}{2\sigma^2})\]</span></p>
-<p>需要注意的是，在引入核函数后，又多引入了超参数，比如高斯核函数中的<span class="math inline">\(\sigma\)</span>,而这些超参数的选择也会对分类效果产生影响。</p>
+<p>在线性支持向量机的对偶问题中,无论是目标函数还是决策函数中均只包含实例的内积的形式，因此若用$K(x,y)$代替$x\cdot y$,实际上便是在对高维空间中的特征点设计线性分类器。那现在的关键问题便在于如何选择合适的核函数。</p>
+<p>关于核函数这部分的理论我后面会另开一个章节进行介绍学习，在这一部分便直接给出一些常用的核函数：</p>
+<ul>
+<li>多项式核函数:<br>
+$$ K(x,z) = (x\cdot z +1)^p$$</li>
+<li>高斯核函数(径向基函数)<br>
+$$ K(x,z) = exp(- \frac{||x-z||^2}{2\sigma^2})$$</li>
+</ul>
+<p>需要注意的是，在引入核函数后，又多引入了超参数，比如高斯核函数中的$\sigma$,而这些超参数的选择也会对分类效果产生影响。</p>
 <h3 id="一类分类器设计">一类分类器设计</h3>
-<p>在前面介绍的支持向量机算法中，针对的都是二分类情况，但当我们做故障检测时，往往就只有大量的正常样本点，现在我们需要根据这些正常样本点来设计一个分类器以对未出现的异常样本点进行检测。在这一部分介绍两种算法： - OCSVM - SVDD</p>
-<h4 id="ocsvm">OCSVM</h4>
-<p>在OCSVM中，将坐标原点作为唯一的异常点,最大化最优超平面到远点的距离，若记<span class="math inline">\(\rho\)</span>为从原点到超平面的距离，<span class="math inline">\(\xi_i\)</span>为松弛变量，则优化问题可以写做： <span class="math display">\[
-    \begin{aligned}
-        &amp;\max_{\omega,\rho,\xi_i} \rho - C\sum_{i=1}^N \xi_i \\
-        &amp; s.t. \quad \omega \cdot x_i \geq \rho - \xi_i,\xi_i \geq 0,||\omega|| = 1
-    \end{aligned}
-\]</span></p>
-<h4 id="svdd">SVDD</h4>
-<p>SVDD的基本思想则是，对于<span class="math inline">\(n\)</span>维空间中的数据点集，寻找最小超球面，使其成为所有点的边界，其对应优化问题的原问题为: <span class="math display">\[
-    \begin{aligned}
-         &amp;\min_{a,R,\xi} \quad R^2 + C\sum_{i=1}^N \xi_i \\
-         &amp;s.t. \quad ||x_i -a||^2 \leq R^2 + \xi_i \\
-         &amp;\qquad \quad \xi_i \geq 0 
-    \end{aligned}
-\]</span></p>
+<p>在前面介绍的支持向量机算法中，针对的都是二分类情况，但当我们做故障检测时，往往就只有大量的正常样本点，现在我们需要根据这些正常样本点来设计一个分类器以对未出现的异常样本点进行检测。在这一部分介绍两种算法：</p>
+<ul>
+<li>OCSVM</li>
+<li>SVDD</li>
+</ul>
+<h4 id="OCSVM">OCSVM</h4>
+<p>在OCSVM中，将坐标原点作为唯一的异常点,最大化最优超平面到远点的距离，若记$\rho$为从原点到超平面的距离，$\xi_i$为松弛变量，则优化问题可以写做：<br>
+$$<br>
+\begin{aligned}<br>
+&amp;\max_{\omega,\rho,\xi_i} \rho - C\sum_{i=1}^N \xi_i \<br>
+&amp; s.t. \quad \omega \cdot x_i \geq \rho - \xi_i,\xi_i \geq 0,||\omega|| = 1<br>
+\end{aligned}<br>
+$$</p>
+<h4 id="SVDD">SVDD</h4>
+<p>SVDD的基本思想则是，对于$n$维空间中的数据点集，寻找最小超球面，使其成为所有点的边界，其对应优化问题的原问题为:<br>
+$$<br>
+\begin{aligned}<br>
+&amp;\min_{a,R,\xi} \quad R^2 + C\sum_{i=1}^N \xi_i \<br>
+&amp;s.t. \quad ||x_i -a||^2 \leq R^2 + \xi_i \<br>
+&amp;\qquad \quad \xi_i \geq 0<br>
+\end{aligned}<br>
+$$</p>
 
             </div>
             <hr/>
@@ -1211,7 +1315,13 @@
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            在这一部分将总结一下关于感知机的一些相关知识点，不过首先我想要介绍下统计学习相关算法的一种分类标准。该部分内容将按照以下几部分进行组织： &gt; - 模型分类-生成式模型与判别式模型 &gt; - 线性判别-感知机
+                            在这一部分将总结一下关于感知机的一些相关知识点，不过首先我想要介绍下统计学习相关算法的一种分类标准。该部分内容将按照以下几部分进行组织：
+
+
+模型分类-生成式模型与判别式模型
+线性判别-感知机
+
+
                         
                     </div>
                     <div class="publish-info">
@@ -1448,7 +1558,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">74.4k</span>&nbsp;字
+                class="white-color">73.6k</span>&nbsp;字
             
             
             
@@ -1581,6 +1691,23 @@ $(function () {
     if (windowWidth > 768) { document.write('<script type="text/javascript" src="/js/sakura.js"><\/script>'); 
     } 
 </script> 
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!-- <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 
 </body>
 </html>

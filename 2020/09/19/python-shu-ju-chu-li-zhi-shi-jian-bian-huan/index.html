@@ -490,7 +490,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    7 分
+                    6 分
                 </div>
                 
 
@@ -508,123 +508,235 @@
                 <p>本文将就<code>python</code>中对时间标识的处理做一点讲解，在进行数据分析时，有些时候我们需要对时间序列数据进行处理，比如像下面这样一组数据<a id="more"></a>:</p>
 <table>
 <thead>
-<tr class="header">
-<th style="text-align: center;">Time</th>
-<th style="text-align: center;">feature1</th>
-<th style="text-align: center;">...</th>
-<th style="text-align: center;">feature n</th>
+<tr>
+<th style="text-align:center">Time</th>
+<th style="text-align:center">feature1</th>
+<th style="text-align:center">…</th>
+<th style="text-align:center">feature n</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td style="text-align: center;">2013年-01月-01日: 00时00分00秒</td>
-<td style="text-align: center;">...</td>
-<td style="text-align: center;">...</td>
-<td style="text-align: center;">...</td>
+<tr>
+<td style="text-align:center">2013年-01月-01日: 00时00分00秒</td>
+<td style="text-align:center">…</td>
+<td style="text-align:center">…</td>
+<td style="text-align:center">…</td>
 </tr>
-<tr class="even">
-<td style="text-align: center;">2013年-01月-01日: 02时00分00秒</td>
-<td style="text-align: center;">...</td>
-<td style="text-align: center;">...</td>
-<td style="text-align: center;">...</td>
+<tr>
+<td style="text-align:center">2013年-01月-01日: 02时00分00秒</td>
+<td style="text-align:center">…</td>
+<td style="text-align:center">…</td>
+<td style="text-align:center">…</td>
 </tr>
-<tr class="odd">
-<td style="text-align: center;">...</td>
-<td style="text-align: center;">...</td>
-<td style="text-align: center;">...</td>
-<td style="text-align: center;">...</td>
+<tr>
+<td style="text-align:center">…</td>
+<td style="text-align:center">…</td>
+<td style="text-align:center">…</td>
+<td style="text-align:center">…</td>
 </tr>
-<tr class="even">
-<td style="text-align: center;">2015年-01月-01日: 00时00分00秒</td>
-<td style="text-align: center;">...</td>
-<td style="text-align: center;">...</td>
-<td style="text-align: center;">...</td>
+<tr>
+<td style="text-align:center">2015年-01月-01日: 00时00分00秒</td>
+<td style="text-align:center">…</td>
+<td style="text-align:center">…</td>
+<td style="text-align:center">…</td>
 </tr>
 </tbody>
 </table>
-<p>对于这样一段时序数据，采样间隔2小时。当我们拿到这组数据之后，首先要考虑的问题就是这组数据有没有缺失，而判断数据记录有无缺失的关键在于其时间序列<code>Time</code>是否连续。我们一般采用<code>pandas.read_csv()</code>函数来进行<code>csv</code>文件中数据的读取，读取得到的第一列是一个字符串形式，通过这些字符串来判断时间是否连续是比较困难的，需要重新写一个函数来对字符串进行处理。但幸运的是，其实已经有函数可以帮我们完成这样一项工作了，下面介绍下本文的关键对象---<code>unix时间戳</code>： &gt; <strong>unix时间戳:</strong> unix时间戳是一种跟踪时间（以秒为单位）的方式。此计数从1970年1月1日UTC的Unix Epoch开始。因此，unix时间戳仅仅是特定日期与Unix纪元之间的秒数。</p>
-<p>简而言之，unix时间戳就是一个<code>int</code>型的数据，其值代表了某个时间点距离<code>1997-01-01: 00:00:00</code>的秒数，那么如果我们能够将我们的时间字符串转换成unix时间戳，那么后面的数据拆分、数据缺失定位就更加得心应手了。本文按照以下结构进行组织: - 常见日期时间类型 - 日期格式转换 - 总结</p>
+<p>对于这样一段时序数据，采样间隔2小时。当我们拿到这组数据之后，首先要考虑的问题就是这组数据有没有缺失，而判断数据记录有无缺失的关键在于其时间序列<code>Time</code>是否连续。我们一般采用<code>pandas.read_csv()</code>函数来进行<code>csv</code>文件中数据的读取，读取得到的第一列是一个字符串形式，通过这些字符串来判断时间是否连续是比较困难的，需要重新写一个函数来对字符串进行处理。但幸运的是，其实已经有函数可以帮我们完成这样一项工作了，下面介绍下本文的关键对象—<code>unix时间戳</code>：</p>
+<blockquote>
+<p><strong>unix时间戳:</strong> unix时间戳是一种跟踪时间（以秒为单位）的方式。此计数从1970年1月1日UTC的Unix Epoch开始。因此，unix时间戳仅仅是特定日期与Unix纪元之间的秒数。</p>
+</blockquote>
+<p>简而言之，unix时间戳就是一个<code>int</code>型的数据，其值代表了某个时间点距离<code>1997-01-01: 00:00:00</code>的秒数，那么如果我们能够将我们的时间字符串转换成unix时间戳，那么后面的数据拆分、数据缺失定位就更加得心应手了。本文按照以下结构进行组织:</p>
+<ul>
+<li>常见日期时间类型</li>
+<li>日期格式转换</li>
+<li>总结</li>
+</ul>
 <h3 id="常见日期时间类型">常见日期时间类型</h3>
-<p>在进行时间序列数据处理时，常见的日期时间类型大概有以下四种: | 类型| 格式 | 示例 | | :-----:| :---- |:----| | time | 时间格式 | 17:00:00| | date | 日期格式 | 2019-09-19 | | datetime | 日期时间格式 | 2019-09-19: 17:00:00 | | timestamp | 时间戳格式 | 1568912400 |</p>
-<p>实际上以上四种类型可以粗分为两个类型: 字符串类型和时间戳格式，时间字符串直接转时间戳格式并不自然，因此在python中实现两者转化还需借助一个中间变量类型<code>struct_time</code>，时间格式变换流程如下: <span class="math display">\[
-    str \Leftrightarrow struct \, time \Leftrightarrow stamp 
-\]</span> 字符串格式和时间戳格式通过我上面的讲解大家应该可以有一个基本认识，下面重点介绍下<code>struct_time</code>类型，它是一个具有命名元祖接口的对象:可以通过索引和属性名访问值，存在以下值: | index | attribute | values | | :-----:| :----: |:----:| | 0 | tm-year | 年份 | | 1 | tm-mon | 月份range(1,12) | | 2 | tm-mday | 天数range(1,31) | | 3 | tm-hour | 小时range(0,23) | | 4 | tm-min | 分钟range(0,59) | | 5 | tm-sec | 秒数range(0,59) | | 6 | tm-wday | 星期range(0,6) | | 7 | tm-yday | 年中的一天range(1,366) | 而要实现这样的变换，则就要提到<code>python</code>中两个专门与时间打交道的模块<code>time</code>和<code>datetime</code>。</p>
+<p>在进行时间序列数据处理时，常见的日期时间类型大概有以下四种:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">类型</th>
+<th style="text-align:left">格式</th>
+<th style="text-align:left">示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">time</td>
+<td style="text-align:left">时间格式</td>
+<td style="text-align:left">17:00:00</td>
+</tr>
+<tr>
+<td style="text-align:center">date</td>
+<td style="text-align:left">日期格式</td>
+<td style="text-align:left">2019-09-19</td>
+</tr>
+<tr>
+<td style="text-align:center">datetime</td>
+<td style="text-align:left">日期时间格式</td>
+<td style="text-align:left">2019-09-19: 17:00:00</td>
+</tr>
+<tr>
+<td style="text-align:center">timestamp</td>
+<td style="text-align:left">时间戳格式</td>
+<td style="text-align:left">1568912400</td>
+</tr>
+</tbody>
+</table>
+<p>实际上以上四种类型可以粗分为两个类型: 字符串类型和时间戳格式，时间字符串直接转时间戳格式并不自然，因此在python中实现两者转化还需借助一个中间变量类型<code>struct_time</code>，时间格式变换流程如下:<br>
+$$<br>
+str \Leftrightarrow struct , time \Leftrightarrow stamp<br>
+$$<br>
+字符串格式和时间戳格式通过我上面的讲解大家应该可以有一个基本认识，下面重点介绍下<code>struct_time</code>类型，它是一个具有命名元祖接口的对象:可以通过索引和属性名访问值，存在以下值:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">index</th>
+<th style="text-align:center">attribute</th>
+<th style="text-align:center">values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">tm-year</td>
+<td style="text-align:center">年份</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">tm-mon</td>
+<td style="text-align:center">月份range(1,12)</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td style="text-align:center">tm-mday</td>
+<td style="text-align:center">天数range(1,31)</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td style="text-align:center">tm-hour</td>
+<td style="text-align:center">小时range(0,23)</td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td style="text-align:center">tm-min</td>
+<td style="text-align:center">分钟range(0,59)</td>
+</tr>
+<tr>
+<td style="text-align:center">5</td>
+<td style="text-align:center">tm-sec</td>
+<td style="text-align:center">秒数range(0,59)</td>
+</tr>
+<tr>
+<td style="text-align:center">6</td>
+<td style="text-align:center">tm-wday</td>
+<td style="text-align:center">星期range(0,6)</td>
+</tr>
+<tr>
+<td style="text-align:center">7</td>
+<td style="text-align:center">tm-yday</td>
+<td style="text-align:center">年中的一天range(1,366)</td>
+</tr>
+</tbody>
+</table>
+<p>而要实现这样的变换，则就要提到<code>python</code>中两个专门与时间打交道的模块<code>time</code>和<code>datetime</code>。</p>
 <h3 id="日期和格式转换">日期和格式转换</h3>
-<p>这部份将介绍以下<code>time</code>以及<code>datetime</code>中常用的一些方法。 #### <code>time</code>模块 <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/time.html"><code>time</code></a>模块是操作系统层面上的， 与<code>os</code>模块类似，主要提供一些系统层面的与时间有关的操作，该模块是其他所有与时间相关模块的基础，我们用到该模块比较多的方法主要有以下几个: - <code>time.time()</code>: 返回当前时间的时间戳</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span>: </a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="bu">print</span>(time.time())</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="op">&gt;&gt;&gt;</span>: </a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="fl">1600502127.7830698</span></a></code></pre></div>
+<p>这部份将介绍以下<code>time</code>以及<code>datetime</code>中常用的一些方法。</p>
+<h4 id="time模块"><code>time</code>模块</h4>
+<p><a target="_blank" rel="noopener" href="https://docs.python.org/3/library/time.html"><code>time</code></a>模块是操作系统层面上的， 与<code>os</code>模块类似，主要提供一些系统层面的与时间有关的操作，该模块是其他所有与时间相关模块的基础，我们用到该模块比较多的方法主要有以下几个:</p>
+<ul>
+<li><code>time.time()</code>: 返回当前时间的时间戳</li>
+</ul>
+<pre class="line-numbers language-language-python"><code class="language-language-python">>>>: 
+print(time.time())
+
+>>>: 
+1600502127.7830698
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li><code>time.loacltime()</code>: 将一个<code>unix stamp</code>转换为本地时间(东八区)的<code>struct_time</code>类型</li>
 </ul>
-<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span>: </a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="bu">print</span>(time.localtime(time.time())) </a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="op">&gt;&gt;&gt;</span>: </a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">time.struct_time(tm_year<span class="op">=</span><span class="dv">2020</span>, tm_mon<span class="op">=</span><span class="dv">9</span>, tm_mday<span class="op">=</span><span class="dv">19</span>, tm_hour<span class="op">=</span><span class="dv">16</span>, tm_min<span class="op">=</span><span class="dv">2</span>, tm_sec<span class="op">=</span><span class="dv">55</span>, tm_wday<span class="op">=</span><span class="dv">5</span>, tm_yday<span class="op">=</span><span class="dv">263</span>, tm_isdst<span class="op">=</span><span class="dv">0</span>)</a></code></pre></div>
+<pre class="line-numbers language-language-python"><code class="language-language-python">>>>: 
+print(time.localtime(time.time())) 
+
+>>>: 
+time.struct_time(tm_year=2020, tm_mon=9, tm_mday=19, tm_hour=16, tm_min=2, tm_sec=55, tm_wday=5, tm_yday=263, tm_isdst=0)
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li><code>time.gmtime()</code>: 将一个<code>unix stamp</code>转换为格林威治时间的<code>struct_time</code>类型</li>
 </ul>
-<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span>: </a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="bu">print</span>(time.gmtime(time.time()))</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="op">&gt;&gt;&gt;</span>: </a>
-<a class="sourceLine" id="cb3-5" data-line-number="5">time.struct_time(tm_year<span class="op">=</span><span class="dv">2020</span>, tm_mon<span class="op">=</span><span class="dv">9</span>, tm_mday<span class="op">=</span><span class="dv">19</span>, tm_hour<span class="op">=</span><span class="dv">8</span>, tm_min<span class="op">=</span><span class="dv">5</span>, tm_sec<span class="op">=</span><span class="dv">31</span>, tm_wday<span class="op">=</span><span class="dv">5</span>, tm_yday<span class="op">=</span><span class="dv">263</span>, tm_isdst<span class="op">=</span><span class="dv">0</span>)</a></code></pre></div>
+<pre class="line-numbers language-language-python"><code class="language-language-python">>>>: 
+print(time.gmtime(time.time()))
+
+>>>: 
+time.struct_time(tm_year=2020, tm_mon=9, tm_mday=19, tm_hour=8, tm_min=5, tm_sec=31, tm_wday=5, tm_yday=263, tm_isdst=0)
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
-<li><code>time.strftime(format, struct_time)</code>: 将一个<code>struct_time</code>类型输出转换为指定格式的字符串<br />
-</li>
+<li><code>time.strftime(format, struct_time)</code>: 将一个<code>struct_time</code>类型输出转换为指定格式的字符串</li>
 </ul>
-<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span>: </a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="bu">format</span> <span class="op">=</span> <span class="st">&#39;%Y-%m-</span><span class="sc">%d</span><span class="st">: %H:%M:%S&#39;</span> </a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">struct_time <span class="op">=</span> time.localtime(time.time()) </a>
-<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="bu">print</span>(time.strftime(<span class="bu">format</span>, struct_time)) </a>
-<a class="sourceLine" id="cb4-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="op">&gt;&gt;&gt;</span>: </a>
-<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="dv">2020-09-19</span>: <span class="dv">16</span>:<span class="dv">10</span>:<span class="dv">42</span> </a></code></pre></div>
+<pre class="line-numbers language-language-python"><code class="language-language-python">>>>: 
+format = '%Y-%m-%d: %H:%M:%S' 
+struct_time = time.localtime(time.time()) 
+print(time.strftime(format, struct_time)) 
+
+>>>: 
+2020-09-19: 16:10:42 
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li><code>time.strptime(str, format)</code>: 与<code>strftime</code>作用相反，将一个时间字符串按照<code>format</code>格式解析成<code>struct_time</code>类型</li>
 </ul>
-<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span>: </a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="bu">format</span> <span class="op">=</span> <span class="st">&#39;%Y-%m-</span><span class="sc">%d</span><span class="st">: %H:%M:%S&#39;</span>  </a>
-<a class="sourceLine" id="cb5-3" data-line-number="3">time_str <span class="op">=</span> <span class="st">&#39;2020-9-19: 16:17:00&#39;</span> </a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="bu">print</span>(time.strptime(time_str, <span class="bu">format</span>))  </a>
-<a class="sourceLine" id="cb5-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="op">&gt;&gt;&gt;</span>: </a>
-<a class="sourceLine" id="cb5-7" data-line-number="7">time.struct_time(tm_year<span class="op">=</span><span class="dv">2020</span>, tm_mon<span class="op">=</span><span class="dv">9</span>, tm_mday<span class="op">=</span><span class="dv">19</span>, tm_hour<span class="op">=</span><span class="dv">16</span>, tm_min<span class="op">=</span><span class="dv">17</span>, tm_sec<span class="op">=</span><span class="dv">0</span>, tm_wday<span class="op">=</span><span class="dv">5</span>, tm_yday<span class="op">=</span><span class="dv">263</span>, tm_isdst<span class="op">=-</span><span class="dv">1</span>)</a></code></pre></div>
+<pre class="line-numbers language-language-python"><code class="language-language-python">>>>: 
+format = '%Y-%m-%d: %H:%M:%S'  
+time_str = '2020-9-19: 16:17:00' 
+print(time.strptime(time_str, format))  
+
+>>>: 
+time.struct_time(tm_year=2020, tm_mon=9, tm_mday=19, tm_hour=16, tm_min=17, tm_sec=0, tm_wday=5, tm_yday=263, tm_isdst=-1)
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li><code>time.mktime(struct_time)</code>: 将一个<code>struct_time</code>类型数据转化成<code>unxi_stample</code>, 该操作是<code>time.localtime()</code>的反操作，因此其默认输入的<code>struct_time</code>是本地时间</li>
 </ul>
-<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="op">&gt;&gt;&gt;</span>: </a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="bu">format</span> <span class="op">=</span> <span class="st">&#39;%Y-%m-</span><span class="sc">%d</span><span class="st">: %H:%M:%S&#39;</span>  </a>
-<a class="sourceLine" id="cb6-3" data-line-number="3">time_str <span class="op">=</span> <span class="st">&#39;2020-9-19: 16:17:00&#39;</span> </a>
-<a class="sourceLine" id="cb6-4" data-line-number="4">time_struct <span class="op">=</span> time.strptime(time_str, <span class="bu">format</span>) </a>
-<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="bu">print</span>(time_struct)</a>
-<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="bu">print</span>(time.mktime(time_struct)) </a>
-<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="bu">print</span>(time.localtime(time.mktime(time_struct)))</a>
-<a class="sourceLine" id="cb6-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="op">&gt;&gt;&gt;</span>:</a>
-<a class="sourceLine" id="cb6-10" data-line-number="10">time.struct_time(tm_year<span class="op">=</span><span class="dv">2020</span>, tm_mon<span class="op">=</span><span class="dv">9</span>, tm_mday<span class="op">=</span><span class="dv">19</span>, tm_hour<span class="op">=</span><span class="dv">16</span>, tm_min<span class="op">=</span><span class="dv">17</span>, tm_sec<span class="op">=</span><span class="dv">0</span>, tm_wday<span class="op">=</span><span class="dv">5</span>, tm_yday<span class="op">=</span><span class="dv">263</span>, tm_isdst<span class="op">=-</span><span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="fl">1600503420.0</span></a>
-<a class="sourceLine" id="cb6-12" data-line-number="12">time.struct_time(tm_year<span class="op">=</span><span class="dv">2020</span>, tm_mon<span class="op">=</span><span class="dv">9</span>, tm_mday<span class="op">=</span><span class="dv">19</span>, tm_hour<span class="op">=</span><span class="dv">16</span>, tm_min<span class="op">=</span><span class="dv">17</span>, tm_sec<span class="op">=</span><span class="dv">0</span>, tm_wday<span class="op">=</span><span class="dv">5</span>, tm_yday<span class="op">=</span><span class="dv">263</span>, tm_isdst<span class="op">=</span><span class="dv">0</span>)</a></code></pre></div>
+<pre class="line-numbers language-language-python"><code class="language-language-python">>>>: 
+format = '%Y-%m-%d: %H:%M:%S'  
+time_str = '2020-9-19: 16:17:00' 
+time_struct = time.strptime(time_str, format) 
+print(time_struct)
+print(time.mktime(time_struct)) 
+print(time.localtime(time.mktime(time_struct)))
+
+>>>:
+time.struct_time(tm_year=2020, tm_mon=9, tm_mday=19, tm_hour=16, tm_min=17, tm_sec=0, tm_wday=5, tm_yday=263, tm_isdst=-1)
+1600503420.0
+time.struct_time(tm_year=2020, tm_mon=9, tm_mday=19, tm_hour=16, tm_min=17, tm_sec=0, tm_wday=5, tm_yday=263, tm_isdst=0)
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>上面这些方法实际上就已经完全可以实现我们的功能，大致是下面这样一张图:</p>
-<figure>
-<img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/time.png" alt="转换方法" /><figcaption>转换方法</figcaption>
-</figure>
+<p><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/time.png" alt="转换方法"></p>
 <h4 id="datetime模块"><code>datetime</code>模块</h4>
-<p><code>datetime</code>模块可以看作是对<code>time</code>模块的一个封装和扩展，上面提到的<code>time</code>中常用方法在<code>datetime</code>中均有对应, 在<code>datetime</code>下主要有以下几个类： - <code>date</code>: 处理与日期相关的数据，属性: year, month, day - <code>time</code>: 处理与某天时间相对应的数据， 属性: hour, minute, second, microsecond, tzinfo - <code>datetime</code>: 日期和时间的组合，属性: year, month, day, hour, minute, second, microsecond, tzinfo - <code>timedelta</code>: 与持续时间计算有关<br />
-- <code>tzinfo</code>: 时区信息类</p>
+<p><code>datetime</code>模块可以看作是对<code>time</code>模块的一个封装和扩展，上面提到的<code>time</code>中常用方法在<code>datetime</code>中均有对应, 在<code>datetime</code>下主要有以下几个类：</p>
+<ul>
+<li><code>date</code>: 处理与日期相关的数据，属性: year, month, day</li>
+<li><code>time</code>: 处理与某天时间相对应的数据， 属性: hour, minute, second, microsecond, tzinfo</li>
+<li><code>datetime</code>: 日期和时间的组合，属性: year, month, day, hour, minute, second, microsecond, tzinfo</li>
+<li><code>timedelta</code>: 与持续时间计算有关</li>
+<li><code>tzinfo</code>: 时区信息类</li>
+</ul>
 <p><code>datetime</code>类基本已经可以实现上面<code>time</code>模块所能实现的功能，具体对应大家可以去官网<a target="_blank" rel="noopener" href="https://docs.python.org/2/library/datetime.html">datetime</a>查看，我后面如果需要用到也会进行总结。</p>
-<h4 id="pandas.to_datetime"><code>pandas.to_datetime()</code></h4>
-<p>我们读取数据往往需要使用<code>pandas</code>库，得到<code>Dateframe</code>类型的数据，读取之后往往某一列就是时间序列，若用前面的方法来做转换，需要对每一个时间字符串操作，比较麻烦。为了解决该问题，就需要使用<code>pandas.to_datetime()</code>方法，使用该方法可以将变量变为<code>datetime</code>类型，方便后面进行操作。 - 字符串时间转时间戳</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb7-1" data-line-number="1">data.time <span class="op">=</span> pandas.to_datetime(data.time) </a>
-<a class="sourceLine" id="cb7-2" data-line-number="2">data.time <span class="op">=</span> data.time.<span class="bu">apply</span>(<span class="kw">lambda</span> x: time.mktime(x.<span class="bu">tuple</span>))</a></code></pre></div>
+<h4 id="pandas-to-datetime"><code>pandas.to_datetime()</code></h4>
+<p>我们读取数据往往需要使用<code>pandas</code>库，得到<code>Dateframe</code>类型的数据，读取之后往往某一列就是时间序列，若用前面的方法来做转换，需要对每一个时间字符串操作，比较麻烦。为了解决该问题，就需要使用<code>pandas.to_datetime()</code>方法，使用该方法可以将变量变为<code>datetime</code>类型，方便后面进行操作。</p>
+<ul>
+<li>字符串时间转时间戳</li>
+</ul>
+<pre class="line-numbers language-language-python"><code class="language-language-python">data.time = pandas.to_datetime(data.time) 
+data.time = data.time.apply(lambda x: time.mktime(x.tuple))
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <ul>
 <li>时间戳转字符串</li>
 </ul>
-<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb8-1" data-line-number="1">data.time <span class="op">=</span> pandas.to_datetime(data.time) </a>
-<a class="sourceLine" id="cb8-2" data-line-number="2">data.time <span class="op">=</span> data.time.<span class="bu">apply</span>(<span class="kw">lambda</span> x: time.strftime(<span class="bu">format</span>, x.<span class="bu">tuple</span>))</a></code></pre></div>
+<pre class="line-numbers language-language-python"><code class="language-language-python">data.time = pandas.to_datetime(data.time) 
+data.time = data.time.apply(lambda x: time.strftime(format, x.tuple))
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <h3 id="总结">总结</h3>
 <p>在进行数据处理的时候我们往往不能够默认数据是“好数据”，因此就必须通过程序来对数据进行验证，而对于时序数据，时间信息的处理是绕不过去的，掌握了<code>python</code>中常用的对时间处理方法，后面处理时序数据可以更加得心应手。</p>
 
@@ -1426,7 +1538,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">74.4k</span>&nbsp;字
+                class="white-color">73.6k</span>&nbsp;字
             
             
             
@@ -1559,6 +1671,23 @@ $(function () {
     if (windowWidth > 768) { document.write('<script type="text/javascript" src="/js/sakura.js"><\/script>'); 
     } 
 </script> 
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!-- <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 
 </body>
 </html>

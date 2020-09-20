@@ -505,110 +505,255 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>对于一个特定机器学习问题，我们可能会建立很多模型，这些单个模型可能表现都不是非常好，由此便会引出一个问题: &gt; <strong>问题1: 能否通过一个算法将这些模型组合起来(Ensemble)，产生一个效果更好的组合模型？</strong></p>
-<p>这个问题的答案是肯定的，历史上，Kearns 和 Valiant首先提出了“弱可学习”和“强可学习”的概念： &gt; <strong>强可学习：</strong> 在概率近似正确(PAC)框架下，一个概念(类)，如果存在一个多项式的学习算法能够学习它，并且正确率很高，就称这个概念是强可学习的 &gt; <strong>弱可学习：</strong> 一个概念，如果存在一个多项式的算法能够学习它，但学习的正确率仅仅比随机猜测好，则称该概念是弱可学习</p>
-<p>后来Schapire证明了一个重要结论: &gt; <strong>一个概念是强可学习的 <span class="math inline">\(\Leftrightarrow\)</span> 一个概念是弱可学习的</strong></p>
-<p>这样一来，问题1就转换成了另一个问题: &gt; <strong>问题2: 在学习中国，如果已经发现了“弱可学习算法”，那么能否将它提升为强可学习算法？</strong></p>
-<p>该部分介绍以下几类提升算法: - Bagging - <strong>AdaBoost</strong> - 随机森林 - 提升算法解释 - 总结</p>
+                <p>对于一个特定机器学习问题，我们可能会建立很多模型，这些单个模型可能表现都不是非常好，由此便会引出一个问题:</p>
+<blockquote>
+<p><strong>问题1: 能否通过一个算法将这些模型组合起来(Ensemble)，产生一个效果更好的组合模型？</strong></p>
+</blockquote>
+<p>这个问题的答案是肯定的，历史上，Kearns 和 Valiant首先提出了“弱可学习”和“强可学习”的概念：</p>
+<blockquote>
+<p><strong>强可学习：</strong> 在概率近似正确(PAC)框架下，一个概念(类)，如果存在一个多项式的学习算法能够学习它，并且正确率很高，就称这个概念是强可学习的<br>
+<strong>弱可学习：</strong> 一个概念，如果存在一个多项式的算法能够学习它，但学习的正确率仅仅比随机猜测好，则称该概念是弱可学习</p>
+</blockquote>
+<p>后来Schapire证明了一个重要结论:</p>
+<blockquote>
+<p><strong>一个概念是强可学习的  $\Leftrightarrow$ 一个概念是弱可学习的</strong></p>
+</blockquote>
+<p>这样一来，问题1就转换成了另一个问题:</p>
+<blockquote>
+<p><strong>问题2: 在学习中国，如果已经发现了“弱可学习算法”，那么能否将它提升为强可学习算法？</strong></p>
+</blockquote>
+<p>该部分介绍以下几类提升算法:</p>
+<ul>
+<li>Bagging</li>
+<li><strong>AdaBoost</strong></li>
+<li>随机森林</li>
+<li>提升算法解释</li>
+<li>总结</li>
+</ul>
 <a id="more"></a>
-<h3 id="bagging">Bagging</h3>
-<p>对于一个训练数据集，如果我们将所有的训练集数据拿来训练，那么我们便只能得到一个模型，因此Bagging的思想非常简单： &gt; 每次从训练数据集中取一部分数据来训练模型，通过这种方式得到多个模型，最后的决策结果则由这些模型投票表决</p>
-<p>算法流程如下: &gt; - Step1: 从包含<span class="math inline">\(n\)</span>个样本的数据集中取<span class="math inline">\(m\)</span>个样本作为新的训练集 &gt; - Step2: 用挑选出的数据集来训练得到一个模型 &gt; - Step3: 重复Step1 L次，得到L个模型 &gt; - Step4: 最终决策结果由这<span class="math inline">\(L\)</span>个模型多数投票得到</p>
-<h3 id="adaboost">AdaBoost</h3>
+<h3 id="Bagging">Bagging</h3>
+<p>对于一个训练数据集，如果我们将所有的训练集数据拿来训练，那么我们便只能得到一个模型，因此Bagging的思想非常简单：</p>
+<blockquote>
+<p>每次从训练数据集中取一部分数据来训练模型，通过这种方式得到多个模型，最后的决策结果则由这些模型投票表决</p>
+</blockquote>
+<p>算法流程如下:</p>
+<blockquote>
+<ul>
+<li>Step1: 从包含$n$个样本的数据集中取$m$个样本作为新的训练集</li>
+<li>Step2: 用挑选出的数据集来训练得到一个模型</li>
+<li>Step3: 重复Step1 L次，得到L个模型</li>
+<li>Step4: 最终决策结果由这$L$个模型多数投票得到</li>
+</ul>
+</blockquote>
+<h3 id="AdaBoost">AdaBoost</h3>
 <h4 id="算法流程">算法流程</h4>
-<p>Bagging的思想比较简单粗暴，所有样本都一视同仁，而另一种思路则是改变训练数据的概率分布(训练数据的权值分布)，针对不同的训练数据分布调用弱学习算法学习一系列弱分类器。这样，对于提升算法而言，有两个问题需要回答： - 在每一轮如何改变训练数据的权值或概率分布<br />
-- 如何将这些弱分类器组合成一个强分类器</p>
-<p>AdaBoost针对这两个问题的的解决方案是: - 第1个问题: 提高那些被前一轮弱分类器错误分类样本的权值，而降低那些被正确分类的样本的权值。这样一来，那些没有得到正确分类的数据由于权值加大而受到后一轮弱分类器的更多关注。 - 第2个问题：AdaBoost采用加权表决的方法,加大分类误差率小的弱分类器的权值。</p>
-<p>AdaBoost算法流程如下: &gt; <strong>AdaBoost算法</strong> &gt; <strong>输入：</strong> 训练数据集<span class="math inline">\(T = \{ (x_1,y_1), (x_2,y_2),\dots, (x_N,y_N)\}\)</span>,其中<span class="math inline">\(x_i \in R^n, y_i \in \{ -1, +1 \}\)</span>,弱学习算法 &gt; <strong>输出：</strong> 最终分类器<span class="math inline">\(G(x)\)</span> &gt; 1. 初始化训练数据的权值分布 &gt; <span class="math display">\[
-    D_1 = (w_{11}, \dots, w_{1i}, \dots,w_{1N}), w_{1i} = \frac{1}{N}
-&gt; \]</span> &gt; 2. 对于<span class="math inline">\(m = 1,2,\dots,M\)</span> &gt; - 使用具有权值分布<span class="math inline">\(D_m\)</span>的训练数据集学习，得到基本分类器 &gt; <span class="math display">\[
-        G_m(x): \mathcal{X} \rightarrow \{ -1, +1 \}
-&gt;    \]</span> &gt; - 计算<span class="math inline">\(G_m(x)\)</span> 在训练数据集上的分类误差率 &gt; <span class="math display">\[
-        e_m = \sum_{i=1}^N P(G_m(x_i) \neq y_i) = \sum_{i=1}^N w_{mi} I(G_m(x_i) \neq y_i)
-&gt;    \]</span> &gt; - 计算<span class="math inline">\(G_m(x)\)</span>的系数: &gt; <span class="math display">\[
-        \alpha_m = \frac{1}{2} \log \frac{1 - e_m}{e_m}
-&gt;    \]</span> &gt; - 更新训练数据集的权值分布 &gt; <span class="math display">\[
-    \begin{aligned}
-        D_{m+1} &amp;= (w_{m+1,1},\dots, w_{m+1,i}, \dots,w_{m+1,N}) \\
-        w_{m+1,i} &amp;= \frac{w_{m+1,i}}{Z_{m}} \exp(- \alpha_m y_i G_m(x_i)) \\
-        Z_m &amp;= \sum_{i=1}^N w_{mi} \exp(-\alpha_m y_i G_m(x_i))
-    \end{aligned}
-&gt;   \]</span> &gt; - 构建基本分类器的线性组合: &gt; <span class="math display">\[
-         f(x) = \sum_{m=1}^M \alpha_m G_m(x) 
-&gt;     \]</span> &gt; 得到最终分类器： &gt; <span class="math display">\[
-        G(x) = sign(f(x)) = sign(\sum_{m=1}^M \alpha_m G_m(x))
-&gt;   \]</span></p>
-<p>下面对AdaBoost算法说明如下: - 在最开始假设训练数据具有均匀的权值分布，即每个训练样本在基本分类器中的作用相同，这一假设保证第一步能够在原始数据上学习基本分类器<span class="math inline">\(G_1(x)\)</span> - AdaBoost反复学习基本分类器，在每一轮弱分类器训练中，首先使用当前分布<span class="math inline">\(D_m\)</span>加权的训练数据集，学习基本分类器<span class="math inline">\(G_m(x)\)</span>,使用加权数据进行训练，最终学得的分类器更加关注权重较高的数据，接下来计算该基本分类器<span class="math inline">\(G_m(x)\)</span>在加权训练数据集上的分类误差率,然后通过该误差率计算分类器<span class="math inline">\(G_m(x)\)</span>的权重，从权重计算公式可以看出，当<span class="math inline">\(e_m \leq 0.5\)</span>(弱分类器前提假设)时，<span class="math inline">\(\alpha_m \geq 0\)</span>,且随着<span class="math inline">\(e_m\)</span>减小，<span class="math inline">\(\alpha_m\)</span>会不断增大。 - 接下来更新训练数据的权值，对于被分类器<span class="math inline">\(G_m(x)\)</span>分类正确的样本，增加其权重，反之减少其权重。<strong>不改变所给的训练数据，而是不断改变训练数据权值的分布，使得训练数据在基本分类器的学习中起不同作用。</strong> - 最终的组合分类器是一个基本分类器的线性组合形式，<span class="math inline">\(f(x)\)</span>的符号决定了实例<span class="math inline">\(x\)</span>的类，而<span class="math inline">\(f(x)\)</span>的绝对值则显示了分类结果的置信度。</p>
+<p>Bagging的思想比较简单粗暴，所有样本都一视同仁，而另一种思路则是改变训练数据的概率分布(训练数据的权值分布)，针对不同的训练数据分布调用弱学习算法学习一系列弱分类器。这样，对于提升算法而言，有两个问题需要回答：</p>
+<ul>
+<li>在每一轮如何改变训练数据的权值或概率分布</li>
+<li>如何将这些弱分类器组合成一个强分类器</li>
+</ul>
+<p>AdaBoost针对这两个问题的的解决方案是:</p>
+<ul>
+<li>第1个问题: 提高那些被前一轮弱分类器错误分类样本的权值，而降低那些被正确分类的样本的权值。这样一来，那些没有得到正确分类的数据由于权值加大而受到后一轮弱分类器的更多关注。</li>
+<li>第2个问题：AdaBoost采用加权表决的方法,加大分类误差率小的弱分类器的权值。</li>
+</ul>
+<p>AdaBoost算法流程如下:</p>
+<blockquote>
+<p><strong>AdaBoost算法</strong><br>
+<strong>输入：</strong> 训练数据集$T = { (x_1,y_1), (x_2,y_2),\dots, (x_N,y_N)}$,其中$x_i \in R^n, y_i \in { -1, +1 }$,弱学习算法<br>
+<strong>输出：</strong> 最终分类器$G(x)$</p>
+<ol>
+<li>初始化训练数据的权值分布<br>
+$$<br>
+D_1 = (w_{11}, \dots, w_{1i}, \dots,w_{1N}), w_{1i} = \frac{1}{N}<br>
+$$</li>
+<li>对于$m = 1,2,\dots,M$
+<ul>
+<li>使用具有权值分布$D_m$的训练数据集学习，得到基本分类器<br>
+$$<br>
+G_m(x): \mathcal{X} \rightarrow { -1, +1 }<br>
+$$</li>
+<li>计算$G_m(x)$ 在训练数据集上的分类误差率<br>
+$$<br>
+e_m = \sum_{i=1}^N P(G_m(x_i) \neq y_i) = \sum_{i=1}^N w_{mi} I(G_m(x_i) \neq y_i)<br>
+$$</li>
+<li>计算$G_m(x)$的系数:<br>
+$$<br>
+\alpha_m = \frac{1}{2} \log \frac{1 - e_m}{e_m}<br>
+$$</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>更新训练数据集的权值分布<br>
+$$<br>
+\begin{aligned}<br>
+D_{m+1} &amp;= (w_{m+1,1},\dots, w_{m+1,i}, \dots,w_{m+1,N}) \<br>
+w_{m+1,i} &amp;= \frac{w_{m+1,i}}{Z_{m}} \exp(- \alpha_m y_i G_m(x_i)) \<br>
+Z_m &amp;= \sum_{i=1}^N w_{mi} \exp(-\alpha_m y_i G_m(x_i))<br>
+\end{aligned}<br>
+$$</li>
+<li>构建基本分类器的线性组合:<br>
+$$<br>
+f(x) = \sum_{m=1}^M \alpha_m G_m(x)<br>
+$$<br>
+得到最终分类器：<br>
+$$<br>
+G(x) = sign(f(x)) = sign(\sum_{m=1}^M \alpha_m G_m(x))<br>
+$$</li>
+</ul>
+</blockquote>
+<p>下面对AdaBoost算法说明如下:</p>
+<ul>
+<li>在最开始假设训练数据具有均匀的权值分布，即每个训练样本在基本分类器中的作用相同，这一假设保证第一步能够在原始数据上学习基本分类器$G_1(x)$</li>
+<li>AdaBoost反复学习基本分类器，在每一轮弱分类器训练中，首先使用当前分布$D_m$加权的训练数据集，学习基本分类器$G_m(x)$,使用加权数据进行训练，最终学得的分类器更加关注权重较高的数据，接下来计算该基本分类器$G_m(x)$在加权训练数据集上的分类误差率,然后通过该误差率计算分类器$G_m(x)$的权重，从权重计算公式可以看出，当$e_m \leq 0.5$(弱分类器前提假设)时，$\alpha_m \geq 0$,且随着$e_m$减小，$\alpha_m$会不断增大。</li>
+<li>接下来更新训练数据的权值，对于被分类器$G_m(x)$分类正确的样本，增加其权重，反之减少其权重。<strong>不改变所给的训练数据，而是不断改变训练数据权值的分布，使得训练数据在基本分类器的学习中起不同作用。</strong></li>
+<li>最终的组合分类器是一个基本分类器的线性组合形式，$f(x)$的符号决定了实例$x$的类，而$f(x)$的绝对值则显示了分类结果的置信度。</li>
+</ul>
 <h4 id="算法理论说明">算法理论说明</h4>
-<p>上一部分从算法思想来对AdaBoost进行理解，这一部分将从理论推导方面证明AdaBoost中的一些关键公式是如何来的，比如： - 分类器权重<span class="math inline">\(\alpha_m = \frac{1}{2} \log \frac{1-e_m}{e_m}\)</span> - 样本点权重更新公式： <span class="math display">\[
-\begin{aligned}
-    D_{m+1} &amp;= (w_{m+1,1},\dots, w_{m+1,i}, \dots,w_{m+1,N}) \\
-    w_{m+1,i} &amp;= \frac{w_{m+1,i}}{Z_{m}} \exp(- \alpha_m y_i G_m(x_i)) \\
-    Z_m &amp;= \sum_{i=1}^N w_{mi} \exp(-\alpha_m y_i G_m(x_i))
-\end{aligned}
-\]</span></p>
-<h5 id="adaboost算法训练误差界">AdaBoost算法训练误差界</h5>
-<p>首先来推导下AdaBoost的训练误差界，样本<span class="math inline">\(x_i\)</span> 在第<span class="math inline">\(t\)</span>轮训练时的权重，由样本点权重递推公式可以得到： <span class="math display">\[
-    w_{t+1i} = w_{ti} \frac{e^{-\alpha_t y_i h_t(i)}}{Z_{t}} = \dots = w_{1i} \frac{e^{-y_i \sum_{j=1}^t \alpha_j h_j(i)}}{\prod_{i=1}^{t} Z_i}
-\]</span> 其中<span class="math inline">\(w_{1i} = \frac{1}{N}\)</span>,若记： <span class="math display">\[
-    \boldsymbol{\alpha} = [\alpha_1,\alpha_2,\dots, \alpha_t], \boldsymbol{h(x)} = [h_1(i),h_2(i),\dots, h_t(i)] 
-\]</span> <span class="math inline">\(w_{t+1i}\)</span>可以写成更加紧凑的形式: <span class="math display">\[
-    w_{t+1i} = \frac{e^{-y_i &lt;\boldsymbol{\alpha}, \boldsymbol{h(x)}&gt;}}{N \prod_{i=1}^t Z_i}
-\]</span> 又因为有<span class="math inline">\(\sum_{i=1}^N w_{t+1i} = 1\)</span>,对上式求和后可得： <span class="math display">\[
-    \prod_{i=1}^t Z_i = \frac{1}{N} \sum_{i=1}^N e^{-y_i &lt;\boldsymbol{\alpha}, \boldsymbol{h(x)}&gt;}
-\]</span> 需要注意的是，<span class="math inline">\(&lt;\boldsymbol{\alpha}, \boldsymbol{h(x)}&gt;\)</span>刚好是使用AdaBoost最终得到模型的预测结果(未取sign)，下面考虑两种情况： <span class="math display">\[
-    \begin{aligned}
-        &amp;If \quad sign(&lt;\boldsymbol{\alpha}, \boldsymbol{h(x_i)}&gt;) = h(x_i) = y_i \Rightarrow &lt;\boldsymbol{\alpha}, \boldsymbol{h(x)}&gt; \cdot y_i = c \geq 0  , 0 \leq e^{-c}  \\
-        &amp;If \quad sign(&lt;\boldsymbol{\alpha}, \boldsymbol{h(x_i)}&gt;) = h(x_i) \neq y_i \Rightarrow &lt;\boldsymbol{\alpha}, \boldsymbol{h(x)}&gt; \cdot y_i = c \leq 0  , 1 \leq e^{-c} 
-    \end{aligned}
-\]</span> 而AdaBoost最终训练得到的模型的分类误差为: <span class="math display">\[
-    \epsilon  = \frac{1}{N}\sum_{i=1}^N \epsilon_i, \epsilon_i = \begin{cases}
-        1 &amp; h(x_i) \neq y_i \\
-        0 &amp; h(x_i) = y_i
-    \end{cases}
-\]</span> 从前面两种分类讨论可以得到: <span class="math display">\[
-    \epsilon_i \leq e^{-y_i &lt;\boldsymbol{\alpha}, \boldsymbol{h(x_i)}&gt;} 
-\]</span> 由此便可以得到AdaBoost分类器的<strong>分类错误率上界</strong>： <span class="math display">\[
- \epsilon = \frac{1}{N}\sum_{i=1}^N \epsilon_i \leq \frac{1}{N} \sum_{i=1}^N e^{-y_i &lt;\boldsymbol{\alpha}, \boldsymbol{h(x_i)}&gt;}  = \prod_{i=1}^t Z_i
-\]</span></p>
-<h5 id="alpha_tast-推导"><span class="math inline">\(\alpha_t^\ast\)</span> 推导</h5>
-<p>需要注意的是，我们上面并未指定权重<span class="math inline">\(\alpha\)</span>的表达式，那么现在我们考虑这样一个问题: &gt; <span class="math inline">\(\alpha\)</span>取什么值时分类错误率的上界可以尽可能小</p>
-<p>因为<span class="math inline">\(Z_i\)</span>的大小依赖于<span class="math inline">\(\alpha_i\)</span>，而且它们都是迭代过程中的变量，因此可以考虑将上述问题转化为: &gt; 如何在每一步迭代中选择合适的<span class="math inline">\(\alpha_t\)</span>使得<span class="math inline">\(Z_t\)</span>尽可能小</p>
-<p><span class="math inline">\(Z_t\)</span>的表达式如下: <span class="math display">\[
-    Z_t = \sum_{i=1}^N w_{ti} e^{-\alpha_t y_i h_t(x_i)}
-\]</span> 这是一个凸函数，因此可以直接求导令导数等于0： <span class="math display">\[
-    \frac{\partial Z_t}{\partial \alpha_t} = -\sum_{i=1}^N w_{ti} y_i h_t(x_i) e^{-\alpha_t y_i h_t(x_i)} = 0 
-\]</span> 下面考虑两个集合： <span class="math display">\[
-    A = y_i h_t(x_i) = 1, \bar{A} = y_i h_t(x_i) = -1
-\]</span> 据此，上面的偏导可以写成: <span class="math display">\[
-    \frac{\partial Z_t}{\partial \alpha_t} = -\sum_{x_i \in A} w_{ti} e^{-\alpha_t} + \sum_{x_i \in \bar{A}} w_{ti} e^{\alpha} = 0 
-\]</span> 由此可得: <span class="math display">\[
-    e^{2\alpha_t} = \frac{\sum_{x_i \in A} w_{ti}}{\sum_{x_i \in \bar{A}} w_{ti}} = \frac{1 -\epsilon_t}{\epsilon_t}
-\]</span> 求得<span class="math inline">\(\alpha_t\)</span>的最优取值为: <span class="math display">\[
-    \alpha_t^\ast = \frac{1}{2} \log \frac{1 - \epsilon_t}{\epsilon_t}
-\]</span> 至此我们便理解了每一步迭代<span class="math inline">\(\alpha_t\)</span>表达式的来源，该表达式刚好可以保证最终得到的分类器错误率上界尽可能小(局部最小)。 ##### 训练误差界(二分类问题) 对于一个二分类问题，则可以将<span class="math inline">\(Z_t\)</span>的表达式直接写出: <span class="math display">\[
-    Z_t = 2 \sqrt{e_t(1 - e_t)}
-\]</span> 令<span class="math inline">\(e_t = \frac{1}{2} - \gamma_t\)</span>,则可得： <span class="math display">\[
-    Z_t = \sqrt{1 - 4 \gamma_t^2} \leq e^{-2 \gamma_t^2}
-\]</span> 由此便可得分类错误率上界为: <span class="math display">\[
-    \prod_{i=1}^t Z_i \leq e^{-2 \sum_{i=1}^t \gamma_t^2}
- \]</span> 据此可以得到推论: &gt;<strong>推论：</strong> 如果存在<span class="math inline">\(\gamma &gt;0\)</span>,对所有<span class="math inline">\(i\)</span>有，<span class="math inline">\(\gamma_i \geq \gamma\)</span>,则有： <span class="math display">\[
-    \frac{1}{N} \sum_{i=1}^N I(h(x_i) \neq y_i) \leq \exp(-2N\gamma^2)
-\]</span> 这说明对于二分类问题，AdaBoost的训练误差是指数速率下降的。</p>
-<p><strong>tips:</strong> - 对于无法接受带权样本的基学习算法，可以通过重采样法来处理，即在每一轮学习中，根据样本分布对训练集重新进行采样，变相实现带权样本，两种做法没有本质区别。 - Boosting算法在训练的每一轮都需要检查当前生成的基学习器是否满足条件(比随机猜测要好)，若不满足，则抛弃该基学习器，学习过程停止，若采用&quot;重采样法&quot;，则可获得“重启动机会”，避免算法过早停止。</p>
+<p>上一部分从算法思想来对AdaBoost进行理解，这一部分将从理论推导方面证明AdaBoost中的一些关键公式是如何来的，比如：</p>
+<ul>
+<li>分类器权重$\alpha_m = \frac{1}{2} \log \frac{1-e_m}{e_m}$</li>
+<li>样本点权重更新公式：<br>
+$$<br>
+\begin{aligned}<br>
+D_{m+1} &amp;= (w_{m+1,1},\dots, w_{m+1,i}, \dots,w_{m+1,N}) \<br>
+w_{m+1,i} &amp;= \frac{w_{m+1,i}}{Z_{m}} \exp(- \alpha_m y_i G_m(x_i)) \<br>
+Z_m &amp;= \sum_{i=1}^N w_{mi} \exp(-\alpha_m y_i G_m(x_i))<br>
+\end{aligned}<br>
+$$</li>
+</ul>
+<h5 id="AdaBoost算法训练误差界">AdaBoost算法训练误差界</h5>
+<p>首先来推导下AdaBoost的训练误差界，样本$x_i$ 在第$t$轮训练时的权重，由样本点权重递推公式可以得到：<br>
+$$<br>
+w_{t+1i} = w_{ti} \frac{e^{-\alpha_t y_i h_t(i)}}{Z_{t}} = \dots = w_{1i} \frac{e^{-y_i \sum_{j=1}^t \alpha_j h_j(i)}}{\prod_{i=1}^{t} Z_i}<br>
+$$<br>
+其中$w_{1i} = \frac{1}{N}$,若记：<br>
+$$<br>
+\boldsymbol{\alpha} = [\alpha_1,\alpha_2,\dots, \alpha_t], \boldsymbol{h(x)} = [h_1(i),h_2(i),\dots, h_t(i)]<br>
+$$<br>
+$w_{t+1i}$可以写成更加紧凑的形式:<br>
+$$<br>
+w_{t+1i} = \frac{e^{-y_i &lt;\boldsymbol{\alpha}, \boldsymbol{h(x)}&gt;}}{N \prod_{i=1}^t Z_i}<br>
+$$<br>
+又因为有$\sum_{i=1}^N w_{t+1i} = 1$,对上式求和后可得：<br>
+$$<br>
+\prod_{i=1}^t Z_i = \frac{1}{N} \sum_{i=1}^N e^{-y_i &lt;\boldsymbol{\alpha}, \boldsymbol{h(x)}&gt;}<br>
+$$<br>
+需要注意的是，$&lt;\boldsymbol{\alpha}, \boldsymbol{h(x)}&gt;$刚好是使用AdaBoost最终得到模型的预测结果(未取sign)，下面考虑两种情况：<br>
+$$<br>
+\begin{aligned}<br>
+&amp;If \quad sign(&lt;\boldsymbol{\alpha}, \boldsymbol{h(x_i)}&gt;) = h(x_i) = y_i \Rightarrow &lt;\boldsymbol{\alpha}, \boldsymbol{h(x)}&gt; \cdot y_i = c \geq 0  , 0 \leq e^{-c}  \<br>
+&amp;If \quad sign(&lt;\boldsymbol{\alpha}, \boldsymbol{h(x_i)}&gt;) = h(x_i) \neq y_i \Rightarrow &lt;\boldsymbol{\alpha}, \boldsymbol{h(x)}&gt; \cdot y_i = c \leq 0  , 1 \leq e^{-c}<br>
+\end{aligned}<br>
+$$<br>
+而AdaBoost最终训练得到的模型的分类误差为:<br>
+$$<br>
+\epsilon  = \frac{1}{N}\sum_{i=1}^N \epsilon_i, \epsilon_i = \begin{cases}<br>
+1 &amp; h(x_i) \neq y_i \<br>
+0 &amp; h(x_i) = y_i<br>
+\end{cases}<br>
+$$<br>
+从前面两种分类讨论可以得到:<br>
+$$<br>
+\epsilon_i \leq e^{-y_i &lt;\boldsymbol{\alpha}, \boldsymbol{h(x_i)}&gt;}<br>
+$$<br>
+由此便可以得到AdaBoost分类器的<strong>分类错误率上界</strong>：<br>
+$$<br>
+\epsilon = \frac{1}{N}\sum_{i=1}^N \epsilon_i \leq \frac{1}{N} \sum_{i=1}^N e^{-y_i &lt;\boldsymbol{\alpha}, \boldsymbol{h(x_i)}&gt;}  = \prod_{i=1}^t Z_i<br>
+$$</p>
+<h5 id="alpha-t-ast-推导">$\alpha_t^\ast$ 推导</h5>
+<p>需要注意的是，我们上面并未指定权重$\alpha$的表达式，那么现在我们考虑这样一个问题:</p>
+<blockquote>
+<p>$\alpha$取什么值时分类错误率的上界可以尽可能小</p>
+</blockquote>
+<p>因为$Z_i$的大小依赖于$\alpha_i$，而且它们都是迭代过程中的变量，因此可以考虑将上述问题转化为:</p>
+<blockquote>
+<p>如何在每一步迭代中选择合适的$\alpha_t$使得$Z_t$尽可能小</p>
+</blockquote>
+<p>$Z_t$的表达式如下:<br>
+$$<br>
+Z_t = \sum_{i=1}^N w_{ti} e^{-\alpha_t y_i h_t(x_i)}<br>
+$$<br>
+这是一个凸函数，因此可以直接求导令导数等于0：<br>
+$$<br>
+\frac{\partial Z_t}{\partial \alpha_t} = -\sum_{i=1}^N w_{ti} y_i h_t(x_i) e^{-\alpha_t y_i h_t(x_i)} = 0<br>
+$$<br>
+下面考虑两个集合：<br>
+$$<br>
+A = y_i h_t(x_i) = 1, \bar{A} = y_i h_t(x_i) = -1<br>
+$$<br>
+据此，上面的偏导可以写成:<br>
+$$<br>
+\frac{\partial Z_t}{\partial \alpha_t} = -\sum_{x_i \in A} w_{ti} e^{-\alpha_t} + \sum_{x_i \in \bar{A}} w_{ti} e^{\alpha} = 0<br>
+$$<br>
+由此可得:<br>
+$$<br>
+e^{2\alpha_t} = \frac{\sum_{x_i \in A} w_{ti}}{\sum_{x_i \in \bar{A}} w_{ti}} = \frac{1 -\epsilon_t}{\epsilon_t}<br>
+$$<br>
+求得$\alpha_t$的最优取值为:<br>
+$$<br>
+\alpha_t^\ast = \frac{1}{2} \log \frac{1 - \epsilon_t}{\epsilon_t}<br>
+$$<br>
+至此我们便理解了每一步迭代$\alpha_t$表达式的来源，该表达式刚好可以保证最终得到的分类器错误率上界尽可能小(局部最小)。</p>
+<h5 id="训练误差界-二分类问题">训练误差界(二分类问题)</h5>
+<p>对于一个二分类问题，则可以将$Z_t$的表达式直接写出:<br>
+$$<br>
+Z_t = 2 \sqrt{e_t(1 - e_t)}<br>
+$$<br>
+令$e_t = \frac{1}{2} - \gamma_t$,则可得：<br>
+$$<br>
+Z_t = \sqrt{1 - 4 \gamma_t^2} \leq e^{-2 \gamma_t^2}<br>
+$$<br>
+由此便可得分类错误率上界为:<br>
+$$<br>
+\prod_{i=1}^t Z_i \leq e^{-2 \sum_{i=1}^t \gamma_t^2}<br>
+$$<br>
+据此可以得到推论:</p>
+<blockquote>
+<p><strong>推论：</strong> 如果存在$\gamma &gt;0$,对所有$i$有，$\gamma_i \geq \gamma$,则有：<br>
+$$<br>
+\frac{1}{N} \sum_{i=1}^N I(h(x_i) \neq y_i) \leq \exp(-2N\gamma^2)<br>
+$$<br>
+这说明对于二分类问题，AdaBoost的训练误差是指数速率下降的。</p>
+</blockquote>
+<p><strong>tips:</strong></p>
+<ul>
+<li>对于无法接受带权样本的基学习算法，可以通过重采样法来处理，即在每一轮学习中，根据样本分布对训练集重新进行采样，变相实现带权样本，两种做法没有本质区别。</li>
+<li>Boosting算法在训练的每一轮都需要检查当前生成的基学习器是否满足条件(比随机猜测要好)，若不满足，则抛弃该基学习器，学习过程停止，若采用&quot;重采样法&quot;，则可获得“重启动机会”，避免算法过早停止。</li>
+</ul>
 <h3 id="随机森林">随机森林</h3>
-<p>随机森林算法其实就是以决策树算法作为基学习算法，选用Bagging策略作为提升策略，最终得到的一个算法，可以这么理解: <span class="math display">\[
-    随机森林 = 决策树 + Bagging
-\]</span> 随机森林算法简单、容易实现、计算开销小，令人惊奇的是，它在很多现实任务中展现了强大的性能，被誉为“代表集成学习技术水平的方法”。 不过传统的Bagging算法仅仅是在训练样本上引入随机性，而随机森林往往考虑在属性选择上引入随机性，具体做法是:原始的决策树算法是从该节点所有属性中选择一个最优属性进行节点分裂，而作为基学习器，为进一步引入随机性，一般会规定从当前节点所有属性中随机选<span class="math inline">\(k\)</span>个，然后从这<span class="math inline">\(k\)</span>个属性中选择一个最优的来分裂节点，若该节点有<span class="math inline">\(d\)</span>个属性，常见的<span class="math inline">\(k\)</span>的取值为<span class="math inline">\(k = \log_2 d\)</span></p>
+<p>随机森林算法其实就是以决策树算法作为基学习算法，选用Bagging策略作为提升策略，最终得到的一个算法，可以这么理解:<br>
+$$<br>
+随机森林 = 决策树 + Bagging<br>
+$$<br>
+随机森林算法简单、容易实现、计算开销小，令人惊奇的是，它在很多现实任务中展现了强大的性能，被誉为“代表集成学习技术水平的方法”。<br>
+不过传统的Bagging算法仅仅是在训练样本上引入随机性，而随机森林往往考虑在属性选择上引入随机性，具体做法是:原始的决策树算法是从该节点所有属性中选择一个最优属性进行节点分裂，而作为基学习器，为进一步引入随机性，一般会规定从当前节点所有属性中随机选$k$个，然后从这$k$个属性中选择一个最优的来分裂节点，若该节点有$d$个属性，常见的$k$的取值为$k = \log_2 d$</p>
 <h3 id="提升算法解释">提升算法解释</h3>
-<p>学习器结合可能会从三个方面带来好处: - 从统计的方面来看，由于学习任务的假设空间往往非常大，此时若使用单学习器可能因误选而导致泛化性能不佳，结合多个学习器会减少这一风险。 - 从计算角度来看，学习算法往往会陷入局部极小，有的局部极小点所对应的泛化性能可能非常糟糕，而通过多次运行之后进行结合，可降低陷入糟糕极小点的风险。 - 从表示的方面来看，某些学习任务的真实假设可能不在当前学习算法s所考虑的假设空间中，此时若使用单学习器肯定无效，而通过结合多个学习器，由于相应的假设空间有所扩大，有可能学得更好的近似。</p>
-<figure>
-<img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/Ensemble.png" alt="集成学习解释" /><figcaption>集成学习解释</figcaption>
-</figure>
+<p>学习器结合可能会从三个方面带来好处:</p>
+<ul>
+<li>从统计的方面来看，由于学习任务的假设空间往往非常大，此时若使用单学习器可能因误选而导致泛化性能不佳，结合多个学习器会减少这一风险。</li>
+<li>从计算角度来看，学习算法往往会陷入局部极小，有的局部极小点所对应的泛化性能可能非常糟糕，而通过多次运行之后进行结合，可降低陷入糟糕极小点的风险。</li>
+<li>从表示的方面来看，某些学习任务的真实假设可能不在当前学习算法s所考虑的假设空间中，此时若使用单学习器肯定无效，而通过结合多个学习器，由于相应的假设空间有所扩大，有可能学得更好的近似。</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/Ensemble.png" alt="集成学习解释"></p>
 <h3 id="总结">总结</h3>
-<p>该部分主要总结下两个方面的内容，一个是结合策略的选择，另一个则是引入扰动的思路。 #### 结合策略 结合策略主要有以下几种: - 平均法,包括简单平均法和加权平均法，一般而言，在个体学习器性能相差较大时，加权平均法表现较好，在个体学习器性能接近时采用简单平均法较好。 - 投票法,包括绝对多数投票法(设定得票率阈值)，相对多数投票法，加权投票法 - 学习法，即通过另一个学习器来结合这些基于学习器，该学习器被称为元学习器或者次级学习器，基学习器被称作初级学习器，初级学习器的输出作为次级学习器的输入。</p>
+<p>该部分主要总结下两个方面的内容，一个是结合策略的选择，另一个则是引入扰动的思路。</p>
+<h4 id="结合策略">结合策略</h4>
+<p>结合策略主要有以下几种:</p>
+<ul>
+<li>平均法,包括简单平均法和加权平均法，一般而言，在个体学习器性能相差较大时，加权平均法表现较好，在个体学习器性能接近时采用简单平均法较好。</li>
+<li>投票法,包括绝对多数投票法(设定得票率阈值)，相对多数投票法，加权投票法</li>
+<li>学习法，即通过另一个学习器来结合这些基于学习器，该学习器被称为元学习器或者次级学习器，基学习器被称作初级学习器，初级学习器的输出作为次级学习器的输入。</li>
+</ul>
 <h4 id="引入扰动">引入扰动</h4>
-<p>常见的引入扰动的思路有如下几种: - 数据样本扰动 - 输入属性扰动 - 输出表示扰动 - 算法参数扰动</p>
+<p>常见的引入扰动的思路有如下几种:</p>
+<ul>
+<li>数据样本扰动</li>
+<li>输入属性扰动</li>
+<li>输出表示扰动</li>
+<li>算法参数扰动</li>
+</ul>
 
             </div>
             <hr/>
@@ -1120,7 +1265,14 @@
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            近些年来，神经网络算法家族蓬勃发展，本部分主要介绍一下这些算法的一些通用原理基础，该部分按照以下结构组织: - 神经元模型 - 多层神经网络 - 反向传播算法(BP) - 网络训练中常见问题 - 常见网络模型介绍
+                            近些年来，神经网络算法家族蓬勃发展，本部分主要介绍一下这些算法的一些通用原理基础，该部分按照以下结构组织:
+
+神经元模型
+多层神经网络
+反向传播算法(BP)
+网络训练中常见问题
+常见网络模型介绍
+
                         
                     </div>
                     <div class="publish-info">
@@ -1169,7 +1321,12 @@
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            线性判别分析(LDA)是一种经典的线性学习方法，在二分类问题上最早由fisher提出，因此线性判别分析又称Fisher线性判别，该部分按照以下结构组织: - LDA算法思想 - LDA算法推导 - 多分类任务
+                            线性判别分析(LDA)是一种经典的线性学习方法，在二分类问题上最早由fisher提出，因此线性判别分析又称Fisher线性判别，该部分按照以下结构组织:
+
+LDA算法思想
+LDA算法推导
+多分类任务
+
                         
                     </div>
                     <div class="publish-info">
@@ -1406,7 +1563,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">74.4k</span>&nbsp;字
+                class="white-color">73.6k</span>&nbsp;字
             
             
             
@@ -1539,6 +1696,23 @@ $(function () {
     if (windowWidth > 768) { document.write('<script type="text/javascript" src="/js/sakura.js"><\/script>'); 
     } 
 </script> 
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!-- <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 
 </body>
 </html>
