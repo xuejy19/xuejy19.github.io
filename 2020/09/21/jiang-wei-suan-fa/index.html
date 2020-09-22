@@ -476,21 +476,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2020-09-21
+                    2020-09-22
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    3.8k
+                    5.9k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    15 分
+                    24 分
                 </div>
                 
 
@@ -511,7 +511,8 @@
 <li>主成分分析法(PCA)</li>
 <li>多维缩放(MDS)</li>
 <li>等距特征映射(ISOMAP) </li>
-<li>局部线性嵌入</li>
+<li>局部线性嵌入(LLE)</li>
+<li>实验部分</li>
 </ul>
 <p>在详述各种降维方法之前，我们需要明确这样一件事：</p>
 <blockquote>
@@ -659,6 +660,119 @@
     \end{bmatrix}</script><p>降维后的数据矩阵记为:</p>
 <script type="math/tex; mode=display">
     X = \Lambda^{\frac{1}{2}} V^T = [x_1, x_2, \dots, x_n]</script><h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>MDS算法的降维思想是期望能够在低维空间重构原始样本空间中样本之间的距离关系，上面的推导都是在以欧式距离作为距离度量下推导出的，若选择其他距离方式则没有这样的结论，需要求解相对应的优化问题来迭代优化求解。</p>
+<h3 id="等距特征映射-ISOMAP"><a href="#等距特征映射-ISOMAP" class="headerlink" title="等距特征映射(ISOMAP)"></a>等距特征映射(ISOMAP)</h3><h4 id="流形学习"><a href="#流形学习" class="headerlink" title="流形学习"></a>流形学习</h4><p>流形学习是一类借鉴了拓扑流形概念的降维方法。“流形”是在局部与欧式空间同胚的空间，换言之，它在局部具有欧式空间的性质，可以用欧式距离来进行距离计算。当低维流形嵌入到高维空间时，则数据样本尽管在高维空间中看起来非常复杂，但在局部仍然具有欧式空间的性质，因此，可以很容易地在局部建立降维映射关系，然后再将局部映射关系推广到全局。下图中作图就是一个二维流形嵌入到了三维空间，若利用流形学习的算法将其降到二维，则如右图所示。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/manifold.png" alt="流形数据"></p>
+<h4 id="ISOMAP-思想"><a href="#ISOMAP-思想" class="headerlink" title="ISOMAP 思想"></a>ISOMAP 思想</h4><p>ISOMAP 的思想其实与 多维尺度缩放(MDS)思想一致，区别在于:</p>
+<ul>
+<li>MDS假设样本点存在于欧式空间中，通过欧式距离来衡量样本的距离。 </li>
+<li>ISOMAP假设样本存在于欧式空间的一个低维流形上，在低维流形上，样本之间只有相距较近才可用欧式距离来度量，然后再利用最短路算法构造样本之间的“测地线”距离，即沿流形的最短距离。</li>
+</ul>
+<p>因此关键问题就在于如何构建“测地线”距离矩阵，这时我们可以利用流形在局部上与欧式空间同胚的特性，对每个点基于欧式距离找到其近邻点，图中近邻点之间存在连接，而非近邻点不存在连接。于是，计算两点之间测地线距离的问题就变成了计算近邻连接图两点最短路径问题，此时采用dijkstra算法求解即可, 最短路算法流程可以参考如下代码:</p>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">def usedijk(dist):
+    n = dist.shape[0]
+    for i in range(n):
+        col = dist[i,:].copy()
+        while(1):
+            index = np.argsort(col)[1] # 距离最近的点
+            if col[index] > 1000:
+                break 
+            length = dist[i,index] #距离最近的点的距离
+            for j in range(n):
+                if  dist[i,j] > dist[index,j] + length:
+                    col[j] = dist[index,j] + length
+                    dist[i,j] = dist[index,j] + length
+                    # dist[j,start] = dist[start,j]
+            col[index] = np.inf
+    return dist
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>不过这样需要注意，因为$a$是$b$的近邻点但$b$未必是$a$的近邻点，因此输入的dist矩阵并不对称，如果想要对称，可以通过对称近邻法，即$a$是$b$的近邻的同时将$b$设置为$a$的近邻，下面总结下ISOMAP算法的流程:</p>
+<blockquote>
+<p><strong>ISOMAP:</strong><br><strong>输入:</strong> 样本集$D = (x_1,x_2,\dots, x_n)$,近邻参数$k$, 低维空间参数$d’$<br><strong>输出:</strong> 样本集$D$在低维空间中的投影$X = (x_1,x_2, \dots, x_n)$<br><strong>算法流程:</strong> </p>
+<ul>
+<li>计算距离矩阵$D$，各个样本点$k$近邻的距离保存，其余设置为无穷,复杂度:$O(n^2)$ </li>
+<li>调用最短路算法计算任意两样本之间的测地线距离矩阵$D’$, 复杂度: $O(kn^2)$</li>
+<li>将$D’$输入MDS算法，返回得到降维后的数据$X$, 复杂度: $O(n^2)$</li>
+</ul>
+</blockquote>
+<h3 id="局部线性嵌入-LLE"><a href="#局部线性嵌入-LLE" class="headerlink" title="局部线性嵌入(LLE)"></a>局部线性嵌入(LLE)</h3><h4 id="算法思想"><a href="#算法思想" class="headerlink" title="算法思想"></a>算法思想</h4><p>与ISOMAP 试图保持近邻样本之间的距离不同， 局部线性嵌入试图保持邻域样本之间的线性关系，假设在原始空间中，样本点$x_i$能够通过它的邻域样本$x_j, x_k, x_l$重构：</p>
+<script type="math/tex; mode=display">
+    x_i = w_{ij} x_j + w_{ik} x_k + w_{il} x_l</script><p>假设我们将样本从原始$d$维空间投影到$d’$维空间，$x_i$及其近邻点在低维空间中的投影点为$x’_i, x’_j,x’_k, x’_l$,我们希望在低维空间中仍能够保留高维空间中的近邻线性重构关系，即:</p>
+<script type="math/tex; mode=display">
+    x'_i = w_{ij} x'_j + w_{ik} x'_k + w_{il} x'_l</script><p>具体算法思想如下图所示，可以看到所有降维算法的目的都是期望降维后的数据能够与原始空间中的数据尽可能“相似”，选用不同的度量“相似性”的方法也就产生了不同的降维算法。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/lle1.png" alt="Local linear embedding"></p>
+<h4 id="数学推导-1"><a href="#数学推导-1" class="headerlink" title="数学推导"></a>数学推导</h4><p>从上面分析中可以看出，整个算法流程大致可以分为两步:</p>
+<ul>
+<li>在原始样本空间中求解权重矩阵</li>
+<li>在低维空间中重构近邻线性关系  </li>
+</ul>
+<h5 id="权重矩阵求解"><a href="#权重矩阵求解" class="headerlink" title="权重矩阵求解"></a>权重矩阵求解</h5><p>首先假设原始空间中共有$n$个样本$(x_1, x_2, \dots, x_n)$, 假设对于样本点$x_i$，其近邻点分别为$x_{i1}, x_{i2}, \dots, x_{ik}$, 则我们期望找到这样一组权重：</p>
+<script type="math/tex; mode=display">
+    w_i = [w_{i1}, w_{i2}, \dots, w_{ik}]^T</script><p>使得$||x_i - \sum_{j=1}^k w_{ij} x_{ij} ||^2$尽可能小，这样目标函数就可以写做:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        &target = \sum_{i=1}^n ||x_i - \sum_{j=1}^k w_{ij} x_{ij}||^2  \\
+        & s.t. \sum_{j=1}^k x_{ij} = 1 , i=1,2,\dots, n
+    \end{aligned}</script><p>我们将目标函数改写一下:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        target &= \sum_{i=1}^n ||x_i - \sum_{j=1}^k w_{ij} x_{ij}||^2  \\
+            &= \sum_{i=1}^n ||\sum_{j=1}^k w_{ij}(x_i - x_{ij})||^2 \\
+            &= \sum_{i=1}^n || (X_i - N_i)w_i ||^2 \\
+            &= \sum_{i=1}^n w_i^T (X_i - N_i)^T (X_i - N_i) w_i  
+    \end{aligned}</script><p>上式中：</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        X_i &= [x_i, \dots, x_i]_{d \times k} \\
+        N_i &= [x_{i1}, \dots, x_{ik}]_{d \times k} \\
+        w_i &= [w_{i1}, w_{i2}, \dots, w_{ik}]^T
+    \end{aligned}</script><p>若记$S_i = (X_i -N_i)^T(X_i - N_i)$,则优化问题可以写做:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        & \min \sum_{i=1}^n w_i^T S_i w_i  \\  
+        & s.t. w_i^T \mathbf{1} = 1, i = 1,2,\dots, n
+    \end{aligned}</script><p>该优化问题可以通过Lagrange乘子法求解，首先写出Lagrange方程:</p>
+<script type="math/tex; mode=display">
+    L = \sum_{i=1}^n w_i^T S_i w_i  - \sum_{i=1}^n \lambda_i(w_i^T \mathbf{1} - 1)</script><p>对$w_i$求偏导可得:</p>
+<script type="math/tex; mode=display">
+    \frac{\partial L}{\partial w_i} = 2 S_i w_i - \lambda_i \mathbf{1} = 0</script><p>再应用$w_i^T \mathbf{1} = 1$的条件可得:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        \lambda_i &= \frac{2}{\mathbf{1}^T S_i \mathbf{1}} \\
+        w_i &= \frac{S_i^{-1} \mathbf{1}}{\mathbf{1}^T S_i^{-1} \mathbf{1}}
+    \end{aligned}</script><p>至此我们便得到了权重系数，为了便于接下来计算，让这些权重系数构成系数矩阵$W$:</p>
+<script type="math/tex; mode=display">
+    W = [w'_1, w'_2, \dots, w'_n]_{n \times n}</script><p>其中$w’_i$是将除$w_i$以外的其他样本的系数置零得到, $W$是一个稀疏矩阵。</p>
+<h5 id="低维空间投影"><a href="#低维空间投影" class="headerlink" title="低维空间投影"></a>低维空间投影</h5><p>我们期望在低维空间$\mathbb{R}^{d’}$中能够保持近邻线性重构关系，也就是说我们期望找到一组样本点:</p>
+<script type="math/tex; mode=display">
+    Z = (z_1, z_2, \dots, z_n)</script><p>使得:</p>
+<script type="math/tex; mode=display">
+    \sum_{i=1}^n ||z_i - Z w_i||^2</script><p>能够尽可能小，我们对目标函数做进一步化简:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        target &= \sum_{i=1}^n ||z_i - Z w_i||^2 \\  
+               &= \sum_{i=1}^n || Z(I_i - w_i) ||^2  \\
+               &= \sum_{i=1}^n (I_i - w_i)^T Z^T Z (I_i - w_i) \\
+               &= trace((I-W)^T Z^T Z (I-W)) \\
+               &= trace(Z(I-W)(I-W)^T Z^T)  \\
+               &= trace(Z M Z^T) 
+    \end{aligned}</script><p>式中$M = (I-W)(I - W)^T$,同时需要注意到如果我们对降维后空间点的尺度不加限制，那么只要$(z_1, z_2, \dots, z_n)$的模长不断减小，则目标函数就会不断减小，算法不会收敛，同时考虑到我们只是期望在低维空间中保持高维空间中的近邻线性重构关系，如果在标准尺度下能够重构得很好，那么对所有样本点同时进行缩放后依然能够很好地重构，所以优化问题需要加入一个约束条件$Z Z^T = nI$,优化问题最终可以写做:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        &\min trace(Z M Z^T)  \\
+        & s.t. Z Z^T = nI 
+    \end{aligned}</script><p>对于该优化问题的求解依旧是通过Lagrange乘子法，首先写出Lagrange方程:</p>
+<script type="math/tex; mode=display">
+    L = trace(Z M Z^T) - \lambda (Z Z^T - nI)</script><p>若将变量矩阵$Z$以行向量形式来表示：</p>
+<script type="math/tex; mode=display">
+    Z = [p_1^T;p_2^T,p_{d'}^T]</script><p>那么Lagrange函数就可以写做：</p>
+<script type="math/tex; mode=display">
+    L = \sum_{i=1}^{d'} p_i^T M p_i - \sum_{i=1}^{d'} \lambda_i (p_i^T p_i - 1)</script><p>对$p_i$求导可得:</p>
+<script type="math/tex; mode=display">
+    \frac{\partial L}{\partial p_i} = 2M p_i = 2\lambda_i p_i</script><p>即$p_i$应当是$M$的特征向量，回代目标函数可得:</p>
+<script type="math/tex; mode=display">
+    target = \sum_{i=1}^{d'} \lambda_i</script><p>又因为我们是期望目标函数最小，因此只需要取矩阵$M$的前$d’$个最小的特征值(非0)作为矩阵$Z$的行向量即可。</p>
+<h3 id="实验部分"><a href="#实验部分" class="headerlink" title="实验部分"></a>实验部分</h3><h4 id="PCA"><a href="#PCA" class="headerlink" title="PCA"></a>PCA</h4><p>将MNIST手写数字数据集应用PCA从28*28维降到1维和2维的效果图如下:<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/pca1.png" alt="PCA:1维"><br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/pca2.png" alt="PCA:2维"></p>
+<h4 id="MDS"><a href="#MDS" class="headerlink" title="MDS"></a>MDS</h4><p>给若干城市之间的乘车时间信息作为相似度矩阵，然后还原这些城市的坐标。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/mds.png" alt="MDS"></p>
+<h4 id="ISOMAP"><a href="#ISOMAP" class="headerlink" title="ISOMAP"></a>ISOMAP</h4><p>三维空间中的流形数据降到二维<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/Z3.png" alt="流形数据"><br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/Z20.png" alt="ISOMAP降维"></p>
+<h4 id="LLE"><a href="#LLE" class="headerlink" title="LLE"></a>LLE</h4><p>三维空间中的流形数据降到二维<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/LLE.png" alt="流形数据"><br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/k10.png" alt="LLE降维"></p>
 
             </div>
             <hr/>
@@ -1458,7 +1572,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">76.9k</span>&nbsp;字
+                class="white-color">79k</span>&nbsp;字
             
             
             
