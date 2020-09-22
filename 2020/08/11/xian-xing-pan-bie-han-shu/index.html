@@ -548,10 +548,10 @@
 </ol>
 <h4 id="模型类"><a href="#模型类" class="headerlink" title="模型类"></a>模型类</h4><p>首先给出感知机函数定义：</p>
 <blockquote>
-<p>假设输入空间(特征空间)是$\mathcal{X} \subseteq R^n$,输出空间是$\mathcal{Y} = {-1,+1}$。输入$x\in \mathcal{X}$表示实例的特征向量，对应于输入空间(特征空间)的点；输出$y \in \mathcal{Y}$表示实例的类别。由输入空间到输出空间的函数可表示为:</p>
+<p>假设输入空间(特征空间)是$\mathcal{X} \subseteq R^n$,输出空间是$\mathcal{Y} = \{-1,+1\}$。输入$x\in \mathcal{X}$表示实例的特征向量，对应于输入空间(特征空间)的点；输出$y \in \mathcal{Y}$表示实例的类别。由输入空间到输出空间的函数可表示为:</p>
 <script type="math/tex; mode=display">
     f(x) = sign(\omega x+ b)</script></blockquote>
-<p>感知机是一种线性分类模型，属于判别模型。感知机模型的假设空间是定义在特征空间中的所有线性分类模型或线性分类起，即函数集合${ f|f(x) = \omega x + b}$。</p>
+<p>感知机是一种线性分类模型，属于判别模型。感知机模型的假设空间是定义在特征空间中的所有线性分类模型或线性分类起，即函数集合$\{ f|f(x) = \omega x + b\}$。</p>
 <h4 id="准则函数-损失函数"><a href="#准则函数-损失函数" class="headerlink" title="准则函数(损失函数)"></a>准则函数(损失函数)</h4><p>损失函数的一个自然选择是误分类点个数。但是这样的损失函数不是参数$\omega,b$的连续可导函数，不易优化。损失函数的另一个选择则是误分类点到超平面的总距离，为此先写出输入空间$R^n$中任意一点$x_0$到超平面$S$的距离：</p>
 <script type="math/tex; mode=display">
     d= \frac{|\omega x_0 +b|}{|| \omega ||}</script><p>其次，对于误分类的数据$(x_i,y_i)$来说:</p>
