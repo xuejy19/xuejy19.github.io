@@ -364,7 +364,7 @@ $$
 <script type="math/tex; mode=display">
     \omega^* \cdot x + b^* = 0</script><p>以及相应的分类决策函数:</p>
 <script type="math/tex; mode=display">f(x) = sign(\omega^* \cdot x + b^*)</script></blockquote>
-<p>下面就结合下图来对支持向量机的算法思想进行阐述,图中红点与蓝点分别代表两个类别，我们现在期望找到一个超平面，使得两个类别的样本点都能够尽可能离该超平面距离远，也就是希望中间的margin尽可能大。<br><img src="https://raw.githubusercontent.com/xuejy19/Images/master/SVM.png" alt="SVM"><br>这便是支持向量机的思想，下一步需要做的便是将这种想法翻译成一个数学问题，在这里首先引入两个间隔的概念：</p>
+<p>下面就结合下图来对支持向量机的算法思想进行阐述,图中红点与蓝点分别代表两个类别，我们现在期望找到一个超平面，使得两个类别的样本点都能够尽可能离该超平面距离远，也就是希望中间的margin尽可能大。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/SVM.png" alt="SVM"><br>这便是支持向量机的思想，下一步需要做的便是将这种想法翻译成一个数学问题，在这里首先引入两个间隔的概念：</p>
 <blockquote>
 <ul>
 <li>几何间隔：所谓几何间隔就是样本点$(x_i,y_i)$到超平面的实际距离，其计算公式为(此时样本点已经被超平面正确分类)：<script type="math/tex; mode=display">d = y_i \frac{\omega x_i + b}{||\omega||}</script></li>
@@ -1332,22 +1332,6 @@ data.time = data.time.apply(lambda x: time.strftime(format, x.tuple))
       </tags>
   </entry>
   <entry>
-    <title>司马相如与卓文君</title>
-    <url>/2020/09/20/si-ma-xiang-ru-yu-zhuo-wen-jun/</url>
-    <content><![CDATA[<p>是夜，余观《王立群读史记》毕，感于司马相如与卓文君之逸事，为此文，记<strong>后世文学之演绎</strong>。</p>
-<blockquote>
-<p><strong>白头吟(卓文君)</strong><br>皑如山上雪， 皎如云间月。<br>闻君有两意， 故来相决绝。<br>今日斗酒会， 明旦沟水头。<br>躞蹀御沟上， 沟水东西流。<br>凄凄复凄凄， 嫁娶不须啼。<br>愿得一人心， 白首不相离。<br>竹竿何袅袅， 鱼尾何簁簁！<br>男儿重意气， 何用钱刀为！<br><a id="more"></a><br><strong>两地书(司马相如)</strong><br>一二三四五六七八九十百千万</p>
-<p><strong>怨郎诗(卓文君)</strong><br>一朝别后， 二地相悬。<br>只说是三四月， 又谁知五六年？<br>七弦琴无心谈， 八行书无可传。<br>九连环从中折断， 十里长亭望眼欲穿。<br>百思想， 千系念， 万般无奈把郎怨。<br>万语千言说不完， 百无聊赖， 十倚栏杆。<br>九重九登高看孤雁， 八月仲秋月圆人不圆。<br>七月半， 秉烛烧香问苍天，<br>六月三伏天， 人人摇扇我心寒。<br>五月石榴红似火， 偏遇阵阵冷雨浇花端。<br>四月枇杷未黄，我欲对镜心亦乱。<br>忽匆匆， 三月桃花随水转。<br>飘零零， 二月风筝线儿断。<br>噫， 郎呀郎，<br>巴不得下一世， 你为女来我做男。</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>闲谈</category>
-      </categories>
-      <tags>
-        <tag>历史逸事</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>提升算法总结</title>
     <url>/2020/09/01/ti-sheng-suan-fa-zong-jie/</url>
     <content><![CDATA[<p>对于一个特定机器学习问题，我们可能会建立很多模型，这些单个模型可能表现都不是非常好，由此便会引出一个问题:</p>
@@ -1531,6 +1515,22 @@ data.time = data.time.apply(lambda x: time.strftime(format, x.tuple))
       </categories>
       <tags>
         <tag>Bagging, AdaBoost, 提升树模型</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>司马相如与卓文君</title>
+    <url>/2020/09/20/si-ma-xiang-ru-yu-zhuo-wen-jun/</url>
+    <content><![CDATA[<p>是夜，余观《王立群读史记》毕，感于司马相如与卓文君之逸事，为此文，记<strong>后世文学之演绎</strong>。</p>
+<blockquote>
+<p><strong>白头吟(卓文君)</strong><br>皑如山上雪， 皎如云间月。<br>闻君有两意， 故来相决绝。<br>今日斗酒会， 明旦沟水头。<br>躞蹀御沟上， 沟水东西流。<br>凄凄复凄凄， 嫁娶不须啼。<br>愿得一人心， 白首不相离。<br>竹竿何袅袅， 鱼尾何簁簁！<br>男儿重意气， 何用钱刀为！<br><a id="more"></a><br><strong>两地书(司马相如)</strong><br>一二三四五六七八九十百千万</p>
+<p><strong>怨郎诗(卓文君)</strong><br>一朝别后， 二地相悬。<br>只说是三四月， 又谁知五六年？<br>七弦琴无心谈， 八行书无可传。<br>九连环从中折断， 十里长亭望眼欲穿。<br>百思想， 千系念， 万般无奈把郎怨。<br>万语千言说不完， 百无聊赖， 十倚栏杆。<br>九重九登高看孤雁， 八月仲秋月圆人不圆。<br>七月半， 秉烛烧香问苍天，<br>六月三伏天， 人人摇扇我心寒。<br>五月石榴红似火， 偏遇阵阵冷雨浇花端。<br>四月枇杷未黄，我欲对镜心亦乱。<br>忽匆匆， 三月桃花随水转。<br>飘零零， 二月风筝线儿断。<br>噫， 郎呀郎，<br>巴不得下一世， 你为女来我做男。</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>闲谈</category>
+      </categories>
+      <tags>
+        <tag>历史逸事</tag>
       </tags>
   </entry>
   <entry>
