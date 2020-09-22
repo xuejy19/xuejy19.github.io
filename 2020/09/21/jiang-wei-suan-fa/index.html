@@ -531,7 +531,7 @@
 <blockquote>
 <p><strong>前提假设：假设样本数据进行了中心化，即$\sum_i x_i = 0$</strong> </p>
 </blockquote>
-<p>现在考虑样本空间$R^d$中的一组基$\{ w_1, w_2, \dots, w_d \}$, 其中$w_i$是标准正交基向量，$||w_i||_2 = 1, w_i^Tw_j = 0(i \neq j)$,若丢弃新坐标系中的部分坐标，即将维度降低到$d’ &lt; d$,则样本点$x_i$在低维坐标系中的投影是$z_i = (z_{i1}, z_{i2}, \dots, z_{id’})$,其中$z_{ij} = w_j^T x_i$是$x_i$在低维坐标系下第$j$维的坐标，若基于$z_i$来重构$x_i$,则会得到$\hat{x}_i = \sum_{j=1}^{d’} z_{ij} w_j$,基于上面叙述，我们下面从两个角度来推导主成分分析。</p>
+<p>现在考虑样本空间$R^d$中的一组基${ w<em>1, w_2, \dots, w_d }$, 其中$w_i$是标准正交基向量，$||w_i||_2 = 1, w_i^Tw_j = 0(i \neq j)$,若丢弃新坐标系中的部分坐标，即将维度降低到$d’ &lt; d$,则样本点$x_i$在低维坐标系中的投影是$z_i = (z</em>{i1}, z<em>{i2}, \dots, z</em>{id’})$,其中$z<em>{ij} = w_j^T x_i$是$x_i$在低维坐标系下第$j$维的坐标，若基于$z_i$来重构$x_i$,则会得到$\hat{x}_i = \sum</em>{j=1}^{d’} z_{ij} w_j$,基于上面叙述，我们下面从两个角度来推导主成分分析。</p>
 <h5 id="最近重构性"><a href="#最近重构性" class="headerlink" title="最近重构性"></a>最近重构性</h5><p>假设有$m$个样本点，则从原样本点到到基于投影重构的样本点$\hat{x}_i$的距离平方的均值为:</p>
 <script type="math/tex; mode=display">
     \begin{aligned}
@@ -540,12 +540,12 @@
         &= \frac{1}{m}(\sum_{i=1}^m \sum_{j=1}^{d'} w_j^T x_i x_i^T w_j - 2 \sum_{i=1}^m \sum_{j=1}^{d'} w_j^T x_i x_i^T w_j + \sum_{i=1}^m x_i^Tx_i) \\
         &= -\frac{1}{m}(\sum_{i=1}^m \sum_{j=1}^{d'} w_j^T x_i x_i^T w_j + const) \\
         &= -tr(W^T \frac{1}{m} \sum_{i=1}^m x_i x_i^T W) 
-    \end{aligned}</script><p>其中$W = (w_1, w_2, \dots, w_{d’})$, 因为我们数据已经做了零均值化，因此$\frac{1}{m}\sum_{i=1}^m x_i x_i^T$刚好是样本集协方差矩阵，不妨记$\Sigma = \frac{1}{m} \sum_{i=1}^m x_i x_i^T$,因此从这个角度导出来的优化问题为:</p>
+    \end{aligned}</script><p>其中$W = (w<em>1, w_2, \dots, w</em>{d’})$, 因为我们数据已经做了零均值化，因此$\frac{1}{m}\sum<em>{i=1}^m x_i x_i^T$刚好是样本集协方差矩阵，不妨记$\Sigma = \frac{1}{m} \sum</em>{i=1}^m x_i x_i^T$,因此从这个角度导出来的优化问题为:</p>
 <script type="math/tex; mode=display">
     \begin{aligned}
         &\max_{W} tr(W^T \Sigma W) \\
         &s.t. W^T W = I_{d' \times d'}
-    \end{aligned}</script><h5 id="最大可分性"><a href="#最大可分性" class="headerlink" title="最大可分性"></a>最大可分性</h5><p>若投影向量基选为$W = (w_1, w_2, \dots, w_{d’})$,则样本点在新空间的坐标为$W^T x_i$,根据最大可分性的定义，我们期望所有样本点的投影能够尽可能分开，也就是说投影后的样本集的方差尽可能大，因为对原始空间的样本点做了0均值化，因此投影后样本集的均值也是零，协方差矩阵则是：</p>
+    \end{aligned}</script><h5 id="最大可分性"><a href="#最大可分性" class="headerlink" title="最大可分性"></a>最大可分性</h5><p>若投影向量基选为$W = (w<em>1, w_2, \dots, w</em>{d’})$,则样本点在新空间的坐标为$W^T x_i$,根据最大可分性的定义，我们期望所有样本点的投影能够尽可能分开，也就是说投影后的样本集的方差尽可能大，因为对原始空间的样本点做了0均值化，因此投影后样本集的均值也是零，协方差矩阵则是：</p>
 <script type="math/tex; mode=display">
     \frac{1}{m} \sum_{i=1}^m W^T x_i x_i^T W</script><p>我们的优化目标是向各个坐标轴投影的坐标方差尽可能大，目标函数可以写做:</p>
 <script type="math/tex; mode=display">
@@ -565,9 +565,9 @@
 <script type="math/tex; mode=display">
     target = \sum_{i=1}^{d'} \lambda_i</script><p>因此若想让目标函数尽可能大，则应当选取矩阵$\Sigma$的较大的特征值所对应的特征向量作为投影向量。据此我们便可得到PCA算法的流程:</p>
 <blockquote>
-<p><strong>主成分分析法：</strong><br><strong>输入：</strong> 样本集$D = \{ x_1, x_2, \dots, x_m\}$, 低维空间维数$d’$<br><strong>输出：</strong> 投影矩阵$W^{\ast} = [w_1, w_2, \dots, w_{d’}]$<br><strong>步骤：</strong> </p>
+<p><strong>主成分分析法：</strong><br><strong>输入：</strong> 样本集$D = { x<em>1, x_2, \dots, x_m}$, 低维空间维数$d’$<br><strong>输出：</strong> 投影矩阵$W^{\ast} = [w_1, w_2, \dots, w</em>{d’}]$<br><strong>步骤：</strong> </p>
 <ul>
-<li>对所有样本点进行中心化$x_i \leftarrow x_i - \frac{1}{m} \sum_{i=1}^m x_i$ </li>
+<li>对所有样本点进行中心化$x<em>i \leftarrow x_i - \frac{1}{m} \sum</em>{i=1}^m x_i$ </li>
 <li>计算样本的协方差矩阵$\Sigma = \frac{1}{m} X X^T$ </li>
 <li>对协方差矩阵$\Sigma$做特征值分解 </li>
 <li>取最大的$d’$个特征值所对应的特征向量构成投影矩阵 </li>
@@ -648,7 +648,7 @@
 <script type="math/tex; mode=display">
     X = \Lambda^{\frac{1}{2}} V^T</script><p>则$X$便能完全重构出距离矩阵$D$，但因为我们的目的是降维，因此只需选取部分维度即可，我们来将$V\Lambda V^T$ 展开： </p>
 <script type="math/tex; mode=display">
-    X^T X = V \Lambda V^T = \lambda_1 v_1 v_1^T + \lambda_2 v_2 v_2^T + \dots + \lambda_n v_n v_n^T</script><p>因此我们只需要取特征值较大的$\lambda_1, \lambda_2, \dots, \lambda_{d’}$即可较好地重构距离矩阵，因此最终假设要降到$d’$维，则只需要取$B$矩阵的前$d’$大的特征值构成$\Lambda^{\frac{1}{2}}$:</p>
+    X^T X = V \Lambda V^T = \lambda_1 v_1 v_1^T + \lambda_2 v_2 v_2^T + \dots + \lambda_n v_n v_n^T</script><p>因此我们只需要取特征值较大的$\lambda<em>1, \lambda_2, \dots, \lambda</em>{d’}$即可较好地重构距离矩阵，因此最终假设要降到$d’$维，则只需要取$B$矩阵的前$d’$大的特征值构成$\Lambda^{\frac{1}{2}}$:</p>
 <script type="math/tex; mode=display">
     \Lambda^{\frac{1}{2}} = diag(\lambda_1, \lambda_2, \dots, \lambda_{d'})</script><p>然后取这些特征值对应的特征向量构成$V^T$:</p>
 <script type="math/tex; mode=display">
@@ -703,9 +703,9 @@
 <li>在原始样本空间中求解权重矩阵</li>
 <li>在低维空间中重构近邻线性关系  </li>
 </ul>
-<h5 id="权重矩阵求解"><a href="#权重矩阵求解" class="headerlink" title="权重矩阵求解"></a>权重矩阵求解</h5><p>首先假设原始空间中共有$n$个样本$(x_1, x_2, \dots, x_n)$, 假设对于样本点$x_i$，其近邻点分别为$x_{i1}, x_{i2}, \dots, x_{ik}$, 则我们期望找到这样一组权重：</p>
+<h5 id="权重矩阵求解"><a href="#权重矩阵求解" class="headerlink" title="权重矩阵求解"></a>权重矩阵求解</h5><p>首先假设原始空间中共有$n$个样本$(x<em>1, x_2, \dots, x_n)$, 假设对于样本点$x_i$，其近邻点分别为$x</em>{i1}, x<em>{i2}, \dots, x</em>{ik}$, 则我们期望找到这样一组权重：</p>
 <script type="math/tex; mode=display">
-    w_i = [w_{i1}, w_{i2}, \dots, w_{ik}]^T</script><p>使得$||x_i - \sum_{j=1}^k w_{ij} x_{ij} ||^2$尽可能小，这样目标函数就可以写做:</p>
+    w_i = [w_{i1}, w_{i2}, \dots, w_{ik}]^T</script><p>使得$||x<em>i - \sum</em>{j=1}^k w<em>{ij} x</em>{ij} ||^2$尽可能小，这样目标函数就可以写做:</p>
 <script type="math/tex; mode=display">
     \begin{aligned}
         &target = \sum_{i=1}^n ||x_i - \sum_{j=1}^k w_{ij} x_{ij}||^2  \\

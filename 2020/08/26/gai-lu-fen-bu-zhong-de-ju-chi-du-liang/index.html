@@ -574,7 +574,7 @@
 <ul>
 <li>为了让$P_1$与$Q_1$相同，我们需要把$P_1$的3分2到$P_2$去，这样$P_1$和$Q_1$都等于1，此时$P_2$等于4 </li>
 <li>同理，为了让$P_2$和$Q_2$相同，需要将$P_2$的土填到$P_3$时，这一步将从$P_2$挖2分土填到$P_3$</li>
-<li>为了让$P_3,Q_3$相等，最后一步需要将$Q_3$的1分土挖给$Q_4$<br>每一步的代价计算公式为$\delta_{i+1} = \delta_i + P_i - Q_i$,由此可得:<script type="math/tex; mode=display">
+<li>为了让$P<em>3,Q_3$相等，最后一步需要将$Q_3$的1分土挖给$Q_4$<br>每一步的代价计算公式为$\delta</em>{i+1} = \delta_i + P_i - Q_i$,由此可得:<script type="math/tex; mode=display">
   \begin{aligned}
       \delta_0 &= 0 \\
       \delta_1 &= 0 +3 -1 = 2 \\
@@ -608,7 +608,7 @@
              +\infty  & if \theta \neq 0 \\
              0  & if \theta = 0  
         \end{cases}
-    \end{aligned}</script><p>在Wasserstein度量下，随着$\theta_t \rightarrow 0$,概率分布序列$(P_{\theta_t})_{t \in N}$ 收敛到$P_0$,但在其他度量下并不能收敛，W距离与JS散度在该问题中对比如下图所示:<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/W.png" alt="$W VS JS$"></p>
+    \end{aligned}</script><p>在Wasserstein度量下，随着$\theta<em>t \rightarrow 0$,概率分布序列$(P</em>{\theta<em>t})</em>{t \in N}$ 收敛到$P_0$,但在其他度量下并不能收敛，W距离与JS散度在该问题中对比如下图所示:<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/W.png" alt="$W VS JS$"></p>
 </blockquote>
 <h4 id="计算"><a href="#计算" class="headerlink" title="计算"></a>计算</h4><p>尽管Wasserstein度量具有很多优点，但其缺点也十分明显：</p>
 <blockquote>
