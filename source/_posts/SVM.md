@@ -4,9 +4,9 @@ date: 2020-08-12 09:26:20
 tags: 支持向量机
 categories: 统计学习
 toc: true
-#img: https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/SVM.png
 mathjax: true
 ---
+
 这部分将介绍支持向量机(SVM)算法，该部分将按照以下几部分进行组织：
 - 算法历史
 - 线性可分支持向量机与硬间隔最大化
@@ -21,15 +21,15 @@ mathjax: true
 
 ### 线性可分支持向量机与硬间隔最大化
 对于线性可分数据，上一部分介绍的感知机算法便可以处理，但需要注意的是，感知机算法学习得到的超平面可能有无穷多个，那么这些超平面中哪个是最优的呢？支持向量机算法便回答了这一问题，该算法认为使两类样本点间隔最大的超平面是最优超平面。首先给出线性可分支持向量机的定义：
-> **线性可分支持向量机**:给定线性可分训练数据集，通过间隔最大化或者等价地求解相应的凸二次规划问题学习得到的分离超平面为：
+> {\ast}线性可分支持向量机{\ast}:给定线性可分训练数据集，通过间隔最大化或者等价地求解相应的凸二次规划问题学习得到的分离超平面为：
 $$
-    \omega^* \cdot x + b^* = 0
+    \omega^{\ast} \cdot x + b^{\ast} = 0
 $$
 以及相应的分类决策函数:
-$$ f(x) = sign(\omega^* \cdot x + b^*)$$
+$$ f(x) = sign(\omega^{\ast} \cdot x + b^{\ast})$$
 
 下面就结合下图来对支持向量机的算法思想进行阐述,图中红点与蓝点分别代表两个类别，我们现在期望找到一个超平面，使得两个类别的样本点都能够尽可能离该超平面距离远，也就是希望中间的margin尽可能大。
-![SVM](https://raw.githubusercontent.com/xuejy19/Images/master/SVM.png)
+![SVM](https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/SVM.png)
 这便是支持向量机的思想，下一步需要做的便是将这种想法翻译成一个数学问题，在这里首先引入两个间隔的概念：
 > - 几何间隔：所谓几何间隔就是样本点$(x_i,y_i)$到超平面的实际距离，其计算公式为(此时样本点已经被超平面正确分类)：
 $$ d = y_i \frac{\omega x_i + b}{||\omega||}$$
@@ -112,29 +112,29 @@ $$
 对于该问题的求解可以通过SMO(序列最小优化)算法进行求解，因为强对偶性成立,KKT条件满足：
 $$
     \begin{aligned}
-        &\nabla_{\omega} L(\omega^*,b^*,\alpha^*) = \omega^* - \sum_{i=1}^N \alpha_i^* y_i x_i = 0 \\
-        &\nabla_{b} L(\omega^*,b^*,\alpha^*) = -\sum_{i=1}^N \alpha_i^* y_i = 0 \\
-        &\alpha_i^* (y_i(\omega^*x_i+b^*)-1) = 0 \\
-       &y_i(\omega^* x_i +b^*) - 1 \geq 0 \\
-        &\alpha_i^* \geq 0 
+        &\nabla_{\omega} L(\omega^{\ast},b^{\ast},\alpha^{\ast}) = \omega^{\ast} - \sum_{i=1}^N \alpha_i^{\ast} y_i x_i = 0 \\
+        &\nabla_{b} L(\omega^{\ast},b^{\ast},\alpha^{\ast}) = -\sum_{i=1}^N \alpha_i^{\ast} y_i = 0 \\
+        &\alpha_i^{\ast} (y_i(\omega^{\ast}x_i+b^{\ast})-1) = 0 \\
+       &y_i(\omega^{\ast} x_i +b^{\ast}) - 1 \geq 0 \\
+        &\alpha_i^{\ast} \geq 0 
     \end{aligned}
 $$
-由此便可建立对偶问题最优解$\alpha^*$与原问题最优解$\omega^*,b^*$之间的关系，首先至少有一个$\alpha_j^*>0$,这是因为若$\alpha^*$均为0，则$\omega^*$为0,这不是原始最优化问题的解，假设$\alpha_j^*>0$,则由互补松弛条件，此时有$y_j(\omega^* x_j +b^*) = 1$,而$\omega^*$表达式是知道的，由此可得$\omega^*,b^*$表达式为：
+由此便可建立对偶问题最优解$\alpha^{\ast}$与原问题最优解$\omega^{\ast},b^{\ast}$之间的关系，首先至少有一个$\alpha_j^{\ast}>0$,这是因为若$\alpha^{\ast}$均为0，则$\omega^{\ast}$为0,这不是原始最优化问题的解，假设$\alpha_j^{\ast}>0$,则由互补松弛条件，此时有$y_j(\omega^{\ast} x_j +b^{\ast}) = 1$,而$\omega^{\ast}$表达式是知道的，由此可得$\omega^{\ast},b^{\ast}$表达式为：
 $$
     \begin{aligned}
-        \omega^* &= \sum_{i=1}^N \alpha_i^* y_i x_i \\
-        b^* &=  y_j - \sum_{i=1}^N \alpha_i^* y_i(x_i\cdot x_j)
+        \omega^{\ast} &= \sum_{i=1}^N \alpha_i^{\ast} y_i x_i \\
+        b^{\ast} &=  y_j - \sum_{i=1}^N \alpha_i^{\ast} y_i(x_i\cdot x_j)
     \end{aligned}
 $$
 至此，我们便通过求解对偶问题得到了原始问题的最优解，得到了超平面方程以及判决方程：
 $$
 \begin{aligned}
-    &\omega^* \cdot x + b^* = 0 \\
-    &f(x) = sign(\omega^* \cdot x + b^*)
+    &\omega^{\ast} \cdot x + b^{\ast} = 0 \\
+    &f(x) = sign(\omega^{\ast} \cdot x + b^{\ast})
 \end{aligned}
 $$
 通过引入对偶问题，我们便可以从数学的角度导出支持向量:
-> 训练数据集中对应于$\alpha_i^* >0$的样本点称为支持向量
+> 训练数据集中对应于$\alpha_i^{\ast} >0$的样本点称为支持向量
 
 ### 线性支持向量机与软间隔最大化
 #### 原始问题
@@ -170,15 +170,15 @@ $$
 下面讨论如何根据对偶问题最优解求解原问题最优解，与硬间隔支持向量机不同，在该问题中，互补松弛条件有两个:
 $$
     \begin{aligned}
-        &\alpha_i^* (y_i(\omega^*x_i+b^*)-1 + \xi_i) = 0  \\
+        &\alpha_i^{\ast} (y_i(\omega^{\ast}x_i+b^{\ast})-1 + \xi_i) = 0  \\
         &\mu_i \xi_i = 0 
     \end{aligned}
 $$
-在求解$b^*$时，关键是要将支持向量确定出来，首先支持向量应当在支撑超平面上，这就要求$\alpha_i>0$,同时松弛间隔$\xi_i$应当为0，由第二个互补松弛条件可知$\mu_i$不能够为0，因此$\alpha_i$必须小于$C$,换句话说，$\alpha^* = C$所对应的点均在支撑超平面以内，若$\xi_i<1$,则仍能分类正确，若大于1，则就会分类错误。$\omega^*$和$b^*$表达式可以写做：
+在求解$b^{\ast}$时，关键是要将支持向量确定出来，首先支持向量应当在支撑超平面上，这就要求$\alpha_i>0$,同时松弛间隔$\xi_i$应当为0，由第二个互补松弛条件可知$\mu_i$不能够为0，因此$\alpha_i$必须小于$C$,换句话说，$\alpha^{\ast} = C$所对应的点均在支撑超平面以内，若$\xi_i<1$,则仍能分类正确，若大于1，则就会分类错误。$\omega^{\ast}$和$b^{\ast}$表达式可以写做：
 $$
     \begin{aligned}
-        \omega^* &= \sum_{i=1}^N \alpha_i^* y_i x_i \\
-        b^* &= y_j - \sum_{i=1}^N y_i \alpha_i^* (x_i \cdot x_j)
+        \omega^{\ast} &= \sum_{i=1}^N \alpha_i^{\ast} y_i x_i \\
+        b^{\ast} &= y_j - \sum_{i=1}^N y_i \alpha_i^{\ast} (x_i \cdot x_j)
     \end{aligned}
 $$
 
