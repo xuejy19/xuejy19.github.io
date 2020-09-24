@@ -476,21 +476,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2020-09-23
+                    2020-09-24
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    851
+                    1.3k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    3 分
+                    4 分
                 </div>
                 
 
@@ -549,7 +549,36 @@
 <h4 id="算法分析"><a href="#算法分析" class="headerlink" title="算法分析"></a>算法分析</h4><h5 id="算法时间复杂度"><a href="#算法时间复杂度" class="headerlink" title="算法时间复杂度"></a>算法时间复杂度</h5><p>假设算法迭代$t$次后收敛，样本个数为$n$，样本维数为$d$， 类别数目为$k$，则算法时间复杂度为:</p>
 <script type="math/tex; mode=display">
     O(tndk)</script><h5 id="算法超参数"><a href="#算法超参数" class="headerlink" title="算法超参数"></a>算法超参数</h5><p>算法要求预先制定聚类类别个数$k$</p>
-<h5 id="局部极小"><a href="#局部极小" class="headerlink" title="局部极小"></a>局部极小</h5><p>因为$k$均值算法本质上是贪心算法，因此很有可能陷入局部最优，可以通过更新聚类个数以及不同的初始化来一定程度上减轻局部最优，逼近全局最优。</p>
+<h5 id="局部极小"><a href="#局部极小" class="headerlink" title="局部极小"></a>局部极小</h5><p>因为$k$均值算法本质上是贪心算法，因此很有可能陷入局部最优，可以通过更新聚类个数以及不同的初始化来一定程度上减轻局部最优，来获得较好的聚类效果。 </p>
+<h3 id="层次聚类"><a href="#层次聚类" class="headerlink" title="层次聚类"></a>层次聚类</h3><h4 id="算法思想-1"><a href="#算法思想-1" class="headerlink" title="算法思想"></a>算法思想</h4><p>层次聚类首先将各个样本点划分为1类，然后将距离最近的两类进行合并，建立一个新的类，重复这个步骤直到聚类结果满足要求。<br>从定义来看，层次聚类算法是自下而上进行聚类，在应用该聚类算法时需要明确三个问题:</p>
+<ul>
+<li>相似性度量的选择</li>
+<li>合并规则，即如何定义两个类别的相似程度 </li>
+<li>停止条件  </li>
+</ul>
+<p>下面就这三个关键问题进行分析。</p>
+<h4 id="算法详述"><a href="#算法详述" class="headerlink" title="算法详述"></a>算法详述</h4><h5 id="相似性度量"><a href="#相似性度量" class="headerlink" title="相似性度量"></a>相似性度量</h5><p>任何一个聚类算法会面临相似性度量的选择问题，实际中常用的相似性度量有:</p>
+<ul>
+<li>欧式距离 </li>
+<li>马氏距离 </li>
+<li>测地距离</li>
+<li>…… </li>
+</ul>
+<p>具体选择什么样的度量来刻画相似度需要根据实际数据样本的分布情况和待解决的问题来确定。 </p>
+<h5 id="合并规则"><a href="#合并规则" class="headerlink" title="合并规则"></a>合并规则</h5><p>合并规则一般是类间距离最小，若记$\Delta(\Gamma_i, \Gamma_j)$为类间距离，$\delta(x,y)$,为$x$和$y$之间的距离，则类间距离一般有以下几种定义:</p>
+<ul>
+<li>最近距离 <script type="math/tex; mode=display">
+  \Delta(\Gamma_i, \Gamma_j) = \min_{y \in \Gamma_i, \tilde{y} \in \Gamma_j} \delta(y, \tilde{y})</script></li>
+<li>最远距离 <script type="math/tex; mode=display">
+  \Delta(\Gamma_i, \Gamma_j) = \max_{y \in \Gamma_i, \tilde{y} \in \Gamma_j} \delta(y, \tilde{y})</script></li>
+<li>均值距离<script type="math/tex; mode=display">
+  \Delta(\Gamma_i, \Gamma_j) = \delta(m_i, m_j)</script></li>
+</ul>
+<h5 id="停止条件"><a href="#停止条件" class="headerlink" title="停止条件"></a>停止条件</h5><p>如果不加停止条件，则最终所有样本都会归于一类，停止条件一般有2种选择:</p>
+<ul>
+<li>类别个数: 当类别个数到达期望值$k$时，便停止合并，聚类结束。 </li>
+<li>类间距离: 当类间距离大于某个值时便停止合并，聚类结束。</li>
+</ul>
 
             </div>
             <hr/>
@@ -1349,7 +1378,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">79.8k</span>&nbsp;字
+                class="white-color">80.2k</span>&nbsp;字
             
             
             
