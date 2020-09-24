@@ -483,14 +483,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.3k
+                    1.4k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    4 分
+                    5 分
                 </div>
                 
 
@@ -579,6 +579,16 @@
 <li>类别个数: 当类别个数到达期望值$k$时，便停止合并，聚类结束。 </li>
 <li>类间距离: 当类间距离大于某个值时便停止合并，聚类结束。</li>
 </ul>
+<h4 id="算法流程"><a href="#算法流程" class="headerlink" title="算法流程"></a>算法流程</h4><p>层次聚类算法流程总结如下: </p>
+<blockquote>
+<p><strong>层次聚类:</strong><br><strong>输入:</strong> $n$个样本组成的样本集合及样本之间的距离<br><strong>输出:</strong> 对样本集合的一个层次化聚类<br><strong>算法流程:</strong></p>
+<ul>
+<li>根据选定的相似性度量方法，计算$n$个样本两两之间的距离$d_{ij}$,得到距离矩阵$D$ </li>
+<li>构造$n$个类，每个类只包含一个样本 </li>
+<li>合并类间距离最小的两个类，构成一个新类，并计算新类与当前各类之间的距离。</li>
+<li>若满足聚类终止条件，则聚类终止，否则返回第3步 </li>
+</ul>
+</blockquote>
 
             </div>
             <hr/>
@@ -1378,7 +1388,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">80.2k</span>&nbsp;字
+                class="white-color">80.4k</span>&nbsp;字
             
             
             
