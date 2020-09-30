@@ -476,7 +476,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2020-08-24
+                    2020-09-30
                 </div>
                 
 
@@ -579,7 +579,8 @@
         &= \log h(x) + \theta^T \phi(x) + \log(-A(\theta))
     \end{aligned}</script><p>第一项与$\theta$无关，第二项为$\theta$的线性组合，不影响函数的凹凸性，所以整个函数的凹凸性是由第三项来确定，对于外层函数是对数函数的对数函数$\log f(x)$而言:</p>
 <script type="math/tex; mode=display">
-    (\log f(x))^{''} = \frac{f(x) f^{''}(x) - f^{'}(x)^2}{f(x)^2}</script><p>由对数函数性质有$f(x) &gt; 0$,因此，若$f(x)$是凹函数($f^{‘’}(x) \leq 0$),则可推出$(\log f(x))^{‘’} \leq 0$,即$\log f(x)$为凹函数，若$f(x)$为凸函数则不能有直接的结论，因此我们的重点放在讨论$A(\theta)$的凹凸性上。<br>下面证明$A(\theta)$为凸函数,从定义出发证明，记$\theta_{\lambda} = \lambda \theta_1 + (1 - \lambda) \theta_2$,其中$\theta_1,\theta_2 \in dom f, \lambda \in [0,1]$,由Hölder不等式，可知:</p>
+    (\log f(x))^{''} = \frac{f(x) f^{''}(x) - f^{'}(x)^2}{f(x)^2}</script><p>由对数函数性质有$f(x) &gt; 0$,因此，若$f(x)$是凹函数,即$f^{‘’}(x) \leq 0$,则可推出$(\log f(x))^{‘’} \leq 0$,即$\log f(x)$为凹函数，若$f(x)$为凸函数则不能有直接的结论，因此我们的重点放在讨论$A(\theta)$的凹凸性上。</p>
+<p>下面证明$A(\theta)$为凸函数,从定义出发证明，记$\theta_{\lambda} = \lambda \theta_1 + (1 - \lambda) \theta_2$,其中$\theta_1,\theta_2 \in dom f, \lambda \in [0,1]$,由Hölder不等式，可知:</p>
 <script type="math/tex; mode=display">
     \begin{aligned}
         A(\theta_\lambda) &= \log (\int h(x) \exp(\theta_{\lambda}^T \phi(x))dx ) \\ 
