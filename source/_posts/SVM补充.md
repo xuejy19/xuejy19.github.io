@@ -144,3 +144,72 @@ $$
     \end{array}
 $$
 这便是我们熟悉的软间隔支持向量机原始优化问题的形式。
+
+
+### SVM应用于多分类问题 
+SVM最常用的场景是二分类场景，但这并不意味着SVM不能应用于多分类问题，将SVM应用于多分类问题有如下几个解决思路:
+- 训练多个$one \ vs \ all$分类器 
+- 训练多个$one \ vs \ one$分类器 
+- 训练一个联合分类器 
+
+下面就分别讲解下这三种实现多分类器构建的思路。
+
+#### 训练多个$one \ vs \ all$分类器  
+思路也是简单的，有$k$个类别我就训练$k$个分类器，在第$i$个分类器训练时将第$i$类样本看作一类，将剩余的其他样本看作另一类。
+![onevsall](https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/onevsall.png)
+
+采用这种思路容易碰到两个问题:
+- $k$个分类器的超平面参数$(w_k, b_k)$未必在一个尺度下，因为将$w_k$和$b_k$同时放大或者缩小$d$倍并不影响该超平面的分类结果，但会导致$w_k^T x + b_k$成倍放大或缩小。 
+- 在模型学习时因为是$one \ vs \ all$，就会导致正负样本数不平衡，使得分类器不能得到充分训练。 
+
+#### 训练多个 $one \ vs \ one$分类器 
+在这种思路下，共需要训练$\frac{k(k-1)}{2}$个分类器，在进行决策时通过投票的方式决定将一个样本划分为哪一类。
+![onevsone](https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/onevsone.png) 
+
+这种思路存在的问题主要有:
+- 随着类别数目的增多，需要训练的分类器的数量是以$k^2$的速度增长的。
+- 基于投票进行决策经常会出现冲突。
+
+#### 训练一个联合分类器 
+前面两种解决思路都是分开训练多个超平面参数然后再联合起来决策，但其实也可以在一个优化问题求解中将多个超平面参数同时学出来，其实本质上就是$one \ vs \ all$思路,优化问题可以写做:
+$$
+    \begin{array}{ll}
+    \min_{w,b}  & \frac{1}{2}  \sum_{y} ||w_y||^2 + C \sum_{i=1}^N \sum_{y \neq y_i} \xi_{iy}  \\ 
+    s.t. & w_{y_i}^T x_i + b_{y_i} \geq w_y^T x_i + b_y + 1 -\xi_{iy}, \forall i,\forall y \neq y_i \\ 
+    & \xi_{iy} \geq 0, \forall i,\forall y \neq y_i
+    \end{array}
+$$
+在进行决策时:
+$$
+    \hat{y} = \argmax_{k} (w_k^T x + b_k)
+$$
+
+### 支持向量回归(SVR)
+支持向量机的思路也可以用于回归问题上，对于样本$(x,y)$,传统的回归模型通常直接基于模型输出$f(x)$与真实输出$y$之间的差别来计算损失，当且仅当$f(x)$与$y$完全相同时损失才为0。与此不同，支持向量回归假设我们能够容忍$f(x)$与$y$之间最多有$\epsilon$的偏差，即仅当$f(x)$与$y$之间的差别绝对值大于$\epsilon$时才计算损失，如下图所示。
+![SVR](https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/SVR.png)
+我们期望$\epsilon$能够尽可能小，同时希望在误差带不变大的情况下能够包含尽可能多的样本点，也就是希望几何间隔能够尽可能大一些，也就是说我们期望在函数间隔尽可能小的情况下几何间隔能够尽可能大，根据几何间隔与函数间隔的关系:
+$$
+    gap_{geo} = \frac{gap_{func}}{||w||}
+$$
+因此SVR问题可形式化为:
+$$
+    \min_{w,b} \frac{1}{2} ||w||^2 + C \sum_{i=1}^m l_{\epsilon} (f(x_i) - y_i)
+$$
+其中$C$为正则化常数，$l_\epsilon$表示为:
+$$
+    l_\epsilon(z) = \begin{cases}
+        0, & if |z| \leq 0 \\ 
+        |z| - \epsilon, & otherwise
+    \end{cases}
+$$
+在进行回归时，往往会存在一些离群点，此时这些点我们并不期望它们出现在$2 \epsilon$之内，因此考虑引入两个松弛变量，将优化问题转化为:
+$$
+    \begin{array}{ll}
+        \min_{w,b,\xi_i,\hat{\xi}_i} \frac{1}{2} &||w||^2 + C \sum_{i=1}^n (\xi_i + \hat{\xi}_i)  \\
+        s.t. & f(x_i) - y_i \leq \epsilon + \xi_i \\ 
+        & y_i - f(x_i) \leq \epsilon + \hat{\xi}_i \\
+        & \xi_i \geq 0, \hat{\xi}_i \geq 0
+    \end{array}
+$$
+后面求解也是转为对偶问题进行求解，同时因为优化问题的独特形式，使得最终进行回归时只会计算样本点之间的点积，因此可以很方便地引入核技巧，完成非线性回归任务。 
+
