@@ -483,14 +483,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.2k
+                    2.1k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    4 分
+                    8 分
                 </div>
                 
 
@@ -566,8 +566,43 @@
     \end{aligned}</script><p>从格式上来看，会发现样本集的分布仍然是指数族分布，只不过是充分统计量$\phi’(D)$变为了:</p>
 <script type="math/tex; mode=display">
     \phi'(D) = \sum_i \phi(x_i)</script><p>这给我们一个启示，当我们要利用一组数据进行参数估计时，我们只需要将各个样本的充分统计量累加起来便可以得到整个样本集合的充分统计量，后面进行参数估计时只需要利用充分统计量即可，原始数据可以舍弃。</p>
-<p>在</p>
-
+<p>在进行极大似然估计时，我们往往会求解对数似然函数最大，下面写出指数分布的对数似然函数的一般形式:</p>
+<script type="math/tex; mode=display">
+    L(D;\theta) = \sum_{i} \log h(x_i) + \theta^T \sum_{i} \phi(x_i) - N A(\theta)</script><p>由于$A(\theta)$是凸函数，所以显然$L(D; \theta)$是凹函数，因此直接对$\theta$求偏导:</p>
+<script type="math/tex; mode=display">
+    \nabla_{\theta}(D; \theta) = \sum_{i} \phi(x_i) - N \nabla_{\theta} A(\theta) = 0</script><p>可以得到:</p>
+<script type="math/tex; mode=display">
+    \hat{\mu}_{MLE} = \nabla_{\theta} A(\theta) = \frac{1}{N} \sum_i \phi(x_i)</script><p>这说明充分统计量均值的极大似然估计就等于采样均值，又从前面我们得知均值参数$\mu$与模型的自然参数$\theta$通过函数$\psi$一一对应，因此可以通过充分统计量的均值估计得到模型参数的极大似然估计:</p>
+<script type="math/tex; mode=display">
+    \hat{\theta}_{MLE} = \psi(\hat{\mu}_{MLE})</script><h3 id="从指数分布族到广义线性模型"><a href="#从指数分布族到广义线性模型" class="headerlink" title="从指数分布族到广义线性模型"></a>从指数分布族到广义线性模型</h3><p>首先给出广义线性模型的定义:</p>
+<blockquote>
+<p><strong>广义线性模型:</strong><br>假设我们的数据是$\{ x_i, y_i\}_{i=1}^n$，其中因变量$y_i$服从某一指数族分布，即:</p>
+<script type="math/tex; mode=display">
+    p(y_i;\theta) = h(y_i) \exp(\theta^T \phi(y_i) - A(\theta))</script><p>而对于观测量$x_i$，首先获得其线性组合:</p>
+<script type="math/tex; mode=display">
+    \xi_i = \eta^T x_i</script><p>然后$y_i$与 $x_i$具有这样的关系:</p>
+<script type="math/tex; mode=display">
+    E_{p(y;\theta)}[y] = \mu = f(\eta^T x)</script><p>$f$称作联系函数或者激活函数  </p>
+</blockquote>
+<p>广义线性模型的产生可以通过下图直观展示:<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/glim.png" alt="广义线性模型"><br>在定义中的同路实际上是图中$\mu \rightarrow y$这条同路，但从图中可以看到，通过下面一条通路也是可以的，通过$\mu$和$\eta$之间的关系来构造指数分布。在进行广义线性模型选择时，我们有两个自由度:</p>
+<ul>
+<li>激活函数$f$的选择 </li>
+<li>指数分布$p$的选择 </li>
+</ul>
+<p>指数分布$p$的选择更多与实际问题有关，比如如果是一个二分类问题，常选用伯努利分布，如果是一个多分类问题，常选用多项式分布，回归问题则常选用高斯分布，而激活函数的选择则是与分布对应的均值特性有关，比如对于伯努利分布，要求均值在$[0,1]$之间，所以在$logistic$回归中选择的是$Sigmoid$函数作为激活函数。对于多分类问题，则可以选用多项式分布作为指数分布，然后激活函数选用$softmax$函数，就可以导出扩展$logistic$到多分类问题中，得到$softmax$分类器。</p>
+<p>如果取激活函数$f = \psi^{-1}$，那么模型的自然参数$\theta$:</p>
+<script type="math/tex; mode=display">
+    \theta = \eta^T x</script><p>此时该激活函数$f$被称作正则响应函数。</p>
+<h3 id="广义线性模型性质"><a href="#广义线性模型性质" class="headerlink" title="广义线性模型性质"></a>广义线性模型性质</h3><p>当我们构造出广义线性模型后，我们需要进行参数$\eta$的学习，在没有参数先验知识的情况下，我们一般采用极大似然估计来进行参数估计，我们首先写出广义线性模型的对数似然函数形式:</p>
+<script type="math/tex; mode=display">
+    L(\eta, D) = \sum_{i} \log h(x_i) + \sum_i (\theta_i y_i - A(\theta_i))</script><p>其中$\theta_i = \psi(\mu_i)$,而$\mu_i = f(\eta^T x_i)$,这其实也可以简单地认为是用回归的结果来对$y_i$的值做概率预测。 对对数似然函数求偏导，可得:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        \nabla_{\eta} L(\eta, D) &= \sum_i (y_i \nabla_{\eta} \theta_i  - \frac{d A(\theta_i)}{d \theta_i} \nabla_{\eta} \theta_i ) \\
+        &= \sum_i (y_i - \mu_i)\nabla_{\eta} \theta_i 
+    \end{aligned}</script><p>所以在进行迭代优化时，我们有:</p>
+<script type="math/tex; mode=display">
+    \theta_{t+1} = \theta_t + \rho (y_i - \mu_i^t) \nabla_{\eta} \theta_i</script>
             </div>
             <hr/>
 
@@ -1374,7 +1409,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">89.4k</span>&nbsp;字
+                class="white-color">90.3k</span>&nbsp;字
             
             
             
