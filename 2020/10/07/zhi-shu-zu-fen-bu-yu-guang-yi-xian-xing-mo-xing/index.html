@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="机器学习理论, 风之声">
+    <meta name="keywords" content="指数族分布与广义线性模型, 风之声">
     <meta name="description" content="与孤独为友">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>机器学习理论 | 风之声</title>
+    <title>指数族分布与广义线性模型 | 风之声</title>
     <link rel="icon" type="image/jpeg" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/favicon.jpg">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/awesome/css/all.css">
@@ -322,12 +322,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/0.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/1.png')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">机器学习理论</h1>
+                    <h1 class="description center-align post-title">指数族分布与广义线性模型</h1>
                 </div>
             </div>
         </div>
@@ -442,9 +442,13 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/%E6%8C%87%E6%95%B0%E5%88%86%E5%B8%83%E6%97%8F%EF%BC%8C-%E5%B9%BF%E4%B9%89%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B/">
+                                <span class="chip bg-color">指数分布族， 广义线性模型</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
@@ -465,28 +469,28 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-07-06
+                    2020-10-07
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2020-08-22
+                    2020-10-07
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    100
+                    1.2k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    4 分
                 </div>
                 
 
@@ -501,30 +505,68 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>笔者近期想做一下<strong>机器学习</strong>相关理论总结<a id="more"></a>，计划划分为以下章节：</p>
-<blockquote>
+                <p>在<a target="_blank" rel="noopener" href="https://soundofwind.top/2020/08/24/zai-tan-ji-da-si-ran-gu-ji-qiu-jie/">再谈极大似然估计</a>中已经讨论过指数分布族的概念，并且推导出了若概率分布是指数分布族分布，则最终的对数似然函数一定是一个凹函数，直接求偏导等于0便可得到参数估计。</p>
+<p>在听了<a target="_blank" rel="noopener" href="http://ml.cs.tsinghua.edu.cn/~jun/index.shtml">朱军老师</a>的关于指数分布族函数的讲解之后，发现可以从一个更加general的角度来对指数分布族函数来进行把握，而之前得到的凹性结论也不过是其中一小部分而已，该部分按照以下结构组织: </p>
 <ul>
-<li>贝叶斯理论 </li>
-<li>概率密度函数估计</li>
-<li>EM算法</li>
-<li>线性判别——感知器</li>
-<li>支持向量机</li>
-<li>近邻法 </li>
-<li>特征提取与特征选择</li>
-<li>神经网络</li>
-<li>RNN</li>
-<li>非监督学习</li>
-<li>决策树</li>
-<li>聚类</li>
+<li>简要回顾指数分布族 </li>
+<li>配分函数$A(\theta)$的性质 </li>
+<li>从指数分布族到广义线性模型 </li>
+<li>广义线性模型性质 </li>
 </ul>
-</blockquote>
-<p>各章节主要包含两部分： </p>
+<a id="more"></a> 
+<h3 id="简要回顾指数分布族函数"><a href="#简要回顾指数分布族函数" class="headerlink" title="简要回顾指数分布族函数"></a>简要回顾指数分布族函数</h3><p>首先给出指数分布族的定义:</p>
 <blockquote>
+<p>指数分布族是一类概率分布的总称，这类分布的概率密度函数具有这样的形式：</p>
+<script type="math/tex; mode=display">
+    p_\theta(x) = h(x) \exp(\theta^T \phi(x) - A(\theta))</script><p>式中，$x$是密度函数自变量，$x \in \mathcal{X}$;$\phi(x)$是充分统计量，可以看做是原始变量的一个映射:</p>
+<script type="math/tex; mode=display">
+    \phi: \mathcal{X} \rightarrow R^d</script><p>$\theta$是模型参数向量，与充分统计量维度相同，$h(x)$是一个只与$x$有关的统计量，$A(\theta)$为配分函数，通过该函数来保证$p_\theta(x)$满足概率密度函数的定义：</p>
+<script type="math/tex; mode=display">
+     \int_{\mathcal{X}} p_{\theta}(x) dx = 1</script><p>由此约束条件，我们可以得到$A(\theta)$的解析表达式：</p>
+<script type="math/tex; mode=display">
+    A(\theta) = \log (\int h(x) \exp(\theta^T \phi(x))dx )</script></blockquote>
+<p>同时概率密度函数我们也可以写成如下的形式:</p>
+<script type="math/tex; mode=display">
+    p_\theta(x) = \frac{1}{Z(\theta)}  h(x) exp(\theta^T \phi(x))</script><p>其中$Z(\theta) = exp(A(\theta))$,我们日常见到的很多分布都可以转化成指数分布族标准形式，比如: 伯努利分布，多项式分布，高斯分布，gamma分布等，一些变换的例子可以参考<a target="_blank" rel="noopener" href="https://soundofwind.top/2020/08/24/zai-tan-ji-da-si-ran-gu-ji-qiu-jie/"><code>再谈极大似然估计</code></a></p>
+<h3 id="配分函数-A-theta-的性质"><a href="#配分函数-A-theta-的性质" class="headerlink" title="配分函数$A(\theta)$的性质"></a>配分函数$A(\theta)$的性质</h3><h4 id="A-theta-性质"><a href="#A-theta-性质" class="headerlink" title="$A(\theta)$性质"></a>$A(\theta)$性质</h4><p>在之前证明$A(\theta)$的凸性性质时，所采用的方法是按照配分表达式直接证，通过赫尔德不等式可以从定义上证明其是凸函数，但其实$A(\theta)$具有更加一般的性质。 </p>
+<p>$A(\theta)$其实是充分统计量$\phi(x)$的中心矩生成函数(moment generating function),这意味着:</p>
+<script type="math/tex; mode=display">
+  \begin{aligned}
+      \nabla_{\theta} A(\theta) &= E_{p_{\theta}(x)}[\phi(x)] \\ 
+      \nabla_{\theta}^2 A(\theta) &= Var[\phi(x)]  \\ 
+      & ... \\
+      \nabla_{\theta}^k A(\theta) &= E_{p_\theta(x)} [(\phi(x) - E[\phi(x)])^k]
+  \end{aligned}</script><p>下面以一阶统计量为例做一下简单推导:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        \nabla_{\theta}A(\theta) & = \nabla_{\theta} \log(Z(\theta)) \\
+        &= \frac{1}{Z(\theta)} \nabla_{\theta} (\int_x h(x) \exp(\theta^T \phi(x)) dx) \\
+        &= \frac{1}{Z(\theta)} \int_x h(x) \phi(x) \exp(\theta^T \phi(x))dx \\ 
+        &= \int_x \frac{1}{Z(\theta)} h(x) \exp(\theta^T \phi(x)) \phi(x) dx \\ 
+        &= \int_x p(x|\theta) \phi(x) dx \\
+        &= E_{p_\theta(x)}[\phi(x)] 
+    \end{aligned}</script><p>$A(\theta)$的上述性质可以导出一些非常好用的结论:</p>
 <ul>
-<li>理论介绍</li>
-<li>代码实战</li>
+<li><p>如果记:</p>
+<script type="math/tex; mode=display">
+  \nabla_{\theta} A(\theta) = E_{p_{\theta}(x)} [\phi(x)] \overset{\triangle}{=} \mu</script><p>这里$\mu$一般被称作矩参数或者均值参数，对于不同的指数分布族函数，一般都可以找到一个双射函数$\psi$,使得:</p>
+<script type="math/tex; mode=display">
+  \theta \overset{\triangle}{=} \psi(\mu)</script><p>这就建立了均值参数与模型的自然参数之间的一一映射关系，在参数估计时如果得到了均值参数估计，同时直到映射关系$\psi$，那么便可以直接得到模型自然参数$\theta$的估计。</p>
+</li>
+<li><p>因为$\nabla_{\theta}^2 A(\theta) = Var[\phi(x)]$，而我们知道一个向量变量的协方差矩阵至少是半正定的，也就是说:</p>
+<script type="math/tex; mode=display">
+  \nabla_{\theta}^2  A(\theta)= Var[\phi(x)] \succeq 0</script><p>这也就直接证明了$A(\theta)$的二阶海塞矩阵半正定，即$A(\theta)$是关于$\theta$的凸函数。</p>
+</li>
 </ul>
-</blockquote>
+<h4 id="iid-条件下样本集分布-p-D-theta"><a href="#iid-条件下样本集分布-p-D-theta" class="headerlink" title="$iid$条件下样本集分布$p(D|\theta)$"></a>$iid$条件下样本集分布$p(D|\theta)$</h4><p>在独立同分布假设下，我们通过采样得到样本集$D = \{ x_1, x_2, \dots, x_N \}$, 在进行参数估计时我们往往需要计算整个样本集出现的概率:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        p(D|\theta) &= \prod_{i} h(x_i) \exp(\theta^T \phi(x_i) - A(\theta)) \\ 
+        &= (\prod_i h(x_i)) \exp(\theta^T \sum_i \phi(x_i) - N A(\theta))
+    \end{aligned}</script><p>从格式上来看，会发现样本集的分布仍然是指数族分布，只不过是充分统计量$\phi’(D)$变为了:</p>
+<script type="math/tex; mode=display">
+    \phi'(D) = \sum_i \phi(x_i)</script><p>这给我们一个启示，当我们要利用一组数据进行参数估计时，我们只需要将各个样本的充分统计量累加起来便可以得到整个样本集合的充分统计量，后面进行参数估计时只需要利用充分统计量即可，原始数据可以舍弃。</p>
+<p>在</p>
 
             </div>
             <hr/>
@@ -550,7 +592,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://xuejy19.github.io/2020/07/06/ji-qi-xue-xi-li-lun/">https://xuejy19.github.io/2020/07/06/ji-qi-xue-xi-li-lun/</a>
+                    <a href="https://xuejy19.github.io/2020/10/07/zhi-shu-zu-fen-bu-yu-guang-yi-xian-xing-mo-xing/">https://xuejy19.github.io/2020/10/07/zhi-shu-zu-fen-bu-yu-guang-yi-xian-xing-mo-xing/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -587,7 +629,11 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
+                            
+                                <a href="/tags/%E6%8C%87%E6%95%B0%E5%88%86%E5%B8%83%E6%97%8F%EF%BC%8C-%E5%B9%BF%E4%B9%89%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B/">
+                                    <span class="chip bg-color">指数分布族， 广义线性模型</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -1016,34 +1062,88 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2020/07/23/bayes/">
+                <a href="/2020/10/07/zhi-shu-zu-fen-bu-yu-guang-yi-xian-xing-mo-xing/">
                     <div class="card-image">
                         
                         
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/4.png" class="responsive-img" alt="贝叶斯理论">
+                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/1.png" class="responsive-img" alt="指数族分布与广义线性模型">
                         
-                        <span class="card-title">贝叶斯理论</span>
+                        <span class="card-title">指数族分布与广义线性模型</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            
-该部分按照以下层次进行组织：
-
-
-从贝叶斯公式谈起
-贝叶斯决策
+                            在再谈极大似然估计中已经讨论过指数分布族的概念，并且推导出了若概率分布是指数分布族分布，则最终的对数似然函数一定是一个凹函数，直接求偏导等于0便可得到参数估计。
+在听了朱军老师的关于指数分布族函数的讲解之后，发现可以从一个更加general
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-07-23
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-10-07
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/" class="post-category">
+                                    统计学习
+                                </a>
+                            
+                            
                         </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E6%8C%87%E6%95%B0%E5%88%86%E5%B8%83%E6%97%8F%EF%BC%8C-%E5%B9%BF%E4%B9%89%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B/">
+                        <span class="chip bg-color">指数分布族， 广义线性模型</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/10/06/qiang-hua-xue-xi/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/4.png" class="responsive-img" alt="强化学习">
+                        
+                        <span class="card-title">强化学习</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            这部分将根据周志华老师的西瓜书对强化学习部分做一个简单介绍，该部分按照以下章节进行组织:
+
+思想介绍——任务与奖赏 
+K-摇臂赌博机 
+有模型学习 
+免模型学习 
+值函数近似 
+模仿学习
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-10-06
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -1057,51 +1157,10 @@
                     </div>
                 </div>
                 
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2020/02/22/you-gan/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/0.jpg" class="responsive-img" alt="有感">
-                        
-                        <span class="card-title">有感</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            &emsp;    或许逃避是人的天性，整个博一上学期，似乎整天忙忙碌碌，在若干门课程中来回斡旋，
-                        
-                    </div>
-                    <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-02-22
-                            </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/%E9%97%B2%E8%B0%88/" class="post-category">
-                                    闲谈
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E6%97%A0%E6%84%9F%E8%80%8C%E5%8F%91/">
-                        <span class="chip bg-color">无感而发</span>
+                    <a href="/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/">
+                        <span class="chip bg-color">强化学习</span>
                     </a>
                     
                 </div>
