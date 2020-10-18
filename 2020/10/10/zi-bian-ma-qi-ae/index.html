@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="规则学习, 风之声">
+    <meta name="keywords" content="自编码器AE, 风之声">
     <meta name="description" content="与孤独为友">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>规则学习 | 风之声</title>
+    <title>自编码器AE | 风之声</title>
     <link rel="icon" type="image/jpeg" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/favicon.jpg">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/awesome/css/all.css">
@@ -322,12 +322,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/3.png')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/1.png')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">规则学习</h1>
+                    <h1 class="description center-align post-title">自编码器AE</h1>
                 </div>
             </div>
         </div>
@@ -444,8 +444,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/%E8%A7%84%E5%88%99%E5%AD%A6%E4%B9%A0%EF%BC%8C%E5%AE%9A%E6%80%A7%E5%85%B3%E8%81%94/">
-                                <span class="chip bg-color">规则学习，定性关联</span>
+                            <a href="/tags/%E8%87%AA%E7%BC%96%E7%A0%81%EF%BC%8C%E5%8F%98%E5%88%86%E8%87%AA%E7%BC%96%E7%A0%81%EF%BC%8C%E9%99%8D%E5%99%AA%E8%87%AA%E7%BC%96%E7%A0%81/">
+                                <span class="chip bg-color">自编码，变分自编码，降噪自编码</span>
                             </a>
                         
                     </div>
@@ -469,28 +469,28 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-08-27
+                    2020-10-10
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2020-08-29
+                    2020-10-18
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    3.7k
+                    3.1k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    12 分
+                    10 分
                 </div>
                 
 
@@ -505,65 +505,105 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>首先讲一个有意思的现象，早期的主流人工智能专注于以逻辑为基础来进行形式化和推理，但这样很难定量地对不确定事件进行表达和处理，后来随着机器学习算法的井喷，大家都更加关注于对定量的数据进行处理。但现在，很多人发现在解决某些任务的时候，加入一些行业中的常识知识可能会让任务解决地更好，而现在定性知识与定量数据之间似乎有着一道鸿沟，唯一的联系就是进行算法设计的人可能会依赖于他的领域知识来选择合适的算法并对算法进行调参。基于学习下定性知识如何表达的想法，这部分介绍下周志华老师🍉书的倒数第二章——规则学习，这部分内容安扎以下结构组织:</p>
+                <p>在进行数据降维和数据降噪时常用的深度学习方法是自编码器<code>AutoEncoder</code>类算法，其具有以下特点:</p>
 <ul>
-<li>基本概念 </li>
-<li>序贯覆盖</li>
-<li>剪枝优化</li>
-<li>一阶规则学习</li>
-<li>归纳逻辑程序设计 </li>
+<li>自编码器类算法属于无监督学习范畴</li>
+<li>从结构上来看自编码器类算法包含编码器和解码器两部分 </li>
+<li>自编码器算法常用做特征提取 </li>
 </ul>
-<a id="more"></a>
-<h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p>首先给出机器学习中规则和规则学习的概念：</p>
+<p>本文按照以下结构进行组织:</p>
+<ul>
+<li>自编码器AE</li>
+<li>变分自编码器VAE </li>
+<li>降噪自编码器DAE <a id="more"></a>
+<h3 id="自编码器AE"><a href="#自编码器AE" class="headerlink" title="自编码器AE"></a>自编码器AE</h3></li>
+</ul>
+<h4 id="自编码器算法思想"><a href="#自编码器算法思想" class="headerlink" title="自编码器算法思想"></a>自编码器算法思想</h4><p>所谓的自编码器从名称上来理解，便是对自己进行编码，首先给出维基百科上关于自编码器的定义:</p>
 <blockquote>
-<p><strong>规则:</strong> 在机器学习领域中，“规则”通常是指语义明确、能描述数据分布所隐含的客观规律或领域概念，可以写成”若….,则….”形式的逻辑规则。<br><strong>规则学习:</strong> “规则学习”是从训练数据中学习出一组能用于对未见示例进行判别的规则。</p>
+<p><strong>自编码器:</strong> 自编码，也称自动编码器，是一种人工神经网络，在无监督学习中用于有效编码。自编码的目的是对一组数据学出一种表示，通常用于降维。 </p>
 </blockquote>
-<p>形式化来看，一条规则形如：</p>
-<script type="math/tex; mode=display">
-    \oplus \leftarrow f_1 \land f_2 \dots \land f_L</script><p>公式中$\leftarrow$右侧部分称为”规则体”，表示该条规则的前提，左边部分称为”规则头”,表示该条规则的结果。规则体是由逻辑文字$f_k$所组成的合取式(conjuction)，每个文字$f_k$都是对示例属性进行检验的布尔表达式，例如”(色泽 = 乌黑)”或者”$\neg$(根蒂 = 硬挺)”。$L$是规则体中逻辑文字的个数,称为规则的长度,规则头的”$\oplus$”,同样是逻辑文字，一般用来表示所判定的目标的类别或概念，比如”好瓜”，这样的逻辑规则也被称为<strong>if-then规则</strong>。<br>与神经网络、支持向量机这样的”黑箱模型”相比，规则学习具有以下几个优点:</p>
+<p>一个自编码器一般具有如下结构:<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/AE.png" alt="自编码器"></p>
+<p>从上图可以看出，自编码器模型主要由编码器和解码器组成，其主要目的是将输入变量映射到中间变量$z$，然后再将中间变量$z$映射成$x’$， 模型训练的目标是$x$和$x’$尽可能接近，编码器和解码器分别实现了以下功能: </p>
 <ul>
-<li>可解释性较强</li>
-<li>很强的表达能力，绝大多数的人类知识都能够通过数理逻辑进行简洁的刻画和表达，例如”父亲的父亲是爷爷”这样的知识不易用函数式表达，而用一阶逻辑则可以方便地写为：<script type="math/tex; mode=display">
-  爷爷(X,Y) \leftarrow 父亲(X,Z) \land 父亲(Z,Y)</script></li>
-<li>逻辑规则的抽象描述能力在处理一些高度复杂的AI任务时具有显著的优势，例如在问答系统中有时可能遇到非常多、甚至无穷种可能的答案，此时若能基于逻辑规则进行抽象表述或者推理，则将带来极大的便利。</li>
+<li>编码器: 将输入数据映射到隐含特征空间 </li>
+<li>解码器: 基于隐含特征来重构原始数据 </li>
 </ul>
-<p>假设我们从西瓜数据集中学得规则集合$\mathcal{R}$:</p>
+<p>单纯从形式上来看，自编码器就是一个普通的神经网络，只是网络输出为输入数据本身；但如果从算法思想的角度，我们一般所接触的神经网络所开展的任务往往是有监督学习问题，比如分类和回归预测，而对于无监督学习问题，比如聚类、降维，还是统计学习中的一些传统算法应用较多，而自编码器则就给予了我们一个应用深度学习方法来开展无监督学习的思路。</p>
+<p>初学者在开展自编码器学习过程中绕不开的一个问题就是:</p>
+<blockquote>
+<p>训练这样一个恒等映射网络有什么意义? </p>
+</blockquote>
+<p>我在刚了解自编码器算法思想时也有这样的疑问，但在对无监督学习思想有了更多理解之后我认为构建这样一个恒等映射网络有以下几方面应用: </p>
+<ul>
+<li><strong>数据压缩/降维:</strong> 在图像压缩领域，一个图像可能动辄几MB甚至几十MB，在进行传输中需要大量的流量，而假设我们已经有了一个训练好的自编码神经网络，而特征空间维度较低，我们就可以在发送端应用训练好的自编码器进行数据压缩，然后将压缩后的数据传输到接收端，接收端再使用解码器来对图像进行还原。</li>
+<li><strong>特征提取:</strong> 数据压缩本身也是一种特征提取，而具体提取什么样的特征则是与数据相关的，而自编码器提取特征的标准则是希望提取的隐层特征能够在自编码器神经网络框架下较精确地重构原始数据，提取后的特征可以送入下游机器学习算法中以完成下游任务。</li>
+</ul>
+<p>在进行自编码器算法应用时，需要注意以下两点问题: </p>
+<ul>
+<li>自动编码器是数据相关的，这也就意味着自动编码器只能压缩那些与训练数据类似的数据，如果从概率分布的角度来进行理解，编码器其实就是学到了一个映射，将原始空间的数据分布映射到特征空间的某个概率分布，这也就意味着如果模型训练的比较充分且新来的样本与训练样本同分布，则自编码器就能较好地对新样本数据进行编码。 </li>
+<li>自动编码器是有损的，这是因为经过编码解码后的输出与输入相比还是有误差的/退化的，这个误差我们一般称之为重构误差。</li>
+<li>自动编码器算法属于一种无监督学习算法。</li>
+</ul>
+<h4 id="自编码器搭建及学习"><a href="#自编码器搭建及学习" class="headerlink" title="自编码器搭建及学习"></a>自编码器搭建及学习</h4><p>自编码器其实可以看作一整个神经网络，包含编码器与解码器两部分，分别学习不同的映射: </p>
 <script type="math/tex; mode=display">
     \begin{aligned}
-        &规则1: 好瓜 \leftarrow (根蒂 = 蜷缩) \land (脐部 = 凹陷) \\
-        &规则2: \neg好瓜 \leftarrow (纹理 = 模糊)
-    \end{aligned}</script><p>规则集合中的每条规则都可看作一个子模型，规则集合是这些子模型的一个集成。当同一个示例被判别结果不同的多条规则覆盖时，则称发生了“冲突”，解决冲突的办法则称为”冲突消解”，常用的冲突消解的方法有投票法、排序法、元规则法，投票法就是常用的少数服从多数策略，排序法则是指定规则优先级，出现冲突时使用排序靠前的规则。所谓元规则，其实就是规则的规则，例如”发生冲突时使用长度最小的规则“，然后根据元规则的指导来使用规则集。<br>此外，从训练集学得的规则集合也许并不能覆盖所有可能的未见示例，此时规则学习算法通常会设置一条默认规则，由它来处理规则集合未覆盖的样本；例如为$\mathcal{R}$增加一条默认规则：“未被规则1,2覆盖的都不是好瓜”。<br>从形式语言表达能力而言，规则可分为两类：“命题规则”和“一阶规则”：</p>
+        &Encoder: x \rightarrow f(x) \quad \mathbb{R}^d \rightarrow \mathbb{R}^{d'}\\ 
+        &Decoder: f(x) \rightarrow x' \quad \mathbb{R}^{d'} \rightarrow \mathbb{R}^d
+    \end{aligned}</script><p>如果对自编码器的算法思想理解了同时具备神经网络搭建训练方面的知识，则自编码器的搭建及训练不需要再单独学习。</p>
+<h4 id="常见自编码器类型"><a href="#常见自编码器类型" class="headerlink" title="常见自编码器类型"></a>常见自编码器类型</h4><p>常用自编码器有以下集中几种类型: </p>
+<ul>
+<li><strong>堆栈自编码器</strong>: 所谓堆栈自编码器实际上就是最普通的自编码器，编码器和解码器网络结构层数均大于1。</li>
+<li><strong>欠完备自编码器</strong>: 如果编码器输出特征维度$h$小于原始数据特征维度$d$，则对应的自编码器称为欠完备自编码器，在进行数据降维时一般都是采用欠完备自编码器。</li>
+<li><strong>正则自编码器</strong>: 普通的堆栈自编码器只是学习了一个恒等映射，而我们有时候期望降维后的特征能够具有某些特性，这些特性包括系数表示、对噪声鲁棒性等，而要达成这样的目的往往会在目标函数上添加一个正则项。</li>
+<li><strong>降噪自编码器</strong>: 降噪自编码器与其说是一个算法结构，实际上更像是一种模型训练的trick，降噪自编码器以损坏/缺失的数据作为输入，然后来预测原始的未损坏/缺失的数据，从而使自编码器学习到从缺失数据恢复为未缺失数据的能力。   <h3 id="变分自编码器VAE"><a href="#变分自编码器VAE" class="headerlink" title="变分自编码器VAE"></a>变分自编码器VAE</h3><h4 id="自编码器生成内容局限性"><a href="#自编码器生成内容局限性" class="headerlink" title="自编码器生成内容局限性"></a>自编码器生成内容局限性</h4>在训练好了一个自编码器以后，我们可能会考虑这样一个问题:<blockquote>
+<p>能否应用自编码器来进行数据生成?<br>如果隐空间足够规则，我们是否可以从隐空间中随机取一个点并将其解码以获得新的内容，就像生成对抗网络中的生成器那样。 </p>
+</blockquote>
+</li>
+</ul>
+<p>这样做是并不行的，主要是因为两个原因:</p>
 <blockquote>
 <ul>
-<li>命题规则是由“原子命题(propositional atom)”和逻辑连接词“与($\land$)”、”(或($\lor$))”、“非($\neg$)”和“蕴含”($\leftarrow$)构成的简单陈述句；例如规则集$\mathcal{R}$就是一个命题规则集，”根蒂 = 蜷缩”，“脐部 = 凹陷”都是元子命题。</li>
-<li>一阶规则的基本成分是能表述事物的属性或关系的”原子公式”，例如表达父子关系的谓词(predict)“父亲$(X,Y)$”就是原子公式，再如表示加1操作”$\sigma(X) = X+1$”的函数$\sigma(X)$也是原子公式。如果进一步使用谓词“自然数$(X)$”表示$X$是自然数，“$\forall X$”表示对任意$X$成立，”$\exists Y$”表示”存在$Y$使之成立”,那么”所有自然数加1都是自然数”就可以写做:<script type="math/tex; mode=display">
-  \forall X, \exists Y  \leftarrow 自然数(X) \land (Y = \sigma(X))</script>或者表示成更加简洁的形式:<script type="math/tex; mode=display">
-  \forall X, 自然数(\sigma(X)) \leftarrow 自然数(X)</script>这样的规则就是一阶规则，其中$X$和$Y$称为逻辑变量，$\forall,\exists$用于限定变量的取值范围，称为”量词”，显然，一阶规则可以表达复杂的关系，因此也被称为“关系型规则”。若我们简单地把属性当作谓词来定义示例与属性值之间的关系，则命题规则集$\mathcal{R}$可以改写为一阶规则集$R’$:<script type="math/tex; mode=display">
-  \begin{aligned}
-      &规则1: 好瓜(X) \leftarrow 根蒂(X,蜷缩) \land 脐部(X,凹陷) \\
-      &规则2: \neg 好瓜(X) \leftarrow 纹理(X,模糊)
-  \end{aligned}</script>从形式语言系统角度来看，命题规则是一阶规则的特例，因此一阶规则的学习比命题规则要复杂得多。</li>
+<li>隐空间缺乏可解释和可利用的结构，缺乏规则性( lack of regularity )，关于这一点我们可以举一个极端的例子，假设编码器和解码器足够强大，将$N$个样本分别映射到了一维的隐空间，分别对应着$1~N$。这也就导致你如果随便取隐空间一个点，然后用解码器进行解码，那么大概率不能生成有用样本。 </li>
+<li>在进行降维时，由于自编码器过于强大，导致很多原始空间中数据的结构信息并没有得到保留，在隐空间中是稀疏的。 </li>
 </ul>
 </blockquote>
-<h3 id="序贯覆盖"><a href="#序贯覆盖" class="headerlink" title="序贯覆盖"></a>序贯覆盖</h3><p>规则学习的目标是产生一个可以覆盖尽可能多样例的规则集，最直接的做法就是“序贯覆盖”，即逐条归纳:在训练集上每学到一条规则，就将该规则覆盖的训练样例去除，然后以剩下的训练样例组成训练集重复上述过程。由于每次只处理一部分数据，因此也被称为”分治”策略。<br>序贯覆盖法的关键是如何从训练集学出单条规则，显然，对规则学习目标$\oplus$ 产生一条规则就是寻找最优的一组逻辑文字构成规则体，这是一个搜索问题。形式化上来说，给定正例集合与反例集合，学习任务是基于候选文字集合$\mathcal{F} = \{ f_k \}$来生成最优规则$r$。在命题规则学习中，候选文字是形如”$R(属性_i,属性值_{ij})$”的布尔表达式，$R(x,y)$则是判断$x,y$是否满足关系$R$的二元布尔函数。<br>而具体的学习方法则是从空规则$”\oplus \leftarrow”$开始，将正例类别作为规则头，再逐个遍历训练集中的每个属性及取值，尝试将其作为逻辑文字增加到规则体中，若能使当前规则体仅覆盖正例，由此产生一条规则，然后去除已被覆盖的正例并基于剩余样本生成下一个规则：通俗来说，这种方法的思想便是挑选出所有仅覆盖正例的特征和仅覆盖反例的特征。<br>而原始的穷尽搜索的做法在属性和候选值较多时会由于组合爆炸而不可行,现实任务中一般有两种策略来产生规则:</p>
+<p>换句话说，普通的自编码器并不是生成式模型，其更像是学习了某种确定性映射，并不能用于生成新的样本。</p>
+<h4 id="变分自编码器思想"><a href="#变分自编码器思想" class="headerlink" title="变分自编码器思想"></a>变分自编码器思想</h4><p>为了能够能够使得自编码器的解码器用于生成目的，我们需要保证隐空间足够规则，获得这种规律性的一种可能方案是在训练过程中引入显示的正则项。<strong>因此，变分自编码器可以看作是一种自编码器，其训练过程经过正则化以避免过拟合，同时使隐变量$z$分布服从某一特定分布，在进行数据生成时便可以从该分布中采样然后送入解码器以进行数据生成。</strong></p>
+<p>变分自编码器与普通自编码器在形式上的不同点在于:</p>
+<blockquote>
+<p>某个输入变量$x$并不是被编码成隐空间中一个点，而是隐空间中的一个概率分布。 </p>
+</blockquote>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        &AE: x \rightarrow Encoder: z = f(x) \rightarrow Decoder: x' = g(z) \\
+        &VAE: x \rightarrow Encoder: z \sim N(x|\mu, \sigma^2) \rightarrow Sample \ z  \rightarrow Decoder: x' = g(z)
+    \end{aligned}</script><p>我们一般假设隐空间中隐变量的分布是高斯分布，而编码器实际上就是学习对应高斯分布的均值和方差,整个变分自编码器的结构如下图所示:<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/VAE.png" alt="VAE"><br>需要注意的是，由多少个样本，则最终在隐空间就会有多少个高斯分布。因为在进行解码之前有一个采样的操作，而采样本身是并不可导的，因此在实际中都是采用一个叫做<code>重参数</code>的技巧，也就是说每一次都是从标准正态分布中采样，然后通过:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        z &= \mu + \sigma \odot \epsilon  \\
+        \epsilon &\sim N(0,1)
+    \end{aligned}</script><p>来重构隐变量，这样$\mu$和$\sigma$就变成了一个参数，是可以应用反向传播进行参数更新。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/VAE1.png" alt="VAE"><br>在进行模型训练时，主要是以下步骤:</p>
 <ul>
-<li>自顶向下:从比较一般的规则开始，逐渐添加新文字以缩小规则覆盖范围，直到满足预定条件为止，该策略也称为“生成测试”法，是规则逐渐特化的过程。</li>
-<li>自底向上:从比较特殊的规则开始,逐渐删除文字以扩大规则覆盖范围，直到满足条件为止，该种策略是规则逐渐泛化的过程。</li>
+<li>将输入编码为隐空间上一个高斯分布(均值$\mu$, 方差$\sigma^2$) </li>
+<li>从该分布中采样隐空间中一个点</li>
+<li>对采样点进行解码并计算出重构误差 </li>
+<li>重构误差通过网络进行反向传播</li>
 </ul>
-<h3 id="剪枝优化"><a href="#剪枝优化" class="headerlink" title="剪枝优化"></a>剪枝优化</h3><p>规则生成本质上是一个贪心搜索的过程，需有一定的机制来缓解过拟合的风险，最常见的做法是剪枝。与决策树相似，剪枝可以分为预剪枝与后剪枝。在实际操作时通常是基于某种性能度量指标来评估增/删逻辑文字前后的规则性能，或增/删规则集前后的规则集性能，从而判断是否需要进行剪枝。<br>经常使用的预剪枝算法为$CN2$算法，使用似然率统计量作为指标；后剪枝常用策略为“减错剪枝”，即将样例集进行划分，划分为训练集和验证集，根据在验证集上的表现优劣来对从训练集中学出的模型进行剪枝。、</p>
-<h3 id="一阶规则学习"><a href="#一阶规则学习" class="headerlink" title="一阶规则学习"></a>一阶规则学习</h3><p>命题逻辑的基本单元是“原子命题”，这也就导致命题规则学习很难处理对象之间的”关系”，而关系信息在很多任务中非常重要。例如，当我们在瓜摊挑瓜时,通常很难把水果摊上所有西瓜的特征用属性值表示出来，因为我们很难判断:色泽看起来多深才叫”色泽青绿”？敲起来声音多低才叫”敲声沉闷”？比较现实的做法是将西瓜进行比较，例如，”瓜1的颜色比瓜2更深，并且瓜1的根蒂比瓜2更蜷”，因此“瓜1比瓜2更好”。然而，这已经超越了命题逻辑的表达能力，需要用一阶逻辑来表达，并且要使用一阶规则进行学习。</p>
-<p>首先我们需要将命题逻辑数据转换为关系数据，比如对于瓜的色泽，我们可以定义:</p>
+<p>而实现隐空间正态规则化最简单的实现方式便是在目标函数中添加正则项，该正则项期望输入映射到隐空间的这个正态分布能够尽可能接近标准正态分布，度量方式一般选用KL散度，因此最终目标函数一般是如下形式:</p>
 <script type="math/tex; mode=display">
-    色泽深度：乌黑>青绿>浅白</script><p>那么“瓜1色泽乌黑，是好瓜；瓜2色泽青绿，不是好瓜”，就可以表示为:</p>
-<script type="math/tex; mode=display">
-    色泽更深(瓜1，瓜2)，更好(瓜1，瓜2)</script><p>这样的数据直接描述了样例之间的关系，称为“关系数据”，其中由原样本属性转化而来的“色泽更深”、“根蒂更蜷”等原子公式称为“背景知识”，而由样本类别转化而来的关于“更好”，“$\neg$更好”等原子数据称为关系数据样例，下面给出一个一阶规则示例：</p>
-<script type="math/tex; mode=display">
-    (\forall X,\forall Y)(更好(X,Y)) \leftarrow 根蒂更蜷(X,Y) \land 脐部更凹(X,Y)</script><p>与命题规则相比，一阶规则的规则头、规则体都是一阶逻辑表达式，个体对象”瓜1，瓜2”被逻辑变量$X,Y$替换，全称量词$\forall$ 表示该规则对所有个体对象均成立；通常，在一阶规则中所有出现的变量都被全称量词限定，所以有时会将全称量词省去,一阶规则有着强大的表达能力，例如它能简洁地表达递归概念，如:</p>
-<script type="math/tex; mode=display">
-    更好(X,Y) \leftarrow 更好(X,Z) \land 更好(Z,Y)</script><p>一阶规则学习能够容易地引入领域知识，这是它相对于命题规则学习的另一大优势。在命题规则学习乃至一般的统计学习中，若欲引入领域知识，通常有两种做法:<strong>在现有属性的基础上基于领域知识构造出新属性，或基于领域知识设计某种函数机制(如正则化)来对假设。</strong> 然而现实任务中并非所有的领域知识都能够容易地通过属性重构和函数约束来表达。例如，假定我们获得包含了某未知元素的化合物$X$，欲通过实验来发现它与已知化合物$Y$的化学表达式,我们可以重复多次实验，测出每次结果中化合物的组份含量，虽然我们对反应中的未知元素的性质一无所知，但知道一些普遍成立的化学原理，例如金属原子一般产生离子键、氢原子之间一般都是共价键，并且也了解已知元素间可能发生反应，这些领域知识非常重要，但往往很难在基于命题表示的学习中加以利用。<br>下面介绍一种著名的一阶规则学习算法</p>
-<h4 id="First-Order-inductive-Learner"><a href="#First-Order-inductive-Learner" class="headerlink" title="First-Order inductive Learner"></a>First-Order inductive Learner</h4><p>FOIL是著名的一阶规则学习算法，它遵循序贯覆盖框架且采用自顶向下的规则归纳策略，由于有逻辑变量的存在，FOIL在规则生成时需考虑不同的变量组合。这也是和命题规则所不同的地方,在命题规则的学习中只需要考虑原子命题之间的组合，而在一阶逻辑规则学习中，除了要考虑原子公式的组合，还应当考虑公式中变量的组合。<br>FOIL使用“FOIL增益”来选择文字:</p>
-<script type="math/tex; mode=display">
-    F_{Gain} = \hat{m}_+ \times (\log_2 \frac{\hat{m}_+}{\hat{m}_+ + \hat{m}_-}-\log_2 \frac{m_+}{m_+ + m_-})</script><h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>规则学习是”符号主义学习”，是最早开始研究的机器学习技术之一。序贯覆盖是规则学习的基本框架，CN2采用集述搜索，是最早考虑过拟合问题的规则学习算法，现实出后剪枝在缓解规则学习过拟合中的优势。<br>由于命题规则的表述能力有限，一阶逻辑学习开始发展，FOIL通过变量替换等操作把命题规则学习转化为一阶规则学习。<br>近年来随着机器学习技术进入更多应用领域，在富含结构信息和领域知识的任务中，逻辑表达的重要性逐渐凸显出来，因此出现了一些将规则学习与统计学习相结合的努力，例如给贝叶斯网中的节点赋予逻辑意义的“关系贝叶斯网络”、贝叶斯逻辑程序、马尔可夫逻辑网络，统称为”统计关系学习”。</p>
+    loss = ||x - x'||^2 + D_{KL}(N(\mu_x, \sigma_x^2) || N(0,1))</script><h4 id="关于正则化直观解释"><a href="#关于正则化直观解释" class="headerlink" title="关于正则化直观解释"></a>关于正则化直观解释</h4><p>为了使生成过程成为可能，我们期望隐空间具有规则性，而规则性可以通过两个主要属性表示: </p>
+<ul>
+<li>连续性: 隐空间中的两个相邻点解码后不应呈现两个完全不同的内容 </li>
+<li>完整性: 针对给定的分布，从隐空间采样的点在解码后应提供“有意义”的内容 </li>
+</ul>
+<p>VAE将输入编码为分布而不是点并不足以确保连续性和完整性，如果没有明确地定义正则化项，即模型目标函数仅仅期望重构误差尽可能小，那么模型会倾向于让分布的方差等于0以获得更小的重构误差，而此时变分自编码器也就退化成了普通的自编码器。</p>
+<p>因此，为了避免该问题，我们必须同时对协方差矩阵和编码器返回的分布均值进行正则化，在实际应用中则是通过计算投影分布与标准正态分布之间的KL散度作为正则项。 </p>
+<p>使用该正则化项，可以防止模型在隐空间中的编码相互远离，并鼓励尽可能多的返回分布发生重叠，从而满足预期的连续性和完整性条件。自然的对于任何正则化项，都会以训练数据上更高的重建误差为代价。然而，可以调整重建误差和KL散度之间的权重，我们将在下一节中看到如何从形式推导中自然得出平衡的表达。</p>
+<h4 id="数学推导"><a href="#数学推导" class="headerlink" title="数学推导"></a>数学推导</h4><h5 id="概率框架和假设"><a href="#概率框架和假设" class="headerlink" title="概率框架和假设"></a>概率框架和假设</h5><p>我们首先定义一个概率图模型来描述我们的数据，用$x$表示我们的数据变量，并且假定$x$是由未直接观察到的潜在变量$z$生成。因此对于每个数据点，假设以以下两个步骤进行生成:</p>
+<ul>
+<li>首先，从先验分布p(z)中采样一个隐空间表示$z$</li>
+<li>第二，按条件概率$p(x|z)$采集数据$x$</li>
+</ul>
 
             </div>
             <hr/>
@@ -589,7 +629,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://xuejy19.github.io/2020/08/27/gui-ze-xue-xi/">https://xuejy19.github.io/2020/08/27/gui-ze-xue-xi/</a>
+                    <a href="https://xuejy19.github.io/2020/10/10/zi-bian-ma-qi-ae/">https://xuejy19.github.io/2020/10/10/zi-bian-ma-qi-ae/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -627,8 +667,8 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/%E8%A7%84%E5%88%99%E5%AD%A6%E4%B9%A0%EF%BC%8C%E5%AE%9A%E6%80%A7%E5%85%B3%E8%81%94/">
-                                    <span class="chip bg-color">规则学习，定性关联</span>
+                                <a href="/tags/%E8%87%AA%E7%BC%96%E7%A0%81%EF%BC%8C%E5%8F%98%E5%88%86%E8%87%AA%E7%BC%96%E7%A0%81%EF%BC%8C%E9%99%8D%E5%99%AA%E8%87%AA%E7%BC%96%E7%A0%81/">
+                                    <span class="chip bg-color">自编码，变分自编码，降噪自编码</span>
                                 </a>
                             
                         </div>
@@ -1059,29 +1099,36 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2020/08/30/jue-ce-shu-mo-xing/">
+                <a href="/2020/10/10/zi-bian-ma-qi-ae/">
                     <div class="card-image">
                         
                         
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/4.png" class="responsive-img" alt="决策树模型">
+                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/1.png" class="responsive-img" alt="自编码器AE">
                         
-                        <span class="card-title">决策树模型</span>
+                        <span class="card-title">自编码器AE</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            这一部分介绍下决策树算法，决策树是一种基本的分类与回归表示方法，决策树模型呈树形结构，在分类问题中，可以表示为基于特征对实例进行分类的过程。决策树可以认为是”if-then”规则的集合，也可以认为是定义在特征空间与类空间上的概率分分布。本文
+                            在进行数据降维和数据降噪时常用的深度学习方法是自编码器AutoEncoder类算法，其具有以下特点:
+
+自编码器类算法属于无监督学习范畴
+从结构上来看自编码器类算法包含编码器和解码器两部分 
+自编码器算法常用做特征提取 
+
+本文按照以下结构
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-08-30
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-10-10
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -1094,11 +1141,12 @@
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E6%A0%91%E6%A8%A1%E5%9E%8B-categorical%E5%8F%98%E9%87%8F/">
-                        <span class="chip bg-color">树模型,categorical变量</span>
+                    <a href="/tags/%E8%87%AA%E7%BC%96%E7%A0%81%EF%BC%8C%E5%8F%98%E5%88%86%E8%87%AA%E7%BC%96%E7%A0%81%EF%BC%8C%E9%99%8D%E5%99%AA%E8%87%AA%E7%BC%96%E7%A0%81/">
+                        <span class="chip bg-color">自编码，变分自编码，降噪自编码</span>
                     </a>
                     
                 </div>
@@ -1112,28 +1160,25 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/08/26/gai-lu-fen-bu-zhong-de-ju-chi-du-liang/">
+                <a href="/2020/10/07/zhi-shu-zu-fen-bu-yu-guang-yi-xian-xing-mo-xing/">
                     <div class="card-image">
                         
                         
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/2.jpg" class="responsive-img" alt="概率分布中的距离度量">
+                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/1.png" class="responsive-img" alt="指数族分布与广义线性模型">
                         
-                        <span class="card-title">概率分布中的距离度量</span>
+                        <span class="card-title">指数族分布与广义线性模型</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            在$k$近邻章节中，我总结了在样本空间中常用的两种距离度量:$L_p$距离以及马氏距离。但在一些机器学习任务中，我们期望能够得到一个分布与目标分布尽可能接近，这也就引出了一个新的问题:
-
-如何度量两个概率分布之间的距离(差异程度)？
-
-本文
+                            在再谈极大似然估计中已经讨论过指数分布族的概念，并且推导出了若概率分布是指数分布族分布，则最终的对数似然函数一定是一个凹函数，直接求偏导等于0便可得到参数估计。
+在听了朱军老师的关于指数分布族函数的讲解之后，发现可以从一个更加general
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-08-26
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-10-07
                             </span>
                         <span class="publish-author">
                             
@@ -1150,8 +1195,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/KL%E6%95%A3%E5%BA%A6%EF%BC%8CJS%E6%95%A3%E5%BA%A6%EF%BC%8C%E6%8E%A8%E5%9C%9F%E6%9C%BA%E8%B7%9D%E7%A6%BB/">
-                        <span class="chip bg-color">KL散度，JS散度，推土机距离</span>
+                    <a href="/tags/%E6%8C%87%E6%95%B0%E5%88%86%E5%B8%83%E6%97%8F%EF%BC%8C-%E5%B9%BF%E4%B9%89%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B/">
+                        <span class="chip bg-color">指数分布族， 广义线性模型</span>
                     </a>
                     
                 </div>

@@ -476,7 +476,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2020-09-20
+                    2020-10-17
                 </div>
                 
 
@@ -609,7 +609,7 @@
       V(D,G) = \sum_{i=1, x \sim p_{data}(x)}^{batch\_size} \log D(x) + 
       \sum_{i=1, x \sim p_{G}(x)}^{batch\_size} \log (1 - D(x))
   \end{aligned}</script>若设置来自于真实数据集的数据的label为1，来自于生成器的数据的label为0，则上式其实可以看作两个二分类交叉熵的和，二分类交叉熵计算公式为：<script type="math/tex; mode=display">
-  BCE(x_n,y_n) = y_n \log x_n + (1-y_n) \log (1 - x_n)</script>对于label为1的样本，保留前一项；而对于label为0的样本，保留后一项，刚好就是$V(D,G)$。当然也可以通过直接就两个类别做one-hot，然后使用普通的交叉熵损失函数也可以。 </li>
+  BCE(x_n,y_n) = -[y_n \log x_n + (1-y_n) \log (1 - x_n)]</script>对于label为1的样本，保留前一项；而对于label为0的样本，保留后一项，刚好就是$V(D,G)$。当然也可以通过直接就两个类别做one-hot，然后使用普通的交叉熵损失函数也可以。 </li>
 </ul>
 <p>在对生成器进行优化的时候，因为我们期望造出的假样本能够尽可能真，因此只需要将假样本的label设置为1，然后进行反向传播优化生成器即可。</p>
 <h4 id="网络结构设计"><a href="#网络结构设计" class="headerlink" title="网络结构设计"></a>网络结构设计</h4><p>生成对抗网络是出了名的难训练，因此合理的网络结构非常重要，对于新入门的人来说就只能参考一些现成的网络结构,同时对于不同的任务也应当选用不同的网络结构。目前生成对抗网络在图像处理领域较多，因此往往采用卷积神经网络。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/generative-adversarial-network.png" alt="GAN"></p>
@@ -1702,7 +1702,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">90.3k</span>&nbsp;字
+                class="white-color">93.4k</span>&nbsp;字
             
             
             
