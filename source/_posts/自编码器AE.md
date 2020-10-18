@@ -80,6 +80,18 @@ $$
 
 $$
     \begin{aligned}
-        &AE: x \rightarrow Encoder: z = f(x) \rightarrow Decoder: x' = g(z) 
+        &AE: x \rightarrow Encoder: z = f(x) \rightarrow Decoder: x' = g(z) \\
+        &VAE: x \rightarrow Encoder: z \sim N(x|\mu, \sigma^2) \rightarrow Sample \ z  \rightarrow Decoder: x' = g(z)
+    \end{aligned} 
+$$
+
+我们一般假设隐空间中隐变量的分布是高斯分布，而编码器实际上就是学习对应高斯分布的均值和方差,整个变分自编码器的结构如下图所示:
+![VAE](https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/VAE.png) 
+需要注意的是，由多少个样本，则最终在隐空间就会有多少个高斯分布。因为在进行解码之前有一个采样的操作，而采样本身是并不可导的，因此在实际中都是采用一个叫做`重参数`的技巧，也就是说每一次都是从标准正态分布中采样，然后通过:
+$$
+    \begin{aligned}
+        z &= \mu + \sigma \odot \epsilon  \\
+        \epsilon &\sim N(0,1)
     \end{aligned}
 $$
+来重构隐变量，这样$\mu$和$\sigma$就变成了一个参数，是可以应用反向传播进行参数更新。
