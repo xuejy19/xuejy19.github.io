@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="马尔可夫网络, 风之声">
+    <meta name="keywords" content="人像摄影-光线与构图, 风之声">
     <meta name="description" content="与孤独为友">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>马尔可夫网络 | 风之声</title>
+    <title>人像摄影-光线与构图 | 风之声</title>
     <link rel="icon" type="image/jpeg" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/favicon.jpg">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/awesome/css/all.css">
@@ -322,12 +322,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/3.png')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/13.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">马尔可夫网络</h1>
+                    <h1 class="description center-align post-title">人像摄影-光线与构图</h1>
                 </div>
             </div>
         </div>
@@ -444,8 +444,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/%E6%97%A0%E5%90%91%E5%9B%BE/">
-                                <span class="chip bg-color">无向图</span>
+                            <a href="/tags/%E4%BA%BA%E5%83%8F%E6%91%84%E5%BD%B1%E5%85%A5%E9%97%A8%EF%BC%8C%E5%85%89%E7%BA%BF%E6%9E%84%E5%9B%BE/">
+                                <span class="chip bg-color">人像摄影入门，光线构图</span>
                             </a>
                         
                     </div>
@@ -456,8 +456,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/" class="post-category">
-                                统计学习
+                            <a href="/categories/%E7%82%B9%E6%BB%B4%E7%94%9F%E6%B4%BB/" class="post-category">
+                                点滴生活
                             </a>
                         
                     </div>
@@ -469,28 +469,28 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-07-25
+                    2020-11-02
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2020-09-22
+                    2020-11-02
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.4k
+                    1.9k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    5 分
+                    6 分
                 </div>
                 
 
@@ -505,78 +505,142 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>在这一部分我将介绍另一种常见的概率图模型:马尔可夫网络，或称马尔可夫随机场。接下来分为以下几部分进行组织<a id="more"></a>：</p>
+                <p>这一部分介绍一下在进行人像摄影时的一些理论知识，该部分目录如下:<br><!-- TOC --></p>
 <ul>
-<li>马尔可夫网络</li>
-<li>独立性假设</li>
-<li>势函数</li>
+<li><a href="#光线">光线</a><ul>
+<li><a href="#光位">光位</a></li>
+<li><a href="#光质">光质</a><ul>
+<li><a href="#时刻">时刻</a></li>
+<li><a href="#天气">天气</a></li>
+<li><a href="#环境光">环境光</a></li>
+<li><a href="#立体感塑造">立体感塑造</a></li>
+<li><a href="#少光环境">少光环境</a></li>
 </ul>
-<h3 id="马尔可夫网络"><a href="#马尔可夫网络" class="headerlink" title="马尔可夫网络"></a>马尔可夫网络</h3><p>首先给出维基百科上关于马尔可夫网络的定义：</p>
+</li>
+<li><a href="#曝光技巧">曝光技巧</a><ul>
+<li><a href="#曝光-cdot-寻找光斑">曝光 $\cdot$ 寻找光斑</a></li>
+<li><a href="#曝光-cdot-设置">曝光 $\cdot$ 设置</a><ul>
+<li><a href="#曝光-cdot-大光比">曝光 $\cdot$ 大光比</a></li>
+<li><a href="#曝光-cdot-剪影">曝光 $\cdot$ 剪影</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#构图">构图</a></li>
+</ul>
+<!-- /TOC -->
+<a id="more"></a>
+<h3 id="光线"><a href="#光线" class="headerlink" title="光线"></a>光线</h3><h4 id="光位"><a href="#光位" class="headerlink" title="光位"></a>光位</h4><p>首先在进行人像拍摄时，我们一定要明确主光源的位置，主光源与人像主体位置对于最终拍摄效果影响很大，如下图所示:<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E5%85%89%E4%BD%8D.jpeg" alt="光位"><br>光位大概分几个:</p>
+<ul>
+<li>顺光：光线从人像前方照过来  </li>
+<li>逆光：光线从人像后方照过来 </li>
+<li>前侧光: 光线投射的方向与景物、照相机呈45度左右夹角</li>
+<li>后侧光: 光线投射过来的方向与景物、照相机呈135度左右夹角<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E5%85%89%E4%BD%8D1.jpeg" alt="常用光位"></li>
+</ul>
+<p>下面大概地讲一讲不同光位进行拍摄所带来的效果:</p>
+<ul>
+<li>顺光: 还原颜色，立体感差，规避瑕疵，通透 </li>
+<li>侧光: 脸部立体感凸显，阴阳脸控制<ul>
+<li><strong>前侧光: 窄面光，也就是说此时脸部大部亮,可以使得脸颊比较消瘦</strong></li>
+<li>后侧光: 宽面广，此时脸部大部较暗，会显得脸部比较宽</li>
+<li>伦布朗光: 拍摄时，被摄者脸部阴影一侧对着相机，灯光照亮脸部的四分之三。以这种用光方法拍摄的人像酷似伦勃朗的人物肖像绘画，因而得名。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E5%AE%BD%E7%AA%84%E9%9D%A2%E5%85%89.jpg" alt="宽窄面光"></li>
+</ul>
+</li>
+<li>逆光: 勾勒轮廓，发丝光，显瘦，对焦困难一些</li>
+<li>顶/底光: 一般而言我们并不喜欢顶光和底光，但如果适当运用阴影遮挡，也可以达到较好效果，使用透明伞作为柔光设备，要适当注意反光造成的底光效果。   </li>
+</ul>
+<h4 id="光质"><a href="#光质" class="headerlink" title="光质"></a>光质</h4><p>首先给出光质的定义:</p>
 <blockquote>
-<p>马尔可夫网络是一组有马尔可夫性质随机变量$X$的全联合概率分布模型。马尔可夫网络类似贝叶斯网络用于表示依赖关系。但是，一方面它可以表示贝叶斯网络无法表示的一些关系，如循环依赖；另一方面，它不能表示贝叶斯网络能够表示的某些关系，如推导关系。</p>
+<p>光质是指拍摄所用光线的软硬性质。可分为硬质光和软质光。 </p>
 </blockquote>
-<p>马尔可夫网络具有以下特征：</p>
+<p>下面给出硬质光和软质光的基本概念:</p>
 <ul>
-<li>无向图$H = (V,E)$</li>
-<li>每个顶点$v \in V$表示一个在集合$X$的随机变量，每条边$\{u,v\}\in E$ 表示随机变量$u$和$v$之间的依赖关系</li>
+<li>硬质光即是强烈的直射光，如晴天的阳光，人工灯中的聚光灯、回光灯的灯光等。硬质光照射下的被摄体表面的物理特性表现为：<strong>受光面、背光面及投影非常鲜明，明暗反差较大，对比效果明显，有助于表现受光面的细节及质感，造成有力度、鲜活等视角艺术效果。</strong></li>
+<li>软质光是一种漫散射性质的光，没有明确的方向性，在被照物上不留明显的阴影。如大雾中的阳光，泛光灯光源等。软质光的特点是<strong>光线柔和，强度均匀，光比较小，形成的影像反差不大，主体感和质感较弱。</strong></li>
 </ul>
-<h3 id="独立性假设"><a href="#独立性假设" class="headerlink" title="独立性假设"></a>独立性假设</h3><p>马尔可夫网络与贝叶斯网络类似，以图的形式对独立性假设进行编码，首先给出图中激活路径的概念：</p>
+<h5 id="时刻"><a href="#时刻" class="headerlink" title="时刻"></a>时刻</h5><p>在进行拍摄时，合适的光质对于最终的出片质量影响非常巨大，但当我们出行的时间刚好是正午，此时光线非常强烈，我们可以通过以下几种方式来进行解决: </p>
 <ul>
-<li>激活路径：一个路径$X_1,X_2,\dots,X_n$是激活的 $\Leftrightarrow$ 没有路径上的变量被观测到  </li>
+<li>选择合适的阴影场地 </li>
+<li>通过一些柔光设备</li>
+<li>合适的颜色搭配来突出主体,特别是进行雪地拍摄时 </li>
 </ul>
-<p>有了激活路径概念之后，便可以讨论图中的条件独立关系：</p>
+<p>最适合进行拍照的时间一般是<strong>清晨/傍晚时分</strong>，此时:</p>
 <ul>
-<li>在图$H$中，节点集$X$与节点集$Y$相对于是节点集$Z$是分离的 $\Leftrightarrow$ $X$与$Y$之间不存在激活路径</li>
-<li>表示为$sep_H(X;Y|Z)$,栗子如下图所示。</li>
+<li>太阳高度不太高 </li>
+<li>光线不是很强，软硬度合适</li>
+<li>最终成像使得既能呈现脸部立体感，又不至于因光线太强而出现太多难以修复的影子</li>
 </ul>
-<p><img src="https://raw.githubusercontent.com/xuejy19/Images/master/mav1.png" alt="栗子"></p>
-<h3 id="势函数"><a href="#势函数" class="headerlink" title="势函数"></a>势函数</h3><p>在贝叶斯网络中，节点之间的关系通过条件概率进行表征，而在马尔可夫网络中，节点之间的关系通过势函数来表征，势函数定义如下：</p>
+<p>最后给出风光摄影中常提的两个概念:</p>
+<ul>
+<li>蓝调时刻: 蓝调时刻指的是太阳落山之后（或者日出之前），天空从金色变成蓝色，但又没完全变黑的时候。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E8%93%9D%E8%B0%83%E6%97%B6%E5%88%BB.jpg" alt="蓝调时刻"></li>
+<li>黄金时刻: 天气晴朗的清晨和黄昏，此时阳光（作为光源）广阔而柔和，选好角度，可以拍摄逆光、阳光铺洒的感觉，十分温暖、唯美。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E9%BB%84%E9%87%91%E6%97%B6%E5%88%BB.jpeg" alt="黄金时刻"></li>
+</ul>
+<h5 id="天气"><a href="#天气" class="headerlink" title="天气"></a>天气</h5><p>天气其实也就大致分: </p>
 <blockquote>
-<p>一个函数集合$f_k$(也称为因子或者团因子有时也称为特征)，每一个$f_k$的定义域是图$G$的团或子团$k$,每一个$f_k$是从可能的特定联合的指派(到元素$k$)到非负实数的映射。</p>
+<p>晴 $\cdot$ 云 $\cdot$ 雨 $\cdot$ 雪 $\cdot$ 霞 </p>
 </blockquote>
-<p>总结而言，势函数具有以下特征：</p>
-<blockquote>
 <ul>
-<li>非负</li>
-<li>与条件概率不同，其求和不必为1</li>
+<li>晴天: 等云来，找阴影，柔光设备</li>
+<li>雪: 颜色搭配，后期调色 </li>
+<li>霞: 提前规划，搭建脚本 </li>
 </ul>
-</blockquote>
-<h3 id="吉布斯分布"><a href="#吉布斯分布" class="headerlink" title="吉布斯分布"></a>吉布斯分布</h3><p>我们引入该图模型的目的在于：<strong>通过马尔可夫网络来对变量之间的独立性关系进行编码，然后获得对于联合概率分布更加紧凑的表示形式</strong>，而吉布斯分布便是将联合概率与势函数相连接的桥梁。<br>一个概率分布$P$可以分解为图$H$：</p>
-<blockquote>
+<h5 id="环境光"><a href="#环境光" class="headerlink" title="环境光"></a>环境光</h5><p>需要注意环境中的反射光:</p>
 <ul>
-<li>$H$可以分为若干子团$D_i$</li>
-<li>在每个子团上相应定义了势函数$\pi_i$</li>
+<li>光线打到草地上，又反射到脸上，可以通过反光板 </li>
+<li>夕阳直射面部发黄 </li>
+<li><strong>通过白墙、水泥地、书来进行光线反射以补光</strong></li>
 </ul>
-</blockquote>
-<p>由此便可以写出吉布斯分布形式：</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-     P(X_1,X_2,\dots,X_n) = \frac{1}{Z} f(X_1,X_2,\dots,X_n) 
-\end{aligned}</script><p>其中:</p>
-<blockquote>
+<h5 id="立体感塑造"><a href="#立体感塑造" class="headerlink" title="立体感塑造"></a>立体感塑造</h5><p>这一部分介绍如何应用光线来进行人物立体感塑造,主要有以下几点技巧: </p>
 <ul>
-<li>$f(X_1,X_2,\dots,X_n) = \prod_{i=1}^m \pi_i(D_i)$</li>
-<li>$Z = \sum_{X_1,\dots,X_n} f(X_1,\dots,X_n)$</li>
+<li>方向性光线，比如窄面光 </li>
+<li>颜色对比，背景与人物颜色的反差更能够凸显主体</li>
+<li>明暗对比，通过人物背景的明暗反差可以拉远主体背景之间的关系</li>
 </ul>
-</blockquote>
-<p>每一个势函数定义了一个映射:$Sub(X) \rightarrow \mathcal{R^+}$ ,一个势函数的定义域相当于是一个集合，而这个集合中的变量彼此之间是直接依赖关系，从这个视角来看，条件概率可以看作是势函数的特例(仅仅表征两个变量之间依赖关系)。</p>
-<p>下面我们讨论下一个势函数(因子)应该定义在一个多大的集合上，首先考虑如果在每条边上均定义一个势函数，那么马尔可夫网络能否表征联合概率分布？答案是并不行，为此我以一个7个节点(均为二值变量)的全连接网络为例，分别讨论两种情况下具有的独立参数的数量：</p>
+<h5 id="少光环境"><a href="#少光环境" class="headerlink" title="少光环境"></a>少光环境</h5><p>当在光线比较少的情况霞，需要通过一些人造光源来达到补光的效果，人造光源可以大致分为两类:</p>
 <ul>
-<li>联合概率分布：$2^7 - 1 = 127$</li>
-<li>边上势函数：$4*C_7^2 = 84$</li>
+<li>常亮光源: 比如灯笼，或者手持灯，一般而言光源离主体越近，光线越柔和</li>
+<li>闪光灯: 可能需要试拍，调整闪光灯强度、时间，在下雨时，闪光灯快速闪一下，可以起到凝固水珠的效果<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E8%A1%A5%E5%85%89.png" alt="补光"><br>在星光环境下拍摄一定要补光，此时人像摄影师和风光摄影师的侧重点就完全不同，比如对于一颗彗星，左边第一幅图就是风光摄影师拍摄的，而右边几张则是人像摄影师，人像摄影师在这种昏暗环境下使用补光设备一定要注意不能让人物面部出现死光，因此补光设备的光线都会压的非常暗，要不然就会出现过曝现象。</li>
 </ul>
-<p>显然对于全连接网络，若给予每个边一个势函数并不足以表征联合概率分布，在前面已经说明一个势函数定义域中的变量应当是两两直接相关，因此势函数的定义域应当是一个团(clique)。<br>$\Rightarrow$ <strong>马尔可夫网络中的局部结构是团</strong></p>
-<h3 id="马尔可夫网络分解"><a href="#马尔可夫网络分解" class="headerlink" title="马尔可夫网络分解"></a>马尔可夫网络分解</h3><p>首先给出$I-Map$的概念:$H$为一个马尔可夫网络，$P$为联合概率分布，若有$I(H) \subseteq I(P)$，则称马尔可夫网络$H$为分布$P$的一个$I-Map$。 </p>
-<p>记$D_i$为马尔可夫网络$H$中的子团，Hammersley-Clifford定理如下：</p>
-<blockquote>
-<p>对于一个无向图$H$和分布$P$,$P$可以被分解成$P(X) = \frac{1}{Z}\prod \pi_i (D_i) \Leftrightarrow$ $H$是$P$的$I-Map$</p>
-</blockquote>
-<p>在实际进行分解时一般都是在最大团上定义势函数</p>
-<h3 id="对数表示"><a href="#对数表示" class="headerlink" title="对数表示"></a>对数表示</h3><p>在马尔可夫网络中，联合分布除了可以利用吉布斯分布来进行表示，也可以采取对数表示的方法，将原始的势函数$\pi_i(D_i)$ 表示成$exp(-\epsilon(D_i))$的形式，其中$\epsilon(D_i) = -log(\pi_i(D_i))$,据此，联合概率分布可以表示成：</p>
-<script type="math/tex; mode=display">
-    P(X_1,X_2,\dots,X_n) = \frac{1}{Z} exp(-\sum_{i=1}^m \epsilon(D_i))</script><p>这种表示方法将连乘变成了连家，计算更加方便，同时有定理证明，若无向图$H$是分布$P$的一个独立映射，那么$\epsilon(D_i) = \omega_i \phi_i(D_i)$,此时$\phi$被称作特征函数，与势函数关系为：</p>
-<script type="math/tex; mode=display">
-    \pi_i(D_i) = exp(\omega_i \phi_i(D_i))</script>
+<h4 id="曝光技巧"><a href="#曝光技巧" class="headerlink" title="曝光技巧"></a>曝光技巧</h4><h6 id="曝光-cdot-寻找光斑"><a href="#曝光-cdot-寻找光斑" class="headerlink" title="曝光 $\cdot$ 寻找光斑"></a>曝光 $\cdot$ 寻找光斑</h6><p>在进行人像拍摄时，我们往往期望获得一个较为梦幻的虚化效果，这就要求背景最好有光斑一类的东西，因此就需要找一些透光的树林。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E5%AF%BB%E6%89%BE%E5%85%89%E6%96%91.png" alt="寻找光斑"></p>
+<h6 id="曝光-cdot-设置"><a href="#曝光-cdot-设置" class="headerlink" title="曝光 $\cdot$ 设置"></a>曝光 $\cdot$ 设置</h6><p>通过调整曝光补偿和白平衡来使相机直出的图像更加漂亮，如果保存为<code>raw</code>格式，在进行后期时时可以无损调整的。 </p>
+<h5 id="曝光-cdot-大光比"><a href="#曝光-cdot-大光比" class="headerlink" title="曝光 $\cdot$ 大光比"></a>曝光 $\cdot$ 大光比</h5><ul>
+<li>提高曝光宽容度<ul>
+<li>我们在进行曝光时一定要<strong>尽量</strong>保证高光不死白-<strong>宁欠勿曝</strong></li>
+<li>在保证亮部不过曝的情况下尽量向右曝光,拉亮暗部,保留更多信息-<strong>向右曝光</strong> </li>
+</ul>
+</li>
+<li>拍摄时推荐使用M档，适当调整保证曝光补偿<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E5%A4%A7%E5%85%89%E6%AF%94.png" alt="光比"><h5 id="曝光-cdot-剪影"><a href="#曝光-cdot-剪影" class="headerlink" title="曝光 $\cdot$ 剪影"></a>曝光 $\cdot$ 剪影</h5>对焦、曝光分离，将焦点对在人物上，使人物部分一片死黑，拍摄时注意下鼻子。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E5%89%AA%E5%BD%B1.png" alt="剪影"></li>
+</ul>
+<h3 id="构图"><a href="#构图" class="headerlink" title="构图"></a>构图</h3><p>这里就简单介绍几种中心构图的思路:</p>
+<ul>
+<li>中心构图<br>有时可以通过水或者镜面来实现中心对称效果</li>
+<li>倒影<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E4%B8%BB%E6%A5%BC%E5%89%8D%E6%B0%B4%E6%B1%A0.JPG" alt="水池"></li>
+<li>三分构图<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E4%B8%89%E5%88%86%E6%9E%84%E5%9B%BE.jpg" alt="三分构图"><br>但需要注意主体应当放在哪一个点上。</li>
+<li><p>构图 $\cdot$ 引导线<br>适当的引导线可以将观众引导到拍摄主体上去<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E5%BC%95%E5%AF%BC%E7%BA%BF.jpeg" alt=""></p>
+</li>
+<li><p>构图 $\cdot$ 对比<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E5%AF%B9%E6%AF%94.png" alt="对比"></p>
+</li>
+<li><p>构图 $\cdot$ 正常情况<br>在实际构图中，往往都是多种技巧结合，经过训练后其实都是后知后觉<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E5%AE%9E%E9%99%85%E6%9E%84%E5%9B%BE.png" alt="正常构图"></p>
+</li>
+<li>构图 $\cdot$ 景别<br>组图需要有层次有差别</li>
+<li>构图 $\cdot$ 立体感打造<br>打造立体感主要有以下几种思路: 透视、压缩、前后景等等</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E7%A9%BA%E9%97%B4%E6%84%9F.png" alt="立体感"></p>
+<ul>
+<li><p>构图 $\cdot$ 俯仰<br>仰拍要注意下巴，俯拍要注意不要拍全身</p>
+</li>
+<li><p>构图 $\cdot$ 人像裁切示意图<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E4%BA%BA%E5%83%8F%E8%A3%81%E5%88%87.jpeg" alt="人像裁切"><br>基本原则就是关节部位不要切，脖子不要切</p>
+</li>
+<li><p>构图 $\cdot$ 雷区</p>
+<ul>
+<li>不要线穿头 </li>
+<li>尽量不要倾斜，仰拍俯拍可以适当倾斜</li>
+</ul>
+</li>
+</ul>
+
             </div>
             <hr/>
 
@@ -601,7 +665,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://xuejy19.github.io/2020/07/25/markov-network/">https://xuejy19.github.io/2020/07/25/markov-network/</a>
+                    <a href="https://xuejy19.github.io/2020/11/02/ren-xiang-she-ying/">https://xuejy19.github.io/2020/11/02/ren-xiang-she-ying/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -639,8 +703,8 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/%E6%97%A0%E5%90%91%E5%9B%BE/">
-                                    <span class="chip bg-color">无向图</span>
+                                <a href="/tags/%E4%BA%BA%E5%83%8F%E6%91%84%E5%BD%B1%E5%85%A5%E9%97%A8%EF%BC%8C%E5%85%89%E7%BA%BF%E6%9E%84%E5%9B%BE/">
+                                    <span class="chip bg-color">人像摄影入门，光线构图</span>
                                 </a>
                             
                         </div>
@@ -1071,40 +1135,66 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2020/07/27/gai-lu-mi-du-han-shu-gu-ji/">
+                <a href="/2020/11/02/ren-xiang-she-ying/">
                     <div class="card-image">
                         
                         
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/5.jpg" class="responsive-img" alt="概率密度函数估计">
+                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/13.jpg" class="responsive-img" alt="人像摄影-光线与构图">
                         
-                        <span class="card-title">概率密度函数估计</span>
+                        <span class="card-title">人像摄影-光线与构图</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            在使用贝叶斯理论进行决策时，我们需要知道先验概率$P(\omega)$,类条件概率密度函数$p(x|\omega)$,而在这一部分，我们便讨论下如何从样本集中将这些所需的概率密度函数估计出来
+                            这一部分介绍一下在进行人像摄影时的一些理论知识，该部分目录如下:
+
+光线
+光位
+光质
+时刻
+天气
+环境光
+立体感塑造
+少光环境
+
+
+曝光技巧
+曝光 $\cdot$ 寻找光斑
+曝光 $\cdot$ 设置
+曝光 $\cdot$ 大光比
+曝光 $
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-07-27
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-11-02
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/" class="post-category">
-                                    统计学习
+                            <a href="/categories/%E7%82%B9%E6%BB%B4%E7%94%9F%E6%B4%BB/" class="post-category">
+                                    点滴生活
                                 </a>
                             
                             
                         </span>
                     </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E4%BA%BA%E5%83%8F%E6%91%84%E5%BD%B1%E5%85%A5%E9%97%A8%EF%BC%8C%E5%85%89%E7%BA%BF%E6%9E%84%E5%9B%BE/">
+                        <span class="chip bg-color">人像摄影入门，光线构图</span>
+                    </a>
+                    
                 </div>
                 
             </div>
@@ -1116,36 +1206,48 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/07/24/bayes-network/">
+                <a href="/2020/10/28/chu-shi-docker/">
                     <div class="card-image">
                         
                         
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/3.png" class="responsive-img" alt="贝叶斯网络">
+                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/13.jpg" class="responsive-img" alt="初识Docker">
                         
-                        <span class="card-title">贝叶斯网络</span>
+                        <span class="card-title">初识Docker</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            在该部分对贝叶斯网络进行介绍，按照递进关系总结以下知识点：
+                            近期因为在外出差，没咋看论文，为了让时间得到充分利用，自己打算学习一些开发相关的知识，毕竟技多不压身。 这部分就参考Docker官方文档来进行Docker基本知识的学习。该部分分为以下三个章节进行组织:
+
+概念与设置 
+构建并运行镜像
+在D
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-07-24
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-10-28
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/" class="post-category">
-                                    统计学习
+                            <a href="/categories/%E5%BC%80%E5%8F%91%E7%9F%A5%E8%AF%86/" class="post-category">
+                                    开发知识
                                 </a>
                             
                             
                         </span>
                     </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E5%AE%B9%E5%99%A8/">
+                        <span class="chip bg-color">容器</span>
+                    </a>
+                    
                 </div>
                 
             </div>
