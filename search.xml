@@ -100,88 +100,6 @@ P(e) &= P(x \in \mathcal{R_1},\omega_2) + P(x \in \mathcal{R_2},\omega_1) \\
       </categories>
   </entry>
   <entry>
-    <title>马尔可夫网络</title>
-    <url>/2020/07/25/markov-network/</url>
-    <content><![CDATA[<p>在这一部分我将介绍另一种常见的概率图模型:马尔可夫网络，或称马尔可夫随机场。接下来分为以下几部分进行组织<a id="more"></a>：</p>
-<ul>
-<li>马尔可夫网络</li>
-<li>独立性假设</li>
-<li>势函数</li>
-</ul>
-<h3 id="马尔可夫网络"><a href="#马尔可夫网络" class="headerlink" title="马尔可夫网络"></a>马尔可夫网络</h3><p>首先给出维基百科上关于马尔可夫网络的定义：</p>
-<blockquote>
-<p>马尔可夫网络是一组有马尔可夫性质随机变量$X$的全联合概率分布模型。马尔可夫网络类似贝叶斯网络用于表示依赖关系。但是，一方面它可以表示贝叶斯网络无法表示的一些关系，如循环依赖；另一方面，它不能表示贝叶斯网络能够表示的某些关系，如推导关系。</p>
-</blockquote>
-<p>马尔可夫网络具有以下特征：</p>
-<ul>
-<li>无向图$H = (V,E)$</li>
-<li>每个顶点$v \in V$表示一个在集合$X$的随机变量，每条边$\{u,v\}\in E$ 表示随机变量$u$和$v$之间的依赖关系</li>
-</ul>
-<h3 id="独立性假设"><a href="#独立性假设" class="headerlink" title="独立性假设"></a>独立性假设</h3><p>马尔可夫网络与贝叶斯网络类似，以图的形式对独立性假设进行编码，首先给出图中激活路径的概念：</p>
-<ul>
-<li>激活路径：一个路径$X_1,X_2,\dots,X_n$是激活的 $\Leftrightarrow$ 没有路径上的变量被观测到  </li>
-</ul>
-<p>有了激活路径概念之后，便可以讨论图中的条件独立关系：</p>
-<ul>
-<li>在图$H$中，节点集$X$与节点集$Y$相对于是节点集$Z$是分离的 $\Leftrightarrow$ $X$与$Y$之间不存在激活路径</li>
-<li>表示为$sep_H(X;Y|Z)$,栗子如下图所示。</li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/xuejy19/Images/master/mav1.png" alt="栗子"></p>
-<h3 id="势函数"><a href="#势函数" class="headerlink" title="势函数"></a>势函数</h3><p>在贝叶斯网络中，节点之间的关系通过条件概率进行表征，而在马尔可夫网络中，节点之间的关系通过势函数来表征，势函数定义如下：</p>
-<blockquote>
-<p>一个函数集合$f_k$(也称为因子或者团因子有时也称为特征)，每一个$f_k$的定义域是图$G$的团或子团$k$,每一个$f_k$是从可能的特定联合的指派(到元素$k$)到非负实数的映射。</p>
-</blockquote>
-<p>总结而言，势函数具有以下特征：</p>
-<blockquote>
-<ul>
-<li>非负</li>
-<li>与条件概率不同，其求和不必为1</li>
-</ul>
-</blockquote>
-<h3 id="吉布斯分布"><a href="#吉布斯分布" class="headerlink" title="吉布斯分布"></a>吉布斯分布</h3><p>我们引入该图模型的目的在于：<strong>通过马尔可夫网络来对变量之间的独立性关系进行编码，然后获得对于联合概率分布更加紧凑的表示形式</strong>，而吉布斯分布便是将联合概率与势函数相连接的桥梁。<br>一个概率分布$P$可以分解为图$H$：</p>
-<blockquote>
-<ul>
-<li>$H$可以分为若干子团$D_i$</li>
-<li>在每个子团上相应定义了势函数$\pi_i$</li>
-</ul>
-</blockquote>
-<p>由此便可以写出吉布斯分布形式：</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-     P(X_1,X_2,\dots,X_n) = \frac{1}{Z} f(X_1,X_2,\dots,X_n) 
-\end{aligned}</script><p>其中:</p>
-<blockquote>
-<ul>
-<li>$f(X_1,X_2,\dots,X_n) = \prod_{i=1}^m \pi_i(D_i)$</li>
-<li>$Z = \sum_{X_1,\dots,X_n} f(X_1,\dots,X_n)$</li>
-</ul>
-</blockquote>
-<p>每一个势函数定义了一个映射:$Sub(X) \rightarrow \mathcal{R^+}$ ,一个势函数的定义域相当于是一个集合，而这个集合中的变量彼此之间是直接依赖关系，从这个视角来看，条件概率可以看作是势函数的特例(仅仅表征两个变量之间依赖关系)。</p>
-<p>下面我们讨论下一个势函数(因子)应该定义在一个多大的集合上，首先考虑如果在每条边上均定义一个势函数，那么马尔可夫网络能否表征联合概率分布？答案是并不行，为此我以一个7个节点(均为二值变量)的全连接网络为例，分别讨论两种情况下具有的独立参数的数量：</p>
-<ul>
-<li>联合概率分布：$2^7 - 1 = 127$</li>
-<li>边上势函数：$4*C_7^2 = 84$</li>
-</ul>
-<p>显然对于全连接网络，若给予每个边一个势函数并不足以表征联合概率分布，在前面已经说明一个势函数定义域中的变量应当是两两直接相关，因此势函数的定义域应当是一个团(clique)。<br>$\Rightarrow$ <strong>马尔可夫网络中的局部结构是团</strong></p>
-<h3 id="马尔可夫网络分解"><a href="#马尔可夫网络分解" class="headerlink" title="马尔可夫网络分解"></a>马尔可夫网络分解</h3><p>首先给出$I-Map$的概念:$H$为一个马尔可夫网络，$P$为联合概率分布，若有$I(H) \subseteq I(P)$，则称马尔可夫网络$H$为分布$P$的一个$I-Map$。 </p>
-<p>记$D_i$为马尔可夫网络$H$中的子团，Hammersley-Clifford定理如下：</p>
-<blockquote>
-<p>对于一个无向图$H$和分布$P$,$P$可以被分解成$P(X) = \frac{1}{Z}\prod \pi_i (D_i) \Leftrightarrow$ $H$是$P$的$I-Map$</p>
-</blockquote>
-<p>在实际进行分解时一般都是在最大团上定义势函数</p>
-<h3 id="对数表示"><a href="#对数表示" class="headerlink" title="对数表示"></a>对数表示</h3><p>在马尔可夫网络中，联合分布除了可以利用吉布斯分布来进行表示，也可以采取对数表示的方法，将原始的势函数$\pi_i(D_i)$ 表示成$exp(-\epsilon(D_i))$的形式，其中$\epsilon(D_i) = -log(\pi_i(D_i))$,据此，联合概率分布可以表示成：</p>
-<script type="math/tex; mode=display">
-    P(X_1,X_2,\dots,X_n) = \frac{1}{Z} exp(-\sum_{i=1}^m \epsilon(D_i))</script><p>这种表示方法将连乘变成了连家，计算更加方便，同时有定理证明，若无向图$H$是分布$P$的一个独立映射，那么$\epsilon(D_i) = \omega_i \phi_i(D_i)$,此时$\phi$被称作特征函数，与势函数关系为：</p>
-<script type="math/tex; mode=display">
-    \pi_i(D_i) = exp(\omega_i \phi_i(D_i))</script>]]></content>
-      <categories>
-        <category>统计学习</category>
-      </categories>
-      <tags>
-        <tag>无向图</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>EM</title>
     <url>/2020/07/30/em/</url>
     <content><![CDATA[<p>在前面概率密度函数估计中，若概率模型的变量都是可观测变量，那么给定数据，便可以直接用极大似然估计法或者贝叶斯估计法来直接估计模型参数。但是当模型中含有隐变量时，便不能直接使用这些估计方法，<strong>EM算法就是含有隐变量的概率模型参数的极大似然估计法</strong><a id="more"></a>,本文便围绕EM算法展开，主要包含以下几部分：</p>
@@ -346,6 +264,88 @@ $$
       </categories>
       <tags>
         <tag>EM算法,隐变量,高斯混合模型</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>马尔可夫网络</title>
+    <url>/2020/07/25/markov-network/</url>
+    <content><![CDATA[<p>在这一部分我将介绍另一种常见的概率图模型:马尔可夫网络，或称马尔可夫随机场。接下来分为以下几部分进行组织<a id="more"></a>：</p>
+<ul>
+<li>马尔可夫网络</li>
+<li>独立性假设</li>
+<li>势函数</li>
+</ul>
+<h3 id="马尔可夫网络"><a href="#马尔可夫网络" class="headerlink" title="马尔可夫网络"></a>马尔可夫网络</h3><p>首先给出维基百科上关于马尔可夫网络的定义：</p>
+<blockquote>
+<p>马尔可夫网络是一组有马尔可夫性质随机变量$X$的全联合概率分布模型。马尔可夫网络类似贝叶斯网络用于表示依赖关系。但是，一方面它可以表示贝叶斯网络无法表示的一些关系，如循环依赖；另一方面，它不能表示贝叶斯网络能够表示的某些关系，如推导关系。</p>
+</blockquote>
+<p>马尔可夫网络具有以下特征：</p>
+<ul>
+<li>无向图$H = (V,E)$</li>
+<li>每个顶点$v \in V$表示一个在集合$X$的随机变量，每条边$\{u,v\}\in E$ 表示随机变量$u$和$v$之间的依赖关系</li>
+</ul>
+<h3 id="独立性假设"><a href="#独立性假设" class="headerlink" title="独立性假设"></a>独立性假设</h3><p>马尔可夫网络与贝叶斯网络类似，以图的形式对独立性假设进行编码，首先给出图中激活路径的概念：</p>
+<ul>
+<li>激活路径：一个路径$X_1,X_2,\dots,X_n$是激活的 $\Leftrightarrow$ 没有路径上的变量被观测到  </li>
+</ul>
+<p>有了激活路径概念之后，便可以讨论图中的条件独立关系：</p>
+<ul>
+<li>在图$H$中，节点集$X$与节点集$Y$相对于是节点集$Z$是分离的 $\Leftrightarrow$ $X$与$Y$之间不存在激活路径</li>
+<li>表示为$sep_H(X;Y|Z)$,栗子如下图所示。</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/xuejy19/Images/master/mav1.png" alt="栗子"></p>
+<h3 id="势函数"><a href="#势函数" class="headerlink" title="势函数"></a>势函数</h3><p>在贝叶斯网络中，节点之间的关系通过条件概率进行表征，而在马尔可夫网络中，节点之间的关系通过势函数来表征，势函数定义如下：</p>
+<blockquote>
+<p>一个函数集合$f_k$(也称为因子或者团因子有时也称为特征)，每一个$f_k$的定义域是图$G$的团或子团$k$,每一个$f_k$是从可能的特定联合的指派(到元素$k$)到非负实数的映射。</p>
+</blockquote>
+<p>总结而言，势函数具有以下特征：</p>
+<blockquote>
+<ul>
+<li>非负</li>
+<li>与条件概率不同，其求和不必为1</li>
+</ul>
+</blockquote>
+<h3 id="吉布斯分布"><a href="#吉布斯分布" class="headerlink" title="吉布斯分布"></a>吉布斯分布</h3><p>我们引入该图模型的目的在于：<strong>通过马尔可夫网络来对变量之间的独立性关系进行编码，然后获得对于联合概率分布更加紧凑的表示形式</strong>，而吉布斯分布便是将联合概率与势函数相连接的桥梁。<br>一个概率分布$P$可以分解为图$H$：</p>
+<blockquote>
+<ul>
+<li>$H$可以分为若干子团$D_i$</li>
+<li>在每个子团上相应定义了势函数$\pi_i$</li>
+</ul>
+</blockquote>
+<p>由此便可以写出吉布斯分布形式：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+     P(X_1,X_2,\dots,X_n) = \frac{1}{Z} f(X_1,X_2,\dots,X_n) 
+\end{aligned}</script><p>其中:</p>
+<blockquote>
+<ul>
+<li>$f(X_1,X_2,\dots,X_n) = \prod_{i=1}^m \pi_i(D_i)$</li>
+<li>$Z = \sum_{X_1,\dots,X_n} f(X_1,\dots,X_n)$</li>
+</ul>
+</blockquote>
+<p>每一个势函数定义了一个映射:$Sub(X) \rightarrow \mathcal{R^+}$ ,一个势函数的定义域相当于是一个集合，而这个集合中的变量彼此之间是直接依赖关系，从这个视角来看，条件概率可以看作是势函数的特例(仅仅表征两个变量之间依赖关系)。</p>
+<p>下面我们讨论下一个势函数(因子)应该定义在一个多大的集合上，首先考虑如果在每条边上均定义一个势函数，那么马尔可夫网络能否表征联合概率分布？答案是并不行，为此我以一个7个节点(均为二值变量)的全连接网络为例，分别讨论两种情况下具有的独立参数的数量：</p>
+<ul>
+<li>联合概率分布：$2^7 - 1 = 127$</li>
+<li>边上势函数：$4*C_7^2 = 84$</li>
+</ul>
+<p>显然对于全连接网络，若给予每个边一个势函数并不足以表征联合概率分布，在前面已经说明一个势函数定义域中的变量应当是两两直接相关，因此势函数的定义域应当是一个团(clique)。<br>$\Rightarrow$ <strong>马尔可夫网络中的局部结构是团</strong></p>
+<h3 id="马尔可夫网络分解"><a href="#马尔可夫网络分解" class="headerlink" title="马尔可夫网络分解"></a>马尔可夫网络分解</h3><p>首先给出$I-Map$的概念:$H$为一个马尔可夫网络，$P$为联合概率分布，若有$I(H) \subseteq I(P)$，则称马尔可夫网络$H$为分布$P$的一个$I-Map$。 </p>
+<p>记$D_i$为马尔可夫网络$H$中的子团，Hammersley-Clifford定理如下：</p>
+<blockquote>
+<p>对于一个无向图$H$和分布$P$,$P$可以被分解成$P(X) = \frac{1}{Z}\prod \pi_i (D_i) \Leftrightarrow$ $H$是$P$的$I-Map$</p>
+</blockquote>
+<p>在实际进行分解时一般都是在最大团上定义势函数</p>
+<h3 id="对数表示"><a href="#对数表示" class="headerlink" title="对数表示"></a>对数表示</h3><p>在马尔可夫网络中，联合分布除了可以利用吉布斯分布来进行表示，也可以采取对数表示的方法，将原始的势函数$\pi_i(D_i)$ 表示成$exp(-\epsilon(D_i))$的形式，其中$\epsilon(D_i) = -log(\pi_i(D_i))$,据此，联合概率分布可以表示成：</p>
+<script type="math/tex; mode=display">
+    P(X_1,X_2,\dots,X_n) = \frac{1}{Z} exp(-\sum_{i=1}^m \epsilon(D_i))</script><p>这种表示方法将连乘变成了连家，计算更加方便，同时有定理证明，若无向图$H$是分布$P$的一个独立映射，那么$\epsilon(D_i) = \omega_i \phi_i(D_i)$,此时$\phi$被称作特征函数，与势函数关系为：</p>
+<script type="math/tex; mode=display">
+    \pi_i(D_i) = exp(\omega_i \phi_i(D_i))</script>]]></content>
+      <categories>
+        <category>统计学习</category>
+      </categories>
+      <tags>
+        <tag>无向图</tag>
       </tags>
   </entry>
   <entry>
@@ -527,113 +527,6 @@ $$
       </tags>
   </entry>
   <entry>
-    <title>贝叶斯网络</title>
-    <url>/2020/07/24/bayes-network/</url>
-    <content><![CDATA[<p>在该部分对贝叶斯网络进行介绍，按照递进关系总结以下知识点：<a id="more"></a></p>
-<ul>
-<li>条件独立性</li>
-<li>条件参数化</li>
-<li>朴素贝叶斯模型</li>
-<li><strong>贝叶斯网络</strong></li>
-</ul>
-<hr>
-<h3 id="问题来源"><a href="#问题来源" class="headerlink" title="问题来源"></a>问题来源</h3><p>首先探讨下为什么我们需要利用变量之间的条件独立性性质，假设我们要描述的对象为$n$个二值变量：$X_1,\dots,X_n$,这些变量的联合分布为$P$,那么我们需要$\bf{2^n - 1}$个参数来描述联合分布$P$，所需参数量是$O(2^n)$级别，我们便考虑能否利用变量之间的某种性质使得$P$可以用更少的参数来描述，由此便引出了变量之间的独立性性质。</p>
-<h3 id="独立性"><a href="#独立性" class="headerlink" title="独立性"></a>独立性</h3><p>下面给出一些独立性等价的定义:</p>
-<blockquote>
-<ul>
-<li>若$P(X = x|Y = y) = P(X=x)$对于任意的$x,y$均成立 $\Rightarrow$ 变量$X$与$Y$相互独立 </li>
-<li>若$P(X,Y) = P(X|Y)P(Y) = P(X)P(Y)$ $\Rightarrow$ 变量$X$与$Y$相互独立 </li>
-</ul>
-</blockquote>
-<p>若问题来源中的$n$个变量相互独立，则联合分布:</p>
-<script type="math/tex; mode=display">
-    P(X_1,X_2,\dots,X_n) = P(X_1) P(X_2) \dots P(X_n)</script><p>此时仅需$O(n)$个变量来对联合分布进行描述，参数花销大大减少，但在实际中，独立性是一个非常强的假设，往往不能够得到满足，由此便引出了条件独立性性质。</p>
-<h3 id="条件独立性"><a href="#条件独立性" class="headerlink" title="条件独立性"></a>条件独立性</h3><blockquote>
-<p>定义： 两个变量$X$和$Y$关于变量$Z$是条件独立的 $\Leftrightarrow$ 对于$\forall x,y,z$,$P(X = x|Y = y, Z = z) = P(X = x|Z = z)$ $\Leftrightarrow$ $P(X = x,Y = y|Z = z) = P(X = x|Z = z) \cdot P(Y=y|Z= z)$</p>
-</blockquote>
-<p>这里需要特别说明的是条件独立性并不能推出独立性，独立性也并不能推出条件独立性，下面给出两个反例：</p>
-<ul>
-<li>独立性 $\nRightarrow$ 条件独立性: 有两枚正反概率均为$50\%$的硬币,设事件A为第一枚硬币为正面，事件B为第二枚硬币为正面，事件C为两枚硬币同面，若不考虑事件C，事件A与事件B显然独立;但若事件C已经发生，则此时A与B便不再独立，即A与B关于C不条件独立。</li>
-<li>条件独立性 $\nRightarrow$ 独立性: 有两枚硬币，一枚正面概率为$90\%$,另一枚反面概率为$90\%$,随机拿出一枚抛掷硬币两次, 事件A表示第一次为正面，事件B表示第二次为正面，事件C表示选择的是第一枚硬币，则抛开事件C，事件A与事件B并不独立($0.5 = P(B) \neq P(B|A) = 0.9802$),但若事件C发生，则相当于进行了两次独立重复实验，此时事件A与事件B独立。</li>
-</ul>
-<p>条件独立性符号表示：</p>
-<ul>
-<li>$Ind(X;Y|Z)$ or $(X \perp Y|Z)$</li>
-</ul>
-<h3 id="条件参数化"><a href="#条件参数化" class="headerlink" title="条件参数化"></a>条件参数化</h3><p>在了解了变量条件独立性后，下面以一个例子分析如何利用变量之间的条件独立性性质来减少描述联合分布所需的参数。</p>
-<div align=center>
-
-![栗子](https://raw.githubusercontent.com/xuejy19/Images/master/Ind.png)
-</div>
-
-<p>图中大写字母均代表随机变量，含义如下：</p>
-<ul>
-<li>$D:$课程难度，$Val(D) = \{d^0, d^1\}$</li>
-<li>$I:$智力，$Val(I) = \{i^0,i^1\}$</li>
-<li>$S:$SAT分数，$Val(S) = \{s^0,s^1\}$</li>
-<li>$G:$课程成绩，$Val(G) = \{g^0,g^1, g^2\}$</li>
-<li>$L:$推荐信，$Val(L) = \{l^0,l^1\}$</li>
-</ul>
-<p>假设$G$和$S$关于$I$条件独立，下面我们分析两种情况的条件参数化</p>
-<p>首先以$I$和$S$两个变量为例，我们既可以通过联合分布$P(I,S)$来进行描述，也可以通过$P(I)$和$P(S|I)$进行描述，两种描述均是三个独立参数，如下图所示。<br><img src="https://raw.githubusercontent.com/xuejy19/Images/master/eg2.png" alt=""></p>
-<p>接下来分析$I、D、G$三个变量的条件参数化，其中$I$与$D$相互独立，下面分析两种表示方法所需的参数个数：</p>
-<ul>
-<li>联合分布: $P(I,D,G)$,所需参数个数为$2 \times 2 \times 3 - 1=11$</li>
-<li>利用独立性条件: $P(I,D,G) = P(I)P(D)P(G|I,D)$,所需独立参数为$1+1+2\times 2 \times (3-1) =10 $<br>$\Rightarrow$ <strong>利用独立性可以减少表示联合分布所需的参数个数</strong></li>
-</ul>
-<h3 id="朴素贝叶斯模型"><a href="#朴素贝叶斯模型" class="headerlink" title="朴素贝叶斯模型"></a>朴素贝叶斯模型</h3><p>在这一部分对朴素贝叶斯模型做简要介绍，首先我们有两组变量：</p>
-<ul>
-<li>$C$:类别变量，$C = \{c_1,\dots, c_k\}$</li>
-<li>观测变量：$X_1,X_2,\dots, X_d$</li>
-</ul>
-<p>在朴素贝叶斯模型中，我们的目标便是利用观测变量来对类别进行预测/推理。所有这些变量其实可以看做一个联合概率分布$P(C,X_1,\dots,X_d)$,然而该概率分布很难计算，所需的参数量是指数级别，因此在朴素贝叶斯模型中有一个很强的假设：</p>
-<blockquote>
-<p>观测变量彼此之间关于类别变量$C$是相互独立的，据此联合概率分布便很容易计算：</p>
-<script type="math/tex; mode=display">P(C,X_1,\dots,X_d) = P(X_1,\dots,X_d|C) P(C) = P(X_1|C)\dots P(X_d|C) P(C)</script></blockquote>
-<p>这是一个很强的假设，在真实世界中往往不能满足，同时因为没有充分利用变量之间的相关性性质，也造成了计算上的浪费。</p>
-<h3 id="贝叶斯网络"><a href="#贝叶斯网络" class="headerlink" title="贝叶斯网络"></a>贝叶斯网络</h3><blockquote>
-<p>贝叶斯网路定义：贝叶斯网络，又称信念网络，是一种概率图模型，记做$(G,P)$,借由有向无环图表示一组随机变量及它们之间的条件概率分布。</p>
-</blockquote>
-<p>贝叶斯网络是一种以有向无环图方式对独立性假设进行编码的手段，在贝叶斯网络中，任意变量与它的非后代变量对于其父节点变量是条件独立的：</p>
-<script type="math/tex; mode=display">
-    (X_i \perp Nondesc(X_i)|Pa(X_i))</script><p><strong>独立性映射(I-Maps):</strong> 记$P$为一组变量$\mathbf{X}$的联合概率分布，$I(P)$为表征$P$中独立性的集合</p>
-<blockquote>
-<p>定义：$G$为贝叶斯网路，若$I(G) \subset I(P)$,则称$G$为$P$的一个独立映射</p>
-<p>分解定理：若$G$是$P$的独立映射 $\Leftrightarrow$ $P(X_1,\dots,X_d) = \prod \limits_{i=1}^d P(X_i|Pa(X_i))$,通过该分解定理可以将全局的概率分布用局部的条件概率来表示</p>
-</blockquote>
-<p>下面分析下与联合概率分布相比，贝叶斯网络所需参数,以$n$个二值变量为例：</p>
-<ul>
-<li>联合概率分布：$2^n$</li>
-<li>贝叶斯网络(限制各个节点入度为$k$):$n2^k$</li>
-</ul>
-<h3 id="d-Separation-有向分离"><a href="#d-Separation-有向分离" class="headerlink" title="d-Separation(有向分离)"></a>d-Separation(有向分离)</h3><p>在前面我们已经讨论了贝叶斯网络$G$编码了局部独立性假设，现在我们希望能够了解$G$是否还编码了其他独立性假设，因此我们需要一个方法来挖掘出$G$中所有的独立性假设<br>$\Rightarrow$ <strong>d-Separation</strong><br>下面分别讨论不分离两种情况：</p>
-<ul>
-<li>不分离<ul>
-<li>两个节点直接相连：此时不存在一个节点使得这两个节点关于该节点条件独立<br>$e.g. X \rightarrow Y$</li>
-<li>两个节点间接相连：head2tail,head2head,tail2tail</li>
-<li>一般情况：对于图$G$中的路径$X_1 \leftrightarrow \dots \leftrightarrow X_n$关于节点集合$E$是激活的如果<ul>
-<li>对于每个V状结构$X_{i-1} \rightarrow X_i \leftarrow X_{i+1},X_i$或者其后代<br>在集合$E$中</li>
-<li>路径上的点不在集合$E$中</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>分离：在贝叶斯网络$G$中，$X$和$Y$在给定$Z$条件下是d分离的$d-sep_G(X;Y|Z)$,如果<strong>不存在</strong>从集合$X$到$Y$的激活路径</li>
-</ul>
-<p>由此可以通过d分离来找到贝叶斯网络中所有独立性关系：</p>
-<script type="math/tex; mode=display">
-    I(G) = \{ (\mathbf{X \perp Y |Z}): d-sep_G(\mathbf{X;Y|Z})\}</script><p>简单总结而言，如果两个节点之间的路径被阻隔，则需要满足以下两个条件其一：</p>
-<ul>
-<li>若存在V形结构，则冲撞点及其后代不能出现在条件集中</li>
-<li>有路径中的点(非碰撞点)出现在条件集合中</li>
-</ul>
-<h3 id="Forward-VS-Backward"><a href="#Forward-VS-Backward" class="headerlink" title="Forward VS Backward"></a>Forward VS Backward</h3><p>直观上感觉，贝叶斯网络的反向过程(给出结果，推理原因)要比前向过程困难不少，这是因为子节点会激活其父母之间的路径，而这种相关性会进一步向上传播。<br><strong>最小独立映射</strong>：对于一个图$G$和一个分布$P$，我们在图中哪怕仅仅去掉一个边都会导致$G$不再是$P$的一个独立映射，则称$G$是最小独立映射。<br><strong>最佳映射</strong>：对于一个图$G$和一个分布$P$，若有$I(P) = I(G)$，则称图$G$是$P$的一个最佳映射</p>
-]]></content>
-      <categories>
-        <category>统计学习</category>
-      </categories>
-  </entry>
-  <entry>
     <title>SVM补充</title>
     <url>/2020/10/05/svm-bu-chong/</url>
     <content><![CDATA[<p>之前章节关于<a href="https://soundofwind.top/2020/08/12/svm/">支持向量机</a>的介绍已经比较详细了，最近发现有一些部分细节理解差一些意思，同时少了一部分内容，今天就在这里补充下，该部分章节按照以下结构组织:</p>
@@ -777,6 +670,113 @@ $$
       <tags>
         <tag>SVM,补充</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>贝叶斯网络</title>
+    <url>/2020/07/24/bayes-network/</url>
+    <content><![CDATA[<p>在该部分对贝叶斯网络进行介绍，按照递进关系总结以下知识点：<a id="more"></a></p>
+<ul>
+<li>条件独立性</li>
+<li>条件参数化</li>
+<li>朴素贝叶斯模型</li>
+<li><strong>贝叶斯网络</strong></li>
+</ul>
+<hr>
+<h3 id="问题来源"><a href="#问题来源" class="headerlink" title="问题来源"></a>问题来源</h3><p>首先探讨下为什么我们需要利用变量之间的条件独立性性质，假设我们要描述的对象为$n$个二值变量：$X_1,\dots,X_n$,这些变量的联合分布为$P$,那么我们需要$\bf{2^n - 1}$个参数来描述联合分布$P$，所需参数量是$O(2^n)$级别，我们便考虑能否利用变量之间的某种性质使得$P$可以用更少的参数来描述，由此便引出了变量之间的独立性性质。</p>
+<h3 id="独立性"><a href="#独立性" class="headerlink" title="独立性"></a>独立性</h3><p>下面给出一些独立性等价的定义:</p>
+<blockquote>
+<ul>
+<li>若$P(X = x|Y = y) = P(X=x)$对于任意的$x,y$均成立 $\Rightarrow$ 变量$X$与$Y$相互独立 </li>
+<li>若$P(X,Y) = P(X|Y)P(Y) = P(X)P(Y)$ $\Rightarrow$ 变量$X$与$Y$相互独立 </li>
+</ul>
+</blockquote>
+<p>若问题来源中的$n$个变量相互独立，则联合分布:</p>
+<script type="math/tex; mode=display">
+    P(X_1,X_2,\dots,X_n) = P(X_1) P(X_2) \dots P(X_n)</script><p>此时仅需$O(n)$个变量来对联合分布进行描述，参数花销大大减少，但在实际中，独立性是一个非常强的假设，往往不能够得到满足，由此便引出了条件独立性性质。</p>
+<h3 id="条件独立性"><a href="#条件独立性" class="headerlink" title="条件独立性"></a>条件独立性</h3><blockquote>
+<p>定义： 两个变量$X$和$Y$关于变量$Z$是条件独立的 $\Leftrightarrow$ 对于$\forall x,y,z$,$P(X = x|Y = y, Z = z) = P(X = x|Z = z)$ $\Leftrightarrow$ $P(X = x,Y = y|Z = z) = P(X = x|Z = z) \cdot P(Y=y|Z= z)$</p>
+</blockquote>
+<p>这里需要特别说明的是条件独立性并不能推出独立性，独立性也并不能推出条件独立性，下面给出两个反例：</p>
+<ul>
+<li>独立性 $\nRightarrow$ 条件独立性: 有两枚正反概率均为$50\%$的硬币,设事件A为第一枚硬币为正面，事件B为第二枚硬币为正面，事件C为两枚硬币同面，若不考虑事件C，事件A与事件B显然独立;但若事件C已经发生，则此时A与B便不再独立，即A与B关于C不条件独立。</li>
+<li>条件独立性 $\nRightarrow$ 独立性: 有两枚硬币，一枚正面概率为$90\%$,另一枚反面概率为$90\%$,随机拿出一枚抛掷硬币两次, 事件A表示第一次为正面，事件B表示第二次为正面，事件C表示选择的是第一枚硬币，则抛开事件C，事件A与事件B并不独立($0.5 = P(B) \neq P(B|A) = 0.9802$),但若事件C发生，则相当于进行了两次独立重复实验，此时事件A与事件B独立。</li>
+</ul>
+<p>条件独立性符号表示：</p>
+<ul>
+<li>$Ind(X;Y|Z)$ or $(X \perp Y|Z)$</li>
+</ul>
+<h3 id="条件参数化"><a href="#条件参数化" class="headerlink" title="条件参数化"></a>条件参数化</h3><p>在了解了变量条件独立性后，下面以一个例子分析如何利用变量之间的条件独立性性质来减少描述联合分布所需的参数。</p>
+<div align=center>
+
+![栗子](https://raw.githubusercontent.com/xuejy19/Images/master/Ind.png)
+</div>
+
+<p>图中大写字母均代表随机变量，含义如下：</p>
+<ul>
+<li>$D:$课程难度，$Val(D) = \{d^0, d^1\}$</li>
+<li>$I:$智力，$Val(I) = \{i^0,i^1\}$</li>
+<li>$S:$SAT分数，$Val(S) = \{s^0,s^1\}$</li>
+<li>$G:$课程成绩，$Val(G) = \{g^0,g^1, g^2\}$</li>
+<li>$L:$推荐信，$Val(L) = \{l^0,l^1\}$</li>
+</ul>
+<p>假设$G$和$S$关于$I$条件独立，下面我们分析两种情况的条件参数化</p>
+<p>首先以$I$和$S$两个变量为例，我们既可以通过联合分布$P(I,S)$来进行描述，也可以通过$P(I)$和$P(S|I)$进行描述，两种描述均是三个独立参数，如下图所示。<br><img src="https://raw.githubusercontent.com/xuejy19/Images/master/eg2.png" alt=""></p>
+<p>接下来分析$I、D、G$三个变量的条件参数化，其中$I$与$D$相互独立，下面分析两种表示方法所需的参数个数：</p>
+<ul>
+<li>联合分布: $P(I,D,G)$,所需参数个数为$2 \times 2 \times 3 - 1=11$</li>
+<li>利用独立性条件: $P(I,D,G) = P(I)P(D)P(G|I,D)$,所需独立参数为$1+1+2\times 2 \times (3-1) =10 $<br>$\Rightarrow$ <strong>利用独立性可以减少表示联合分布所需的参数个数</strong></li>
+</ul>
+<h3 id="朴素贝叶斯模型"><a href="#朴素贝叶斯模型" class="headerlink" title="朴素贝叶斯模型"></a>朴素贝叶斯模型</h3><p>在这一部分对朴素贝叶斯模型做简要介绍，首先我们有两组变量：</p>
+<ul>
+<li>$C$:类别变量，$C = \{c_1,\dots, c_k\}$</li>
+<li>观测变量：$X_1,X_2,\dots, X_d$</li>
+</ul>
+<p>在朴素贝叶斯模型中，我们的目标便是利用观测变量来对类别进行预测/推理。所有这些变量其实可以看做一个联合概率分布$P(C,X_1,\dots,X_d)$,然而该概率分布很难计算，所需的参数量是指数级别，因此在朴素贝叶斯模型中有一个很强的假设：</p>
+<blockquote>
+<p>观测变量彼此之间关于类别变量$C$是相互独立的，据此联合概率分布便很容易计算：</p>
+<script type="math/tex; mode=display">P(C,X_1,\dots,X_d) = P(X_1,\dots,X_d|C) P(C) = P(X_1|C)\dots P(X_d|C) P(C)</script></blockquote>
+<p>这是一个很强的假设，在真实世界中往往不能满足，同时因为没有充分利用变量之间的相关性性质，也造成了计算上的浪费。</p>
+<h3 id="贝叶斯网络"><a href="#贝叶斯网络" class="headerlink" title="贝叶斯网络"></a>贝叶斯网络</h3><blockquote>
+<p>贝叶斯网路定义：贝叶斯网络，又称信念网络，是一种概率图模型，记做$(G,P)$,借由有向无环图表示一组随机变量及它们之间的条件概率分布。</p>
+</blockquote>
+<p>贝叶斯网络是一种以有向无环图方式对独立性假设进行编码的手段，在贝叶斯网络中，任意变量与它的非后代变量对于其父节点变量是条件独立的：</p>
+<script type="math/tex; mode=display">
+    (X_i \perp Nondesc(X_i)|Pa(X_i))</script><p><strong>独立性映射(I-Maps):</strong> 记$P$为一组变量$\mathbf{X}$的联合概率分布，$I(P)$为表征$P$中独立性的集合</p>
+<blockquote>
+<p>定义：$G$为贝叶斯网路，若$I(G) \subset I(P)$,则称$G$为$P$的一个独立映射</p>
+<p>分解定理：若$G$是$P$的独立映射 $\Leftrightarrow$ $P(X_1,\dots,X_d) = \prod \limits_{i=1}^d P(X_i|Pa(X_i))$,通过该分解定理可以将全局的概率分布用局部的条件概率来表示</p>
+</blockquote>
+<p>下面分析下与联合概率分布相比，贝叶斯网络所需参数,以$n$个二值变量为例：</p>
+<ul>
+<li>联合概率分布：$2^n$</li>
+<li>贝叶斯网络(限制各个节点入度为$k$):$n2^k$</li>
+</ul>
+<h3 id="d-Separation-有向分离"><a href="#d-Separation-有向分离" class="headerlink" title="d-Separation(有向分离)"></a>d-Separation(有向分离)</h3><p>在前面我们已经讨论了贝叶斯网络$G$编码了局部独立性假设，现在我们希望能够了解$G$是否还编码了其他独立性假设，因此我们需要一个方法来挖掘出$G$中所有的独立性假设<br>$\Rightarrow$ <strong>d-Separation</strong><br>下面分别讨论不分离两种情况：</p>
+<ul>
+<li>不分离<ul>
+<li>两个节点直接相连：此时不存在一个节点使得这两个节点关于该节点条件独立<br>$e.g. X \rightarrow Y$</li>
+<li>两个节点间接相连：head2tail,head2head,tail2tail</li>
+<li>一般情况：对于图$G$中的路径$X_1 \leftrightarrow \dots \leftrightarrow X_n$关于节点集合$E$是激活的如果<ul>
+<li>对于每个V状结构$X_{i-1} \rightarrow X_i \leftarrow X_{i+1},X_i$或者其后代<br>在集合$E$中</li>
+<li>路径上的点不在集合$E$中</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>分离：在贝叶斯网络$G$中，$X$和$Y$在给定$Z$条件下是d分离的$d-sep_G(X;Y|Z)$,如果<strong>不存在</strong>从集合$X$到$Y$的激活路径</li>
+</ul>
+<p>由此可以通过d分离来找到贝叶斯网络中所有独立性关系：</p>
+<script type="math/tex; mode=display">
+    I(G) = \{ (\mathbf{X \perp Y |Z}): d-sep_G(\mathbf{X;Y|Z})\}</script><p>简单总结而言，如果两个节点之间的路径被阻隔，则需要满足以下两个条件其一：</p>
+<ul>
+<li>若存在V形结构，则冲撞点及其后代不能出现在条件集中</li>
+<li>有路径中的点(非碰撞点)出现在条件集合中</li>
+</ul>
+<h3 id="Forward-VS-Backward"><a href="#Forward-VS-Backward" class="headerlink" title="Forward VS Backward"></a>Forward VS Backward</h3><p>直观上感觉，贝叶斯网络的反向过程(给出结果，推理原因)要比前向过程困难不少，这是因为子节点会激活其父母之间的路径，而这种相关性会进一步向上传播。<br><strong>最小独立映射</strong>：对于一个图$G$和一个分布$P$，我们在图中哪怕仅仅去掉一个边都会导致$G$不再是$P$的一个独立映射，则称$G$是最小独立映射。<br><strong>最佳映射</strong>：对于一个图$G$和一个分布$P$，若有$I(P) = I(G)$，则称图$G$是$P$的一个最佳映射</p>
+]]></content>
+      <categories>
+        <category>统计学习</category>
+      </categories>
   </entry>
   <entry>
     <title>我与历史之缘</title>
@@ -2114,18 +2114,6 @@ COPY . .
       </tags>
   </entry>
   <entry>
-    <title>有感</title>
-    <url>/2020/02/22/you-gan/</url>
-    <content><![CDATA[<p>&emsp;    或许逃避是人的天性，整个博一上学期，似乎整天忙忙碌碌，在若干门课程中来回斡旋，<a id="more"></a>但当闲下来细细一想，似乎也有很多时间自己并没有好好利用，用那些时间在逃避、在咸鱼、在发呆。整个博一上学期自己也读了一些书，比如《历史的教训》、《贫穷的本质》、《禅与摩托车维修技术》、《变革中国》，相比于完整读下来的书，挖的坑自然是更多，《纯粹理性批判》、《世界文明史》、《资本论》……如果你要问我为什么选择这些书，我只能回答机缘巧合吧，这些书或是来源于上课时某位同学的推荐，或是来自于自己查询某些资料时的推荐，不一而足。其实我认为读这些书一方面是一种对自己空余时间的填充，对纯粹理工科学习的一种暂时逃避，也是一个不断寻找答案的过程，寻找一些理工科的书籍里缺乏的一些答案。其实我一直在思考一个问题，一个人的强大究竟是来源于其内心的强大，还是来源于其所凭外物，当你一无所有（指外物）之时，你还能剩下什么？是没有灵魂的一具空壳，还是一个拥有强大生命的种子。<br>&emsp;    读史教会我的第一点是作为历史当中普通人的世事无常，我们所接触的历史往往是王侯将相的历史，是英雄名士的历史，若人类发展的角度来看历史，一个人的历史观总会趋于无情，这种无情我们可以理解为作为现代人的傲慢/优越，如今我们去各地旅游，惊叹于种种历史古迹，惊叹于古人的智慧，但是孰又会在意这些历史古迹下面是当时多少奴隶的血泪。这些遗迹显示了当时高超的建造技术，为后人留下了宝贵遗产，我们或可以说这是历史的进步，然而那些建造他们的奴隶们则消逝于历史的阴影之中。若我们接受这样的历史进步性说法，由此会自然引出下一个结论——历史的发展是必然伴随着牺牲的，作为现代人，我们可以一方面斥责当时的暴政，另一方面又可以欣赏到这些暴政所留下的历史遗迹，每每想到这些，总觉如鲠在喉。或许从这些历史中我们可以得出这样的经验，某些我们认为错误的做法确实促进了当时历史的发展，但是历史发展途径许多，我们应当选择让人民整体更加幸福的发展道路，唉，不过聊以自慰耳。<br>&emsp;行路者需要背负东西，然而不能背负太多。我第一个放入背包的叫做责任，从诞生开始，我就开始与这个世界产生联系，父母、家庭、国家、人类，这些名词限定了我是我，梁启超在《最苦与最乐》中写道：“人生最苦，莫过于身上背负着一种未了的责任；人生最乐，莫过于尽责之时。“责任二字，说来轻巧，实则沉甸甸，也因责任二字，人生少了些凄清，多了些烟火；我第二个放入背包的叫做知识，在我看来，当曾经模糊看不清楚的东西在你眼前变得清晰之时，也是精神愉悦满足之时，文学史哲让你反求诸己，塑造清明的内心世界，理血工学让你更好地认识客观世界，改造客观世界，两种知识于我而言同样重要。吾之一生，有此两者，足矣。</p>
-]]></content>
-      <categories>
-        <category>闲谈</category>
-      </categories>
-      <tags>
-        <tag>无感而发</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>机器学习理论</title>
     <url>/2020/07/06/ji-qi-xue-xi-li-lun/</url>
     <content><![CDATA[<p>笔者近期想做一下<strong>机器学习</strong>相关理论总结<a id="more"></a>，计划划分为以下章节：</p>
@@ -2156,6 +2144,18 @@ COPY . .
       <categories>
         <category>统计学习</category>
       </categories>
+  </entry>
+  <entry>
+    <title>有感</title>
+    <url>/2020/02/22/you-gan/</url>
+    <content><![CDATA[<p>&emsp;    或许逃避是人的天性，整个博一上学期，似乎整天忙忙碌碌，在若干门课程中来回斡旋，<a id="more"></a>但当闲下来细细一想，似乎也有很多时间自己并没有好好利用，用那些时间在逃避、在咸鱼、在发呆。整个博一上学期自己也读了一些书，比如《历史的教训》、《贫穷的本质》、《禅与摩托车维修技术》、《变革中国》，相比于完整读下来的书，挖的坑自然是更多，《纯粹理性批判》、《世界文明史》、《资本论》……如果你要问我为什么选择这些书，我只能回答机缘巧合吧，这些书或是来源于上课时某位同学的推荐，或是来自于自己查询某些资料时的推荐，不一而足。其实我认为读这些书一方面是一种对自己空余时间的填充，对纯粹理工科学习的一种暂时逃避，也是一个不断寻找答案的过程，寻找一些理工科的书籍里缺乏的一些答案。其实我一直在思考一个问题，一个人的强大究竟是来源于其内心的强大，还是来源于其所凭外物，当你一无所有（指外物）之时，你还能剩下什么？是没有灵魂的一具空壳，还是一个拥有强大生命的种子。<br>&emsp;    读史教会我的第一点是作为历史当中普通人的世事无常，我们所接触的历史往往是王侯将相的历史，是英雄名士的历史，若人类发展的角度来看历史，一个人的历史观总会趋于无情，这种无情我们可以理解为作为现代人的傲慢/优越，如今我们去各地旅游，惊叹于种种历史古迹，惊叹于古人的智慧，但是孰又会在意这些历史古迹下面是当时多少奴隶的血泪。这些遗迹显示了当时高超的建造技术，为后人留下了宝贵遗产，我们或可以说这是历史的进步，然而那些建造他们的奴隶们则消逝于历史的阴影之中。若我们接受这样的历史进步性说法，由此会自然引出下一个结论——历史的发展是必然伴随着牺牲的，作为现代人，我们可以一方面斥责当时的暴政，另一方面又可以欣赏到这些暴政所留下的历史遗迹，每每想到这些，总觉如鲠在喉。或许从这些历史中我们可以得出这样的经验，某些我们认为错误的做法确实促进了当时历史的发展，但是历史发展途径许多，我们应当选择让人民整体更加幸福的发展道路，唉，不过聊以自慰耳。<br>&emsp;行路者需要背负东西，然而不能背负太多。我第一个放入背包的叫做责任，从诞生开始，我就开始与这个世界产生联系，父母、家庭、国家、人类，这些名词限定了我是我，梁启超在《最苦与最乐》中写道：“人生最苦，莫过于身上背负着一种未了的责任；人生最乐，莫过于尽责之时。“责任二字，说来轻巧，实则沉甸甸，也因责任二字，人生少了些凄清，多了些烟火；我第二个放入背包的叫做知识，在我看来，当曾经模糊看不清楚的东西在你眼前变得清晰之时，也是精神愉悦满足之时，文学史哲让你反求诸己，塑造清明的内心世界，理血工学让你更好地认识客观世界，改造客观世界，两种知识于我而言同样重要。吾之一生，有此两者，足矣。</p>
+]]></content>
+      <categories>
+        <category>闲谈</category>
+      </categories>
+      <tags>
+        <tag>无感而发</tag>
+      </tags>
   </entry>
   <entry>
     <title>概率分布中的距离度量</title>
@@ -3339,161 +3339,6 @@ i_t^* = \varPhi_{t+1}(i_{t+1}^*)</script>求得最优路径$I^{\ast} = (i_1^\ast
       </tags>
   </entry>
   <entry>
-    <title>强化学习</title>
-    <url>/2020/10/06/qiang-hua-xue-xi/</url>
-    <content><![CDATA[<p>这部分将根据周志华老师的西瓜书对强化学习部分做一个简单介绍，该部分按照以下章节进行组织:</p>
-<ul>
-<li>思想介绍——任务与奖赏 </li>
-<li>K-摇臂赌博机 </li>
-<li>有模型学习 </li>
-<li>免模型学习 </li>
-<li>值函数近似 </li>
-<li>模仿学习 <a id="more"></a>
-</li>
-</ul>
-<h3 id="思想介绍-任务与奖赏"><a href="#思想介绍-任务与奖赏" class="headerlink" title="思想介绍-任务与奖赏"></a>思想介绍-任务与奖赏</h3><p><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/reinforce.png" alt="强化学习"><br>考虑这样病人看病的场景，假设我们是看病的医生，在我们与病人的交互过程中，大概是这么一个交互顺序:</p>
-<ul>
-<li>病人本身有一个状态，记做$S$，表示病人目前的身体状况。</li>
-<li>在看病的过程中，我认为病人处于某个状态$S’$，然后对病人施加了一个动作A，比如给病人吃了一些药，或者打了针。</li>
-<li>在病人接受了治疗之后，其本身状态发生了一个变化，该状态的转移我们用概率矩$P$来表示，表示病人状态发生了一个变化，比如痊愈了或者病情更加严重了。 </li>
-<li>在病人的状态发生了变化之后，会给作为医生的我们一个反馈，记做$R$,如果病人痊愈了，那我们得到的反馈可能会是一面锦旗和很多钱，如果病情更加严重了，我们得到的反馈可能就是埋怨。 </li>
-</ul>
-<p>上面我所描述的场景其实就构成了一轮强化学习的过程，强化学习任务常用马尔可夫决策过程来描述，这意味着环境下一时刻的状态仅仅与当前时刻状态有关而与之前状态无关:</p>
-<script type="math/tex; mode=display">
-    P(s_{t+1}| s_t,\dots, s_1) = P(s_{t+1}|s_{t})</script><p>综合起来，强化学习对应了四元组$E = <S,A,P,R>$,其中:</p>
-<script type="math/tex; mode=display">
-    P: X \times A \times X \rightarrow \mathbb{R}</script><p>而:</p>
-<script type="math/tex; mode=display">
-    R: X \times A \times X \rightarrow \mathbb{R}</script><p>指定了奖赏，在有的应用中，状态可能仅与状态转移有关，即$R: X \times X \rightarrow \mathbb{R}$, 下面给出一个种瓜的马尔可夫决策过程的栗子。<br><img src="https://github.com/xuejy19/xuejy19.github.io/blob/source/Img/Markov_decision.png" alt="马尔可夫决策过程"><br>在该过程中只有四个状态:健康、缺水、溢水和凋亡和两个动作:浇水和不浇水。在每一步转移后，若状态是保持瓜苗健康则获得奖励1，瓜苗缺水或者溢水奖赏为-1，这时通过浇水或者不浇水可以让瓜苗恢复健康状态，当瓜苗凋零时奖赏是最小值-100且无法恢复。图中箭头表示状态转移，$a、p、r$分别表示导致状态转移的动作、转移概率以及返回的奖赏。容易看出，最优策略是在“健康”和“缺少”状态下选择浇水，而在“溢水”状态下选择不浇水。</p>
-<p>需要注意区分“机器”和“环境”的界限，在下棋中，棋盘是环境与对手；在机器人控制中，环境是机器人的躯体与物理世界。总之，在环境中状态的转移以及奖赏的返回是不受机器控制的，机器只能通过选择要执行的动作来影响环境，也只能通过观察转移后的状态和返回的奖赏来感知世界。</p>
-<p>机器要做的是学习到一个策略$\pi$，根据这个策略，在状态$x$下就能得知想要执行的动作$a = \pi(x)$, 例如看到瓜苗状态为缺水时，能返回动作“浇水”。策略有两种表示:</p>
-<ul>
-<li>一种是将策略表示为函数$\pi: X \rightarrow A$,确定性策略通常用这种表示。 </li>
-<li>一种是概率表示$\pi: X \times A \rightarrow R$ ,随机性概率通常用这种表示，$\pi(x,a)$为状态$x$下选择动作$a$的概率，这里必须有$\sum_a \pi(x,a) = 1$</li>
-</ul>
-<p>策略的优劣取决于长期执行这一策略后得到的累计奖赏，例如某个策略使得瓜苗枯死，那么它的累积奖赏会很小，另一个策略种出了好瓜，它的累积奖赏会很大。在强化学习中，学习的目的就是要找到能使长期累积奖赏最大化的策略。长期累积奖赏有多种计算方式，常用的有两种:</p>
-<ul>
-<li>T步累积奖赏$E[\frac{1}{T} \sum_{t=1}^T r_t]$</li>
-<li>$\gamma$折扣累积奖赏: $E[\sum_{t=0}^\infty] \gamma^t r_{t+1}$, 其中$\gamma$表示贴现系数。 </li>
-</ul>
-<p>最后讨论下强化学习与监督学习的关系:</p>
-<ul>
-<li>强化学习中的“状态”对应于监督学习中的“示例”。</li>
-<li>强化学习中的“动作”对应于监督学习中的“标记” </li>
-<li>强化学习中的“策略”实际上就相当于监督学习中的“分类器”或“回归性” </li>
-</ul>
-<p>但是在强化学习中，并没有监督学习中的有标记样本，换言之，没有人直接告诉机器在什么状态下应该做什么动作，只有等到最终结果揭晓，才能通过“反思”之前的动作是否正确来进行学习，因此，强化学习在某种意义上可以看作具有“延迟标记信息”的监督学习问题。 </p>
-<h3 id="K-摇臂赌博机"><a href="#K-摇臂赌博机" class="headerlink" title="K 摇臂赌博机"></a>K 摇臂赌博机</h3><h4 id="概念介绍"><a href="#概念介绍" class="headerlink" title="概念介绍"></a>概念介绍</h4><p>与一般监督学习不同，强化学习最终奖赏需要在多步动作后才能够观察到，这里我们首先考虑最简单的情形:最大化单步奖赏。<br>欲最大化单步奖赏需要考虑两个方面:一是需要知道每个动作带来的奖赏，二是要执行奖赏最大的动作。若每个动作对应的奖赏是确定值，那么尝试一遍所有动作便可以找到奖赏最大的动作。但更一般的情形是，一个动作的奖赏值是来自一个概率分布，仅通过一次尝试并不能确切地获得平均奖赏值。<br>实际上，单步强化学习任务对应了一个理论模型-“K-摇臂赌博机”，K摇臂赌博机有K个摇臂，赌徒在投入硬币后可选择按下其中一个摇臂，每个摇臂以一定的概率吐出硬币，但这个概率赌徒并不知道，赌徒的目标是通过一定的策略最大化自己的奖赏，即获得最多的硬币。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/K-armed.jpeg" alt="K摇臂赌博机"><br>若仅为获知每个摇臂的期望奖赏，则可以采用“仅搜索法”:将所有尝试机会平均分配给每个摇臂，最后以每个摇臂各自平均的吐币概率作为其奖赏期望的近似估计。若仅为执行奖赏最大的动作，则可采用“仅利用”法: 按下目前最优的摇臂。显然，“仅探索”法能够很好地估计每个摇臂的奖赏，却会失去很多选择最优摇臂的机会；仅利用法则相反，它没有很好地估计摇臂期望奖赏，很可能经常选不到最优摇臂。因此，这两种方法都难以使得最终累积奖赏最大化。<br>事实上，“探索”和“利用”这两者是矛盾的，因为尝试次数有限，加强了一方则自然就会削弱另一方，这就是强化学习所面临的“探索-利用”窘境。显然，如欲累积奖赏最大，则必须在探索与利用之间达成较好的折衷。</p>
-<h4 id="epsilon-贪心"><a href="#epsilon-贪心" class="headerlink" title="$\epsilon-$贪心"></a>$\epsilon-$贪心</h4><p>$\epsilon-$贪心基于一个概率$\epsilon$来对探索和利用进行折中: 每次尝试时，以$\epsilon$概率进行探索，即以均匀概率随机选取一个摇臂；以$1- \epsilon$概率进行利用，即选择当前平均奖赏最高的摇臂。<br>令$Q(k)$记录摇臂$k$的平均奖赏，若摇臂$k$被尝试了$n$次，得到的奖赏为$v_1,v_2,\dots, v_n$,则平均奖赏为:</p>
-<script type="math/tex; mode=display">
-    Q(k) = \frac{1}{n} \sum_{i=1}^n v_i</script><p>更高效的方法是进行增量式计算，即每一次尝试后就立刻更新$Q(k)$，不妨用下标来表示尝试的次数，初始时$Q_0(k) = 0$。对于任意的$n \geq 1$,若第$n-1$次尝试后的平均奖赏为$Q_{n-1}(k)$,则在经过第$n$次尝试获得奖赏$v_n$后，平均奖赏应更新为:</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        Q_n(k) &= \frac{1}{n} ((n-1) \times Q_{n-1}(k) + v_n) \\
-               &= Q_{n-1}(k) + \frac{1}{n} (v_n - Q_{n-1}(k))        
-    \end{aligned}</script><p>若摇臂奖赏的不确定性较大， 例如概率分布较宽时，则需要更多的探索，此时需要较大的$\epsilon$值；若摇臂的不确定性较小，例如概率分布较集中时，此时只需要少量的探索即可，将$\epsilon$设置值较小即可。随着尝试次数的增多，在一段时间后，摇臂的奖赏都能够较好地近似出来，不再需要探索，这种情况下可以让$\epsilon$随着尝试次数的增加而逐步减小，例如取$\epsilon = \frac{1}{\sqrt{t}}$ </p>
-<h4 id="Softmax"><a href="#Softmax" class="headerlink" title="Softmax"></a>Softmax</h4><p>Softmax 算法中摇臂概率的分配是基于Boltzmann分布:</p>
-<script type="math/tex; mode=display">
-    P(k) = \frac{e^{\frac{Q(k)}{\tau}}}{\sum_{i=1}^K e^{\frac{Q(k)}{\tau}}}</script><p>其中$q(i)$记录当前摇臂的平均奖赏，$\tau &gt;0$称为温度，$\tau$越小则平均奖赏高的摇臂被选取的概率越高，$\tau$趋于0时Softmax将趋于“仅利用”，$\tau$趋于无穷大时Softmax将趋于“仅搜索”。 </p>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>前面通过K摇臂赌博机给出了单步强化学习的概念，同时介绍了单步强化学习实现的两种算法:$\epsilon$-贪心算法和Softmax算法，这两种算法并无绝对优劣差距，在进行应用中需要具体问题具体分析。<br>对于离散状态空间、离散动作空间上的多步强化学习任务，一种直接的办法是将每个状态上动作的选择看作是一个K摇臂赌博机问题，用强化学习任务的累积奖赏来代替K摇臂赌博机算法中的奖赏函数，即可将赌博机算法应用于每个状态: 对每个状态分别记录各动作的尝试次数、当前平均累积奖赏等信息，基于赌博机算法选择想要尝试的动作。<strong>然而这样做有很多局限，因为它没有考虑强化学习任务马尔可夫决策过程的结构。</strong> </p>
-<h3 id="有模型学习"><a href="#有模型学习" class="headerlink" title="有模型学习"></a>有模型学习</h3><p>考虑一个多步强化学习任务，我们假设任务对应的马尔可夫决策过程四元组$E  =<X, A,P,R>$均为已知，这样的情形称为<strong>模型已知</strong>,即机器已经对环境进行了建模。在已知模型的环境中学习称为“有模型学习”。此时，对于任意状态$x,x’$和动作$a$，在$x$状态下执行动作$a$转移到状态$x’$的概率$P_{x \rightarrow x’}^a$ 是已知的，该转移所带来的奖赏$R_{x \rightarrow x’}^a$也是已知的。为便于讨论，不妨假设状态空间和动作空间均有限。 </p>
-<h4 id="策略评估"><a href="#策略评估" class="headerlink" title="策略评估"></a>策略评估</h4><p>在模型已知时，对任意策略能估计出该策略带来的期望累积奖赏，令函数$V^\pi(x)$表示从状态$x$出发，使用策略$\pi$所带来的累积奖赏。函数$Q^{\pi}(x,a)$ 表示从状态$x$出发，执行动作$a$后再使用策略$\pi$所带来的累积奖赏，这里:</p>
-<ul>
-<li>$V(\cdot)$ 称为“状态值”函数，表示指定“状态”上的累积奖赏</li>
-<li>$Q(\cdot)$ 称为“状态-动作值”函数，表示指定“状态-动作”上的累积奖赏。 </li>
-</ul>
-<p>由累积奖赏的定义，有状态值函数: </p>
-<script type="math/tex; mode=display">
-\left\{\begin{array}{l}
-V_{T}^{\pi}(x)=\mathbb{E}_{\pi}\left[\frac{1}{T} \sum_{t=1}^{T} r_{t} \mid x_{0}=x\right], \quad T \text { 步累积奖赏 } \\
-V_{\gamma}^{\pi}(x)=\mathbb{E}_{\pi}\left[\sum_{t=0}^{+\infty} \gamma^{t} r_{t+1} \mid x_{0}=x\right], \quad \gamma \text { 折扣累积奖赏. }
-\end{array}\right.</script><p>令$x_0$表示起始状态，$a_0$表示起始状态上采取的第一个动作；对于$T$步累积奖赏，用下标$t$表示后续执行的步数，我们有状态动作值函数: </p>
-<script type="math/tex; mode=display">
-\left\{\begin{array}{l}
-Q_{T}^{\pi}(x,a)=\mathbb{E}_{\pi}\left[\frac{1}{T} \sum_{t=1}^{T} r_{t} \mid x_{0}=x, a_0 = a\right], \quad T \text { 步累积奖赏 } \\
-Q_{\gamma}^{\pi}(x,a)=\mathbb{E}_{\pi}\left[\sum_{t=0}^{+\infty} \gamma^{t} r_{t+1} \mid x_{0}=x, a_0 = a\right], \quad \gamma \text { 折扣累积奖赏. }
-\end{array}\right.</script><p>根据马尔可夫决策过程的马尔可夫性，值函数可以有更加简单的递推形式，对于$T$步累积奖赏有:</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        V_T^\pi (x) &= E_{\pi} [\frac{1}{T} \sum_{t=1}^T r_t| x =x_0] \\
-        &= E_{\pi} [\frac{1}{T} r_1 + \frac{T-1}{T} \frac{1}{T-1} \sum_{t=2}^T r_t | x_0 = x] \\ 
-        &= \sum_{a \in A} \pi(x,a) \sum_{x' \in X}  P_{x \rightarrow x'}^a (\frac{1}{T} R_{x \rightarrow x'}^a  + \frac{T-1}{T} E_{\pi} [\frac{1}{T-1} \sum_{t=1}^{T-1} r_t|x_0 = x'])  \\
-        &= \sum_{a \in x} \pi(x,a) \sum_{x' \in X}  P_{x \rightarrow x'} (\frac{1}{T} R_{x \rightarrow x'}^a + \frac{T-1}{T} V_{T-1}^\pi (x')) 
-    \end{aligned}</script><p>类似的，对于$\gamma$折扣累积奖赏有: </p>
-<script type="math/tex; mode=display">
-V_{\gamma}^{\pi}(x)=\sum_{a \in A} \pi(x, a) \sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(R_{x \rightarrow x^{\prime}}^{a}+\gamma V_{\gamma}^{\pi}\left(x^{\prime}\right)\right)</script><p>值函数的递推方程也被称作<strong>Bellman方程</strong>。<br>用这种递归等式来计算值函数，实际上就是一种动态规划算法。换言之，从值函数的初始值$V_0(\pi)$出发，通过每一次迭代能够计算出每个状态的单步奖赏$V_1^\pi$,进而从单步奖赏出发，通过一次迭代计算出两步累积奖赏$V_2^\pi$,对于$T$步累积奖赏，只需要迭代$T$轮就能精确地求解出值函数。<br>可以总结基于$T$步累积奖赏的策略评估办法:</p>
-<blockquote>
-<p><strong>输入:</strong> MDP四元组$E = <X,A,P,R>$; 被评估的策略$\pi$; 累积奖赏参数$T$<br><strong>算法流程:</strong> </p>
-<ul>
-<li>初始化$V(x) = 0$</li>
-<li>递推计算$V_1^\pi, V_2^\pi, \dots, V_t^\pi, \dots$ </li>
-<li>递推直到$V_t^\pi = V_T^\pi$</li>
-</ul>
-<p><strong>输出:</strong> 状态值函数$V$ </p>
-</blockquote>
-<p>对于$\gamma$折扣累积奖赏算法，与普通$T$步累积累积奖赏递推类似，同时考虑到当$t$很大时，$\gamma^t$ 会趋于0，因此算法计算终止常通过阈值来进行确定:</p>
-<script type="math/tex; mode=display">
-    \max_{x \in X} |V(x) - V'(x)| < 0</script><p>有了状态值函数，就能直接计算出状态-动作值函数:</p>
-<script type="math/tex; mode=display">
-\left\{\begin{array}{l}
-Q_{T}^{\pi}(x, a)=\sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(\frac{1}{T} R_{x \rightarrow x^{\prime}}^{a}+\frac{T-1}{T} V_{T-1}^{\pi}\left(x^{\prime}\right)\right) \\
-Q_{\gamma}^{\pi}(x, a)=\sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(R_{x \rightarrow x^{\prime}}^{a}+\gamma V_{\gamma}^{\pi}\left(x^{\prime}\right)\right)
-\end{array}\right.</script><h4 id="策略改进"><a href="#策略改进" class="headerlink" title="策略改进"></a>策略改进</h4><p>对某个策略的累积奖赏进行评估后，若发现某个策略并非最优策略，则自然期望改变策略以使累积奖赏最大：</p>
-<script type="math/tex; mode=display">
-    \pi^\ast = \argmax_{\pi} \sum_{x \in X} V^{\pi}(x)</script><p>一个强化学习任务可能有多个最优策略，最优策略所对应的值函数$V^\ast$称为最优值函数，即:</p>
-<script type="math/tex; mode=display">
-    \forall x \in X: V^{\ast} (x) = V^{\pi^\ast} (x)</script><p>注意，当策略空间无约束时$V^\ast$才是最优策略所对应的值函数，对于离散状态空间与离散动作空间，策略空间是状态上所有动作的组合，共有$|A|^|X|$种不同的策略，若策略空间有约束，则违背约束的策略是“不合法”的，即便其值函数所取得的累积奖赏最大，也不能作为最优值函数。<br>对于前面值函数的递推方程<strong>Bellman</strong>方程稍加改动便可得到最优值函数的递推公式: </p>
-<script type="math/tex; mode=display">
-\left\{\begin{array}{l}
-V_{T}^{*}(x)=\max _{a \in A} \sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(\frac{1}{T} R_{x \rightarrow x^{\prime}}^{a}+\frac{T-1}{T} V_{T-1}^{*}\left(x^{\prime}\right)\right) \\
-V_{\gamma}^{*}(x)=\max _{a \in A} \sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(R_{x \rightarrow x^{\prime}}^{a}+\gamma V_{\gamma}^{*}\left(x^{\prime}\right)\right)
-\end{array}\right.</script><p>换言之:</p>
-<script type="math/tex; mode=display">
-    V^{*}(x)=\max _{a \in A} Q^{\pi^{*}}(x, a)</script><p>将该式代入状态-动作值函数刻度可得最优状态-动作值函数: </p>
-<script type="math/tex; mode=display">
-\left\{\begin{array}{l}
-Q_{T}^{*}(x, a)=\sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(\frac{1}{T} R_{x \rightarrow x^{\prime}}^{a}+\frac{T-1}{T} \max _{a^{\prime} \in A} Q_{T-1}^{*}\left(x^{\prime}, a^{\prime}\right)\right) \\
-Q_{\gamma}^{*}(x, a)=\sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(R_{x \rightarrow x^{\prime}}^{a}+\gamma \max _{a^{\prime} \in A} Q_{\gamma}^{*}\left(x^{\prime}, a^{\prime}\right)\right)
-\end{array}\right.</script><p>上述关于最优值函数的等式，称为最优Bellman等式，其唯一解是最优值函数。<br>最优Bellman等式揭示了非最优策略的改进方式: 将策略选择的动作改编为当前最优的动作。显然，这样的改变能使策略更好，不妨记动作改变后对应的策略为$\pi’$,改变动作的条件为$Q^\pi (x, \pi^i(x)) \geq V^\pi(x)$, 以$\gamma$折扣累积奖赏为例，由式可计算递推不等式: </p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        V^{\pi}(x) &\leq Q^{\pi}(x, \pi'(x)) \\ 
-                   &= \sum_{x' \in X} P_{x \rightarrow x'}^{\pi'(x)} (R_{x \rightarrow x'}^{\pi'(x)} + \gamma V^\pi(x')) \\ 
-                   &\leq \sum_{x' \in X} P_{x \rightarrow x'}^{\pi'(x)} (R_{x \rightarrow x'}^{\pi'(x)} + \gamma Q^{\pi}(x', \pi'(x'))) \\
-                   &= .... \\
-                   &= V^{\pi'}(x)
-    \end{aligned}</script><p>值函数每一次对于策略的改进都是递增的，因此对于当前的策略$\pi$，可以放心地将其改进为:</p>
-<script type="math/tex; mode=display">
-    \pi'(x) = \argmax_{a \in A} Q^{\pi}(x, a)</script><p>直到$\pi’$与$\pi$一致、不再发生变化，此时就满足了最优Bellman等式，即找到了最优策略。</p>
-<h4 id="策略迭代与值迭代"><a href="#策略迭代与值迭代" class="headerlink" title="策略迭代与值迭代"></a>策略迭代与值迭代</h4><p>在前面介绍了两部分内容:</p>
-<ul>
-<li>如何评估一个策略的值函数 </li>
-<li>在策略评估后如何改进以获得最优策略 </li>
-</ul>
-<p>将这两者结合起来即可得到求解最优解的方法: </p>
-<blockquote>
-<p>从一个初始策略(通常是随机策略)出发，先进性策略评估，然后改进策略，评估改进的策略，再进一步改进策略，……不断迭代进行策略评估和改进直到策略不再改变为止，这样的做法称为“策略迭代”.</p>
-</blockquote>
-<p>下面给出基于$T$步累积奖赏的策略迭代算法:<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E7%AD%96%E7%95%A5%E8%BF%AD%E4%BB%A3.png" alt="策略迭代算法"></p>
-<p>策略迭代算法在每次改进策略后都需要进行策略评估，这通常比较耗时。但是实际上策略改进与值函数的改进是一致的，因此可讲策略改进视为值函数的改善:</p>
-<script type="math/tex; mode=display">
-\left\{\begin{array}{l}
-V_{T}(x)=\max _{a \in A} \sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(\frac{1}{T} R_{x \rightarrow x^{\prime}}^{a}+\frac{T-1}{T} V_{T-1}\left(x^{\prime}\right)\right) \\
-V_{\gamma}(x)=\max _{a \in A} \sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(R_{x \rightarrow x^{\prime}}^{a}+\gamma V_{\gamma}\left(x^{\prime}\right)\right)
-\end{array}\right.</script><p>于是可以得到值迭代算法:<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E5%80%BC%E8%BF%AD%E4%BB%A3.png" alt="值迭代算法"> </p>
-<p>在模型已知时，强化学习任务能归结为基于动态规划的寻优问题。与监督学习不同，这里并未涉及泛化能力，仅仅是为每一个状态寻找的一个最佳动作。</p>
-<h3 id="免模型学习"><a href="#免模型学习" class="headerlink" title="免模型学习"></a>免模型学习</h3><p>在现实的强化学习任务中，环境的转移概率、奖赏函数往往很难得知，甚至很难直到环境中有几个状态，若学习算法不依赖于环境建模，则称为<strong>“免模型学习”</strong>。 </p>
-<h4 id="蒙特卡罗强化学习"><a href="#蒙特卡罗强化学习" class="headerlink" title="蒙特卡罗强化学习"></a>蒙特卡罗强化学习</h4><p>在免模型情况下，策略迭代算法首先碰到的问题便是策略无法评估，这是由于模型未知而导致无法做全概率展开。此时，只能通过在环境中执行选择的动作，来观察转移的状态和得到的奖赏。受K摇臂赌博机的启发，一种直接的策略评估方法是“多次采样”，然后求取平均累积奖赏作为期望累积奖赏的近似，这称为蒙特卡罗强化学习方法，由于采样必须为有限次数，因此该方法更适合于使用$T$步累积奖赏的强化学习任务。 </p>
-<p>另一方面，策略迭代算法估计的是值函数，而在进行策略选择时依赖的是状态-动作值函数$Q$，当模型已知时，从$V$到$Q$有很简单的转化方法，而当模型未知时，这也会出现困难。于是我们将估计对象从$V$转变为$Q$,即估计每一对“状态-动作”的值函数。 </p>
-]]></content>
-      <categories>
-        <category>统计学习</category>
-      </categories>
-      <tags>
-        <tag>强化学习</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>pytorch学习</title>
     <url>/2020/09/06/chu-shi-pytorch/</url>
     <content><![CDATA[<p>在前面介绍深度学习的理论知识时，相信大家可以感受到，神经网络的实现主要有以下两个难题：</p>
@@ -4071,6 +3916,161 @@ if __name__ == '__main__':
       </categories>
       <tags>
         <tag>pytorch，深度学习框架</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>强化学习</title>
+    <url>/2020/10/06/qiang-hua-xue-xi/</url>
+    <content><![CDATA[<p>这部分将根据周志华老师的西瓜书对强化学习部分做一个简单介绍，该部分按照以下章节进行组织:</p>
+<ul>
+<li>思想介绍——任务与奖赏 </li>
+<li>K-摇臂赌博机 </li>
+<li>有模型学习 </li>
+<li>免模型学习 </li>
+<li>值函数近似 </li>
+<li>模仿学习 <a id="more"></a>
+</li>
+</ul>
+<h3 id="思想介绍-任务与奖赏"><a href="#思想介绍-任务与奖赏" class="headerlink" title="思想介绍-任务与奖赏"></a>思想介绍-任务与奖赏</h3><p><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/reinforce.png" alt="强化学习"><br>考虑这样病人看病的场景，假设我们是看病的医生，在我们与病人的交互过程中，大概是这么一个交互顺序:</p>
+<ul>
+<li>病人本身有一个状态，记做$S$，表示病人目前的身体状况。</li>
+<li>在看病的过程中，我认为病人处于某个状态$S’$，然后对病人施加了一个动作A，比如给病人吃了一些药，或者打了针。</li>
+<li>在病人接受了治疗之后，其本身状态发生了一个变化，该状态的转移我们用概率矩$P$来表示，表示病人状态发生了一个变化，比如痊愈了或者病情更加严重了。 </li>
+<li>在病人的状态发生了变化之后，会给作为医生的我们一个反馈，记做$R$,如果病人痊愈了，那我们得到的反馈可能会是一面锦旗和很多钱，如果病情更加严重了，我们得到的反馈可能就是埋怨。 </li>
+</ul>
+<p>上面我所描述的场景其实就构成了一轮强化学习的过程，强化学习任务常用马尔可夫决策过程来描述，这意味着环境下一时刻的状态仅仅与当前时刻状态有关而与之前状态无关:</p>
+<script type="math/tex; mode=display">
+    P(s_{t+1}| s_t,\dots, s_1) = P(s_{t+1}|s_{t})</script><p>综合起来，强化学习对应了四元组$E = <S,A,P,R>$,其中:</p>
+<script type="math/tex; mode=display">
+    P: X \times A \times X \rightarrow \mathbb{R}</script><p>而:</p>
+<script type="math/tex; mode=display">
+    R: X \times A \times X \rightarrow \mathbb{R}</script><p>指定了奖赏，在有的应用中，状态可能仅与状态转移有关，即$R: X \times X \rightarrow \mathbb{R}$, 下面给出一个种瓜的马尔可夫决策过程的栗子。<br><img src="https://github.com/xuejy19/xuejy19.github.io/blob/source/Img/Markov_decision.png" alt="马尔可夫决策过程"><br>在该过程中只有四个状态:健康、缺水、溢水和凋亡和两个动作:浇水和不浇水。在每一步转移后，若状态是保持瓜苗健康则获得奖励1，瓜苗缺水或者溢水奖赏为-1，这时通过浇水或者不浇水可以让瓜苗恢复健康状态，当瓜苗凋零时奖赏是最小值-100且无法恢复。图中箭头表示状态转移，$a、p、r$分别表示导致状态转移的动作、转移概率以及返回的奖赏。容易看出，最优策略是在“健康”和“缺少”状态下选择浇水，而在“溢水”状态下选择不浇水。</p>
+<p>需要注意区分“机器”和“环境”的界限，在下棋中，棋盘是环境与对手；在机器人控制中，环境是机器人的躯体与物理世界。总之，在环境中状态的转移以及奖赏的返回是不受机器控制的，机器只能通过选择要执行的动作来影响环境，也只能通过观察转移后的状态和返回的奖赏来感知世界。</p>
+<p>机器要做的是学习到一个策略$\pi$，根据这个策略，在状态$x$下就能得知想要执行的动作$a = \pi(x)$, 例如看到瓜苗状态为缺水时，能返回动作“浇水”。策略有两种表示:</p>
+<ul>
+<li>一种是将策略表示为函数$\pi: X \rightarrow A$,确定性策略通常用这种表示。 </li>
+<li>一种是概率表示$\pi: X \times A \rightarrow R$ ,随机性概率通常用这种表示，$\pi(x,a)$为状态$x$下选择动作$a$的概率，这里必须有$\sum_a \pi(x,a) = 1$</li>
+</ul>
+<p>策略的优劣取决于长期执行这一策略后得到的累计奖赏，例如某个策略使得瓜苗枯死，那么它的累积奖赏会很小，另一个策略种出了好瓜，它的累积奖赏会很大。在强化学习中，学习的目的就是要找到能使长期累积奖赏最大化的策略。长期累积奖赏有多种计算方式，常用的有两种:</p>
+<ul>
+<li>T步累积奖赏$E[\frac{1}{T} \sum_{t=1}^T r_t]$</li>
+<li>$\gamma$折扣累积奖赏: $E[\sum_{t=0}^\infty] \gamma^t r_{t+1}$, 其中$\gamma$表示贴现系数。 </li>
+</ul>
+<p>最后讨论下强化学习与监督学习的关系:</p>
+<ul>
+<li>强化学习中的“状态”对应于监督学习中的“示例”。</li>
+<li>强化学习中的“动作”对应于监督学习中的“标记” </li>
+<li>强化学习中的“策略”实际上就相当于监督学习中的“分类器”或“回归性” </li>
+</ul>
+<p>但是在强化学习中，并没有监督学习中的有标记样本，换言之，没有人直接告诉机器在什么状态下应该做什么动作，只有等到最终结果揭晓，才能通过“反思”之前的动作是否正确来进行学习，因此，强化学习在某种意义上可以看作具有“延迟标记信息”的监督学习问题。 </p>
+<h3 id="K-摇臂赌博机"><a href="#K-摇臂赌博机" class="headerlink" title="K 摇臂赌博机"></a>K 摇臂赌博机</h3><h4 id="概念介绍"><a href="#概念介绍" class="headerlink" title="概念介绍"></a>概念介绍</h4><p>与一般监督学习不同，强化学习最终奖赏需要在多步动作后才能够观察到，这里我们首先考虑最简单的情形:最大化单步奖赏。<br>欲最大化单步奖赏需要考虑两个方面:一是需要知道每个动作带来的奖赏，二是要执行奖赏最大的动作。若每个动作对应的奖赏是确定值，那么尝试一遍所有动作便可以找到奖赏最大的动作。但更一般的情形是，一个动作的奖赏值是来自一个概率分布，仅通过一次尝试并不能确切地获得平均奖赏值。<br>实际上，单步强化学习任务对应了一个理论模型-“K-摇臂赌博机”，K摇臂赌博机有K个摇臂，赌徒在投入硬币后可选择按下其中一个摇臂，每个摇臂以一定的概率吐出硬币，但这个概率赌徒并不知道，赌徒的目标是通过一定的策略最大化自己的奖赏，即获得最多的硬币。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/K-armed.jpeg" alt="K摇臂赌博机"><br>若仅为获知每个摇臂的期望奖赏，则可以采用“仅搜索法”:将所有尝试机会平均分配给每个摇臂，最后以每个摇臂各自平均的吐币概率作为其奖赏期望的近似估计。若仅为执行奖赏最大的动作，则可采用“仅利用”法: 按下目前最优的摇臂。显然，“仅探索”法能够很好地估计每个摇臂的奖赏，却会失去很多选择最优摇臂的机会；仅利用法则相反，它没有很好地估计摇臂期望奖赏，很可能经常选不到最优摇臂。因此，这两种方法都难以使得最终累积奖赏最大化。<br>事实上，“探索”和“利用”这两者是矛盾的，因为尝试次数有限，加强了一方则自然就会削弱另一方，这就是强化学习所面临的“探索-利用”窘境。显然，如欲累积奖赏最大，则必须在探索与利用之间达成较好的折衷。</p>
+<h4 id="epsilon-贪心"><a href="#epsilon-贪心" class="headerlink" title="$\epsilon-$贪心"></a>$\epsilon-$贪心</h4><p>$\epsilon-$贪心基于一个概率$\epsilon$来对探索和利用进行折中: 每次尝试时，以$\epsilon$概率进行探索，即以均匀概率随机选取一个摇臂；以$1- \epsilon$概率进行利用，即选择当前平均奖赏最高的摇臂。<br>令$Q(k)$记录摇臂$k$的平均奖赏，若摇臂$k$被尝试了$n$次，得到的奖赏为$v_1,v_2,\dots, v_n$,则平均奖赏为:</p>
+<script type="math/tex; mode=display">
+    Q(k) = \frac{1}{n} \sum_{i=1}^n v_i</script><p>更高效的方法是进行增量式计算，即每一次尝试后就立刻更新$Q(k)$，不妨用下标来表示尝试的次数，初始时$Q_0(k) = 0$。对于任意的$n \geq 1$,若第$n-1$次尝试后的平均奖赏为$Q_{n-1}(k)$,则在经过第$n$次尝试获得奖赏$v_n$后，平均奖赏应更新为:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        Q_n(k) &= \frac{1}{n} ((n-1) \times Q_{n-1}(k) + v_n) \\
+               &= Q_{n-1}(k) + \frac{1}{n} (v_n - Q_{n-1}(k))        
+    \end{aligned}</script><p>若摇臂奖赏的不确定性较大， 例如概率分布较宽时，则需要更多的探索，此时需要较大的$\epsilon$值；若摇臂的不确定性较小，例如概率分布较集中时，此时只需要少量的探索即可，将$\epsilon$设置值较小即可。随着尝试次数的增多，在一段时间后，摇臂的奖赏都能够较好地近似出来，不再需要探索，这种情况下可以让$\epsilon$随着尝试次数的增加而逐步减小，例如取$\epsilon = \frac{1}{\sqrt{t}}$ </p>
+<h4 id="Softmax"><a href="#Softmax" class="headerlink" title="Softmax"></a>Softmax</h4><p>Softmax 算法中摇臂概率的分配是基于Boltzmann分布:</p>
+<script type="math/tex; mode=display">
+    P(k) = \frac{e^{\frac{Q(k)}{\tau}}}{\sum_{i=1}^K e^{\frac{Q(k)}{\tau}}}</script><p>其中$q(i)$记录当前摇臂的平均奖赏，$\tau &gt;0$称为温度，$\tau$越小则平均奖赏高的摇臂被选取的概率越高，$\tau$趋于0时Softmax将趋于“仅利用”，$\tau$趋于无穷大时Softmax将趋于“仅搜索”。 </p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>前面通过K摇臂赌博机给出了单步强化学习的概念，同时介绍了单步强化学习实现的两种算法:$\epsilon$-贪心算法和Softmax算法，这两种算法并无绝对优劣差距，在进行应用中需要具体问题具体分析。<br>对于离散状态空间、离散动作空间上的多步强化学习任务，一种直接的办法是将每个状态上动作的选择看作是一个K摇臂赌博机问题，用强化学习任务的累积奖赏来代替K摇臂赌博机算法中的奖赏函数，即可将赌博机算法应用于每个状态: 对每个状态分别记录各动作的尝试次数、当前平均累积奖赏等信息，基于赌博机算法选择想要尝试的动作。<strong>然而这样做有很多局限，因为它没有考虑强化学习任务马尔可夫决策过程的结构。</strong> </p>
+<h3 id="有模型学习"><a href="#有模型学习" class="headerlink" title="有模型学习"></a>有模型学习</h3><p>考虑一个多步强化学习任务，我们假设任务对应的马尔可夫决策过程四元组$E  =<X, A,P,R>$均为已知，这样的情形称为<strong>模型已知</strong>,即机器已经对环境进行了建模。在已知模型的环境中学习称为“有模型学习”。此时，对于任意状态$x,x’$和动作$a$，在$x$状态下执行动作$a$转移到状态$x’$的概率$P_{x \rightarrow x’}^a$ 是已知的，该转移所带来的奖赏$R_{x \rightarrow x’}^a$也是已知的。为便于讨论，不妨假设状态空间和动作空间均有限。 </p>
+<h4 id="策略评估"><a href="#策略评估" class="headerlink" title="策略评估"></a>策略评估</h4><p>在模型已知时，对任意策略能估计出该策略带来的期望累积奖赏，令函数$V^\pi(x)$表示从状态$x$出发，使用策略$\pi$所带来的累积奖赏。函数$Q^{\pi}(x,a)$ 表示从状态$x$出发，执行动作$a$后再使用策略$\pi$所带来的累积奖赏，这里:</p>
+<ul>
+<li>$V(\cdot)$ 称为“状态值”函数，表示指定“状态”上的累积奖赏</li>
+<li>$Q(\cdot)$ 称为“状态-动作值”函数，表示指定“状态-动作”上的累积奖赏。 </li>
+</ul>
+<p>由累积奖赏的定义，有状态值函数: </p>
+<script type="math/tex; mode=display">
+\left\{\begin{array}{l}
+V_{T}^{\pi}(x)=\mathbb{E}_{\pi}\left[\frac{1}{T} \sum_{t=1}^{T} r_{t} \mid x_{0}=x\right], \quad T \text { 步累积奖赏 } \\
+V_{\gamma}^{\pi}(x)=\mathbb{E}_{\pi}\left[\sum_{t=0}^{+\infty} \gamma^{t} r_{t+1} \mid x_{0}=x\right], \quad \gamma \text { 折扣累积奖赏. }
+\end{array}\right.</script><p>令$x_0$表示起始状态，$a_0$表示起始状态上采取的第一个动作；对于$T$步累积奖赏，用下标$t$表示后续执行的步数，我们有状态动作值函数: </p>
+<script type="math/tex; mode=display">
+\left\{\begin{array}{l}
+Q_{T}^{\pi}(x,a)=\mathbb{E}_{\pi}\left[\frac{1}{T} \sum_{t=1}^{T} r_{t} \mid x_{0}=x, a_0 = a\right], \quad T \text { 步累积奖赏 } \\
+Q_{\gamma}^{\pi}(x,a)=\mathbb{E}_{\pi}\left[\sum_{t=0}^{+\infty} \gamma^{t} r_{t+1} \mid x_{0}=x, a_0 = a\right], \quad \gamma \text { 折扣累积奖赏. }
+\end{array}\right.</script><p>根据马尔可夫决策过程的马尔可夫性，值函数可以有更加简单的递推形式，对于$T$步累积奖赏有:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        V_T^\pi (x) &= E_{\pi} [\frac{1}{T} \sum_{t=1}^T r_t| x =x_0] \\
+        &= E_{\pi} [\frac{1}{T} r_1 + \frac{T-1}{T} \frac{1}{T-1} \sum_{t=2}^T r_t | x_0 = x] \\ 
+        &= \sum_{a \in A} \pi(x,a) \sum_{x' \in X}  P_{x \rightarrow x'}^a (\frac{1}{T} R_{x \rightarrow x'}^a  + \frac{T-1}{T} E_{\pi} [\frac{1}{T-1} \sum_{t=1}^{T-1} r_t|x_0 = x'])  \\
+        &= \sum_{a \in x} \pi(x,a) \sum_{x' \in X}  P_{x \rightarrow x'} (\frac{1}{T} R_{x \rightarrow x'}^a + \frac{T-1}{T} V_{T-1}^\pi (x')) 
+    \end{aligned}</script><p>类似的，对于$\gamma$折扣累积奖赏有: </p>
+<script type="math/tex; mode=display">
+V_{\gamma}^{\pi}(x)=\sum_{a \in A} \pi(x, a) \sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(R_{x \rightarrow x^{\prime}}^{a}+\gamma V_{\gamma}^{\pi}\left(x^{\prime}\right)\right)</script><p>值函数的递推方程也被称作<strong>Bellman方程</strong>。<br>用这种递归等式来计算值函数，实际上就是一种动态规划算法。换言之，从值函数的初始值$V_0(\pi)$出发，通过每一次迭代能够计算出每个状态的单步奖赏$V_1^\pi$,进而从单步奖赏出发，通过一次迭代计算出两步累积奖赏$V_2^\pi$,对于$T$步累积奖赏，只需要迭代$T$轮就能精确地求解出值函数。<br>可以总结基于$T$步累积奖赏的策略评估办法:</p>
+<blockquote>
+<p><strong>输入:</strong> MDP四元组$E = <X,A,P,R>$; 被评估的策略$\pi$; 累积奖赏参数$T$<br><strong>算法流程:</strong> </p>
+<ul>
+<li>初始化$V(x) = 0$</li>
+<li>递推计算$V_1^\pi, V_2^\pi, \dots, V_t^\pi, \dots$ </li>
+<li>递推直到$V_t^\pi = V_T^\pi$</li>
+</ul>
+<p><strong>输出:</strong> 状态值函数$V$ </p>
+</blockquote>
+<p>对于$\gamma$折扣累积奖赏算法，与普通$T$步累积累积奖赏递推类似，同时考虑到当$t$很大时，$\gamma^t$ 会趋于0，因此算法计算终止常通过阈值来进行确定:</p>
+<script type="math/tex; mode=display">
+    \max_{x \in X} |V(x) - V'(x)| < 0</script><p>有了状态值函数，就能直接计算出状态-动作值函数:</p>
+<script type="math/tex; mode=display">
+\left\{\begin{array}{l}
+Q_{T}^{\pi}(x, a)=\sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(\frac{1}{T} R_{x \rightarrow x^{\prime}}^{a}+\frac{T-1}{T} V_{T-1}^{\pi}\left(x^{\prime}\right)\right) \\
+Q_{\gamma}^{\pi}(x, a)=\sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(R_{x \rightarrow x^{\prime}}^{a}+\gamma V_{\gamma}^{\pi}\left(x^{\prime}\right)\right)
+\end{array}\right.</script><h4 id="策略改进"><a href="#策略改进" class="headerlink" title="策略改进"></a>策略改进</h4><p>对某个策略的累积奖赏进行评估后，若发现某个策略并非最优策略，则自然期望改变策略以使累积奖赏最大：</p>
+<script type="math/tex; mode=display">
+    \pi^\ast = \argmax_{\pi} \sum_{x \in X} V^{\pi}(x)</script><p>一个强化学习任务可能有多个最优策略，最优策略所对应的值函数$V^\ast$称为最优值函数，即:</p>
+<script type="math/tex; mode=display">
+    \forall x \in X: V^{\ast} (x) = V^{\pi^\ast} (x)</script><p>注意，当策略空间无约束时$V^\ast$才是最优策略所对应的值函数，对于离散状态空间与离散动作空间，策略空间是状态上所有动作的组合，共有$|A|^|X|$种不同的策略，若策略空间有约束，则违背约束的策略是“不合法”的，即便其值函数所取得的累积奖赏最大，也不能作为最优值函数。<br>对于前面值函数的递推方程<strong>Bellman</strong>方程稍加改动便可得到最优值函数的递推公式: </p>
+<script type="math/tex; mode=display">
+\left\{\begin{array}{l}
+V_{T}^{*}(x)=\max _{a \in A} \sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(\frac{1}{T} R_{x \rightarrow x^{\prime}}^{a}+\frac{T-1}{T} V_{T-1}^{*}\left(x^{\prime}\right)\right) \\
+V_{\gamma}^{*}(x)=\max _{a \in A} \sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(R_{x \rightarrow x^{\prime}}^{a}+\gamma V_{\gamma}^{*}\left(x^{\prime}\right)\right)
+\end{array}\right.</script><p>换言之:</p>
+<script type="math/tex; mode=display">
+    V^{*}(x)=\max _{a \in A} Q^{\pi^{*}}(x, a)</script><p>将该式代入状态-动作值函数刻度可得最优状态-动作值函数: </p>
+<script type="math/tex; mode=display">
+\left\{\begin{array}{l}
+Q_{T}^{*}(x, a)=\sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(\frac{1}{T} R_{x \rightarrow x^{\prime}}^{a}+\frac{T-1}{T} \max _{a^{\prime} \in A} Q_{T-1}^{*}\left(x^{\prime}, a^{\prime}\right)\right) \\
+Q_{\gamma}^{*}(x, a)=\sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(R_{x \rightarrow x^{\prime}}^{a}+\gamma \max _{a^{\prime} \in A} Q_{\gamma}^{*}\left(x^{\prime}, a^{\prime}\right)\right)
+\end{array}\right.</script><p>上述关于最优值函数的等式，称为最优Bellman等式，其唯一解是最优值函数。<br>最优Bellman等式揭示了非最优策略的改进方式: 将策略选择的动作改编为当前最优的动作。显然，这样的改变能使策略更好，不妨记动作改变后对应的策略为$\pi’$,改变动作的条件为$Q^\pi (x, \pi^i(x)) \geq V^\pi(x)$, 以$\gamma$折扣累积奖赏为例，由式可计算递推不等式: </p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        V^{\pi}(x) &\leq Q^{\pi}(x, \pi'(x)) \\ 
+                   &= \sum_{x' \in X} P_{x \rightarrow x'}^{\pi'(x)} (R_{x \rightarrow x'}^{\pi'(x)} + \gamma V^\pi(x')) \\ 
+                   &\leq \sum_{x' \in X} P_{x \rightarrow x'}^{\pi'(x)} (R_{x \rightarrow x'}^{\pi'(x)} + \gamma Q^{\pi}(x', \pi'(x'))) \\
+                   &= .... \\
+                   &= V^{\pi'}(x)
+    \end{aligned}</script><p>值函数每一次对于策略的改进都是递增的，因此对于当前的策略$\pi$，可以放心地将其改进为:</p>
+<script type="math/tex; mode=display">
+    \pi'(x) = \argmax_{a \in A} Q^{\pi}(x, a)</script><p>直到$\pi’$与$\pi$一致、不再发生变化，此时就满足了最优Bellman等式，即找到了最优策略。</p>
+<h4 id="策略迭代与值迭代"><a href="#策略迭代与值迭代" class="headerlink" title="策略迭代与值迭代"></a>策略迭代与值迭代</h4><p>在前面介绍了两部分内容:</p>
+<ul>
+<li>如何评估一个策略的值函数 </li>
+<li>在策略评估后如何改进以获得最优策略 </li>
+</ul>
+<p>将这两者结合起来即可得到求解最优解的方法: </p>
+<blockquote>
+<p>从一个初始策略(通常是随机策略)出发，先进性策略评估，然后改进策略，评估改进的策略，再进一步改进策略，……不断迭代进行策略评估和改进直到策略不再改变为止，这样的做法称为“策略迭代”.</p>
+</blockquote>
+<p>下面给出基于$T$步累积奖赏的策略迭代算法:<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E7%AD%96%E7%95%A5%E8%BF%AD%E4%BB%A3.png" alt="策略迭代算法"></p>
+<p>策略迭代算法在每次改进策略后都需要进行策略评估，这通常比较耗时。但是实际上策略改进与值函数的改进是一致的，因此可讲策略改进视为值函数的改善:</p>
+<script type="math/tex; mode=display">
+\left\{\begin{array}{l}
+V_{T}(x)=\max _{a \in A} \sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(\frac{1}{T} R_{x \rightarrow x^{\prime}}^{a}+\frac{T-1}{T} V_{T-1}\left(x^{\prime}\right)\right) \\
+V_{\gamma}(x)=\max _{a \in A} \sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(R_{x \rightarrow x^{\prime}}^{a}+\gamma V_{\gamma}\left(x^{\prime}\right)\right)
+\end{array}\right.</script><p>于是可以得到值迭代算法:<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E5%80%BC%E8%BF%AD%E4%BB%A3.png" alt="值迭代算法"> </p>
+<p>在模型已知时，强化学习任务能归结为基于动态规划的寻优问题。与监督学习不同，这里并未涉及泛化能力，仅仅是为每一个状态寻找的一个最佳动作。</p>
+<h3 id="免模型学习"><a href="#免模型学习" class="headerlink" title="免模型学习"></a>免模型学习</h3><p>在现实的强化学习任务中，环境的转移概率、奖赏函数往往很难得知，甚至很难直到环境中有几个状态，若学习算法不依赖于环境建模，则称为<strong>“免模型学习”</strong>。 </p>
+<h4 id="蒙特卡罗强化学习"><a href="#蒙特卡罗强化学习" class="headerlink" title="蒙特卡罗强化学习"></a>蒙特卡罗强化学习</h4><p>在免模型情况下，策略迭代算法首先碰到的问题便是策略无法评估，这是由于模型未知而导致无法做全概率展开。此时，只能通过在环境中执行选择的动作，来观察转移的状态和得到的奖赏。受K摇臂赌博机的启发，一种直接的策略评估方法是“多次采样”，然后求取平均累积奖赏作为期望累积奖赏的近似，这称为蒙特卡罗强化学习方法，由于采样必须为有限次数，因此该方法更适合于使用$T$步累积奖赏的强化学习任务。 </p>
+<p>另一方面，策略迭代算法估计的是值函数，而在进行策略选择时依赖的是状态-动作值函数$Q$，当模型已知时，从$V$到$Q$有很简单的转化方法，而当模型未知时，这也会出现困难。于是我们将估计对象从$V$转变为$Q$,即估计每一对“状态-动作”的值函数。 </p>
+]]></content>
+      <categories>
+        <category>统计学习</category>
+      </categories>
+      <tags>
+        <tag>强化学习</tag>
       </tags>
   </entry>
   <entry>
