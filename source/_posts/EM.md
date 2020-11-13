@@ -4,7 +4,6 @@ date: 2020-07-30 16:01:11
 tags: EM算法,隐变量,高斯混合模型
 categories: 统计学习
 toc: true
-#img: https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/thumbnail/EM.png
 mathjax: true
 ---
 在前面概率密度函数估计中，若概率模型的变量都是可观测变量，那么给定数据，便可以直接用极大似然估计法或者贝叶斯估计法来直接估计模型参数。但是当模型中含有隐变量时，便不能直接使用这些估计方法，**EM算法就是含有隐变量的概率模型参数的极大似然估计法**<!--more-->,本文便围绕EM算法展开，主要包含以下几部分：

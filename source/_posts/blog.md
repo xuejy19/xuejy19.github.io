@@ -1,8 +1,7 @@
 ---
 title:  我与历史之缘
-img: https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/thumbnail/%E6%AD%A6%E5%A3%AB.jpg
 date: 2020-01-12 17:15:11
-tags:
+tags: 历史，回溯
 password: e35e861a6717df8842ca71611421c06896154e227b5c537ef1fb61669fbedb8c 
 categories: 闲谈 
 toc: true

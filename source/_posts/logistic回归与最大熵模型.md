@@ -3,7 +3,6 @@ title: logistic回归与最大熵模型
 date: 2020-08-23 15:16:31
 tags: logistic回归, 最大熵模型, 优化学习
 categories: 统计学习
-#img: https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/thumbnail/logistic.jpeg
 toc: true
 mathjax: true
 ---

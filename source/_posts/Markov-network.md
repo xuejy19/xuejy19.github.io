@@ -4,8 +4,10 @@ date: 2020-07-25 09:20:59
 tags: 无向图
 categories: 统计学习
 toc: true
-mathjax: true
+mathjax: true 
+img: /medias/featureimages/0.jpg
 ---
+
 在这一部分我将介绍另一种常见的概率图模型:马尔可夫网络，或称马尔可夫随机场。接下来分为以下几部分进行组织<!--more-->：
 - 马尔可夫网络
 - 独立性假设
