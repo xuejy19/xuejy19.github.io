@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="artitalk, 风之声">
+    <meta name="keywords" content="transformer_self-attention机制学习, 风之声">
     <meta name="description" content="与孤独为友">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>artitalk | 风之声</title>
+    <title>transformer_self-attention机制学习 | 风之声</title>
     <link rel="icon" type="image/jpeg" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/favicon.jpg">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/awesome/css/all.css">
@@ -322,12 +322,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/5.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/15.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">artitalk</h1>
+                    <h1 class="description center-align post-title">transformer_self-attention机制学习</h1>
                 </div>
             </div>
         </div>
@@ -442,12 +442,25 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/transformer-self-attention%E6%9C%BA%E5%88%B6/">
+                                <span class="chip bg-color">transformer, self-attention机制</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/" class="post-category">
+                                统计学习
+                            </a>
+                        
+                    </div>
                     
                 </div>
             </div>
@@ -456,21 +469,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-09-17
+                    2020-11-13
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2020-09-17
+                    2020-11-13
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    135
+                    242
                 </div>
                 
 
@@ -492,24 +505,12 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p><head>
-  <script src="https://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
-</head><br>  <body>
-      <script>
-        var img = "https://github.com/xuejy19/xuejy19.github.io/blob/source/Img/%E5%A4%B4%E5%83%8F.jpg"; //说说旁边显示的头像
-        var appID = "11ox8JotioQitvDQGT3sIq6T";
-        var appKEY = "vrfkqkuHou88MuRKfF3OeExc";
-        var per = "10"; //每页显示说说的数量
-        var username = "thinking_cat"; //Leancloud中设置的用户名
-        var placeholder1="只有cungudafa才能评论哦"; //在编辑说说的输入框中的占位符 
-        var placeholder2="没有密码，不能评论！";  //在编辑密码的输入框中的占位符
-        var lazy = 1; //是否开启懒加载动画
-        var bgimg = "https://gitee.com/cungudafa/source/raw/master/img/gif/Sitich/Sitich16.gif"; //背景动画
-      </script>
-      <div id="lazy"></div>
-      <div id="artitalk"></div>
-      <script type="text/javascript" src="https://unpkg.com/artitalk"></script>
-  </body></p>
+                <p>基于RNN的网络结构(LSTM,gru等)在nlp领域有着广泛应用，但RNN这样的网络结构使其固有长程梯度消失的问题，对于较长的句子，我们很难寄希望于将输入的序列转化为定长的向量(embedding)而保存所有有效的信息。 为了解决这一由长序列到定长向量转化而造成信息损失的瓶颈，attention机制诞生了。<br><a id="more"></a><br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/transformer.gif" alt="self-attention"> </p>
+<p>上面的<code>gif</code>给出了self-attention机制的直观演示，对于传统的RNN网络，网络结构本身就导致经过Encoder之后的向量中更多包含后面样本的信息，而前面样本的信息被稀释了，而self-attention机制可以无差别的注意到序列中的任意一个单位。 </p>
+<h4 id="Transformer-详解"><a href="#Transformer-详解" class="headerlink" title="Transformer 详解"></a>Transformer 详解</h4><blockquote>
+<p><strong>关于transformer结构的详解请参考这篇博文:</strong><br><a target="_blank" rel="noopener" href="http://jalammar.github.io/illustrated-transformer/">图解transformer</a></p>
+</blockquote>
+<h4 id="实验部分"><a href="#实验部分" class="headerlink" title="实验部分"></a>实验部分</h4><p>后面会补一个实验，先挖坑在这</p>
 
             </div>
             <hr/>
@@ -535,7 +536,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://xuejy19.github.io/timeline/index.html">https://xuejy19.github.io/timeline/index.html</a>
+                    <a href="https://xuejy19.github.io/2020/11/13/transformer-self-attention-ji-zhi-xue-xi/">https://xuejy19.github.io/2020/11/13/transformer-self-attention-ji-zhi-xue-xi/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -572,7 +573,11 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
+                            
+                                <a href="/tags/transformer-self-attention%E6%9C%BA%E5%88%B6/">
+                                    <span class="chip bg-color">transformer, self-attention机制</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -1006,34 +1011,46 @@
                 <i class="far fa-dot-circle"></i>&nbsp;本篇
             </div>
             <div class="card">
-                <a href="/timeline/index.html">
+                <a href="/2020/11/13/transformer-self-attention-ji-zhi-xue-xi/">
                     <div class="card-image">
                         
                         
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/5.jpg" class="responsive-img" alt="artitalk">
+                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/15.jpg" class="responsive-img" alt="transformer_self-attention机制学习">
                         
-                        <span class="card-title">artitalk</span>
+                        <span class="card-title">transformer_self-attention机制学习</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            
+                            基于RNN的网络结构(LSTM,gru等)在nlp领域有着广泛应用，但RNN这样的网络结构使其固有长程梯度消失的问题，对于较长的句子，我们很难寄希望于将输入的序列转化为定长的向量(embedding)而保存所有有效的信息。 为了解决这一由长
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-09-17
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-11-13
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            思考猫
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/" class="post-category">
+                                    统计学习
+                                </a>
+                            
                             
                         </span>
                     </div>
                 </div>
 
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/transformer-self-attention%E6%9C%BA%E5%88%B6/">
+                        <span class="chip bg-color">transformer, self-attention机制</span>
+                    </a>
+                    
+                </div>
                 
             </div>
         </div>
@@ -1041,37 +1058,48 @@
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge right-badge text-color">
-                本篇&nbsp;<i class="far fa-dot-circle"></i>
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/timeline/index.html">
+                <a href="/2020/11/05/mao-xuan-di-yi-juan-du-hou-gan/">
                     <div class="card-image">
                         
                         
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/5.jpg" class="responsive-img" alt="artitalk">
+                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/15.jpg" class="responsive-img" alt="毛选第一卷读后感">
                         
-                        <span class="card-title">artitalk</span>
+                        <span class="card-title">毛选第一卷读后感</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            
+                            在柳州出差的20多天里，我每天回宾馆后会读上半个小时到1个小时毛选第一卷，回学校后又读了几天，昨晚算是正式将这本书给读完了，在阅读的过程中自己还是颇有所得的，现藉此文系统地总结一下这本书的内容并谈一下我个人的心得体会。
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-09-17
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-11-05
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            思考猫
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E7%81%B5%E9%AD%82%E9%9B%95%E7%90%A2/" class="post-category">
+                                    灵魂雕琢
+                                </a>
+                            
                             
                         </span>
                     </div>
                 </div>
-
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E6%AF%9B%E9%80%89%E3%80%81%E8%BE%A9%E8%AF%81%E5%94%AF%E7%89%A9%E4%B8%BB%E4%B9%89/">
+                        <span class="chip bg-color">毛选、辩证唯物主义</span>
+                    </a>
+                    
+                </div>
                 
             </div>
         </div>
@@ -1206,6 +1234,13 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
 
 </main>
 
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
 
 
 
