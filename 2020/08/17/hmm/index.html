@@ -476,7 +476,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2020-09-19
+                    2020-11-15
                 </div>
                 
 
@@ -703,7 +703,7 @@ b_j(k) = \frac{\sum_{t=1}^T P(O,i_t =j|\bar{\lambda})I(o_t = v_k)}{\sum_{t=1}^T 
 </li>
 </ol>
 <h3 id="预测算法"><a href="#预测算法" class="headerlink" title="预测算法"></a>预测算法</h3><p>下面介绍两种隐马尔可夫模型的预测算法：近似算法与维特比算法。</p>
-<h4 id="近似算法"><a href="#近似算法" class="headerlink" title="近似算法"></a>近似算法</h4><p>近似算法的想法是，在每个时刻$t$选择在该时刻最有可能出现的状态$i_t^<em>$,从而<br>得到一个状态序列$I^</em> = (i_1^<em>,i_2^</em>,\dots,i_T^*)$,将该序列作为预测的结果。<br>给定隐马尔可夫模型$\lambda$和观测序列$O$,在时刻$t$处于状态$q_i$的概率<br>$\gamma_t(i)$是：</p>
+<h4 id="近似算法"><a href="#近似算法" class="headerlink" title="近似算法"></a>近似算法</h4><p>近似算法的想法是，在每个时刻$t$选择在该时刻最有可能出现的状态$i_t^*$,从而<br>得到一个状态序列$I^\ast = (i_1^\ast,i_2^\ast,\dots,i_T^\ast)$,将该序列作为预测的结果。<br>给定隐马尔可夫模型$\lambda$和观测序列$O$,在时刻$t$处于状态$q_i$的概率<br>$\gamma_t(i)$是：</p>
 <script type="math/tex; mode=display">
 \gamma_t(i) = \frac{\alpha_t(i)\beta_t(i)}{P(O|\lambda)} = 
  \frac{\alpha_t(i)\beta_t(i)}{\sum_{j=1}^N \alpha_t(j)\beta_t(j)}</script><p>在每一时刻$t$最有可能的状态$i_t^*$是:</p>
