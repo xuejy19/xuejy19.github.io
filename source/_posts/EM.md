@@ -115,18 +115,16 @@ $$
         &= argmax Q(\theta,\theta^i)
     \end{aligned}
 $$
-<div align=center>
 
-![EM](https://raw.githubusercontent.com/xuejy19/Images/master/EM.png)
-</div>
+![EM](https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/EM.png)
 
 图中下方曲线为$B(\theta,\theta^i)$，上方曲线为$L(\theta)$,在$\theta^n$处，两者相等，当对$B(\theta,\theta^n)$进行优化时，似然函数也得到了优化，同样，这种迭代算法只能够保证每次迭代都会使得似然函数增加，但并不能保证为全局最优。
 ### 算法收敛性分析
 该部分只给出一些结论，证明过程略过
 > **定理1**:设$P(Y|\theta)$为观测数据的似然函数，$\theta^i$为EM算法得到的参数估计序列，$P(Y|\theta^i)$为对应的似然函数序列，则$P(Y|\theta_i)$是单调递增的，即：
-    $$    
-    P(Y|\theta^{i+1}) \geq P(Y|\theta^i) 
-    $$
+$$    
+P(Y|\theta^{i+1}) \geq P(Y|\theta^i) 
+$$
 > **定理2**:设$L(\theta) = log P(Y|\theta)$为观测数据的对数似然函数，$\theta^i$为EM算法得到的参数估计序列，$L(\theta^i)$为对应的对数似然函数序列 
 >1. 如果$P(Y|\theta)$有上界,则$L(\theta^i) = log P(Y|\theta^i)$ 收敛到某一值$L^*$
 >2. 在函数$Q(\theta,\theta^{'})$与$L(\theta)$满足一定条件下，由EM算法得到的参数估计序列$
