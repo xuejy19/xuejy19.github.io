@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="线性判别函数, 风之声">
+    <meta name="keywords" content="论牺牲, 风之声">
     <meta name="description" content="与孤独为友">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>线性判别函数 | 风之声</title>
+    <title>论牺牲 | 风之声</title>
     <link rel="icon" type="image/jpeg" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/favicon.jpg">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/awesome/css/all.css">
@@ -322,12 +322,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/6.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/2.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">线性判别函数</h1>
+                    <h1 class="description center-align post-title">论牺牲</h1>
                 </div>
             </div>
         </div>
@@ -444,8 +444,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/%E7%BA%BF%E6%80%A7%E5%88%A4%E5%88%AB-%E6%84%9F%E7%9F%A5%E6%9C%BA/">
-                                <span class="chip bg-color">线性判别,感知机</span>
+                            <a href="/tags/%E6%97%A0%E6%84%9F%E8%80%8C%E5%8F%91/">
+                                <span class="chip bg-color">无感而发</span>
                             </a>
                         
                     </div>
@@ -456,8 +456,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/" class="post-category">
-                                统计学习
+                            <a href="/categories/%E9%97%B2%E8%B0%88/" class="post-category">
+                                闲谈
                             </a>
                         
                     </div>
@@ -469,21 +469,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-08-11
+                    2020-02-22
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2020-11-13
+                    2020-11-19
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.1k
+                    1.5k
                 </div>
                 
 
@@ -505,84 +505,53 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>在这一部分将总结一下关于感知机的一些相关知识点，不过首先我想要介绍下统计学习相关算法的一种分类标准。该部分内容将按照以下几部分进行组织：</p>
+                <p>本篇文章围绕以下问题做个简单讨论:</p>
 <blockquote>
+<p>人应该什么时候拿出牺牲自我的逻辑，什么时候拿出保护自己利益的逻辑？  </p>
+<p>当所处的小团体与包含小团体的大团体利益发生冲突时，此时是否应当牺牲小团体？ </p>
+<h4 id="关于牺牲本身"><a href="#关于牺牲本身" class="headerlink" title="关于牺牲本身"></a>关于牺牲本身</h4><p>既然要讨论这个问题，我们首先要将问题本身定义清楚，为了使得接下来的讨论更加精确，我首先来更加精确地定义以下<strong>牺牲</strong>，其实我们看到的牺牲大致有两种: </p>
 <ul>
-<li>模型分类-生成式模型与判别式模型</li>
-<li>线性判别-感知机</li>
+<li><strong>第一种牺牲</strong>: 对于一个眼光长远的人来说，<strong>短暂的牺牲不过是为了更长远的利益</strong>，因此这种有目的的<strong>牺牲</strong>其实是一种更加隐蔽的<strong>利己</strong>，有时候对自己所谓的牺牲从这个视角来看，会有不一样的收获。</li>
+<li><strong>第二种牺牲</strong>: 这种牺牲是不考虑回报的牺牲，即就牺牲者自己的视角来看，在牺牲行为中，他/她是<strong>为某种东西损失个人利益而不问回报。</strong></li>
 </ul>
 </blockquote>
-<a id="more"></a>
-<h3 id="模型分类-生成式模型与判别模型"><a href="#模型分类-生成式模型与判别模型" class="headerlink" title="模型分类-生成式模型与判别模型"></a>模型分类-生成式模型与判别模型</h3><p>监督学习的任务便是学习一个模型，应用这一模型，对给定的输入$X$预测相应的输出$Y$，该模型一般具有两种形式：</p>
-<ul>
-<li>$Y = f(X)$</li>
-<li>$P = (Y|X)$</li>
-</ul>
-<p>第一种模型我们称为判别模型，是函数形式；后一种我们称为生成模型，为条件概率分布的形式。下面列一个表格来对常见机器学习算法按照该标准进行分类：</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>生成式模型</th>
-<th>判别式模型</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>朴素贝叶斯模型,HMM,GMM</td>
-<td>感知机,SVM,k近邻,AdaBoost</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h3 id="线性判别-感知机"><a href="#线性判别-感知机" class="headerlink" title="线性判别-感知机"></a>线性判别-感知机</h3><p>感知机模型是一种非常简单的判别式模型，该算法出发点有以下几点：</p>
-<ul>
-<li>二分类问题</li>
-<li>假设存在一个超平面，可以将两类样本分开，即要求模型线性可分</li>
-</ul>
-<p>对于一个判别式模型，我们需要解决三个问题：</p>
-<ol>
-<li>明确模型类</li>
-<li>确定准则函数</li>
-<li>利用准则函数，结合数据进行模型学习</li>
-</ol>
-<h4 id="模型类"><a href="#模型类" class="headerlink" title="模型类"></a>模型类</h4><p>首先给出感知机函数定义：</p>
+<p>当然，这两种牺牲有时会导致同样的结局，毕竟人的认知是有差异的，但我在定义这两种牺牲，考虑的更多是<strong>动机</strong>，一种是<strong>以退为进</strong>的牺牲，另一种则是<strong>无保留</strong>的牺牲。对于待讨论的问题，我认为问题中所指的牺牲大概是我所定义的第二种牺牲，那么我们<strong>接下来所讨论的牺牲都是指代第二种牺牲。</strong></p>
+<h4 id="牺牲的对象"><a href="#牺牲的对象" class="headerlink" title="牺牲的对象"></a>牺牲的对象</h4><p>既然要讨论牺牲本身，那么我们首先从<strong>牺牲的对象</strong>来开始讨论，以具体的牺牲的行为来解构抽象的概念<strong>牺牲</strong>本身。<br>以笔者目前的认知水平，牺牲的对象大概可以粗分为三类: </p>
 <blockquote>
-<p>假设输入空间(特征空间)是$\mathcal{X} \subseteq R^n$,输出空间是$\mathcal{Y} = \{-1,+1\}$。输入$x\in \mathcal{X}$表示实例的特征向量，对应于输入空间(特征空间)的点；输出$y \in \mathcal{Y}$表示实例的类别。由输入空间到输出空间的函数可表示为:</p>
-<script type="math/tex; mode=display">
-    f(x) = sign(\omega x+ b)</script></blockquote>
-<p>感知机是一种线性分类模型，属于判别模型。感知机模型的假设空间是定义在特征空间中的所有线性分类模型或线性分类起，即函数集合$\{ f|f(x) = \omega x + b\}$。</p>
-<h4 id="准则函数-损失函数"><a href="#准则函数-损失函数" class="headerlink" title="准则函数(损失函数)"></a>准则函数(损失函数)</h4><p>损失函数的一个自然选择是误分类点个数。但是这样的损失函数不是参数$\omega,b$的连续可导函数，不易优化。损失函数的另一个选择则是误分类点到超平面的总距离，为此先写出输入空间$R^n$中任意一点$x_0$到超平面$S$的距离：</p>
-<script type="math/tex; mode=display">
-    d= \frac{|\omega x_0 +b|}{|| \omega ||}</script><p>其次，对于误分类的数据$(x_i,y_i)$来说:</p>
-<script type="math/tex; mode=display">
-    -y_i(\omega \cdot x_i + b) >0</script><p>因此，误分类点$x_i$到超平面的距离为：</p>
-<script type="math/tex; mode=display">
-    \frac{-y_i(\omega x_i +b)}{|| \omega ||}</script><p>因此，若假设超平面$S$的误分类点集合为$M$,那么所有误分类点到超平面$S$的距离为：</p>
-<script type="math/tex; mode=display">
-    L = -\frac{1}{||\omega||} \sum_{x_i \in M} y_i (\omega x_i + b)</script><p>由此可见，在该目标函数下，若所有样本均被正确分类，则损失函数为0,因此不管是带范数的几何间隔，还是去掉范数的函数间隔，最终都将收敛到0，为计算方便，因此考虑将损失函数中的$||\omega||$去掉，写出目标函数如下：</p>
-<script type="math/tex; mode=display">
-    L(\omega,b) = -\sum_{x_i \in M} y_i (\omega x_i + b)</script><h4 id="优化算法"><a href="#优化算法" class="headerlink" title="优化算法"></a>优化算法</h4><p>在目标函数确定的情况下，对于该问题的优化考虑采用随机梯度下降法(SGD),首先求的目标函数对$\omega, b$的偏导：</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        \nabla_{\omega} L(\omega,b) &= -\sum_{x_i \in M}y_i x_i \\\\
-        \nabla_{b} L(\omega,b) &= -\sum_{x_i \in M} y_i
-    \end{aligned}</script><p>接下来对参数进行更新:</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-         \omega &\leftarrow \omega + \eta y_i x_i  \\\\
-         b &\leftarrow b + \eta y_i
-    \end{aligned}</script><h4 id="感知机算法收敛性"><a href="#感知机算法收敛性" class="headerlink" title="感知机算法收敛性"></a>感知机算法收敛性</h4><p>在该部分将给出定理，但不加证明：</p>
-<blockquote>
-<p>设训练数据集是线性可分的，则：</p>
 <ul>
-<li>存在满足条件$||\omega|| = 1$的超平面将训练数据集完全分开，且存在$\gamma &gt;0$,对所有$i=1,\dots,N$:<script type="math/tex; mode=display">
-  y_i\omega x_i \geq \gamma</script></li>
-<li>令$R = max ||x_i||$,则感知机算法在训练集上的误分类次数$k$满足不等式:<script type="math/tex; mode=display">
-  k \leq (\frac{R}{\gamma})^2</script></li>
+<li>具象的个人，比如亲人和爱人 </li>
+<li>个人身处的团体</li>
+<li>某种理想或价值观念 </li>
 </ul>
 </blockquote>
-<p>需要注意的是，当数据线性不可分时，感知机算法便不会收敛，当训练集线性可分时，感知机算法存在无穷多个解，其解由于不同的初值或者迭代顺序而可能有所不同</p>
+<p>下面就这三种牺牲的对象来进行分别讨论: </p>
+<ul>
+<li><strong>具象的个人</strong>: 对于亲人与爱人，这种牺牲一般是出于对某种关系的妥协，血浓于水，琴瑟和鸣，我们愿意为了维系或加深这种关系而做出个人利益的让步；对于同事或朋友所做出的牺牲也大致是如此，对于个人高度认可，对于两人关系高度认可。</li>
+<li><strong>个人身处的团体</strong>: 我们既然加入这样一个团体，必然个体与团体之间是有着一致性的，对于兴趣社团，这种一致性表现为个人兴趣可以得到更好发展；对于公司，这种一致性表现在个人以劳动换取酬金，以改善客观生活。当我们决定为团体所做牺牲时，这说明个人对团体的认可程度较高，这时可能牺牲的对象就不只是简单的<strong>团体</strong>，其中或多或少包含着对<strong>团体中个人</strong>的情感。 </li>
+<li><strong>理想或价值观念</strong>: 这种牺牲则是出于对理想与价值观念的高度认同。</li>
+</ul>
+<p>需要注意的是，基本上任何组织或团队都是三者耦合而成，会谈优秀的个人、高质量的团队、团队的价值观，而加入团体的人则是形形色色，大家奔着不同的目的(至少权重不同)加入了这样一个群体。 </p>
+<blockquote>
+<p>那么通过上面具体的讨论，我们会发现所谓牺牲的对象，其实本质上都是一种<strong>认可</strong>，对个人关系的认可，对团体的认可，对理想/价值观的认可，这种<strong>认可</strong>会驱使我们在某些情况下做出牺牲。</p>
+</blockquote>
+<h4 id="回到问题本身"><a href="#回到问题本身" class="headerlink" title="回到问题本身"></a>回到问题本身</h4><blockquote>
+<p>Q1：人什么时候应该拿出自我牺牲的逻辑呢？ </p>
+</blockquote>
+<p>下面从两个角度来进行回答: </p>
+<ul>
+<li>主观角度: 从这个角度来说，当对某个人、某个团体认可程度超过自己心中阈值之时，便可做出牺牲，这样的论断是简单的，这样做人也是舒服的。 </li>
+<li>从主客观结合角度: 当人要做出牺牲，总是担心自己<strong>白白牺牲</strong>: <ul>
+<li>帮助了一个朋友，但他/她是个白眼狼；毫无保留爱了一个人，结果受到欺骗。 </li>
+<li>为团体做出了牺牲，但却并未得到认可，甚至团体中人认为你是想出风头。 </li>
+<li>为某种理想、价值观做出牺牲，但万一这种理想、价值观本身就错误呢?<br><strong>从这个角度来考虑，那么我们的牺牲就不但要考虑作为牺牲的主体，同时也需要考虑牺牲的客体，重新认识牺牲客体对于牺牲行为本身的看法，以使自己不白白牺牲。</strong></li>
+</ul>
+</li>
+</ul>
+<p>就我个人而言，对亲人、爱人的个人牺牲，我更倾向于从主观角度进行思考，而对团体的牺牲，我需要从主客观结合的角度来思考，毕竟一个团体中鱼龙混杂，奔着不同目的的人混在了一个团体之中，此时盲目的主观牺牲就会成为”白白牺牲”。</p>
+<blockquote>
+<p>Q2: 当所处的小团体与包含小团体的大团体利益发生冲突时，此时是否应当牺牲小团体？ </p>
+</blockquote>
+<p>这个问题我认为其实是包含在第一个问题之中的，我们在一个团体中时，首先需要明确自己认可的东西是什么，认可的东西是在小团体里面还是一个所谓的大团体之中，此时千万要警惕站在<strong>别人</strong>的角度考虑这样一个问题。</p>
 
             </div>
             <hr/>
@@ -608,7 +577,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://xuejy19.github.io/2020/08/11/xian-xing-pan-bie-han-shu/">https://xuejy19.github.io/2020/08/11/xian-xing-pan-bie-han-shu/</a>
+                    <a href="https://xuejy19.github.io/2020/02/22/lun-xi-sheng/">https://xuejy19.github.io/2020/02/22/lun-xi-sheng/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -646,8 +615,8 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/%E7%BA%BF%E6%80%A7%E5%88%A4%E5%88%AB-%E6%84%9F%E7%9F%A5%E6%9C%BA/">
-                                    <span class="chip bg-color">线性判别,感知机</span>
+                                <a href="/tags/%E6%97%A0%E6%84%9F%E8%80%8C%E5%8F%91/">
+                                    <span class="chip bg-color">无感而发</span>
                                 </a>
                             
                         </div>
@@ -1082,37 +1051,31 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2020/08/12/svm/">
+                <a href="/2020/02/22/you-gan/">
                     <div class="card-image">
                         
                         
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/2.jpg" class="responsive-img" alt="SVM">
+                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/6.jpg" class="responsive-img" alt="有感">
                         
-                        <span class="card-title">SVM</span>
+                        <span class="card-title">有感</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            这部分将介绍支持向量机(SVM)算法，该部分将按照以下几部分进行组织：
-
-算法历史
-线性可分支持向量机与硬间隔最大化
-线性支持向量机与软间隔最大化
-非线性支持向量机与核函数
-SVDD
+                            &emsp;    或许逃避是人的天性，整个博一上学期，似乎整天忙忙碌碌，在若干门课程中来回斡旋，
                         
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-08-12
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-02-22
                         </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/" class="post-category">
-                                    统计学习
+                            <a href="/categories/%E9%97%B2%E8%B0%88/" class="post-category">
+                                    闲谈
                                 </a>
                             
                             
@@ -1122,8 +1085,8 @@ SVDD
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/">
-                        <span class="chip bg-color">支持向量机</span>
+                    <a href="/tags/%E6%97%A0%E6%84%9F%E8%80%8C%E5%8F%91/">
+                        <span class="chip bg-color">无感而发</span>
                     </a>
                     
                 </div>
@@ -1137,31 +1100,31 @@ SVDD
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/07/30/em/">
+                <a href="/2020/02/17/yi-zhong-ju-jia/">
                     <div class="card-image">
                         
                         
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/0.jpg" class="responsive-img" alt="EM">
+                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/3.png" class="responsive-img" alt="疫中居家">
                         
-                        <span class="card-title">EM</span>
+                        <span class="card-title">疫中居家</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            在前面概率密度函数估计中，若概率模型的变量都是可观测变量，那么给定数据，便可以直接用极大似然估计法或者贝叶斯估计法来直接估计模型参数。但是当模型中含有隐变量时，便不能直接使用这些估计方法，EM算法就是含有隐变量的概率模型参数的极大似然
+                            
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-07-30
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-02-17
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/" class="post-category">
-                                    统计学习
+                            <a href="/categories/%E9%97%B2%E8%B0%88/" class="post-category">
+                                    闲谈
                                 </a>
                             
                             
@@ -1171,8 +1134,8 @@ SVDD
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/EM%E7%AE%97%E6%B3%95-%E9%9A%90%E5%8F%98%E9%87%8F-%E9%AB%98%E6%96%AF%E6%B7%B7%E5%90%88%E6%A8%A1%E5%9E%8B/">
-                        <span class="chip bg-color">EM算法,隐变量,高斯混合模型</span>
+                    <a href="/tags/%E7%96%AB%E4%B8%AD%E6%9C%89%E6%84%9F/">
+                        <span class="chip bg-color">疫中有感</span>
                     </a>
                     
                 </div>
@@ -1310,13 +1273,6 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
 
 </main>
 
-
-<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script>
-    MathJax.Hub.Config({
-        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
-    });
-</script>
 
 
 
