@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="聚类算法, 风之声">
+    <meta name="keywords" content="风光摄影, 风之声">
     <meta name="description" content="与孤独为友">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>聚类算法 | 风之声</title>
+    <title>风光摄影 | 风之声</title>
     <link rel="icon" type="image/jpeg" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/favicon.jpg">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/awesome/css/all.css">
@@ -322,12 +322,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/7.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/0.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">聚类算法</h1>
+                    <h1 class="description center-align post-title">风光摄影</h1>
                 </div>
             </div>
         </div>
@@ -444,8 +444,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/kmeans%EF%BC%8C%E5%B1%82%E6%AC%A1%E8%81%9A%E7%B1%BB%EF%BC%8C%E8%B0%B1%E8%81%9A%E7%B1%BB/">
-                                <span class="chip bg-color">kmeans，层次聚类，谱聚类</span>
+                            <a href="/tags/%E9%A3%8E%E5%85%89%E6%91%84%E5%BD%B1/">
+                                <span class="chip bg-color">风光摄影</span>
                             </a>
                         
                     </div>
@@ -456,8 +456,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/" class="post-category">
-                                统计学习
+                            <a href="/categories/%E7%82%B9%E6%BB%B4%E7%94%9F%E6%B4%BB/" class="post-category">
+                                点滴生活
                             </a>
                         
                     </div>
@@ -469,28 +469,28 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-09-21
+                    2020-11-27
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2020-09-30
+                    2020-11-28
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    4.7k
+                    571
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    18 分
+                    1 分
                 </div>
                 
 
@@ -505,231 +505,120 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>聚类是将样本集合中相似的样本(实例)分配到相同的类，不相似的样本分配到不同的类。聚类时，样本通常是欧式空间中的向量，类别不是事先给定，而是从数据中自动发现，但<strong>类别的个数</strong>通常要预先给定。样本之间的相似度或距离由<strong>度量</strong>决定。如果一个样本只能属于一个类，则称为硬聚类；如果一个样本可以属于多个类，则称为软聚类。<br><a id="more"></a><br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/clustering.png" alt="聚类"></p>
-<p>在这一部分主要介绍四种聚类算法:</p>
+                <p>这一篇文章就跟随校风光摄影的大佬来了解一下风光摄影的一些知识，该部分按照以下三部分进行组织: </p>
 <ul>
-<li>$k$均值聚类 </li>
-<li>层次聚类</li>
-<li>谱聚类 </li>
-<li>DBSCAN </li>
+<li>风光摄影拍什么 </li>
+<li>前期工作 </li>
+<li>实用技术 <a id="more"></a>
+</li>
 </ul>
-<h3 id="k-均值聚类"><a href="#k-均值聚类" class="headerlink" title="$k$均值聚类"></a>$k$均值聚类</h3><h4 id="算法思想"><a href="#算法思想" class="headerlink" title="算法思想"></a>算法思想</h4><p>$k$均值聚类的思想非常直观:</p>
-<blockquote>
-<p>如果一团样本分布的足够紧凑，那么就可以认为这些样本属于一类，而一团样本的紧凑程度可以通过这些样本距离该团样本中心的距离和来衡量，距离和越小则说明该团样本越紧凑。</p>
-</blockquote>
-<h4 id="算法推导"><a href="#算法推导" class="headerlink" title="算法推导"></a>算法推导</h4><p>假设对于样本集$\mathcal{X}$, 初始时随机将样本分成$c$类，那么根据$k$均值的算法思想可以定义损失函数为:</p>
-<script type="math/tex; mode=display">
-    J(e) = \sum_{i=1}^c \sum_{y \in \Gamma_i} ||y - m_i||^2</script><p>公式中$m_i$是目前划归第$i$类样本的均值。想要求得使$J(e)$最小的最优样本划分并不容易，是一个NP难的问题，因此在优化时采用贪心策略，通过迭代优化的形式来进行求解。在迭代过程中，每次移动一个样本点来使$J(e)$减小，为此我们需要计算将一个样本点$y$从$\Gamma_i$类转移到$\Gamma_k$类对损失函数的影响，因为损失函数是依类别进行计算然后累加的，不妨将$\Gamma_i$的类的损失记做$J_i$。在将$y$移动之后，$\Gamma_i$和$\Gamma_k$类均发生了变化，均值分别变为:</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        m'_i &= m_i + \frac{m_i - y}{N_i - 1} \\
-        m'_k &= m_k  + \frac{y - m_k}{N_k + 1}
-    \end{aligned}</script><p>据此，可以分别计算出$J’_i$和$J’_k$并用$J_i, J_k$表示:</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        J'_i &= J_i - \frac{N_i}{N_i - 1} ||y - m_i||^2 \\ 
-        J'_k &= J_k + \frac{N_k}{N_k + 1} ||y - m_k||^2 
-    \end{aligned}</script><p>如果$J’_i &gt; J’_k$，就将样本从$i$类移动到$k$类，由此便可以得到$k$均值聚类步骤:</p>
-<blockquote>
-<p><strong>$k$均值:</strong> </p>
+<h3 id="风光摄影拍什么"><a href="#风光摄影拍什么" class="headerlink" title="风光摄影拍什么"></a>风光摄影拍什么</h3><h4 id="校园摄影"><a href="#校园摄影" class="headerlink" title="校园摄影"></a>校园摄影</h4><p>在清华园里可以拍什么景色: </p>
 <ul>
-<li>Step1: 把样本初始划分成$C$类，并计算$J_e$ </li>
-<li>Step2: 选择一个样本$y$，假设$y \in \Gamma_i$ </li>
-<li>Step3: 若$N_i = 1$, 则转Step2 </li>
-<li>Step4: 计算<script type="math/tex; mode=display">
-   \rho_j = \begin{cases}
-       \frac{N_j}{N_j + 1} ||y - m_j||^2 & j \neq i \\
-       \frac{N_i}{N_i - 1} ||y - m_i||^2 & j = i
-   \end{cases}</script></li>
-<li>Step5: 若对$\forall j, \rho_k \leq \rho_j$, 则将$y$从$\Gamma_i$移动到$\Gamma_k$中去。</li>
-<li>Step6: 修正$m_i,m_k$和$J_e$ </li>
-<li>Step2: 若连续迭代$N$次(将样本遍历一遍)不变，则算法终止，否则回到Step2</li>
+<li>四季景观 </li>
+<li>日出月落 </li>
+<li>人文活动 </li>
+<li>校园地标 </li>
 </ul>
-</blockquote>
-<h4 id="算法分析"><a href="#算法分析" class="headerlink" title="算法分析"></a>算法分析</h4><h5 id="算法时间复杂度"><a href="#算法时间复杂度" class="headerlink" title="算法时间复杂度"></a>算法时间复杂度</h5><p>假设算法迭代$t$次后收敛，样本个数为$n$，样本维数为$d$， 类别数目为$k$，则算法时间复杂度为:</p>
-<script type="math/tex; mode=display">
-    O(tndk)</script><h5 id="算法超参数"><a href="#算法超参数" class="headerlink" title="算法超参数"></a>算法超参数</h5><p>算法要求预先制定聚类类别个数$k$</p>
-<h5 id="局部极小"><a href="#局部极小" class="headerlink" title="局部极小"></a>局部极小</h5><p>因为$k$均值算法本质上是贪心算法，因此很有可能陷入局部最优，可以通过更新聚类个数以及不同的初始化来一定程度上减轻局部最优，来获得较好的聚类效果。 </p>
-<h3 id="层次聚类"><a href="#层次聚类" class="headerlink" title="层次聚类"></a>层次聚类</h3><h4 id="算法思想-1"><a href="#算法思想-1" class="headerlink" title="算法思想"></a>算法思想</h4><p>层次聚类首先将各个样本点划分为1类，然后将距离最近的两类进行合并，建立一个新的类，重复这个步骤直到聚类结果满足要求。<br>从定义来看，层次聚类算法是自下而上进行聚类，在应用该聚类算法时需要明确三个问题:</p>
+<h5 id="四季景观"><a href="#四季景观" class="headerlink" title="四季景观"></a>四季景观</h5><ul>
+<li><p>春<br><strong>春$\cdot$樱花友谊林</strong><br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E6%A8%B1%E8%8A%B1%E6%9E%97.png" alt="樱花友谊林"></p>
+</li>
+<li><p>夏<br>晚霞，5月25日前后<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E6%99%9A%E9%9C%9E.png" alt="晚霞"><br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E5%A4%A7%E7%A4%BC%E5%A0%82.png" alt="大礼堂"></p>
+</li>
+<li><p>秋<br>银杏，二校门前,雕塑苑  爬山虎,红叶,工字厅门前<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E9%93%B6%E6%9D%8F.png" alt="银杏"></p>
+</li>
+<li><p>冬<br>清华学堂，水木清华，大礼堂，夜里下雪开闪光灯，情人坡<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E5%86%AC-%E6%B8%85%E5%8D%8E%E5%AD%A6%E5%A0%82.png" alt="清华学堂"><br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E5%86%AC-%E9%97%AA%E5%85%89%E7%81%AF.png" alt="雪花-闪光灯"></p>
+</li>
+</ul>
+<h5 id="日出月落"><a href="#日出月落" class="headerlink" title="日出月落"></a>日出月落</h5><p>晨雾,头一天下过雨<br>拍星轨比较推荐: 西操<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E5%9F%8E%E5%B8%82-%E6%9C%88.png" alt="月"></p>
+<h5 id="人文活动"><a href="#人文活动" class="headerlink" title="人文活动"></a>人文活动</h5><p>文图、猫猫、路牌、校庆期间、高1楼、艺博</p>
+<h4 id="城市摄影"><a href="#城市摄影" class="headerlink" title="城市摄影"></a>城市摄影</h4><p><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E6%97%A7%E9%87%91%E5%B1%B1.png" alt="旧金山"></p>
+<h4 id="旅行摄影"><a href="#旅行摄影" class="headerlink" title="旅行摄影"></a>旅行摄影</h4><p>主要拍地标</p>
+<h4 id="星空摄影"><a href="#星空摄影" class="headerlink" title="星空摄影"></a>星空摄影</h4><p>银河、星轨、流星雨、银河拱桥<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E9%95%BF%E5%9F%8E-%E9%93%B6%E6%B2%B3%E6%8B%B1%E6%A1%A5.png" alt="长城-银河拱桥"></p>
+<h4 id="延时摄影"><a href="#延时摄影" class="headerlink" title="延时摄影"></a>延时摄影</h4><p>加上了时间的维度，比较震撼<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E5%BB%B6%E6%97%B6%E6%91%84%E5%BD%B1.png" alt="延时摄影"></p>
+<h3 id="前期准备"><a href="#前期准备" class="headerlink" title="前期准备"></a>前期准备</h3><h4 id="摄影计划"><a href="#摄影计划" class="headerlink" title="摄影计划"></a>摄影计划</h4><ul>
+<li>挑选样片<br>500px, 图虫<ul>
+<li>寻找灵感 </li>
+<li>同机位复现</li>
+<li>原创性 </li>
+</ul>
+</li>
+<li>查找机位 <ul>
+<li>确认图片位置 </li>
+<li>预估交通时间</li>
+<li>通过EXIF信息确认焦段 </li>
+<li>确认拍摄位置可前往</li>
+</ul>
+</li>
+<li>确认天气 <ul>
+<li>天气预报软件: 彩云天气、墨迹天气 </li>
+<li>Windy: 云图 </li>
+<li>莉景天气 </li>
+<li>plan it(巧摄)</li>
+</ul>
+</li>
+<li>整备器材 </li>
+</ul>
+<h4 id="现场判断与操作"><a href="#现场判断与操作" class="headerlink" title="现场判断与操作"></a>现场判断与操作</h4><ul>
+<li>焦段选择</li>
+<li><p>拍摄方式 </p>
 <ul>
-<li>相似性度量的选择</li>
-<li>合并规则，即如何定义两个类别的相似程度 </li>
-<li>停止条件  </li>
+<li>多帧堆栈 </li>
+<li>全景拼接 <ul>
+<li>拼接接缝 </li>
+<li>使用三脚架</li>
+<li>参数尽量一致</li>
 </ul>
-<p>下面就这三个关键问题进行分析。</p>
-<h4 id="算法详述"><a href="#算法详述" class="headerlink" title="算法详述"></a>算法详述</h4><h5 id="相似性度量"><a href="#相似性度量" class="headerlink" title="相似性度量"></a>相似性度量</h5><p>任何一个聚类算法会面临相似性度量的选择问题，实际中常用的相似性度量有:</p>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E5%85%A8%E6%99%AF%E6%8B%BC%E6%8E%A5.png" alt="全景拼接"></p>
 <ul>
-<li>欧式距离 </li>
-<li>马氏距离 </li>
-<li>测地距离</li>
-<li>…… </li>
+<li>景深合成<br>拍摄出全景深图片</li>
+<li>延时摄影 <ul>
+<li>拍摄间隔</li>
+<li>尽量拍摄长时间，广角</li>
 </ul>
-<p>具体选择什么样的度量来刻画相似度需要根据实际数据样本的分布情况和待解决的问题来确定。 </p>
-<h5 id="合并规则"><a href="#合并规则" class="headerlink" title="合并规则"></a>合并规则</h5><p>合并规则一般是类间距离最小，若记$\Delta(\Gamma_i, \Gamma_j)$为类间距离，$\delta(x,y)$,为$x$和$y$之间的距离，则类间距离一般有以下几种定义:</p>
+</li>
+</ul>
+</li>
+<li><p>如何拍出一张完美的前期 </p>
 <ul>
-<li>最近距离 <script type="math/tex; mode=display">
-  \Delta(\Gamma_i, \Gamma_j) = \min_{y \in \Gamma_i, \tilde{y} \in \Gamma_j} \delta(y, \tilde{y})</script></li>
-<li>最远距离 <script type="math/tex; mode=display">
-  \Delta(\Gamma_i, \Gamma_j) = \max_{y \in \Gamma_i, \tilde{y} \in \Gamma_j} \delta(y, \tilde{y})</script></li>
-<li>均值距离<script type="math/tex; mode=display">
-  \Delta(\Gamma_i, \Gamma_j) = \delta(m_i, m_j)</script></li>
+<li>多拍几张，防止抖动</li>
+<li>通过不同参数，拿到画面的不同部分 </li>
+<li>留下足够多裁剪空间  </li>
 </ul>
-<h5 id="停止条件"><a href="#停止条件" class="headerlink" title="停止条件"></a>停止条件</h5><p>如果不加停止条件，则最终所有样本都会归于一类，停止条件一般有2种选择:</p>
+</li>
+<li><p>超广角镜头 </p>
 <ul>
-<li>类别个数: 当类别个数到达期望值$k$时，便停止合并，聚类结束。 </li>
-<li>类间距离: 当类间距离大于某个值时便停止合并，聚类结束。</li>
+<li>通常指20mm焦段以下镜头</li>
+<li>16-35mm</li>
+<li>透视，近大远小</li>
+<li>引导线构造</li>
+<li>前景、中景、远景</li>
 </ul>
-<h4 id="算法流程"><a href="#算法流程" class="headerlink" title="算法流程"></a>算法流程</h4><p><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/hc.png" alt="聚类树"><br>层次聚类算法流程总结如下: </p>
-<blockquote>
-<p><strong>层次聚类:</strong><br><strong>输入:</strong> $n$个样本组成的样本集合及样本之间的距离<br><strong>输出:</strong> 对样本集合的一个层次化聚类<br><strong>算法流程:</strong></p>
+</li>
+<li><p>HDR-High dynamic range<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/HDR.png" alt="HDR"><br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/HDR%E6%8B%8D%E6%91%84.png" alt="HDR拍摄"></p>
+</li>
+<li><p>前期与后期的关系 </p>
 <ul>
-<li>根据选定的相似性度量方法，计算$n$个样本两两之间的距离$d_{ij}$,得到距离矩阵$D$ </li>
-<li>构造$n$个类，每个类只包含一个样本 </li>
-<li>合并类间距离最小的两个类，构成一个新类，并计算新类与当前各类之间的距离。</li>
-<li>若满足聚类终止条件，则聚类终止，否则返回第3步 </li>
+<li>前期服务于后期 </li>
+<li>后期依赖于前期</li>
 </ul>
-</blockquote>
-<h3 id="谱聚类"><a href="#谱聚类" class="headerlink" title="谱聚类"></a>谱聚类</h3><h4 id="算法思想-2"><a href="#算法思想-2" class="headerlink" title="算法思想"></a>算法思想</h4><p>谱聚类算法是从图论中衍生出的一种算法，后来在聚类问题中得到了广泛的应用。它的主要思想是把所有的数据看做空间中的点，这些点之间可以用边连接起来。距离较远的两个点之间的边权重值较低，而距离较近的两个点之间的边权重值较高，通过对所有数据点组成的图进行切图，让切图后不同的子图间边权重和尽可能的低，而子图内的边权重和尽可能的高，从而达到聚类的目的。</p>
-<p>学习谱聚类算法主要需要理清两个问题:</p>
-<ul>
-<li>无向权重图的相关定义 </li>
-<li>拉普拉斯矩阵</li>
-<li>图的切割任务 </li>
+</li>
 </ul>
-<p>下面就按这个思路来对谱聚类算法进行介绍。 </p>
-<h4 id="无向权重图"><a href="#无向权重图" class="headerlink" title="无向权重图"></a>无向权重图</h4><p>对于我们的样本集$\mathcal{X} \subseteq \mathbb{R}^d$，可以将每一个样本点看作高维空间中的一个点，若将这些点以某种方式连接起来则构成了一个图，如果对于相连的两个节点$x$和$y$，若并不区分$x \rightarrow y$和$y \rightarrow x$，则构成了一个无向图。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/AG.jpg" alt="无向图"></p>
-<p>但对于我们的聚类任务，我们期望距离较近的点它们之间的连接权重大一些，距离较远的样本点之间的权重小一些么，从这样的一个想法出发，我们有以下几种方式来构造相似性图:</p>
-<ul>
-<li>$k$近邻图: 若$v_i$是$v_j$的$k$近邻，则$v_i$和$v_j$之间存在一条边，边上权重设置为1。</li>
-<li>对称$k$近邻图: 若两个点互为$k$近邻，则这两个点之间存在一条边。</li>
-<li>$\epsilon$-近邻图: 任意两个距离小于$\epsilon$的点之间存在一条边 </li>
-<li>全连接图: 相似性大于0的两个点之间均存在一条边，常用高斯核函数来进行相似性度量:<script type="math/tex; mode=display">
-  W_{ij} = S_{ij} = \exp(- \frac{||x_i - x_j||^2}{2 \sigma^2})</script></li>
+<h3 id="晚霞怎么拍"><a href="#晚霞怎么拍" class="headerlink" title="晚霞怎么拍"></a>晚霞怎么拍</h3><ul>
+<li>夏季为晚霞多发的季节 </li>
+<li>地景选择 <ul>
+<li>地面机位</li>
+<li>爬楼 </li>
 </ul>
-<p>下面给出一些符号定义:</p>
-<ul>
-<li>$w_{ij}$： 边权重 </li>
-<li>节点$v_i \in V$的度: $d_i = \sum_{j=1}^n w_{ij}$ </li>
-<li>度矩阵: $D = diag(d_1,d_2, \dots, d_n)$ </li>
-<li>加权邻接矩阵: $W = (w_{ij})_{i,j= 1,\dots,n}$  </li>
+</li>
+<li>逆光环境下的拍摄方法</li>
 </ul>
-<h4 id="拉普拉斯矩阵"><a href="#拉普拉斯矩阵" class="headerlink" title="拉普拉斯矩阵"></a>拉普拉斯矩阵</h4><p>拉普拉斯矩阵的定义非常简单：</p>
-<script type="math/tex; mode=display">
-    L = D - W</script><p>拉普拉斯矩阵具有很多很好的性质: </p>
-<ul>
-<li>拉普拉斯矩阵是对称矩阵，该性质可由$D$和$W$的对称性质得到</li>
-<li>对于任意的向量$f \in \mathbb{R}^n$,有:<script type="math/tex; mode=display">
-  f^T L f = \frac{1}{2} \sum_{i,j=1}^n w_{ij} (f_i - f_j)^2</script></li>
-<li>$L$是半正定矩阵，该性质由上一条性质可以直接得出</li>
+<h3 id="朝阳怎么拍"><a href="#朝阳怎么拍" class="headerlink" title="朝阳怎么拍"></a>朝阳怎么拍</h3><ul>
+<li>选择合适的拍摄点 </li>
+<li>特写/局部/大场景</li>
+<li>鬼影的解决方案 </li>
 </ul>
-<p>另一种常用形式是拉普拉斯矩阵的归一化形式:</p>
-<script type="math/tex; mode=display">
-    L_{rw} = D^{-1} L = I - D^{-1} W</script><p>为了保证$L_{rw}$也是对称形式，常采用另一种形式:</p>
-<script type="math/tex; mode=display">
-    L_{rw} = D^{-\frac{1}{2}} W D^{-\frac{1}{2}}</script><p>这样，$L_{rw}$也具有原始拉普拉斯矩阵的一些好的性质，比如对称性，半正定等性质。</p>
-<h4 id="图的切割任务"><a href="#图的切割任务" class="headerlink" title="图的切割任务"></a>图的切割任务</h4><p>在已经定义好权重无向图的情况下，现在我们考虑这样一个任务: </p>
-<blockquote>
-<p>将已经得到的图进行划分，使得不同点集边的权重较小，而同一点集内的边权重较大。以这种思想来完成聚类任务。 </p>
-</blockquote>
-<p>直接想到的损失函数是如下形式:</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        cut(A_1,A_2,\dots, A_k) &:= \frac{1}{2} \sum_{i=1}^k W(A_i, \bar{A}_i) \\
-        W(A, B) &:= \sum_{i \in A, j \in B} w_{ij}
-    \end{aligned}</script><p>但选择这样形式的损失函数，最后往往是有一类包含非常多的点， 其他类都是单独的点。以聚成两类为例，假设有12个点，若两类各6个点，则最终计算损失函数时，需要将$2<em>6</em>6=72$项求和，若一类11个点，一类1个点，则最终计算时只需要将$2<em>1</em>11=22$项求和，这也是为何选用上述损失函数容易得到单独的点。<br>我们在聚类时，往往期望各个类别的样本点个数比较均衡，因此考虑在损失函数中对样本点较少的类别进行惩罚，由此便可得到两种损失函数定义:</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        RatioCut(A_1, A_2, \dots, A_k) &:= \frac{1}{2} \sum_{i=1}^k \frac{W(A_i, \bar{A}_i)}{|A_i|} = \sum_{i=1}^k \frac{cut(A_i, \bar{A}_i)}{|A_i|} \\
-        Ncut(A_1,A_2, \dots, A_k) &:= \frac{1}{2} \sum_{i=1}^k \frac{W(A_i, \bar{A}_i)}{Vol(A_i)} = \sum_{i=1}^k \frac{cut(A_i, \bar{A}_i)}{Vol(A_i)}
-    \end{aligned}</script><p>其中$|A_i|$表示集合$A_i$中的元素个数，$vol(A_i)$表示集合$A_i$中元素度的总和。 </p>
-<h5 id="RatioCut-切图"><a href="#RatioCut-切图" class="headerlink" title="$RatioCut$切图"></a>$RatioCut$切图</h5><p>若以Ratiocut作为目标函数，则优化问题可以写做:</p>
-<script type="math/tex; mode=display">
-    \min_{A_1, A_2, \dots, A_k} RatioCut(A_1,A_2,\dots, A_k)</script><p>这个问题是很难直接求解的，因此牛人们考虑通过另一种方式来对$RatioCut$进行表示，我们引入指示向量$h_j = \{  h_1, h_2, \dots, h_k\}, j = 1,2, \dots, k$,对于任意一个向量$h_j$,它是一个$n$维向量，我们定义$h_{ji}$为:</p>
-<script type="math/tex; mode=display">
-    h_{ji} = \begin{cases}
-        0 & v_i \notin A_j \\
-        \frac{1}{\sqrt{|A_j|}} & v_i \in A_j 
-    \end{cases}</script><p>那么我们对于$h_i^T L h_i$, 有: </p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        h_i^T L h_i &= \frac{1}{2} \sum_{j=1}^n \sum_{k=1}^n w_{jk}(h_{ij} - h_{ik})^2 \\
-        &= \frac{1}{2} [\sum_{j \in A_i, k \notin A_i} w_{jk} (\frac{1}{\sqrt{|A_i|}} - 0)^2 + \sum_{j \notin A_i, k \in A_i} w_{jk} (0 - \frac{1}{\sqrt{|A_i|}})^2] \\
-        &= \frac{1}{2} [\sum_{j \in A_i, k \notin A_i} w_{jk} \frac{1}{|A_i|} + \sum_{j \notin A_i, k \in A_i} w_{jk} \frac{1}{|A_i|}] \\ 
-        &= \frac{1}{2} (cut(A_i, \bar{A}_i) \frac{1}{|A_i|} + cut(\bar{A}_i, A_i)\frac{1}{|A_i|} ] \\
-        &= RatioCut(A_i, \bar{A}_i) 
-    \end{aligned}</script><p>因此若以$RatioCut$作为目标函数，则可以表示为:</p>
-<script type="math/tex; mode=display">
-    RationCut(A_1,A_2, \dots, A_k) = \sum_{i=1}^k h_i^T L h_i = trace(H^T L H)</script><p>其中:</p>
-<script type="math/tex; mode=display">
-    H = [h_1, h_2, \dots, h_k]</script><p>因此我们如果要最小化$RatioCut$切图可以近似等价于优化如下问题:</p>
-<script type="math/tex; mode=display">
-    \arg \min_{H} tr(H^T L H)  \quad s.t. H^TH = I，     h_{ji} = \begin{cases}
-        0 & v_i \notin A_j \\
-        \frac{1}{\sqrt{|A_j|}} & v_i \in A_j 
-    \end{cases}</script><p>但因为在上面推导过程中我们对矩阵$H$的形式做了限制，这是一个离散优化问题，找到满足优化目标的$H$矩阵是一个NP难的问题，因此我们考虑将离散约束放松，求解近似问题:</p>
-<script type="math/tex; mode=display">
-    \arg \min_{H} tr(H^T L H)  \quad s.t. H^TH = I</script><p>该优化问题其实就是一个瑞丽熵优化问题，如果要聚成$k$类，只需要取矩阵$L$的前$k$小的特征值所对应的特征向量即可。同时注意到$L$矩阵有着很好的性质:</p>
-<blockquote>
-<p>拉普拉斯矩阵的的最小特征值为0，特征值0的重数等于图$G$连通分量$A_1, \dots, A_k$的个数，且相应的特征空间可由$\mathbf{1_{A_1}}, \dots, \mathbf{1_{A_k}}$张成，其中$\mathbf{1_{A_i}}$中与$A_i$相对应的分量为1，其余分量为0。<br><strong>证明:</strong>  特征值0所对应的特征向量$f$应当满足:</p>
-<script type="math/tex; mode=display">
-    0 = f^T L f = \frac{1}{2} \sum_{i,j=1}^n w_{ij} (f_i - f_j)^2</script><p>也就是说对于$w_{ij} \neq 0$(两点之间连通)的情况，应当有$f_i = f_j$。</p>
-</blockquote>
-<p>而该特征向量刚好与上面最小割优化问题中$h_i$的要求相吻合，但因为我们根据相似性度量所构造的图可能是一个全连接图或者连通分量的个数与我们的聚类个数并不相等，则最终得到的$H_{n \times k}$很可能是如下的形式(以$n=5,k=3$为例,未对特征向量做归一化):</p>
-<script type="math/tex; mode=display">
-    H = \begin{bmatrix}
-        0.95 & 0.01 & 0.01 \\
-        0.96 & 0.01 & 0.01 \\ 
-        0.01 & 0.95 & 0.01 \\
-        0.01 & 0.95 & 0.01 \\
-        0.01 & 0.01 & 0.95  
-    \end{bmatrix}</script><p>因此在在降维之后，往往会对图分割向量$h_i$再做一次k-means聚类。若选用$NCut$作为优化目标，则最终可以推导出等价于优化如下问题:</p>
-<script type="math/tex; mode=display">
-    \arg \min_{F} tr(F^T D^{-\frac{1}{2}} L D^{-\frac{1}{2}} F) \quad s.t. F^TF  =I</script><p>所以最终只需要取归一化对称拉普拉斯矩阵的前$k$小的特征值所对应的特征向量组成$F_{n \times k}$，然后再使用k-means算法进行一次聚类就可以。</p>
-<h4 id="谱聚类算法流程总结"><a href="#谱聚类算法流程总结" class="headerlink" title="谱聚类算法流程总结"></a>谱聚类算法流程总结</h4><p>下面给出谱聚类算法流程:</p>
-<blockquote>
-<p><strong>谱聚类算法:</strong><br><strong>输入:</strong> 样本集$D = (x_1, x_2, \dots, x_n)$,相似矩阵生成方式，聚类类别$k$，输入聚类方法<br><strong>输出:</strong> 簇划分$C = (A_1, A_2, \dots, A_k)$<br><strong>步骤:</strong> </p>
-<ul>
-<li>根据输入的相似矩阵生成方式构建样本的相似矩阵$S$ </li>
-<li>根据相似矩阵$S$构建邻接矩阵$W$和度矩阵$D$ </li>
-<li>计算拉普拉斯矩阵$L = D - W$或归一化拉普拉斯矩阵$L_{rw} = D^{-\frac{1}{2}} L D^{-\frac{1}{2}}$ </li>
-<li>计算(归一化)拉普拉斯矩阵最小的$k$个特征值所对应的特征向量 </li>
-<li>利用$k$个特征向量构成矩阵$F_{n\times k}$</li>
-<li>每一行原始样本在$k$维空间的投影点，利用输入聚类方法(常用k-means)进行聚类 </li>
-<li>得到簇划分$C = (A_1, A_2, \dots, A_k)$ </li>
-</ul>
-</blockquote>
-<h3 id="DBSCAN"><a href="#DBSCAN" class="headerlink" title="DBSCAN"></a>DBSCAN</h3><p>前面介绍的几种聚类算法可以归为“基于距离的聚类”，即在某种距离度量下，距离较近的点划归一类。但对于某些数据，使用基于距离的聚类方法可能并不理想，比如下图:<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/dbscan.png" alt="数据点"><br>我们人眼直觉上会将外圈(蓝色样本点)划分为一类，将内圈(红色样本点)划分为一类，我们会有这样的直觉是因为外圈和内圈的样本点是分别连续的，为了让计算机能够实现这种情况下样本的聚类，基于密度的聚类算法便诞生了。<br>密度聚类算法假设聚类结构能够通过样本分布的紧密程度确定。通常情形下，密度聚类算法从样本密度的角度来考察样本之间的可连接性，并基于可连接样本不断扩展聚类簇以获得最终的聚类结果。<br><strong>DBSCAN</strong>是一种著名的密度聚类算法，它基于一组邻域参数($\epsilon, Minpts$)来刻画样本分布的紧密程度，给定数据集$D = (x_1, x_2, \dots, x_n)$, 定义下面几个概念:</p>
-<ul>
-<li>$\epsilon$-邻域: 对$x_j \in D$,其$\epsilon$-邻域中包含样本集$D$中与$x_j$的距离不大于$\epsilon$的样本，即:<script type="math/tex; mode=display">
-  N_\epsilon(x_j) = \{ x_i \in D | dist(x_i, x_j) \leq \epsilon \}</script></li>
-<li>核心对象: 若$x_j$的$\epsilon$-邻域中至少包含$MinPts$个样本，即$|N_\epsilon(x_j)| \geq MinPts$, 则$x_j$是一个核心对象。</li>
-<li>密度直达: 若$x_j$位于$x_i$的$\epsilon$邻域中，且$x_i$是核心对象，则称$x_j$由$x_i$密度直达。</li>
-<li>密度可达: 对$x_i$与$x_j$，若存在样本序列$p_1,p_2,\dots, p_n$，其中$p_1 = x_i, p_n = x_j$,且$p_{i+1}$由$p_i$密度直达，则称$x_j$由$x_i$密度可达。 </li>
-<li>密度相连: 对$x_i$与$x_j$,若存在$x_k$使得$x_i$与$x_j$均由$x_k$密度可达，则称$x_i$与$x_j$密度相连。</li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/Minpts.png" alt="邻域概念"></p>
-<p>基于这些概念，DBSCAN将“簇”定义为:</p>
-<blockquote>
-<p>由密度可达关系导出的最大的密度相连样本集合，形式化地说，给定邻域参数$(\epsilon, Minpts)$,簇$C \subseteq D$是满足以下性质的非空样本子集:</p>
-<ul>
-<li>连接性: $x_i \in C, x_j \in C \Rightarrow$ $x_i$与$x_j$密度相连</li>
-<li>最大性: $x_i \in C$, $x_j$由$x_i$密度可达 $\Rightarrow x_j \in C$ </li>
-</ul>
-</blockquote>
-<p>在给出了聚类簇的定义后，我们需要解决的问题便是如何从数据集$D$中找出满足以上性质的聚类簇。实际上，若$x$为核心对象，则$x$密度可达的所有样本组成的集合记为$X = \{ x’ \in D | x’由 x 密度可达 \}$,容易证明$X$即为满足连接性与最大性的簇。</p>
-<p>于是，<strong>DBSCAN</strong>算法先任选数据集中的一个核心对象作为“种子”，再由此出发确定相应的聚类簇，算法流程如下:</p>
-<blockquote>
-<p><strong>DBSCAN算法</strong><br><strong>输入:</strong> 样本集$D = (x_1,\dots,x_n)$,邻域参数$(\epsilon, MinPts)$<br><strong>输出:</strong> 簇划分$C = (A_1, A_2, \dots, A_k)$<br><strong>算法流程:</strong></p>
-<ul>
-<li>初始化核心对象集合$\Omega = \varnothing$ </li>
-<li>遍历所有样本点，将所有核心对象放入集合$\Omega$ </li>
-<li>初始化聚类簇数$k=0$, 初始化未访问样本集合$\Gamma = D$ </li>
-<li>随机从$\Omega$中取一个核心对象，然后基于该核心对象得到聚类簇$C_k$,更新:<script type="math/tex; mode=display">
-  \Omega = \Omega \backslash C_k, \Gamma = \Gamma \backslash C_k</script></li>
-<li>重复以上步骤直到$\Omega$为空</li>
-</ul>
-</blockquote>
-<p>但需要注意的是，采用$DBSCAN$聚类方法，如果邻域参数$(\epsilon, MinPts)$选择不恰当会导致一些样本点不会被归到任何类别。</p>
 
             </div>
             <hr/>
@@ -755,7 +644,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://xuejy19.github.io/2020/09/21/ju-lei-suan-fa/">https://xuejy19.github.io/2020/09/21/ju-lei-suan-fa/</a>
+                    <a href="https://xuejy19.github.io/2020/11/27/feng-guang-she-ying/">https://xuejy19.github.io/2020/11/27/feng-guang-she-ying/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -793,8 +682,8 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/kmeans%EF%BC%8C%E5%B1%82%E6%AC%A1%E8%81%9A%E7%B1%BB%EF%BC%8C%E8%B0%B1%E8%81%9A%E7%B1%BB/">
-                                    <span class="chip bg-color">kmeans，层次聚类，谱聚类</span>
+                                <a href="/tags/%E9%A3%8E%E5%85%89%E6%91%84%E5%BD%B1/">
+                                    <span class="chip bg-color">风光摄影</span>
                                 </a>
                             
                         </div>
@@ -1225,29 +1114,88 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2020/09/25/zhi-shi-guang/">
+                <a href="/2020/11/27/feng-guang-she-ying/">
                     <div class="card-image">
                         
                         
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/7.jpg" class="responsive-img" alt="致时光">
+                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/0.jpg" class="responsive-img" alt="风光摄影">
                         
-                        <span class="card-title">致时光</span>
+                        <span class="card-title">风光摄影</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            我很久之前就想写这一篇文章了，但或是感触未深，或是时光未老，迟迟不知如何落笔。今天是2020年9月25月，我的人生的第24个年头已经悄然逝去过半；上个月我姐生下了小宝宝安宁，我也正式升格为舅舅；明天我大哥也就要结婚了，我们这一辈已经开始慢慢
+                            这一篇文章就跟随校风光摄影的大佬来了解一下风光摄影的一些知识，该部分按照以下三部分进行组织: 
+
+风光摄影拍什么 
+前期工作 
+实用技术
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-09-25
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-11-27
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E7%82%B9%E6%BB%B4%E7%94%9F%E6%B4%BB/" class="post-category">
+                                    点滴生活
+                                </a>
+                            
+                            
                         </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E9%A3%8E%E5%85%89%E6%91%84%E5%BD%B1/">
+                        <span class="chip bg-color">风光摄影</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/11/19/lun-xi-sheng/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/2.jpg" class="responsive-img" alt="论牺牲">
+                        
+                        <span class="card-title">论牺牲</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            本篇文章围绕以下问题做个简单讨论:
+
+人应该什么时候拿出牺牲自我的逻辑，什么时候拿出保护自己利益的逻辑？  
+当所处的小团体与包含小团体的大团体利益发生冲突时，此时是否应当牺牲小团体？ 
+
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-11-19
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -1263,57 +1211,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E6%97%B6%E5%85%89%EF%BC%8C%E5%B2%81%E6%9C%88%EF%BC%8C%E4%BA%BA%E7%94%9F/">
-                        <span class="chip bg-color">时光，岁月，人生</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2020/09/21/jiang-wei-suan-fa/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/5.jpg" class="responsive-img" alt="降维算法">
-                        
-                        <span class="card-title">降维算法</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            降维是将训练数据中的样本(实例)从高维空间转换到低维空间。假设样本原本存在于低维空间，或者近似地存在于低维空间，通过降维则可以更好地表示样本数据的结构，即更好地表示样本之间的关系。高维空间通常是高维的欧式空间，而低维空间则是低维的欧式空间或
-                        
-                    </div>
-                    <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-09-21
-                            </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/" class="post-category">
-                                    统计学习
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/PCA-ISOMAP-MDS-LLE/">
-                        <span class="chip bg-color">PCA, ISOMAP, MDS, LLE</span>
+                    <a href="/tags/%E6%97%A0%E6%84%9F%E8%80%8C%E5%8F%91/">
+                        <span class="chip bg-color">无感而发</span>
                     </a>
                     
                 </div>
