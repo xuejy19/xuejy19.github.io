@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="贝叶斯网络, 风之声">
+    <meta name="keywords" content="毛选第四卷选读, 风之声">
     <meta name="description" content="与孤独为友">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>贝叶斯网络 | 风之声</title>
+    <title>毛选第四卷选读 | 风之声</title>
     <link rel="icon" type="image/jpeg" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/favicon.jpg">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/awesome/css/all.css">
@@ -322,12 +322,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/7.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/4.png')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">贝叶斯网络</h1>
+                    <h1 class="description center-align post-title">毛选第四卷选读</h1>
                 </div>
             </div>
         </div>
@@ -444,8 +444,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B%EF%BC%8C%E6%9C%89%E5%90%91%E5%9B%BE/">
-                                <span class="chip bg-color">概率图模型，有向图</span>
+                            <a href="/tags/%E6%AF%9B%E9%80%89%EF%BC%8C%E5%8E%86%E5%8F%B2%EF%BC%8C%E5%93%B2%E5%AD%A6/">
+                                <span class="chip bg-color">毛选，历史，哲学</span>
                             </a>
                         
                     </div>
@@ -456,8 +456,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/" class="post-category">
-                                统计学习
+                            <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" class="post-category">
+                                读书笔记
                             </a>
                         
                     </div>
@@ -469,28 +469,28 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-07-24
+                    2020-11-30
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2020-11-13
+                    2020-12-07
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.2k
+                    0
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    8 分
+                    1 分
                 </div>
                 
 
@@ -505,106 +505,7 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>在该部分对贝叶斯网络进行介绍，按照递进关系总结以下知识点：<a id="more"></a></p>
-<ul>
-<li>条件独立性</li>
-<li>条件参数化</li>
-<li>朴素贝叶斯模型</li>
-<li><strong>贝叶斯网络</strong></li>
-</ul>
-<hr>
-<h3 id="问题来源"><a href="#问题来源" class="headerlink" title="问题来源"></a>问题来源</h3><p>首先探讨下为什么我们需要利用变量之间的条件独立性性质，假设我们要描述的对象为$n$个二值变量：$X_1,\dots,X_n$,这些变量的联合分布为$P$,那么我们需要$\bf{2^n - 1}$个参数来描述联合分布$P$，所需参数量是$O(2^n)$级别，我们便考虑能否利用变量之间的某种性质使得$P$可以用更少的参数来描述，由此便引出了变量之间的独立性性质。</p>
-<h3 id="独立性"><a href="#独立性" class="headerlink" title="独立性"></a>独立性</h3><p>下面给出一些独立性等价的定义:</p>
-<blockquote>
-<ul>
-<li>若$P(X = x|Y = y) = P(X=x)$对于任意的$x,y$均成立 $\Rightarrow$ 变量$X$与$Y$相互独立 </li>
-<li>若$P(X,Y) = P(X|Y)P(Y) = P(X)P(Y)$ $\Rightarrow$ 变量$X$与$Y$相互独立 </li>
-</ul>
-</blockquote>
-<p>若问题来源中的$n$个变量相互独立，则联合分布:</p>
-<script type="math/tex; mode=display">
-    P(X_1,X_2,\dots,X_n) = P(X_1) P(X_2) \dots P(X_n)</script><p>此时仅需$O(n)$个变量来对联合分布进行描述，参数花销大大减少，但在实际中，独立性是一个非常强的假设，往往不能够得到满足，由此便引出了条件独立性性质。</p>
-<h3 id="条件独立性"><a href="#条件独立性" class="headerlink" title="条件独立性"></a>条件独立性</h3><blockquote>
-<p>定义： 两个变量$X$和$Y$关于变量$Z$是条件独立的 $\Leftrightarrow$ 对于$\forall x,y,z$,$P(X = x|Y = y, Z = z) = P(X = x|Z = z)$ $\Leftrightarrow$ $P(X = x,Y = y|Z = z) = P(X = x|Z = z) \cdot P(Y=y|Z= z)$</p>
-</blockquote>
-<p>这里需要特别说明的是条件独立性并不能推出独立性，独立性也并不能推出条件独立性，下面给出两个反例：</p>
-<ul>
-<li>独立性 $\nRightarrow$ 条件独立性: 有两枚正反概率均为$50\%$的硬币,设事件A为第一枚硬币为正面，事件B为第二枚硬币为正面，事件C为两枚硬币同面，若不考虑事件C，事件A与事件B显然独立;但若事件C已经发生，则此时A与B便不再独立，即A与B关于C不条件独立。</li>
-<li>条件独立性 $\nRightarrow$ 独立性: 有两枚硬币，一枚正面概率为$90\%$,另一枚反面概率为$90\%$,随机拿出一枚抛掷硬币两次, 事件A表示第一次为正面，事件B表示第二次为正面，事件C表示选择的是第一枚硬币，则抛开事件C，事件A与事件B并不独立($0.5 = P(B) \neq P(B|A) = 0.9802$),但若事件C发生，则相当于进行了两次独立重复实验，此时事件A与事件B独立。</li>
-</ul>
-<p>条件独立性符号表示：</p>
-<ul>
-<li>$Ind(X;Y|Z)$ or $(X \perp Y|Z)$</li>
-</ul>
-<h3 id="条件参数化"><a href="#条件参数化" class="headerlink" title="条件参数化"></a>条件参数化</h3><p>在了解了变量条件独立性后，下面以一个例子分析如何利用变量之间的条件独立性性质来减少描述联合分布所需的参数。</p>
-<div align=center>
-
-![栗子](https://raw.githubusercontent.com/xuejy19/Images/master/Ind.png)
-</div>
-
-<p>图中大写字母均代表随机变量，含义如下：</p>
-<ul>
-<li>$D:$课程难度，$Val(D) = \{d^0, d^1\}$</li>
-<li>$I:$智力，$Val(I) = \{i^0,i^1\}$</li>
-<li>$S:$SAT分数，$Val(S) = \{s^0,s^1\}$</li>
-<li>$G:$课程成绩，$Val(G) = \{g^0,g^1, g^2\}$</li>
-<li>$L:$推荐信，$Val(L) = \{l^0,l^1\}$</li>
-</ul>
-<p>假设$G$和$S$关于$I$条件独立，下面我们分析两种情况的条件参数化</p>
-<p>首先以$I$和$S$两个变量为例，我们既可以通过联合分布$P(I,S)$来进行描述，也可以通过$P(I)$和$P(S|I)$进行描述，两种描述均是三个独立参数，如下图所示。<br><img src="https://raw.githubusercontent.com/xuejy19/Images/master/eg2.png" alt=""></p>
-<p>接下来分析$I、D、G$三个变量的条件参数化，其中$I$与$D$相互独立，下面分析两种表示方法所需的参数个数：</p>
-<ul>
-<li>联合分布: $P(I,D,G)$,所需参数个数为$2 \times 2 \times 3 - 1=11$</li>
-<li>利用独立性条件: $P(I,D,G) = P(I)P(D)P(G|I,D)$,所需独立参数为$1+1+2\times 2 \times (3-1) =10 $<br>$\Rightarrow$ <strong>利用独立性可以减少表示联合分布所需的参数个数</strong></li>
-</ul>
-<h3 id="朴素贝叶斯模型"><a href="#朴素贝叶斯模型" class="headerlink" title="朴素贝叶斯模型"></a>朴素贝叶斯模型</h3><p>在这一部分对朴素贝叶斯模型做简要介绍，首先我们有两组变量：</p>
-<ul>
-<li>$C$:类别变量，$C = \{c_1,\dots, c_k\}$</li>
-<li>观测变量：$X_1,X_2,\dots, X_d$</li>
-</ul>
-<p>在朴素贝叶斯模型中，我们的目标便是利用观测变量来对类别进行预测/推理。所有这些变量其实可以看做一个联合概率分布$P(C,X_1,\dots,X_d)$,然而该概率分布很难计算，所需的参数量是指数级别，因此在朴素贝叶斯模型中有一个很强的假设：</p>
-<blockquote>
-<p>观测变量彼此之间关于类别变量$C$是相互独立的，据此联合概率分布便很容易计算：</p>
-<script type="math/tex; mode=display">P(C,X_1,\dots,X_d) = P(X_1,\dots,X_d|C) P(C) = P(X_1|C)\dots P(X_d|C) P(C)</script></blockquote>
-<p>这是一个很强的假设，在真实世界中往往不能满足，同时因为没有充分利用变量之间的相关性性质，也造成了计算上的浪费。</p>
-<h3 id="贝叶斯网络"><a href="#贝叶斯网络" class="headerlink" title="贝叶斯网络"></a>贝叶斯网络</h3><blockquote>
-<p>贝叶斯网路定义：贝叶斯网络，又称信念网络，是一种概率图模型，记做$(G,P)$,借由有向无环图表示一组随机变量及它们之间的条件概率分布。</p>
-</blockquote>
-<p>贝叶斯网络是一种以有向无环图方式对独立性假设进行编码的手段，在贝叶斯网络中，任意变量与它的非后代变量对于其父节点变量是条件独立的：</p>
-<script type="math/tex; mode=display">
-    (X_i \perp Nondesc(X_i)|Pa(X_i))</script><p><strong>独立性映射(I-Maps):</strong> 记$P$为一组变量$\mathbf{X}$的联合概率分布，$I(P)$为表征$P$中独立性的集合</p>
-<blockquote>
-<p>定义：$G$为贝叶斯网路，若$I(G) \subset I(P)$,则称$G$为$P$的一个独立映射</p>
-<p>分解定理：若$G$是$P$的独立映射 $\Leftrightarrow$ $P(X_1,\dots,X_d) = \prod \limits_{i=1}^d P(X_i|Pa(X_i))$,通过该分解定理可以将全局的概率分布用局部的条件概率来表示</p>
-</blockquote>
-<p>下面分析下与联合概率分布相比，贝叶斯网络所需参数,以$n$个二值变量为例：</p>
-<ul>
-<li>联合概率分布：$2^n$</li>
-<li>贝叶斯网络(限制各个节点入度为$k$):$n2^k$</li>
-</ul>
-<h3 id="d-Separation-有向分离"><a href="#d-Separation-有向分离" class="headerlink" title="d-Separation(有向分离)"></a>d-Separation(有向分离)</h3><p>在前面我们已经讨论了贝叶斯网络$G$编码了局部独立性假设，现在我们希望能够了解$G$是否还编码了其他独立性假设，因此我们需要一个方法来挖掘出$G$中所有的独立性假设<br>$\Rightarrow$ <strong>d-Separation</strong><br>下面分别讨论不分离两种情况：</p>
-<ul>
-<li>不分离<ul>
-<li>两个节点直接相连：此时不存在一个节点使得这两个节点关于该节点条件独立<br>$e.g. X \rightarrow Y$</li>
-<li>两个节点间接相连：head2tail,head2head,tail2tail</li>
-<li>一般情况：对于图$G$中的路径$X_1 \leftrightarrow \dots \leftrightarrow X_n$关于节点集合$E$是激活的如果<ul>
-<li>对于每个V状结构$X_{i-1} \rightarrow X_i \leftarrow X_{i+1},X_i$或者其后代<br>在集合$E$中</li>
-<li>路径上的点不在集合$E$中</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>分离：在贝叶斯网络$G$中，$X$和$Y$在给定$Z$条件下是d分离的$d-sep_G(X;Y|Z)$,如果<strong>不存在</strong>从集合$X$到$Y$的激活路径</li>
-</ul>
-<p>由此可以通过d分离来找到贝叶斯网络中所有独立性关系：</p>
-<script type="math/tex; mode=display">
-    I(G) = \{ (\mathbf{X \perp Y |Z}): d-sep_G(\mathbf{X;Y|Z})\}</script><p>简单总结而言，如果两个节点之间的路径被阻隔，则需要满足以下两个条件其一：</p>
-<ul>
-<li>若存在V形结构，则冲撞点及其后代不能出现在条件集中</li>
-<li>有路径中的点(非碰撞点)出现在条件集合中</li>
-</ul>
-<h3 id="Forward-VS-Backward"><a href="#Forward-VS-Backward" class="headerlink" title="Forward VS Backward"></a>Forward VS Backward</h3><p>直观上感觉，贝叶斯网络的反向过程(给出结果，推理原因)要比前向过程困难不少，这是因为子节点会激活其父母之间的路径，而这种相关性会进一步向上传播。<br><strong>最小独立映射</strong>：对于一个图$G$和一个分布$P$，我们在图中哪怕仅仅去掉一个边都会导致$G$不再是$P$的一个独立映射，则称$G$是最小独立映射。<br><strong>最佳映射</strong>：对于一个图$G$和一个分布$P$，若有$I(P) = I(G)$，则称图$G$是$P$的一个最佳映射</p>
-
+                
             </div>
             <hr/>
 
@@ -629,7 +530,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://xuejy19.github.io/2020/07/24/bayes-network/">https://xuejy19.github.io/2020/07/24/bayes-network/</a>
+                    <a href="https://xuejy19.github.io/2020/11/30/mao-xuan-di-si-juan-xuan-du/">https://xuejy19.github.io/2020/11/30/mao-xuan-di-si-juan-xuan-du/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -667,8 +568,8 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B%EF%BC%8C%E6%9C%89%E5%90%91%E5%9B%BE/">
-                                    <span class="chip bg-color">概率图模型，有向图</span>
+                                <a href="/tags/%E6%AF%9B%E9%80%89%EF%BC%8C%E5%8E%86%E5%8F%B2%EF%BC%8C%E5%93%B2%E5%AD%A6/">
+                                    <span class="chip bg-color">毛选，历史，哲学</span>
                                 </a>
                             
                         </div>
@@ -1099,45 +1000,48 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2020/07/25/markov-network/">
+                <a href="/2020/11/30/mao-xuan-di-si-juan-xuan-du/">
                     <div class="card-image">
                         
-                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="马尔可夫网络">
                         
-                        <span class="card-title">马尔可夫网络</span>
+                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/4.png" class="responsive-img" alt="毛选第四卷选读">
+                        
+                        <span class="card-title">毛选第四卷选读</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            在这一部分我将介绍另一种常见的概率图模型:马尔可夫网络，或称马尔可夫随机场。接下来分为以下几部分进行组织
+                            
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-07-25
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-11-30
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/" class="post-category">
-                                    统计学习
+                            <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    读书笔记
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E6%97%A0%E5%90%91%E5%9B%BE/">
-                        <span class="chip bg-color">无向图</span>
+                    <a href="/tags/%E6%AF%9B%E9%80%89%EF%BC%8C%E5%8E%86%E5%8F%B2%EF%BC%8C%E5%93%B2%E5%AD%A6/">
+                        <span class="chip bg-color">毛选，历史，哲学</span>
                     </a>
                     
                 </div>
@@ -1151,41 +1055,48 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/07/23/bayes/">
+                <a href="/2020/11/30/she-hui-xue-de-xiang-xiang-li/">
                     <div class="card-image">
                         
                         
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/6.jpg" class="responsive-img" alt="贝叶斯理论">
+                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/5.jpg" class="responsive-img" alt="社会学的想象力">
                         
-                        <span class="card-title">贝叶斯理论</span>
+                        <span class="card-title">社会学的想象力</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            
-该部分按照以下层次进行组织：
+                            为了适当打破一下自己固化的圈子，也为了读一本新书，自己鬼使神差般报名了乐学组织的读书打卡活动，我所选读的书是:
 
+社会学的想象力 
 
-从贝叶斯公式谈起
-贝叶斯决策
+因为本次打卡要求记录每日读书心得，本篇博客便做此用，本书共359页，活动时间共21天，因此初步计划每天读2
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-07-23
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-11-30
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/" class="post-category">
-                                    统计学习
+                            <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    读书笔记
                                 </a>
                             
                             
                         </span>
                     </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E7%B1%B3%E5%B0%94%E6%96%AF%EF%BC%8C%E7%A4%BE%E4%BC%9A%E5%AD%A6/">
+                        <span class="chip bg-color">米尔斯，社会学</span>
+                    </a>
+                    
                 </div>
                 
             </div>
@@ -1321,13 +1232,6 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
 
 </main>
 
-
-<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script>
-    MathJax.Hub.Config({
-        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
-    });
-</script>
 
 
 
