@@ -1837,114 +1837,6 @@ COPY . .
       </tags>
   </entry>
   <entry>
-    <title>指数族分布与广义线性模型</title>
-    <url>/2020/10/07/zhi-shu-zu-fen-bu-yu-guang-yi-xian-xing-mo-xing/</url>
-    <content><![CDATA[<p>在<a href="https://soundofwind.top/2020/08/24/zai-tan-ji-da-si-ran-gu-ji-qiu-jie/">再谈极大似然估计</a>中已经讨论过指数分布族的概念，并且推导出了若概率分布是指数分布族分布，则最终的对数似然函数一定是一个凹函数，直接求偏导等于0便可得到参数估计。</p>
-<p>在听了<a href="http://ml.cs.tsinghua.edu.cn/~jun/index.shtml">朱军老师</a>的关于指数分布族函数的讲解之后，发现可以从一个更加general的角度来对指数分布族函数来进行把握，而之前得到的凹性结论也不过是其中一小部分而已，该部分按照以下结构组织: </p>
-<ul>
-<li>简要回顾指数分布族 </li>
-<li>配分函数$A(\theta)$的性质 </li>
-<li>从指数分布族到广义线性模型 </li>
-<li>广义线性模型性质 </li>
-</ul>
-<a id="more"></a> 
-<h3 id="简要回顾指数分布族函数"><a href="#简要回顾指数分布族函数" class="headerlink" title="简要回顾指数分布族函数"></a>简要回顾指数分布族函数</h3><p>首先给出指数分布族的定义:</p>
-<blockquote>
-<p>指数分布族是一类概率分布的总称，这类分布的概率密度函数具有这样的形式：</p>
-<script type="math/tex; mode=display">
-    p_\theta(x) = h(x) \exp(\theta^T \phi(x) - A(\theta))</script><p>式中，$x$是密度函数自变量，$x \in \mathcal{X}$;$\phi(x)$是充分统计量，可以看做是原始变量的一个映射:</p>
-<script type="math/tex; mode=display">
-    \phi: \mathcal{X} \rightarrow R^d</script><p>$\theta$是模型参数向量，与充分统计量维度相同，$h(x)$是一个只与$x$有关的统计量，$A(\theta)$为配分函数，通过该函数来保证$p_\theta(x)$满足概率密度函数的定义：</p>
-<script type="math/tex; mode=display">
-     \int_{\mathcal{X}} p_{\theta}(x) dx = 1</script><p>由此约束条件，我们可以得到$A(\theta)$的解析表达式：</p>
-<script type="math/tex; mode=display">
-    A(\theta) = \log (\int h(x) \exp(\theta^T \phi(x))dx )</script></blockquote>
-<p>同时概率密度函数我们也可以写成如下的形式:</p>
-<script type="math/tex; mode=display">
-    p_\theta(x) = \frac{1}{Z(\theta)}  h(x) exp(\theta^T \phi(x))</script><p>其中$Z(\theta) = exp(A(\theta))$,我们日常见到的很多分布都可以转化成指数分布族标准形式，比如: 伯努利分布，多项式分布，高斯分布，gamma分布等，一些变换的例子可以参考<a href="https://soundofwind.top/2020/08/24/zai-tan-ji-da-si-ran-gu-ji-qiu-jie/"><code>再谈极大似然估计</code></a></p>
-<h3 id="配分函数-A-theta-的性质"><a href="#配分函数-A-theta-的性质" class="headerlink" title="配分函数$A(\theta)$的性质"></a>配分函数$A(\theta)$的性质</h3><h4 id="A-theta-性质"><a href="#A-theta-性质" class="headerlink" title="$A(\theta)$性质"></a>$A(\theta)$性质</h4><p>在之前证明$A(\theta)$的凸性性质时，所采用的方法是按照配分表达式直接证，通过赫尔德不等式可以从定义上证明其是凸函数，但其实$A(\theta)$具有更加一般的性质。 </p>
-<p>$A(\theta)$其实是充分统计量$\phi(x)$的中心矩生成函数(moment generating function),这意味着:</p>
-<script type="math/tex; mode=display">
-  \begin{aligned}
-      \nabla_{\theta} A(\theta) &= E_{p_{\theta}(x)}[\phi(x)] \\ 
-      \nabla_{\theta}^2 A(\theta) &= Var[\phi(x)]  \\ 
-      & ... \\
-      \nabla_{\theta}^k A(\theta) &= E_{p_\theta(x)} [(\phi(x) - E[\phi(x)])^k]
-  \end{aligned}</script><p>下面以一阶统计量为例做一下简单推导:</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        \nabla_{\theta}A(\theta) & = \nabla_{\theta} \log(Z(\theta)) \\
-        &= \frac{1}{Z(\theta)} \nabla_{\theta} (\int_x h(x) \exp(\theta^T \phi(x)) dx) \\
-        &= \frac{1}{Z(\theta)} \int_x h(x) \phi(x) \exp(\theta^T \phi(x))dx \\ 
-        &= \int_x \frac{1}{Z(\theta)} h(x) \exp(\theta^T \phi(x)) \phi(x) dx \\ 
-        &= \int_x p(x|\theta) \phi(x) dx \\
-        &= E_{p_\theta(x)}[\phi(x)] 
-    \end{aligned}</script><p>$A(\theta)$的上述性质可以导出一些非常好用的结论:</p>
-<ul>
-<li><p>如果记:</p>
-<script type="math/tex; mode=display">
-  \nabla_{\theta} A(\theta) = E_{p_{\theta}(x)} [\phi(x)] \overset{\triangle}{=} \mu</script><p>这里$\mu$一般被称作矩参数或者均值参数，对于不同的指数分布族函数，一般都可以找到一个双射函数$\psi$,使得:</p>
-<script type="math/tex; mode=display">
-  \theta \overset{\triangle}{=} \psi(\mu)</script><p>这就建立了均值参数与模型的自然参数之间的一一映射关系，在参数估计时如果得到了均值参数估计，同时直到映射关系$\psi$，那么便可以直接得到模型自然参数$\theta$的估计。</p>
-</li>
-<li><p>因为$\nabla_{\theta}^2 A(\theta) = Var[\phi(x)]$，而我们知道一个向量变量的协方差矩阵至少是半正定的，也就是说:</p>
-<script type="math/tex; mode=display">
-  \nabla_{\theta}^2  A(\theta)= Var[\phi(x)] \succeq 0</script><p>这也就直接证明了$A(\theta)$的二阶海塞矩阵半正定，即$A(\theta)$是关于$\theta$的凸函数。</p>
-</li>
-</ul>
-<h4 id="iid-条件下样本集分布-p-D-theta"><a href="#iid-条件下样本集分布-p-D-theta" class="headerlink" title="$iid$条件下样本集分布$p(D|\theta)$"></a>$iid$条件下样本集分布$p(D|\theta)$</h4><p>在独立同分布假设下，我们通过采样得到样本集$D = \{ x_1, x_2, \dots, x_N \}$, 在进行参数估计时我们往往需要计算整个样本集出现的概率:</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        p(D|\theta) &= \prod_{i} h(x_i) \exp(\theta^T \phi(x_i) - A(\theta)) \\ 
-        &= (\prod_i h(x_i)) \exp(\theta^T \sum_i \phi(x_i) - N A(\theta))
-    \end{aligned}</script><p>从格式上来看，会发现样本集的分布仍然是指数族分布，只不过是充分统计量$\phi’(D)$变为了:</p>
-<script type="math/tex; mode=display">
-    \phi'(D) = \sum_i \phi(x_i)</script><p>这给我们一个启示，当我们要利用一组数据进行参数估计时，我们只需要将各个样本的充分统计量累加起来便可以得到整个样本集合的充分统计量，后面进行参数估计时只需要利用充分统计量即可，原始数据可以舍弃。</p>
-<p>在进行极大似然估计时，我们往往会求解对数似然函数最大，下面写出指数分布的对数似然函数的一般形式:</p>
-<script type="math/tex; mode=display">
-    L(D;\theta) = \sum_{i} \log h(x_i) + \theta^T \sum_{i} \phi(x_i) - N A(\theta)</script><p>由于$A(\theta)$是凸函数，所以显然$L(D; \theta)$是凹函数，因此直接对$\theta$求偏导:</p>
-<script type="math/tex; mode=display">
-    \nabla_{\theta}(D; \theta) = \sum_{i} \phi(x_i) - N \nabla_{\theta} A(\theta) = 0</script><p>可以得到:</p>
-<script type="math/tex; mode=display">
-    \hat{\mu}_{MLE} = \nabla_{\theta} A(\theta) = \frac{1}{N} \sum_i \phi(x_i)</script><p>这说明充分统计量均值的极大似然估计就等于采样均值，又从前面我们得知均值参数$\mu$与模型的自然参数$\theta$通过函数$\psi$一一对应，因此可以通过充分统计量的均值估计得到模型参数的极大似然估计:</p>
-<script type="math/tex; mode=display">
-    \hat{\theta}_{MLE} = \psi(\hat{\mu}_{MLE})</script><h3 id="从指数分布族到广义线性模型"><a href="#从指数分布族到广义线性模型" class="headerlink" title="从指数分布族到广义线性模型"></a>从指数分布族到广义线性模型</h3><p>首先给出广义线性模型的定义:</p>
-<blockquote>
-<p><strong>广义线性模型:</strong><br>假设我们的数据是$\{ x_i, y_i\}_{i=1}^n$，其中因变量$y_i$服从某一指数族分布，即:</p>
-<script type="math/tex; mode=display">
-    p(y_i;\theta) = h(y_i) \exp(\theta^T \phi(y_i) - A(\theta))</script><p>而对于观测量$x_i$，首先获得其线性组合:</p>
-<script type="math/tex; mode=display">
-    \xi_i = \eta^T x_i</script><p>然后$y_i$与 $x_i$具有这样的关系:</p>
-<script type="math/tex; mode=display">
-    E_{p(y;\theta)}[y] = \mu = f(\eta^T x)</script><p>$f$称作联系函数或者激活函数  </p>
-</blockquote>
-<p>广义线性模型的产生可以通过下图直观展示:<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/glim.png" alt="广义线性模型"><br>在定义中的同路实际上是图中$\mu \rightarrow y$这条同路，但从图中可以看到，通过下面一条通路也是可以的，通过$\mu$和$\eta$之间的关系来构造指数分布。在进行广义线性模型选择时，我们有两个自由度:</p>
-<ul>
-<li>激活函数$f$的选择 </li>
-<li>指数分布$p$的选择 </li>
-</ul>
-<p>指数分布$p$的选择更多与实际问题有关，比如如果是一个二分类问题，常选用伯努利分布，如果是一个多分类问题，常选用多项式分布，回归问题则常选用高斯分布，而激活函数的选择则是与分布对应的均值特性有关，比如对于伯努利分布，要求均值在$[0,1]$之间，所以在$logistic$回归中选择的是$Sigmoid$函数作为激活函数。对于多分类问题，则可以选用多项式分布作为指数分布，然后激活函数选用$softmax$函数，就可以导出扩展$logistic$到多分类问题中，得到$softmax$分类器。</p>
-<p>如果取激活函数$f = \psi^{-1}$，那么模型的自然参数$\theta$:</p>
-<script type="math/tex; mode=display">
-    \theta = \eta^T x</script><p>此时该激活函数$f$被称作正则响应函数。</p>
-<h3 id="广义线性模型性质"><a href="#广义线性模型性质" class="headerlink" title="广义线性模型性质"></a>广义线性模型性质</h3><p>当我们构造出广义线性模型后，我们需要进行参数$\eta$的学习，在没有参数先验知识的情况下，我们一般采用极大似然估计来进行参数估计，我们首先写出广义线性模型的对数似然函数形式:</p>
-<script type="math/tex; mode=display">
-    L(\eta, D) = \sum_{i} \log h(x_i) + \sum_i (\theta_i y_i - A(\theta_i))</script><p>其中$\theta_i = \psi(\mu_i)$,而$\mu_i = f(\eta^T x_i)$,这其实也可以简单地认为是用回归的结果来对$y_i$的值做概率预测。 对对数似然函数求偏导，可得:</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        \nabla_{\eta} L(\eta, D) &= \sum_i (y_i \nabla_{\eta} \theta_i  - \frac{d A(\theta_i)}{d \theta_i} \nabla_{\eta} \theta_i ) \\
-        &= \sum_i (y_i - \mu_i)\nabla_{\eta} \theta_i 
-    \end{aligned}</script><p>所以在进行迭代优化时，我们有:</p>
-<script type="math/tex; mode=display">
-    \theta_{t+1} = \theta_t + \rho (y_i - \mu_i^t) \nabla_{\eta} \theta_i</script>]]></content>
-      <categories>
-        <category>统计学习</category>
-      </categories>
-      <tags>
-        <tag>指数分布族， 广义线性模型</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>提升算法总结</title>
     <url>/2020/09/01/ti-sheng-suan-fa-zong-jie/</url>
     <content><![CDATA[<p>对于一个特定机器学习问题，我们可能会建立很多模型，这些单个模型可能表现都不是非常好，由此便会引出一个问题:</p>
@@ -2128,6 +2020,114 @@ COPY . .
       </categories>
       <tags>
         <tag>Bagging, AdaBoost, 提升树模型</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>指数族分布与广义线性模型</title>
+    <url>/2020/10/07/zhi-shu-zu-fen-bu-yu-guang-yi-xian-xing-mo-xing/</url>
+    <content><![CDATA[<p>在<a href="https://soundofwind.top/2020/08/24/zai-tan-ji-da-si-ran-gu-ji-qiu-jie/">再谈极大似然估计</a>中已经讨论过指数分布族的概念，并且推导出了若概率分布是指数分布族分布，则最终的对数似然函数一定是一个凹函数，直接求偏导等于0便可得到参数估计。</p>
+<p>在听了<a href="http://ml.cs.tsinghua.edu.cn/~jun/index.shtml">朱军老师</a>的关于指数分布族函数的讲解之后，发现可以从一个更加general的角度来对指数分布族函数来进行把握，而之前得到的凹性结论也不过是其中一小部分而已，该部分按照以下结构组织: </p>
+<ul>
+<li>简要回顾指数分布族 </li>
+<li>配分函数$A(\theta)$的性质 </li>
+<li>从指数分布族到广义线性模型 </li>
+<li>广义线性模型性质 </li>
+</ul>
+<a id="more"></a> 
+<h3 id="简要回顾指数分布族函数"><a href="#简要回顾指数分布族函数" class="headerlink" title="简要回顾指数分布族函数"></a>简要回顾指数分布族函数</h3><p>首先给出指数分布族的定义:</p>
+<blockquote>
+<p>指数分布族是一类概率分布的总称，这类分布的概率密度函数具有这样的形式：</p>
+<script type="math/tex; mode=display">
+    p_\theta(x) = h(x) \exp(\theta^T \phi(x) - A(\theta))</script><p>式中，$x$是密度函数自变量，$x \in \mathcal{X}$;$\phi(x)$是充分统计量，可以看做是原始变量的一个映射:</p>
+<script type="math/tex; mode=display">
+    \phi: \mathcal{X} \rightarrow R^d</script><p>$\theta$是模型参数向量，与充分统计量维度相同，$h(x)$是一个只与$x$有关的统计量，$A(\theta)$为配分函数，通过该函数来保证$p_\theta(x)$满足概率密度函数的定义：</p>
+<script type="math/tex; mode=display">
+     \int_{\mathcal{X}} p_{\theta}(x) dx = 1</script><p>由此约束条件，我们可以得到$A(\theta)$的解析表达式：</p>
+<script type="math/tex; mode=display">
+    A(\theta) = \log (\int h(x) \exp(\theta^T \phi(x))dx )</script></blockquote>
+<p>同时概率密度函数我们也可以写成如下的形式:</p>
+<script type="math/tex; mode=display">
+    p_\theta(x) = \frac{1}{Z(\theta)}  h(x) exp(\theta^T \phi(x))</script><p>其中$Z(\theta) = exp(A(\theta))$,我们日常见到的很多分布都可以转化成指数分布族标准形式，比如: 伯努利分布，多项式分布，高斯分布，gamma分布等，一些变换的例子可以参考<a href="https://soundofwind.top/2020/08/24/zai-tan-ji-da-si-ran-gu-ji-qiu-jie/"><code>再谈极大似然估计</code></a></p>
+<h3 id="配分函数-A-theta-的性质"><a href="#配分函数-A-theta-的性质" class="headerlink" title="配分函数$A(\theta)$的性质"></a>配分函数$A(\theta)$的性质</h3><h4 id="A-theta-性质"><a href="#A-theta-性质" class="headerlink" title="$A(\theta)$性质"></a>$A(\theta)$性质</h4><p>在之前证明$A(\theta)$的凸性性质时，所采用的方法是按照配分表达式直接证，通过赫尔德不等式可以从定义上证明其是凸函数，但其实$A(\theta)$具有更加一般的性质。 </p>
+<p>$A(\theta)$其实是充分统计量$\phi(x)$的中心矩生成函数(moment generating function),这意味着:</p>
+<script type="math/tex; mode=display">
+  \begin{aligned}
+      \nabla_{\theta} A(\theta) &= E_{p_{\theta}(x)}[\phi(x)] \\ 
+      \nabla_{\theta}^2 A(\theta) &= Var[\phi(x)]  \\ 
+      & ... \\
+      \nabla_{\theta}^k A(\theta) &= E_{p_\theta(x)} [(\phi(x) - E[\phi(x)])^k]
+  \end{aligned}</script><p>下面以一阶统计量为例做一下简单推导:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        \nabla_{\theta}A(\theta) & = \nabla_{\theta} \log(Z(\theta)) \\
+        &= \frac{1}{Z(\theta)} \nabla_{\theta} (\int_x h(x) \exp(\theta^T \phi(x)) dx) \\
+        &= \frac{1}{Z(\theta)} \int_x h(x) \phi(x) \exp(\theta^T \phi(x))dx \\ 
+        &= \int_x \frac{1}{Z(\theta)} h(x) \exp(\theta^T \phi(x)) \phi(x) dx \\ 
+        &= \int_x p(x|\theta) \phi(x) dx \\
+        &= E_{p_\theta(x)}[\phi(x)] 
+    \end{aligned}</script><p>$A(\theta)$的上述性质可以导出一些非常好用的结论:</p>
+<ul>
+<li><p>如果记:</p>
+<script type="math/tex; mode=display">
+  \nabla_{\theta} A(\theta) = E_{p_{\theta}(x)} [\phi(x)] \overset{\triangle}{=} \mu</script><p>这里$\mu$一般被称作矩参数或者均值参数，对于不同的指数分布族函数，一般都可以找到一个双射函数$\psi$,使得:</p>
+<script type="math/tex; mode=display">
+  \theta \overset{\triangle}{=} \psi(\mu)</script><p>这就建立了均值参数与模型的自然参数之间的一一映射关系，在参数估计时如果得到了均值参数估计，同时直到映射关系$\psi$，那么便可以直接得到模型自然参数$\theta$的估计。</p>
+</li>
+<li><p>因为$\nabla_{\theta}^2 A(\theta) = Var[\phi(x)]$，而我们知道一个向量变量的协方差矩阵至少是半正定的，也就是说:</p>
+<script type="math/tex; mode=display">
+  \nabla_{\theta}^2  A(\theta)= Var[\phi(x)] \succeq 0</script><p>这也就直接证明了$A(\theta)$的二阶海塞矩阵半正定，即$A(\theta)$是关于$\theta$的凸函数。</p>
+</li>
+</ul>
+<h4 id="iid-条件下样本集分布-p-D-theta"><a href="#iid-条件下样本集分布-p-D-theta" class="headerlink" title="$iid$条件下样本集分布$p(D|\theta)$"></a>$iid$条件下样本集分布$p(D|\theta)$</h4><p>在独立同分布假设下，我们通过采样得到样本集$D = \{ x_1, x_2, \dots, x_N \}$, 在进行参数估计时我们往往需要计算整个样本集出现的概率:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        p(D|\theta) &= \prod_{i} h(x_i) \exp(\theta^T \phi(x_i) - A(\theta)) \\ 
+        &= (\prod_i h(x_i)) \exp(\theta^T \sum_i \phi(x_i) - N A(\theta))
+    \end{aligned}</script><p>从格式上来看，会发现样本集的分布仍然是指数族分布，只不过是充分统计量$\phi’(D)$变为了:</p>
+<script type="math/tex; mode=display">
+    \phi'(D) = \sum_i \phi(x_i)</script><p>这给我们一个启示，当我们要利用一组数据进行参数估计时，我们只需要将各个样本的充分统计量累加起来便可以得到整个样本集合的充分统计量，后面进行参数估计时只需要利用充分统计量即可，原始数据可以舍弃。</p>
+<p>在进行极大似然估计时，我们往往会求解对数似然函数最大，下面写出指数分布的对数似然函数的一般形式:</p>
+<script type="math/tex; mode=display">
+    L(D;\theta) = \sum_{i} \log h(x_i) + \theta^T \sum_{i} \phi(x_i) - N A(\theta)</script><p>由于$A(\theta)$是凸函数，所以显然$L(D; \theta)$是凹函数，因此直接对$\theta$求偏导:</p>
+<script type="math/tex; mode=display">
+    \nabla_{\theta}(D; \theta) = \sum_{i} \phi(x_i) - N \nabla_{\theta} A(\theta) = 0</script><p>可以得到:</p>
+<script type="math/tex; mode=display">
+    \hat{\mu}_{MLE} = \nabla_{\theta} A(\theta) = \frac{1}{N} \sum_i \phi(x_i)</script><p>这说明充分统计量均值的极大似然估计就等于采样均值，又从前面我们得知均值参数$\mu$与模型的自然参数$\theta$通过函数$\psi$一一对应，因此可以通过充分统计量的均值估计得到模型参数的极大似然估计:</p>
+<script type="math/tex; mode=display">
+    \hat{\theta}_{MLE} = \psi(\hat{\mu}_{MLE})</script><h3 id="从指数分布族到广义线性模型"><a href="#从指数分布族到广义线性模型" class="headerlink" title="从指数分布族到广义线性模型"></a>从指数分布族到广义线性模型</h3><p>首先给出广义线性模型的定义:</p>
+<blockquote>
+<p><strong>广义线性模型:</strong><br>假设我们的数据是$\{ x_i, y_i\}_{i=1}^n$，其中因变量$y_i$服从某一指数族分布，即:</p>
+<script type="math/tex; mode=display">
+    p(y_i;\theta) = h(y_i) \exp(\theta^T \phi(y_i) - A(\theta))</script><p>而对于观测量$x_i$，首先获得其线性组合:</p>
+<script type="math/tex; mode=display">
+    \xi_i = \eta^T x_i</script><p>然后$y_i$与 $x_i$具有这样的关系:</p>
+<script type="math/tex; mode=display">
+    E_{p(y;\theta)}[y] = \mu = f(\eta^T x)</script><p>$f$称作联系函数或者激活函数  </p>
+</blockquote>
+<p>广义线性模型的产生可以通过下图直观展示:<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/glim.png" alt="广义线性模型"><br>在定义中的同路实际上是图中$\mu \rightarrow y$这条同路，但从图中可以看到，通过下面一条通路也是可以的，通过$\mu$和$\eta$之间的关系来构造指数分布。在进行广义线性模型选择时，我们有两个自由度:</p>
+<ul>
+<li>激活函数$f$的选择 </li>
+<li>指数分布$p$的选择 </li>
+</ul>
+<p>指数分布$p$的选择更多与实际问题有关，比如如果是一个二分类问题，常选用伯努利分布，如果是一个多分类问题，常选用多项式分布，回归问题则常选用高斯分布，而激活函数的选择则是与分布对应的均值特性有关，比如对于伯努利分布，要求均值在$[0,1]$之间，所以在$logistic$回归中选择的是$Sigmoid$函数作为激活函数。对于多分类问题，则可以选用多项式分布作为指数分布，然后激活函数选用$softmax$函数，就可以导出扩展$logistic$到多分类问题中，得到$softmax$分类器。</p>
+<p>如果取激活函数$f = \psi^{-1}$，那么模型的自然参数$\theta$:</p>
+<script type="math/tex; mode=display">
+    \theta = \eta^T x</script><p>此时该激活函数$f$被称作正则响应函数。</p>
+<h3 id="广义线性模型性质"><a href="#广义线性模型性质" class="headerlink" title="广义线性模型性质"></a>广义线性模型性质</h3><p>当我们构造出广义线性模型后，我们需要进行参数$\eta$的学习，在没有参数先验知识的情况下，我们一般采用极大似然估计来进行参数估计，我们首先写出广义线性模型的对数似然函数形式:</p>
+<script type="math/tex; mode=display">
+    L(\eta, D) = \sum_{i} \log h(x_i) + \sum_i (\theta_i y_i - A(\theta_i))</script><p>其中$\theta_i = \psi(\mu_i)$,而$\mu_i = f(\eta^T x_i)$,这其实也可以简单地认为是用回归的结果来对$y_i$的值做概率预测。 对对数似然函数求偏导，可得:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        \nabla_{\eta} L(\eta, D) &= \sum_i (y_i \nabla_{\eta} \theta_i  - \frac{d A(\theta_i)}{d \theta_i} \nabla_{\eta} \theta_i ) \\
+        &= \sum_i (y_i - \mu_i)\nabla_{\eta} \theta_i 
+    \end{aligned}</script><p>所以在进行迭代优化时，我们有:</p>
+<script type="math/tex; mode=display">
+    \theta_{t+1} = \theta_t + \rho (y_i - \mu_i^t) \nabla_{\eta} \theta_i</script>]]></content>
+      <categories>
+        <category>统计学习</category>
+      </categories>
+      <tags>
+        <tag>指数分布族， 广义线性模型</tag>
       </tags>
   </entry>
   <entry>
