@@ -483,14 +483,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    660
+                    1.1k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    2 分
+                    3 分
                 </div>
                 
 
@@ -523,7 +523,7 @@
 </blockquote>
 </li>
 </ul>
-<p>延时摄影可以为我们带来平日所接触不到的视觉体验，其原理也是非常简单的，只需要明确以下几点: </p>
+<h5 id="计算公式"><a href="#计算公式" class="headerlink" title="计算公式"></a>计算公式</h5><p>延时摄影可以为我们带来平日所接触不到的视觉体验，其原理也是非常简单的，只需要明确以下几点: </p>
 <blockquote>
 <ul>
 <li><strong>视频:</strong> 视频其实就是一系列图片堆栈而成，若想让视频看起来流畅，则一秒钟至少需要有24帧图像。</li>
@@ -533,7 +533,31 @@
 </blockquote>
 <p>由此，基于照片张数这样一个桥梁，我们就建立了如下一个等式: </p>
 <script type="math/tex; mode=display">
-    \frac{t}{t_p} = 24 \times t_v</script><p>比如我们想以固定间隔时间$t_p = 10s$， 想拍一个10$s$的视频，那么实际在进行间隔拍摄时就需要拍摄$t = 24<em>t_v</em>t_p = 2400s = 40 min$。这样就实现了将$40min$客观世界的变化压缩到了$10s$的视频内。</p>
+    \frac{t}{t_p} = 24 \times t_v</script><p>比如我们想以固定间隔时间$t_p = 10s$， 想拍一个10$s$的视频，那么实际在进行间隔拍摄时就需要拍摄$t = 24<em>t_v</em>t_p = 2400s = 40 min$。这样就实现了将$40min$客观世界的变化压缩到了$10s$的视频内。但如果是慢门拍摄则在间隔时间里需要将曝光时间也算进去。 </p>
+<h5 id="拍摄方法"><a href="#拍摄方法" class="headerlink" title="拍摄方法"></a>拍摄方法</h5><p>拍摄方法一般有三种: </p>
+<ul>
+<li>对于没有机内延时的相机，则需要借助快门线来实现间隔拍摄的功能。</li>
+<li>间隔拍摄: 直接根据自己的需求来计算间隔时间和拍摄时间，然后将图片导出后导入PR来输出延时视频(教程很多)。 </li>
+<li>延时视频: 现在很多相机都内置延时短片功能，设置拍摄间隔和拍摄张数，便可直出延时视频，省去了将图片堆栈成延时视频这一步。 </li>
+</ul>
+<h4 id="星轨拍摄"><a href="#星轨拍摄" class="headerlink" title="星轨拍摄"></a>星轨拍摄</h4><h5 id="简要介绍-1"><a href="#简要介绍-1" class="headerlink" title="简要介绍"></a>简要介绍</h5><blockquote>
+<p><strong>星轨:</strong> 星轨其实是我们地球自身自转的反射，在拍摄过程中，我们的相机机位在地球上相对位置并未发生变化，但由于有地球自转存在，我们会观测到星星不断移动，形成一个圆形，而圆心就是我们自转的主轴所指向的无穷远处。 </p>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E6%98%9F%E8%BD%A8.png" alt="星轨-from-500px"></p>
+<h5 id="星轨拍摄-1"><a href="#星轨拍摄-1" class="headerlink" title="星轨拍摄"></a>星轨拍摄</h5><p>星轨拍摄需要慢门，但在实现上有两种思路: </p>
+<blockquote>
+<ul>
+<li>直接采用B门定时拍摄，设置$10min$以上的曝光时间，然后拧动对焦环到无穷远处，最后调整曝光参数以保证最终图片恰当曝光，曝光参数可能需要多次尝试后确定，当拍摄环境并不够黑暗时，这种思路很难实现，因为长曝光会导致成片一片死白。 </li>
+</ul>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/星轨3.JPG" alt="星轨-10min长曝光"></p>
+<blockquote>
+<ul>
+<li>间隔拍摄，然后后期堆栈，比如我想拍30min时长所形成的星轨，那么我可以连续拍摄多个星空照片，然后后期进入PS，使用最大值堆栈进行星轨合成。 </li>
+</ul>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/星空-堆栈-20MB.jpg" alt="星轨-后期堆栈"></p>
+<p>我比较推荐第二种方法，因为参数更容易设置，同时后期空间更大，试错成本更低。 </p>
 
             </div>
             <hr/>
@@ -1333,7 +1357,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">142.7k</span>&nbsp;字
+                class="white-color">143.2k</span>&nbsp;字
             
             
             
