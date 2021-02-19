@@ -2270,16 +2270,31 @@ COPY . .
 <p>因为疫情原因，我也就在家周围拍了拍，就藉这篇文章简单地分享下自己拍的一些照片，然后介绍下星轨照片和延时视频制作的流程吧。 <a id="more"></a></p>
 <h4 id="影像记录"><a href="#影像记录" class="headerlink" title="影像记录"></a>影像记录</h4><p><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/落日-清音大桥.JPG" alt="落日-清音大桥"><br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/夕阳-河流4.JPG" alt="落日-河流"><br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/湖中村落.JPG" alt="湖中村落"><br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/星空-堆栈-20MB.jpg" alt="星轨"></p>
 <h4 id="延时视频"><a href="#延时视频" class="headerlink" title="延时视频"></a>延时视频</h4><ul>
-<li><p>公园延时</p>
+<li><p>公园延时摄影</p>
 <div style="position: relative; width: 100%; height: 0; padding-bottom: 75%;">
   <iframe src="//player.bilibili.com/player.html?aid=501747233&bvid=BV1BN411X7oM&cid=298163667&page=1&&high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="520"> </iframe>
 </div>
 </li>
-<li><p>星空延时<br><div style="position: relative; width: 100%; height: 0; padding-bottom: 75%;">
+<li><p>星空延时摄影<br><div style="position: relative; width: 100%; height: 0; padding-bottom: 75%;">
   <iframe src="//player.bilibili.com/player.html?aid=586696451&bvid=BV1uz4y127zS&cid=298721215&page=1&&high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="520"> </iframe>
 </div></p>
-<h5 id="简要介绍"><a href="#简要介绍" class="headerlink" title="简要介绍"></a>简要介绍</h5></li>
+<h5 id="简要介绍"><a href="#简要介绍" class="headerlink" title="简要介绍"></a>简要介绍</h5><p>哪怕大家对延时摄影这个概念非常模糊，但肯定见过与上面两个视频类似的视频，延时摄影当可以将斗转星移、日升日落、云彩飘动压缩到短短的十几秒视频中，所带来的视觉体验还是神奇的， 首先给出延时摄影的定义: </p>
+<blockquote>
+<p><strong>延时摄影:</strong> 延时摄影，又叫缩时摄影、缩时录影，是以一种将时间压缩的拍摄技术。其拍摄的通常是一组照片，后期通过将照片串联合成视频，把几分钟、几小时甚至是几天的过程压缩在一个较短的时间内以视频的方式播放。</p>
+</blockquote>
+</li>
 </ul>
+<p>延时摄影可以为我们带来平日所接触不到的视觉体验，其原理也是非常简单的，只需要明确以下几点: </p>
+<blockquote>
+<ul>
+<li><strong>视频:</strong> 视频其实就是一系列图片堆栈而成，若想让视频看起来流畅，则一秒钟至少需要有24帧图像。</li>
+<li><strong>客观世界时长:</strong> 假设我们以高速快门间隔$t_p$s进行拍摄，最终拍摄时长为$ts$，则$t$就是客观世界所经历的时间，而所拍摄的照片张数为$a = \frac{t}{t_p}$。</li>
+<li><strong>视频时长:</strong> 若视频帧数为24fps，那么若用相机拍摄的$a$张照片来制作延时视频，那么视频时长就是$t_v = \frac{a}{24}s$。 </li>
+</ul>
+</blockquote>
+<p>由此，基于照片张数这样一个桥梁，我们就建立了如下一个等式: </p>
+<script type="math/tex; mode=display">
+    \frac{t}{t_p} = 24 \times t_v</script><p>比如我们想以固定间隔时间$t_p = 10s$， 想拍一个10$s$的视频，那么实际在进行间隔拍摄时就需要拍摄$t = 24<em>t_v</em>t_p = 2400s = 40 min$。这样就实现了将$40min$客观世界的变化压缩到了$10s$的视频内。</p>
 ]]></content>
       <categories>
         <category>点滴生活</category>
