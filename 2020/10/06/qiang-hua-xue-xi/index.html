@@ -476,7 +476,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2020-10-21
+                    2021-02-25
                 </div>
                 
 
@@ -649,7 +649,11 @@ V_{\gamma}(x)=\max _{a \in A} \sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime
 <h3 id="免模型学习"><a href="#免模型学习" class="headerlink" title="免模型学习"></a>免模型学习</h3><p>在现实的强化学习任务中，环境的转移概率、奖赏函数往往很难得知，甚至很难直到环境中有几个状态，若学习算法不依赖于环境建模，则称为<strong>“免模型学习”</strong>。 </p>
 <h4 id="蒙特卡罗强化学习"><a href="#蒙特卡罗强化学习" class="headerlink" title="蒙特卡罗强化学习"></a>蒙特卡罗强化学习</h4><p>在免模型情况下，策略迭代算法首先碰到的问题便是策略无法评估，这是由于模型未知而导致无法做全概率展开。此时，只能通过在环境中执行选择的动作，来观察转移的状态和得到的奖赏。受K摇臂赌博机的启发，一种直接的策略评估方法是“多次采样”，然后求取平均累积奖赏作为期望累积奖赏的近似，这称为蒙特卡罗强化学习方法，由于采样必须为有限次数，因此该方法更适合于使用$T$步累积奖赏的强化学习任务。 </p>
 <p>另一方面，策略迭代算法估计的是值函数，而在进行策略选择时依赖的是状态-动作值函数$Q$，当模型已知时，从$V$到$Q$有很简单的转化方法，而当模型未知时，这也会出现困难。于是我们将估计对象从$V$转变为$Q$,即估计每一对“状态-动作”的值函数。 </p>
-
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        az^{-1} u(k) &= au(k-1) \\
+        a z^{-1} u(k)^2 &= au(k-1) u(k)
+    \end{aligned}</script>
             </div>
             <hr/>
 
@@ -1449,7 +1453,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">143.2k</span>&nbsp;字
+                class="white-color">145.1k</span>&nbsp;字
             
             
             
