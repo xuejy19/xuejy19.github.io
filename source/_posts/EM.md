@@ -45,6 +45,8 @@ $$
 **EM算法**:
 >   输入： 观测变量数据$Y$,隐变量数据$Z$，联合分布$P(Y,Z|\theta)$,条件分布$P(Z|Y,\theta$
 >   输出： 模型参数$\theta$
+
+
 1. 选择参数初始值$\theta^0$,开始迭代
 2. E步：记$\theta^i$为第$i$次迭代参数$\theta$的估计值，在第$i+1$次迭代的E步，计算：
 
@@ -54,7 +56,6 @@ $$
             &= \sum_Z log P(Y,Z|\theta) P(Z|Y,\theta^i)
     \end{aligned}
 $$
-
 3. M步： 求使得$Q(\theta,\theta^i)$极大化的$\theta$,确定第$i+1$次迭代的参数的估计值$\theta^{i+1}$ 
  $$ \theta^{i+1} = argmax_{\theta}Q(\theta,\theta^i)$$
 4. 重复第2,3步，直到算法收敛
