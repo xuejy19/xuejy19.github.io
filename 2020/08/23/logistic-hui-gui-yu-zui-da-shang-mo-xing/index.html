@@ -1,0 +1,1621 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="logistic回归与最大熵模型, 风之声">
+    <meta name="description" content="与孤独为友">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>logistic回归与最大熵模型 | 风之声</title>
+    <link rel="icon" type="image/jpeg" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/favicon.jpg">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/css/my.css">
+
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/jquery/jquery.min.js"></script>
+
+<meta name="generator" content="Hexo 5.4.2"><link rel="stylesheet" href="/css/prism.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">风之声</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>时光轴</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">风之声</div>
+        <div class="logo-desc">
+            
+            与孤独为友
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			时光轴
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/xuejy19/" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/xuejy19/" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/6.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">logistic回归与最大熵模型</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        height: calc(100vh - 250px);
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/logistic%E5%9B%9E%E5%BD%92-%E6%9C%80%E5%A4%A7%E7%86%B5%E6%A8%A1%E5%9E%8B-%E4%BC%98%E5%8C%96%E5%AD%A6%E4%B9%A0/">
+                                <span class="chip bg-color">logistic回归, 最大熵模型, 优化学习</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/" class="post-category">
+                                统计学习
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-08-23
+                </div>
+                
+
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
+                    2022-08-20
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    4k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    16 分
+                </div>
+                
+
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>在学习李航老师《统计学习》条件随机场章节时，对于学习算法感到有些陌生，后来发现在书中第六章“logistic回归与最大熵模型”有过一些介绍，因此本章节便总结一下相关知识，其中logistic回归模型做简要介绍，重点放在最大熵模型的学习算法上，本文按照如下结构组织：</p>
+<ul>
+<li>logistic回归</li>
+<li>最大熵模型<span id="more"></span>
+<h3 id="logistic回归"><a href="#logistic回归" class="headerlink" title="logistic回归"></a>logistic回归</h3><h4 id="logistic分布"><a href="#logistic分布" class="headerlink" title="logistic分布"></a>logistic分布</h4>首先介绍下logistic分布：<blockquote>
+<p><strong>logistic分布</strong>:设$X$是连续变量，$X$服从logistic分布是指$X$具有下列分布函数和密度函数：</p>
+<script type="math/tex; mode=display">
+  \begin{aligned}
+      F(x) &= P(X \leq x) = \frac{1}{1 + e^{-\frac{x-\mu}{\gamma}}} \\
+      f(x) &= F'(x) = \frac{e^{-\frac{x-\mu}{\gamma}}}{\gamma(1+e^{-\frac{x-\mu}{\gamma}})^2}
+  \end{aligned}</script><p>式中，$\mu$为位置参数，$\gamma&gt;0$为形状参数 </p>
+</blockquote>
+</li>
+</ul>
+<p>对于logistic分布，其概率密度函数和分布函数如下图所示：<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/logistic.jpeg" alt="logistic"><br>分布函数的图形是一条$S$形曲线，该曲线以点$(\mu,\frac{1}{2})$为中心对称，即满足:</p>
+<script type="math/tex; mode=display">
+    F(-x+\mu) - \frac{1}{2} = -F(x+\mu) +\frac{1}{2}</script><p>曲线在中心增长速度较快，在两端增长速度慢，形状参数$\gamma$的值越小，曲线在中心附近增长得越快。</p>
+<h4 id="二项logistic回归模型"><a href="#二项logistic回归模型" class="headerlink" title="二项logistic回归模型"></a>二项logistic回归模型</h4><p>二项logistic回归模型是一种二分类模型，由条件概率分布$P(Y|X)$表示，形式为参数化的logistic分布，随机变量$X$的取值为实数，随机变量$Y$取值为1或0，下面给出logistic回归模型定义：</p>
+<blockquote>
+<p><strong>logistic回归模型</strong>：二项logistic回归模型是如下条件概率分布：</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        P(Y=1|x) &= \frac{exp(w \cdot x + b)}{1 + exp(w \cdot x + b)} \\
+        P(Y=0|x) &= \frac{1}{1 + exp(w \cdot x + b)} 
+    \end{aligned}</script><p>其中，$x \in R^n$是输入，$Y \in {0,1}$是输出，$w \in R^n,b \in R$是参数。</p>
+</blockquote>
+<p>若我们已经有了logistic模型，则判断样本点$x$属于哪一类只需要比较两个概率值的大小，下面给出对数几率的定义:</p>
+<blockquote>
+<p><strong>对数几率</strong>：一个事件的几率是指该事件发生的概率与该事件不发生的概率的比值，如果一个事件发生的概率是$p$,那么该事件的几率是$\frac{p}{1-p}$,该事件的对数几率或logit函数是:</p>
+<script type="math/tex; mode=display">
+    logit(p) = log \frac{p}{1-p}</script></blockquote>
+<p>对于logistic回归而言，事件$(Y=1|X)$的对数几率为：</p>
+<script type="math/tex; mode=display">
+    log \frac{P(Y=1|x)}{1 - P(Y=1|x)} = w \cdot x</script><p>这说明，logistic回归模型可以看做是用线性回归模型去逼近真实标记的对数几率。因此logistic回归模型也被称为对数几率回归，可以看作是经过了如下的映射环节，将$R^n$空间中的$x$映射到了其标记的概率：</p>
+<script type="math/tex; mode=display">
+    x \in R^n  \rightarrow w \cdot x \in R \rightarrow P(Y=1|x) \in [0,1]</script><h4 id="模型参数估计"><a href="#模型参数估计" class="headerlink" title="模型参数估计"></a>模型参数估计</h4><p>对于logistic回归模型，需要估计的参数是$w,b$,可以考虑将它们合并为一个$n+1$维向量:</p>
+<script type="math/tex; mode=display">
+    w = [w;b]</script><p>同时，给输入向量加一维，表示为:</p>
+<script type="math/tex; mode=display">
+    x = [x;1]</script><p>这样logistic回归模型就可以表示成更加紧凑的形式:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        P(Y=1|x) &=  \frac{exp(w \cdot x) }{1+exp(w \cdot x)} \\
+        P(Y=0|x) &=  \frac{1}{1 + exp(w \cdot x)}
+    \end{aligned}</script><p>logistic模型参数学习属于有监督的模型学习问题范畴，利用极大似然法就可以解决，设：</p>
+<script type="math/tex; mode=display">
+    P(Y=1|x) = \pi(x), \quad P(Y=0|x) = 1- \pi(x)</script><p>似然函数可以写成:</p>
+<script type="math/tex; mode=display">
+    \prod_{i=1}^N [\pi(x_i)]^{y_i} [1 - \pi(x_i)]^{1-y_i}</script><p>对数似然函数为:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        L(w) &= \sum_{i=1}^N [y_i log \pi(x_i) + (1-y_i)log(1-\pi(x_i))] \\
+            &= \sum_{i=1}^N [y_i log \frac{\pi(x_i)}{1 - \pi(x_i)} + log(1-\pi(x_i))] \\
+            &= \sum_{i=1}^N [y_i(w \cdot x) - log(1 + exp(w \cdot x))]
+    \end{aligned}</script><p>对$L(w)$求极大值，得到$w$的估计值，常用梯度下降法及拟牛顿法求解(后面专开一章讲解)。</p>
+<h4 id="多项logistic回归"><a href="#多项logistic回归" class="headerlink" title="多项logistic回归"></a>多项logistic回归</h4><p>上面介绍的是二项logistic模型，适用于二分类，可以将其推广为多项logistic分类模型，用于多类分类。假设离散型随机变量$Y$的取值集合是${1,2,\dots,K}$,那么多项logistic回归的模型是:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        P(Y=k|x) &= \frac{\exp(w_k \cdot x)}{1 + \sum_{k=1}^{K-1} \exp(w_k \cdot x)} \\
+        P(Y=K|x) &= \frac{1}{1 + \sum_{k=1}^{K-1} \exp(w_k \cdot x)}
+    \end{aligned}</script><p>这里$x \in R^{n+1},w_k \in R^{n+1}$。二项logistic回归的参数估计法也可以推广到多项logistic回归</p>
+<h3 id="最大熵模型"><a href="#最大熵模型" class="headerlink" title="最大熵模型"></a>最大熵模型</h3><p>最大熵模型，是由最大熵原理推导实现。本部分按照以下结构组织:</p>
+<ul>
+<li>最大熵原理</li>
+<li>最大熵模型推导</li>
+<li>最大熵模型学习</li>
+</ul>
+<h4 id="最大熵原理"><a href="#最大熵原理" class="headerlink" title="最大熵原理"></a>最大熵原理</h4><p>最大熵原理是概率模型学习的一个准则，最大熵原理认为：</p>
+<blockquote>
+<p>学习概率模型时，在所有可能的概率模型中，熵最大的模型是最好的模型。通常用约束条件来确定概率模型的集合，所以，最大熵原理也可以表述为在满足约束条件的模型集合中选取熵最大的模型。</p>
+</blockquote>
+<p>我们首先来复习下信息论中关于熵的定义：</p>
+<blockquote>
+<p>在信息论与概率统计中，熵是表示<strong>随机变量不确定性</strong>的度量，设$X$是一个取有限个值的离散随机变量，其概率分布为:</p>
+<script type="math/tex; mode=display">
+    P(X = x_i) = p_i, \quad i =1,2,\dots,n</script><p>则随机变量$X$的熵定义为:</p>
+<script type="math/tex; mode=display">
+    H(X) = - \sum_{i=1}^n p_i \log p_i</script></blockquote>
+<p>若$p_i = 0$,则定义$0\log 0 =0$,式中的对数一般取以2为底或者以$e$为底，这时熵的单位被称作比特或纳特，由定义可知，熵只依赖于$X$的分布，而与$X$的取值无关，因此也可将$X$的熵记作$H(p)$,熵越大，随机变量的不确定性越大。因为$p_i \leq 0$,由$H(p)$函数性质(凹函数，应用拉格朗日乘子法可求最大值)可知:</p>
+<script type="math/tex; mode=display">
+    0 \leq H(p) \leq \log n</script><p>当且仅当$X$是均匀分布时右侧等号成立,也就是说，当$X$服从均匀分布时，熵最大，该随机变量的不确定性最大。下面给出条件熵的定义:</p>
+<blockquote>
+<p>设有随机变量$(X,Y)$,其联合概率分布为：</p>
+<script type="math/tex; mode=display">
+    P(X = x_i,Y = y_i) = p_{ij}\quad i = 1,2,\dots,n;\quad j = 1,2,\dots,m</script><p>条件熵$H(Y|X)$表示在已知随机变量$X$条件下随机变量$Y$的不确定性。随机变量$X$给定的条件下随机变量$Y$的条件熵$H(Y|X)$,定义为$X$给定条件下$Y$的条件概率分布的熵对$X$的数学期望：</p>
+<script type="math/tex; mode=display">
+    H(Y|X) = \sum_{i=1}^n p_i H(Y|X = x_i)</script><p>当熵和条件熵中的概率由数据估计得到时，所对应的熵与条件熵分别称为经验熵和经验条件熵</p>
+</blockquote>
+<p>直观的，最大熵原理认为要选择的概率模型首先必须满足已有的事实，即约束条件。在没有更多信息情况下，那些不确定的部分都是“等可能的”,最大熵原理通过熵的最大化来表示等可能性。下面通过一个简单的例子来介绍最大熵原理：</p>
+<blockquote>
+<p>🌰：假设随机变量$X$有五个取值${A,B,C,D,E }$,要估计取各个值的概率$P(A),P(B),P(C),P(D),P(E)$</p>
+<ul>
+<li>不提供任何额外约束，则只有这些概率的固有约束<script type="math/tex; mode=display">
+  P(A) + P(B) + P(C) + P(D) + P(E) = 1</script>因为没有任何额外的信息，则根据最大熵原理，只能够认为该概率分布为均匀分布：<script type="math/tex; mode=display">
+  P(A) = P(B) = P(C) = P(D) = P(E) = \frac{1}{5}</script></li>
+<li>从一些先验知识中得到了一些对概率值的约束条件，如$P(A) + P(B) = \frac{3}{10}$,满足约束的概率分布仍旧有无穷多个，在缺少其他信息的情况下，可以认为$A$和$B$是等概率的，$C,D,E$等概率。</li>
+</ul>
+</blockquote>
+<p>实际上，最大熵原理就是为我们提供了一种选择最优概率模型的准则(保守)</p>
+<h4 id="最大熵模型的定义"><a href="#最大熵模型的定义" class="headerlink" title="最大熵模型的定义"></a>最大熵模型的定义</h4><p>最大熵原理是统计学习的一般原理，将它应用到分类得到最大熵模型。<br>假设分类模型是一个条件概率分布$P(Y|X)$,$X \in \mathcal{X} \subseteq R^n$表示输入，$Y \in \mathcal{Y}$表示输出，$\mathcal{X}$和$\mathcal{Y}$分别是输入和输出的集合，这个模型表示的是对于给定的输入$X$，以条件概率$P(Y|X)$输出$Y$。<br>给定一个训练数据集:</p>
+<script type="math/tex; mode=display">
+    T = \{  (x_1,y_1), (x_2,y_2), \dots, (x_N,y_N)\}</script><p>学习的目标是应用最大熵模型选择最好的分类模型。首先考虑模型应该满足的条件，即该数据集为模型添加了哪些约束，给定训练数据集后，我们可以确定联合分布$P(X,Y)$的经验分布和边缘分布$P(X)$的经验分布，分别以$\tilde{P}(X,Y)$和$\tilde{P}(X)$表示:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        \tilde{P}(X= x,Y=y) &= \frac{\nu(X = x,Y = y)}{N} \\
+        \tilde{P}(X = x) &= \frac{\nu(X = x)}{N} 
+    \end{aligned}</script><p>式中$\nu(\cdot)$是频数统计函数，$N$表示训练样本容量。用特征函数$f(x,y)$描述输入$x$和输出$y$之间的某一个事实，其定义是:</p>
+<script type="math/tex; mode=display">
+    f(x,y) = \begin{cases}
+        1,  &x和y满足某一事实 \\
+        0,  &else 
+    \end{cases}</script><p>特征函数$f(x,y)$关于经验分布$\tilde{P}(X,Y)$的期望值，用$E_{\tilde{P}}(f)$表示：</p>
+<script type="math/tex; mode=display">
+    E_{\tilde{P}}(f) = \sum_{x,y} \tilde{P}(x,y) f(x,y)</script><p>特征函数$f(x,y)$关于模型$P(Y|X)$i与经验分布$\tilde{P}(X)$的期望值，用$E_P(f)$表示：</p>
+<script type="math/tex; mode=display">
+    E_P(f) = \sum_{x,y} \tilde{P}(x) P(y|x) f(x,y)</script><p>如果模型能够获取训练数据中的信息，那么就可以假设这两个期望值相等，即：</p>
+<script type="math/tex; mode=display">
+    E_P(f) = E_{\tilde{P}}(f)</script><p>将这作为模型学习的约束条件，假如有$n$个特征函数$f_i(x,y),i=1,2,\dots,n$,那么就有$n$个约束条件，下面给出最大熵模型的定义:</p>
+<blockquote>
+<p>最大熵模型:假设满足所有约束条件的模型集合为:</p>
+<script type="math/tex; mode=display">
+    C \equiv \{ P \in \mathcal{P} |E_P(f_i) = E_{\tilde{P}}(f_i), i = 1,2,\dots,n\}</script><p>定义在条件概率分布$P(Y|X)$上的条件熵为：</p>
+<script type="math/tex; mode=display">
+    H(P) = -\sum_{x,y}  \tilde{P}(x)P(y|x) log P(y|x)</script><p>则模型集合$C$中条件熵$H(P)$最大的模型称为最大熵模型</p>
+</blockquote>
+<p>从定义可以看出，最大熵模型是基于这样一种思想:</p>
+<blockquote>
+<p>当我们需要对一个事件(变量)的概率分布进行预测时，最大熵原理告诉我们所有的预测应当满足全部已知的条件(约束)，而对未知的情况不要做任何主观假设，保留模型最大的不确定性。</p>
+</blockquote>
+<h4 id="最大熵模型的学习"><a href="#最大熵模型的学习" class="headerlink" title="最大熵模型的学习"></a>最大熵模型的学习</h4><p>最大熵模型的学习过程就是求解最大熵模型的过程。最大熵模型学习可以形式化为约束最优化问题。<br>对于给定的训练数据集$T = { (x_1,y_1), (x_2,y_2),\dots, (x_N,y_N)}$以及特征函数$f_i(x,y),i=1,2,\dots,n$,最大熵模型的学习等价于求解最优化问题:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        &\max_{P \in C} \quad H(P) = -\sum_{x,y}  \tilde{P}(x)P(y|x) log P(y|x) \\
+        &s.t. \quad E_P(f_i) = E_{\tilde{P}}(f_i),\quad i =1,2,\dots,n \\  
+        & \quad \quad \sum_y P(y|x) =1
+    \end{aligned}</script><p>按照最优化问题的习惯，将求解最大值问题改为等价的求最小值问题:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        &\min_{P \in C} \quad -H(P) = \sum_{x,y}  \tilde{P}(x)P(y|x) log P(y|x) \\
+        &s.t. \quad E_P(f_i) - E_{\tilde{P}}(f_i) = 0,\quad i =1,2,\dots,n \\  
+        & \quad \quad \sum_y P(y|x) =1
+    \end{aligned}</script><p><strong>该优化问题按照李航老师《统计学习》中的说法是满足强对偶性的，但书中只是一带而过，并没有进行详细说明，此处留坑，后面的推导就先默认该优化问题满足强对偶性，后面我搞懂了再来填坑</strong></p>
+<hr>
+<p><strong>这个问题我又思考了一下，自变量是一个分布看似是一个很虚的东西，但它也不过是一个函数，若$X,Y$都是离散取值变量，那么这个条件概率分布只是一个有限长度的向量，而若$X,Y$取值连续，则该条件概率密度函数可以看作一个无限长的向量，这样来看原始待优化函数其实就是$\boldsymbol{x} \cdot \log \boldsymbol{x}$,这显然是一个凸函数，而约束条件也不过是待优化参数的线性组合，这显然是一个凸优化问题</strong></p>
+<hr>
+<p>该优化问题共有$n+1$个等式约束，因此考虑引入拉格朗日乘子$w_0,w_1,\dots,w_n$,定义拉格朗日函数$L(P,w)$:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        L(P,w) &= -H(P) + w_0 (1 - \sum_y P(y|x)) + \sum_{i=1}^n w_i (E_{\tilde{P}}(f_i) - E_P(f_i)) \\
+        &= \sum_{x,y}  \tilde{P}(x)P(y|x) log P(y|x)  + w_0 (1 - \sum_y P(y|x)) \\
+        &+ \sum_{i=1}^n w_i(\sum_{x,y} \tilde{P}(x,y) f(x,y) - \sum_{x,y} \tilde{P}(x) P(y|x) f(x,y))
+    \end{aligned}</script><p>原始优化问题的对偶问题写作：</p>
+<script type="math/tex; mode=display">
+    \max_{w} \min_{P} L(P,w)</script><p>首先求解对偶函数$\phi(w)$,因为$L(P,w)$关于$P$是凸函数，因此直接通过求导令导数为0即可：</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        \frac{ \partial L(P,w)}{\partial P(y|x)} &=  log P(y|x) +1 - w_0 - \sum_{i=1}^n w_i f_i (x,y) = 0 
+    \end{aligned}</script><p>在求导这一部分我不太认同李航老师书中的写法，因为$P(y|x)$本身可以看作是一个向量，因此求导相当于对该向量某个分量求导。由此可得$P(y|x)$的解析表达式:</p>
+<script type="math/tex; mode=display">
+    P(y|x) = \exp(\sum_{i=1}^n w_i f_i(x,y) + w_0 -1) = \frac{\exp(\sum_{i=1}^n w_i f_i(x,y))}{\exp(1-w_0)}</script><p>又因为有概率密度函数的固有约束$\sum_y P(y|x) = 1$,可得:</p>
+<script type="math/tex; mode=display">\exp(1-w_0) = \sum_y \exp(\sum_{i=1}^n w_i f_i(x,y))</script><p>因此，$P_w(y|x)$的解析表达式写作:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        P_w(y|x) &= \frac{1}{Z_w(x)} \exp(\sum_{i=1}^n w_i f_i(x,y)) \\
+        Z_w(x) &= \sum_y \exp(\sum_{i=1}^n w_i f_i(x,y))
+    \end{aligned}</script><p>至此，我们得到了对偶函数$\phi(w)$表达式：</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        \phi(w) &= \sum_{x,y} \tilde{P}(x,y) \sum_{i=1}^n w_i f_i(x,y) + \sum_{x,y} \tilde{P}(x)P_w(y|x)(\log P_w(y|x) - \sum_{i=1}^n w_i f_i(x,y)) \\
+        &= \sum_{x,y} \tilde{P}(x,y) \sum_{i=1}^n w_i f_i(x,y) - \sum_{x,y} \tilde{P}(x)P_w(y|x) \log Z_w(x) \\
+        &= \sum_{x,y} \tilde{P}(x,y) \sum_{i=1}^n w_i f_i(x,y) - \sum_x \tilde{P}(x) \log Z_w(x)
+    \end{aligned}</script><p>因此接下来便是求解对偶优化问题:</p>
+<script type="math/tex; mode=display">
+    \max \phi(w)</script><p>得到$w^\ast$,然后回代$P_w(y|x)$,得到最大熵模型表达式:</p>
+<script type="math/tex; mode=display">
+    P_{w^\ast}(y|x)</script><h4 id="极大似然估计"><a href="#极大似然估计" class="headerlink" title="极大似然估计"></a>极大似然估计</h4><p>这一部分旨在证明一条性质:</p>
+<blockquote>
+<p>最大熵模型求解过程中，对偶函数的极大化等价于最大熵模型的极大似然估计</p>
+</blockquote>
+<p>首先写出对数似然函数的形式:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+         L_{\tilde{P}}(P_w) &= \log \prod_{x,y} P(y|x)^{\tilde{P}(x,y)} = \sum_{x,y} \tilde{P}(x,y) \log P(y|x) \\
+         &= \sum_{x,y} \tilde{P}(x,y) \sum_{i=1}^n w_i f_i(x,)  - \sum_{x,y} \tilde{P}(x,y) \log Z_w(x) \\
+         &= \sum_{x,y} \tilde{P}(x,y) \sum_{i=1}^n w_i f_i(x,y)  - \sum_{x} \tilde{P}(x) \log Z_w(x)
+    \end{aligned}</script><p>与对偶函数$\phi(w)$一致，这说明对对偶函数求最大等价于求最大熵模型的极大似然估计。<br>最大熵模型与logistic回归模型有类似的形式，它们又称为对数线性模型。模型学习就是对模型进行极大似然估计或者正则化的极大似然估计</p>
+
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">思考猫</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://xuejy19.github.io/2020/08/23/logistic-hui-gui-yu-zui-da-shang-mo-xing/">https://xuejy19.github.io/2020/08/23/logistic-hui-gui-yu-zui-da-shang-mo-xing/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">思考猫</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/logistic%E5%9B%9E%E5%BD%92-%E6%9C%80%E5%A4%A7%E7%86%B5%E6%A8%A1%E5%9E%8B-%E4%BC%98%E5%8C%96%E5%AD%A6%E4%B9%A0/">
+                                    <span class="chip bg-color">logistic回归, 最大熵模型, 优化学习</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.4rem;
+        line-height: 38px;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/reward/ali.jpeg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/reward/wechat.jpeg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+        <style>
+    .valine-card {
+        margin: 1.5rem auto;
+    }
+
+    .valine-card .card-content {
+        padding: 20px 20px 5px 20px;
+    }
+
+    #vcomments textarea {
+        box-sizing: border-box;
+        background: url("/medias/comment_bg.png") 100% 100% no-repeat;
+    }
+
+    #vcomments p {
+        margin: 2px 2px 10px;
+        font-size: 1.05rem;
+        line-height: 1.78rem;
+    }
+
+    #vcomments blockquote p {
+        text-indent: 0.2rem;
+    }
+
+    #vcomments a {
+        padding: 0 2px;
+        color: #4cbf30;
+        font-weight: 500;
+        text-decoration: none;
+    }
+
+    #vcomments img {
+        max-width: 100%;
+        height: auto;
+        cursor: pointer;
+    }
+
+    #vcomments ol li {
+        list-style-type: decimal;
+    }
+
+    #vcomments ol,
+    ul {
+        display: block;
+        padding-left: 2em;
+        word-spacing: 0.05rem;
+    }
+
+    #vcomments ul li,
+    ol li {
+        display: list-item;
+        line-height: 1.8rem;
+        font-size: 1rem;
+    }
+
+    #vcomments ul li {
+        list-style-type: disc;
+    }
+
+    #vcomments ul ul li {
+        list-style-type: circle;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    #vcomments table, th, td {
+        border: 0;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments h1 {
+        font-size: 1.85rem;
+        font-weight: bold;
+        line-height: 2.2rem;
+    }
+
+    #vcomments h2 {
+        font-size: 1.65rem;
+        font-weight: bold;
+        line-height: 1.9rem;
+    }
+
+    #vcomments h3 {
+        font-size: 1.45rem;
+        font-weight: bold;
+        line-height: 1.7rem;
+    }
+
+    #vcomments h4 {
+        font-size: 1.25rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    #vcomments h5 {
+        font-size: 1.1rem;
+        font-weight: bold;
+        line-height: 1.4rem;
+    }
+
+    #vcomments h6 {
+        font-size: 1rem;
+        line-height: 1.3rem;
+    }
+
+    #vcomments p {
+        font-size: 1rem;
+        line-height: 1.5rem;
+    }
+
+    #vcomments hr {
+        margin: 12px 0;
+        border: 0;
+        border-top: 1px solid #ccc;
+    }
+
+    #vcomments blockquote {
+        margin: 15px 0;
+        border-left: 5px solid #42b983;
+        padding: 1rem 0.8rem 0.3rem 0.8rem;
+        color: #666;
+        background-color: rgba(66, 185, 131, .1);
+    }
+
+    #vcomments pre {
+        font-family: monospace, monospace;
+        padding: 1.2em;
+        margin: .5em 0;
+        background: #272822;
+        overflow: auto;
+        border-radius: 0.3em;
+        tab-size: 4;
+    }
+
+    #vcomments code {
+        font-family: monospace, monospace;
+        padding: 1px 3px;
+        font-size: 0.92rem;
+        color: #e96900;
+        background-color: #f8f8f8;
+        border-radius: 2px;
+    }
+
+    #vcomments pre code {
+        font-family: monospace, monospace;
+        padding: 0;
+        color: #e8eaf6;
+        background-color: #272822;
+    }
+
+    #vcomments pre[class*="language-"] {
+        padding: 1.2em;
+        margin: .5em 0;
+    }
+
+    #vcomments code[class*="language-"],
+    pre[class*="language-"] {
+        color: #e8eaf6;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+
+    #vcomments b,
+    strong {
+        font-weight: bold;
+    }
+
+    #vcomments dfn {
+        font-style: italic;
+    }
+
+    #vcomments small {
+        font-size: 85%;
+    }
+
+    #vcomments cite {
+        font-style: normal;
+    }
+
+    #vcomments mark {
+        background-color: #fcf8e3;
+        padding: .2em;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+</style>
+
+<div class="card valine-card" data-aos="fade-up">
+    <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; padding-left: 20px; top: 15px; padding-bottom: 5px;">
+        <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
+        <span>评论</span>
+    </div>
+    <div id="vcomments" class="card-content" style="display: grid">
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/valine/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/valine/Valine.min.js"></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        appId: 'LHOcs74feKlXF84DT091adtu-gzGzoHsz',
+        appKey: '3GFMSQIiaSANJhNA8WJg9lz9',
+        notify: 'false' === 'true',
+        verify: 'false' === 'true',
+        visitor: 'true' === 'true',
+        avatar: 'mm',
+        pageSize: '10',
+        lang: 'zh-cn',
+        placeholder: 'just go go'
+    });
+</script>
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2020/08/24/zai-tan-ji-da-si-ran-gu-ji-qiu-jie/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/5.jpg" class="responsive-img" alt="再谈极大似然估计求解">
+                        
+                        <span class="card-title">再谈极大似然估计求解</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            首先我们思考这样一个问题：
+
+当我们用最大似然估计进行概率模型参数估计时，为什么基本都是直接求导，一阶导数等于0的点就是我们待求的最优估计?
+
+问到这个地方的时候，可能有一部分人就不知该如何回答了，因为一阶导数为0显然不是函数最大
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-08-24
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/" class="post-category">
+                                    统计学习
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%EF%BC%8C%E5%87%B8%E4%BC%98%E5%8C%96/">
+                        <span class="chip bg-color">统计学习，凸优化</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/08/21/tiao-jian-sui-ji-chang/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/6.jpg" class="responsive-img" alt="条件随机场">
+                        
+                        <span class="card-title">条件随机场</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            另一种常用模型为条件随机场(CRF)模型,条件随机场是给定一组输入随机变量条件下另一组输出随机变量的条件概率分布模型，其特点是假设输出随机变量构成马尔可夫随机场。本章节按照以下几部分组织：
+
+概率无向图模型
+条件随机场定义与形式
+条件随机场
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-08-21
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/" class="post-category">
+                                    统计学习
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E6%A6%82%E7%8E%87%E5%9B%BE%EF%BC%8C%E6%9D%A1%E4%BB%B6%E9%9A%8F%E6%9C%BA%E5%9C%BA/">
+                        <span class="chip bg-color">概率图，条件随机场</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeShrink.js"></script>
+
+
+<!-- 代码块折行 -->
+
+<style type="text/css">
+code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
+</style>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="503838841"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aplayer/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+
+    
+    <div class="container row center-align" style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            <span id="year">2019</span>
+            <a href="/about" target="_blank">思考猫</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                class="white-color">164.9k</span>&nbsp;字
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/xuejy19/" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:xuejianye19@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=2296858626" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 2296858626" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/search.xml", 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/materialize/materialize.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aos/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/js/matery.js"></script>
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    
+    <script async src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+<script type="text/javascript"> //只在桌面版网页启用特效 
+    var windowWidth = $(window).width(); 
+    if (windowWidth > 768) { document.write('<script type="text/javascript" src="/js/sakura.js"><\/script>'); 
+    } 
+</script> 
+
+</body>
+</html>

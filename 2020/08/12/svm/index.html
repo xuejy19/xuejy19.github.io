@@ -1,0 +1,1606 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="SVM, 风之声">
+    <meta name="description" content="与孤独为友">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>SVM | 风之声</title>
+    <link rel="icon" type="image/jpeg" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/favicon.jpg">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/css/my.css">
+
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/jquery/jquery.min.js"></script>
+
+<meta name="generator" content="Hexo 5.4.2"><link rel="stylesheet" href="/css/prism.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">风之声</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>时光轴</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">风之声</div>
+        <div class="logo-desc">
+            
+            与孤独为友
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			时光轴
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/xuejy19/" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/xuejy19/" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/2.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">SVM</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        height: calc(100vh - 250px);
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/">
+                                <span class="chip bg-color">支持向量机</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/" class="post-category">
+                                统计学习
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-08-12
+                </div>
+                
+
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
+                    2022-08-20
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    4.1k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    16 分
+                </div>
+                
+
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>这部分将介绍支持向量机(SVM)算法，该部分将按照以下几部分进行组织：</p>
+<ul>
+<li>算法历史</li>
+<li>线性可分支持向量机与硬间隔最大化</li>
+<li>线性支持向量机与软间隔最大化</li>
+<li>非线性支持向量机与核函数</li>
+<li>SVDD<span id="more"></span>
+</li>
+</ul>
+<h3 id="算法历史"><a href="#算法历史" class="headerlink" title="算法历史"></a>算法历史</h3><p>支持向量机算法是在机器学习领域非常著名的算法，在神经网络算法得到普及之前，支持向量机算法可以说是统治了机器学习领域的半壁江山，该算法由Vapnik在贝尔实验室开发，根据Vapnik和Chervonekis提出的统计学习框架或VC理论，它提出了一种最可靠的预测方法（ 1974年）和瓦普尼克（Vapnik）（1982年，1995年）。给定一组训练示例，每个训练示例都标记为属于两个类别中的一个或另一个，则SVM训练算法会构建一个模型，该模型将新示例分配给一个类别或另一个类别，使其成为非概率 二进制 线性分类器（尽管方法例如Platt缩放存在以在概率分类设置中使用SVM）。SVM模型是将示例表示为空间中的点，并进行了映射，以使各个类别的示例被尽可能宽的明显间隙分开。然后，将新示例映射到相同的空间，并根据它们落入的间隙的侧面来预测属于一个类别。<br>除执行线性分类外，SVM还可以使用所谓的内核技巧有效地执行非线性分类，将其输入隐式映射到高维特征空间。</p>
+<h3 id="线性可分支持向量机与硬间隔最大化"><a href="#线性可分支持向量机与硬间隔最大化" class="headerlink" title="线性可分支持向量机与硬间隔最大化"></a>线性可分支持向量机与硬间隔最大化</h3><p>对于线性可分数据，上一部分介绍的感知机算法便可以处理，但需要注意的是，感知机算法学习得到的超平面可能有无穷多个，那么这些超平面中哪个是最优的呢？支持向量机算法便回答了这一问题，该算法认为使两类样本点间隔最大的超平面是最优超平面。首先给出线性可分支持向量机的定义：</p>
+<blockquote>
+<p>{\ast}线性可分支持向量机{\ast}:给定线性可分训练数据集，通过间隔最大化或者等价地求解相应的凸二次规划问题学习得到的分离超平面为：</p>
+<script type="math/tex; mode=display">
+    \omega^{\ast} \cdot x + b^{\ast} = 0</script><p>以及相应的分类决策函数:</p>
+<script type="math/tex; mode=display">f(x) = sign(\omega^{\ast} \cdot x + b^{\ast})</script></blockquote>
+<p>下面就结合下图来对支持向量机的算法思想进行阐述,图中红点与蓝点分别代表两个类别，我们现在期望找到一个超平面，使得两个类别的样本点都能够尽可能离该超平面距离远，也就是希望中间的margin尽可能大。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/SVM.png" alt="SVM"><br>这便是支持向量机的思想，下一步需要做的便是将这种想法翻译成一个数学问题，在这里首先引入两个间隔的概念：</p>
+<blockquote>
+<ul>
+<li>几何间隔：所谓几何间隔就是样本点$(x_i,y_i)$到超平面的实际距离，其计算公式为(此时样本点已经被超平面正确分类)：<script type="math/tex; mode=display">d = y_i \frac{\omega x_i + b}{||\omega||}</script></li>
+<li>函数间隔：不考虑几何间隔中$||\omega||$便得到了函数间隔：<script type="math/tex; mode=display">d = y_i(\omega x_i +b)</script></li>
+</ul>
+</blockquote>
+<p>需要注意的是，函数间隔可以表示分类预测的正确性及确信度，在感知机学习中，我们便是使用函数间隔，这是由于数据线性可分，最终目标函数都会收敛到0，使用几何间隔与函数间隔最终效果并无不同(两种间隔符号一致)。但在支持向量机算法中，我们希望间隔最大，这时显然函数间隔是不够的，因为只要成比例的增大$\omega,b$，超平面并没有改变，但是函数间隔却便为两倍，因此在该问题中，我们应当使用几何间隔,至此支持向量机的思想可以写成如下优化问题的形式：</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        &max_{\omega,b} \quad \gamma  \\
+        &s.t. \quad y_i \frac{\omega x_i +b}{||\omega||} \geq \gamma,\quad i = 1,2,\dots,N
+    \end{aligned}</script><p>上面是优化问题的原始形式，下面尝试对该优化问题进行等价转换以便于求解，首先根据几何间隔与函数间隔的关系，将优化问题转化为：</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+         &max_{\omega,b} \quad \frac{\hat{\gamma}}{||\omega||}  \\
+        &s.t. \quad y_i (\omega x_i +b) \geq \hat{\gamma},\quad i = 1,2,\dots,N
+    \end{aligned}</script><p>此时可以注意到函数间隔$\hat{\gamma}$并不影响该优化问题求解，因此考虑将$\hat{\gamma}$置为1，注意到最大化$\frac{1}{||\omega||}$等价于最小化$\frac{1}{2}||\omega||^2$,因此优化问题最终可以表述为:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        &min_{\omega,b} \quad \frac{1}{2} ||\omega||^2 \\\\
+        &s.t. \quad y_i (\omega x_i +b) \geq 1,\quad i = 1,2,\dots, N
+    \end{aligned}</script><p>这是一个典型的凸二次规划问题，运用凸优化知识可进行求解。</p>
+<p>下面给出一个定理来说明最大间隔分离超平面唯一的定理：</p>
+<blockquote>
+<p>定理：若训练数据集$T$线性可分，则可将训练数据集中的样本点完全分开的最大间隔分离超平面存在且唯一</p>
+</blockquote>
+<h4 id="支持向量与间隔边界"><a href="#支持向量与间隔边界" class="headerlink" title="支持向量与间隔边界"></a>支持向量与间隔边界</h4><p>首先给出支持向量的定义:</p>
+<blockquote>
+<p>在线性可分情况下，训练数据集中样本点中与分离超平面距离最近的样本点的实例称为支持向量。</p>
+</blockquote>
+<p>反映在优化问题中，支持向量满足约束条件的等号,支持向量在超平面:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+         H_1&: \omega \cdot x +b =1  \\
+         H_2&: \omega \cdot x +b = -1
+    \end{aligned}</script><p>两个支撑超平面之间的距离称为间隔，该间隔距离为：</p>
+<script type="math/tex; mode=display">
+    d = \frac{2}{||\omega||}</script><p>在决定分离超平面时只有支持向量起作用，而其他实例点并不起作用。</p>
+<h4 id="学习的对偶算法"><a href="#学习的对偶算法" class="headerlink" title="学习的对偶算法"></a>学习的对偶算法</h4><p>在进行求解时，我们往往考虑不直接求解原问题，而是求解原问题的对偶问题, 又因为原问题是一个凸优化问题，同时满足Slater约束品性，因此考虑求解其对偶问题。首先写出Lagrange函数：</p>
+<script type="math/tex; mode=display">
+    L(\omega,b,\alpha) = \frac{1}{2}||\omega^2|| - \sum_{i=1}^N \alpha_i y_i (\omega \cdot x_i +b) + \sum_{i=1}^N \alpha_i</script><p>接下来求解对偶函数，对偶函数$g(\alpha)$表示为：</p>
+<script type="math/tex; mode=display">
+    g(\alpha) = \min_{\omega,b} L(\omega,b,\alpha)</script><p>因为$L(\omega,b,\alpha)$是凸函数，因此只需要对$\omega,b$求偏导，令偏导等于0即可：</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        \frac{\partial L(\omega,b,\alpha)}{\partial \omega} &= \omega - \sum_{i=1}^N \alpha_i y_i x_i = 0 \rightarrow \omega =  \sum_{i=1}^N \alpha_i y_i x_i  \\\\
+        \frac{\partial L(\omega,b,\alpha)}{\partial b} &= -\sum_{i=1}^N \alpha_i y_i = 0 \rightarrow \sum_{i=1}^N \alpha_i y_i = 0
+    \end{aligned}</script><p>回代拉格朗日函数，可得对偶函数：</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+          g(\alpha) &= \frac{1}{2} \sum_{i=1}^N \sum_{j=1}^N \alpha_i \alpha_j y_i y_i x_i^T x_j - \sum_{i=1}^N \sum_{j=1}^N \alpha_i \alpha_j y_i y_i x_i^T x_j + \sum_{i=1}^N \alpha_i  \\\\
+          &= -\frac{1}{2} \sum_{i=1}^N \sum_{j=1}^N \alpha_i \alpha_j y_i y_i x_i^T x_j + \sum_{i=1}^N \alpha_i
+    \end{aligned}</script><p>所以，对偶优化问题可以写做：</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        &\max_{\alpha} \quad -\frac{1}{2} \sum_{i=1}^N \sum_{j=1}^N \alpha_i \alpha_j y_i y_i x_i^T x_j + \sum_{i=1}^N \alpha_i \\\\
+        &s.t. \quad \sum_{i=1}^N \alpha_i y_i =0;\alpha_i \geq 0,i=1,\dots,N
+    \end{aligned}</script><p>对于该问题的求解可以通过SMO(序列最小优化)算法进行求解，因为强对偶性成立,KKT条件满足：</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        &\nabla_{\omega} L(\omega^{\ast},b^{\ast},\alpha^{\ast}) = \omega^{\ast} - \sum_{i=1}^N \alpha_i^{\ast} y_i x_i = 0 \\
+        &\nabla_{b} L(\omega^{\ast},b^{\ast},\alpha^{\ast}) = -\sum_{i=1}^N \alpha_i^{\ast} y_i = 0 \\
+        &\alpha_i^{\ast} (y_i(\omega^{\ast}x_i+b^{\ast})-1) = 0 \\
+       &y_i(\omega^{\ast} x_i +b^{\ast}) - 1 \geq 0 \\
+        &\alpha_i^{\ast} \geq 0 
+    \end{aligned}</script><p>由此便可建立对偶问题最优解$\alpha^{\ast}$与原问题最优解$\omega^{\ast},b^{\ast}$之间的关系，首先至少有一个$\alpha_j^{\ast}&gt;0$,这是因为若$\alpha^{\ast}$均为0，则$\omega^{\ast}$为0,这不是原始最优化问题的解，假设$\alpha_j^{\ast}&gt;0$,则由互补松弛条件，此时有$y_j(\omega^{\ast} x_j +b^{\ast}) = 1$,而$\omega^{\ast}$表达式是知道的，由此可得$\omega^{\ast},b^{\ast}$表达式为：</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        \omega^{\ast} &= \sum_{i=1}^N \alpha_i^{\ast} y_i x_i \\
+        b^{\ast} &=  y_j - \sum_{i=1}^N \alpha_i^{\ast} y_i(x_i\cdot x_j)
+    \end{aligned}</script><p>至此，我们便通过求解对偶问题得到了原始问题的最优解，得到了超平面方程以及判决方程：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    &\omega^{\ast} \cdot x + b^{\ast} = 0 \\
+    &f(x) = sign(\omega^{\ast} \cdot x + b^{\ast})
+\end{aligned}</script><p>通过引入对偶问题，我们便可以从数学的角度导出支持向量:</p>
+<blockquote>
+<p>训练数据集中对应于$\alpha_i^{\ast} &gt;0$的样本点称为支持向量</p>
+</blockquote>
+<h3 id="线性支持向量机与软间隔最大化"><a href="#线性支持向量机与软间隔最大化" class="headerlink" title="线性支持向量机与软间隔最大化"></a>线性支持向量机与软间隔最大化</h3><h4 id="原始问题"><a href="#原始问题" class="headerlink" title="原始问题"></a>原始问题</h4><p>前面介绍的算法是针对线性可分数据,那么对于大部分线性可分的数据集，支持向量机能否处理呢？答案是可以，但是需要对原始优化问题做适当变换,对于线性可分的数据，我们要求各个样本点到分类超平面的函数间隔都要大于1，对于不可分数据点，我们直观上的想法是考虑能否将该约束放松，因此我们考虑为每一个样本点引入一个松弛变量$\xi_i$,使得函数间隔加上松弛变量等于1。这样，约束条件变为:</p>
+<script type="math/tex; mode=display">
+    y_i(\omega \cdot x_i +b) \geq 1 - \xi_i</script><p>但需要注意的人，该松弛变量的引入是有代价的，需要在目标函数中进行惩罚，因此考虑在目标函数中加入惩罚项$\xi_i$，将目标函数改写为：</p>
+<script type="math/tex; mode=display">
+    \frac{1}{2} ||\omega||^2  + C\sum_{i=1}^N \xi_i</script><p>其中$C$是惩罚系数，$C$值大时对误分类惩罚增大。最小化该目标函数包含两层含义：使间隔尽量大；使误分类点尽量少。线性不可分支持向量机的学习问题变为如下凸二次规划问题：</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        &\min_{\omega,b,\xi} \quad \frac{1}{2} ||\omega||^2 + C \sum_{i=1}^N \xi_i \\\\
+        &s.t. \quad y_i(\omega x_i +b) \geq 1- \xi_i,i=1,2,\dots,N \\\\
+        &\qquad \xi_i \geq 0,i=1,2,\dots,N
+    \end{aligned}</script><p>对于该原始问题，可以证明$\omega$的解是唯一的，但$b$的解可能不唯一，而是存在一个区间。</p>
+<h4 id="对偶问题"><a href="#对偶问题" class="headerlink" title="对偶问题"></a>对偶问题</h4><p>在该部分便不进行对偶问题推导了，步骤与上一部分一致，最终得到的对偶问题形式为：</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        &\max_{\alpha} \quad -\frac{1}{2} \sum_{i=1}^N \sum_{j=1}^N \alpha_i \alpha_j y_i y_i x_i^T x_j + \sum_{i=1}^N \alpha_i \\\\
+        &s.t. \quad \sum_{i=1}^N \alpha_i y_i =0,i=1,\dots,N  \\\\
+        & \qquad 0 \leq \alpha_i \leq C \quad i=1,2,\dots,N
+    \end{aligned}</script><p>可以看到引入松弛变量后对偶问题形式基本未发生变化，仅仅约束条件中$\alpha_i$范围变了。需要注意的是将原始问题转化为对偶问题的过程中，引入了两个Lagrange算子$\alpha_i,\mu_i$，但由于存在$<br>\alpha_i + \mu_i = C $以及$\alpha_i \geq 0, \mu_i \geq 0 $,因此将这些约束条件简化为$0 \leq \alpha_i \leq C$。<br>下面讨论如何根据对偶问题最优解求解原问题最优解，与硬间隔支持向量机不同，在该问题中，互补松弛条件有两个:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        &\alpha_i^{\ast} (y_i(\omega^{\ast}x_i+b^{\ast})-1 + \xi_i) = 0  \\
+        &\mu_i \xi_i = 0 
+    \end{aligned}</script><p>在求解$b^{\ast}$时，关键是要将支持向量确定出来，首先支持向量应当在支撑超平面上，这就要求$\alpha_i&gt;0$,同时松弛间隔$\xi_i$应当为0，由第二个互补松弛条件可知$\mu_i$不能够为0，因此$\alpha_i$必须小于$C$,换句话说，$\alpha^{\ast} = C$所对应的点均在支撑超平面以内，若$\xi_i&lt;1$,则仍能分类正确，若大于1，则就会分类错误。$\omega^{\ast}$和$b^{\ast}$表达式可以写做：</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        \omega^{\ast} &= \sum_{i=1}^N \alpha_i^{\ast} y_i x_i \\
+        b^{\ast} &= y_j - \sum_{i=1}^N y_i \alpha_i^{\ast} (x_i \cdot x_j)
+    \end{aligned}</script><h4 id="非线性支持向量机与核函数"><a href="#非线性支持向量机与核函数" class="headerlink" title="非线性支持向量机与核函数"></a>非线性支持向量机与核函数</h4><p>支持向量机是解决线性分类问题的一种有效方法，但并不能解决非线性分类问题，那么非线性的数据就不能用线性的方法解决么？ 直观上我们有这样一个方法，考虑降维度线性不可分的数据映射到高维度，使映射后的数据在高维度线性可分，由此便引出了本节的核函数。</p>
+<h4 id="核函数"><a href="#核函数" class="headerlink" title="核函数"></a>核函数</h4><p>首先先举一个空间变换的栗子，设原空间为$\mathcal{X} \subset R^2,x = (x^1,x^2)^T$,新空间为$\mathcal{Z} \subset R^2,z = (z^1,z^2)^T$,定义从原空间到新空间的映射：</p>
+<script type="math/tex; mode=display">
+    z = \phi(x) = ((x^1)^2,(x^2)^2)^T</script><p>经过这样一个变换原空间中的椭圆：</p>
+<script type="math/tex; mode=display">
+    w_1 (x^1)^2 + w_2 (x^2)^2 +b = 0</script><p>变换为了新空间中的直线：</p>
+<script type="math/tex; mode=display">
+    w_1 z^1 + w_2 z^2 + b = 0</script><p>这样，原空间的非线性可分问题就变成了新空间的线性可分问题。从该问题出发，我们可以总结出用线性分类方法求解非线性分类问题的步骤：</p>
+<ul>
+<li>首先使用一个变换将原空间中的数据映射到新空间</li>
+<li>在新空间中使用线性分类学习方法从训练数据中学习分类模型</li>
+</ul>
+<p>而在支持向量机中，达到这一目的的方法应用核技巧，下面首先给出核函数的定义：</p>
+<blockquote>
+<p>核函数：设$\mathcal{X}$是输入空间，又设$\mathcal{H}$为特征空间(希尔伯特空间),如果存在一个从$\mathcal{X}$到$\mathcal{H}$的映射：</p>
+<script type="math/tex; mode=display">
+    \phi(x):\mathcal{X} \rightarrow \mathcal{H}</script><p>使得对所有$x,z \in \mathcal{X}$,函数$K(x,z)$满足条件:</p>
+<script type="math/tex; mode=display">
+    K(x,z) = \phi(x) \cdot \phi(z)</script><p>则称$K(x,z)$为核函数，$\phi(x)$为映射函数</p>
+</blockquote>
+<p>核技巧的想法是，在学习与预测中只定义核函数$K(x,z)$,而不显式的定义映射函数$\phi$。同时，对于一个核$K(x,z)$,特征空间$\mathcal{H}$和映射函数$\phi$的取法并不唯一</p>
+<h4 id="非线性支持向量机"><a href="#非线性支持向量机" class="headerlink" title="非线性支持向量机"></a>非线性支持向量机</h4><p>在线性支持向量机的对偶问题中,无论是目标函数还是决策函数中均只包含实例的内积的形式，因此若用$K(x,y)$代替$x\cdot y$,实际上便是在对高维空间中的特征点设计线性分类器。那现在的关键问题便在于如何选择合适的核函数。</p>
+<p>关于核函数这部分的理论我后面会另开一个章节进行介绍学习，在这一部分便直接给出一些常用的核函数：</p>
+<ul>
+<li>多项式核函数:<script type="math/tex; mode=display">K(x,z) = (x\cdot z +1)^p</script></li>
+<li>高斯核函数(径向基函数)<script type="math/tex; mode=display">K(x,z) = exp(- \frac{||x-z||^2}{2\sigma^2})</script></li>
+</ul>
+<p>需要注意的是，在引入核函数后，又多引入了超参数，比如高斯核函数中的$\sigma$,而这些超参数的选择也会对分类效果产生影响。</p>
+<h3 id="一类分类器设计"><a href="#一类分类器设计" class="headerlink" title="一类分类器设计"></a>一类分类器设计</h3><p>在前面介绍的支持向量机算法中，针对的都是二分类情况，但当我们做故障检测时，往往就只有大量的正常样本点，现在我们需要根据这些正常样本点来设计一个分类器以对未出现的异常样本点进行检测。在这一部分介绍两种算法：</p>
+<ul>
+<li>OCSVM</li>
+<li>SVDD</li>
+</ul>
+<h4 id="OCSVM"><a href="#OCSVM" class="headerlink" title="OCSVM"></a>OCSVM</h4><p>在OCSVM中，将坐标原点作为唯一的异常点,最大化最优超平面到远点的距离，若记$\rho$为从原点到超平面的距离，$\xi_i$为松弛变量，则优化问题可以写做：</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        &\max_{\omega,\rho,\xi_i} \rho - C\sum_{i=1}^N \xi_i \\
+        & s.t. \quad \omega \cdot x_i \geq \rho - \xi_i,\xi_i \geq 0,||\omega|| = 1
+    \end{aligned}</script><h4 id="SVDD"><a href="#SVDD" class="headerlink" title="SVDD"></a>SVDD</h4><p>SVDD的基本思想则是，对于$n$维空间中的数据点集，寻找最小超球面，使其成为所有点的边界，其对应优化问题的原问题为:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+         &\min_{a,R,\xi} \quad R^2 + C\sum_{i=1}^N \xi_i \\
+         &s.t. \quad ||x_i -a||^2 \leq R^2 + \xi_i \\
+         &\qquad \quad \xi_i \geq 0 
+    \end{aligned}</script>
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">思考猫</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://xuejy19.github.io/2020/08/12/svm/">https://xuejy19.github.io/2020/08/12/svm/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">思考猫</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/">
+                                    <span class="chip bg-color">支持向量机</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.4rem;
+        line-height: 38px;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/reward/ali.jpeg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/reward/wechat.jpeg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+        <style>
+    .valine-card {
+        margin: 1.5rem auto;
+    }
+
+    .valine-card .card-content {
+        padding: 20px 20px 5px 20px;
+    }
+
+    #vcomments textarea {
+        box-sizing: border-box;
+        background: url("/medias/comment_bg.png") 100% 100% no-repeat;
+    }
+
+    #vcomments p {
+        margin: 2px 2px 10px;
+        font-size: 1.05rem;
+        line-height: 1.78rem;
+    }
+
+    #vcomments blockquote p {
+        text-indent: 0.2rem;
+    }
+
+    #vcomments a {
+        padding: 0 2px;
+        color: #4cbf30;
+        font-weight: 500;
+        text-decoration: none;
+    }
+
+    #vcomments img {
+        max-width: 100%;
+        height: auto;
+        cursor: pointer;
+    }
+
+    #vcomments ol li {
+        list-style-type: decimal;
+    }
+
+    #vcomments ol,
+    ul {
+        display: block;
+        padding-left: 2em;
+        word-spacing: 0.05rem;
+    }
+
+    #vcomments ul li,
+    ol li {
+        display: list-item;
+        line-height: 1.8rem;
+        font-size: 1rem;
+    }
+
+    #vcomments ul li {
+        list-style-type: disc;
+    }
+
+    #vcomments ul ul li {
+        list-style-type: circle;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    #vcomments table, th, td {
+        border: 0;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments h1 {
+        font-size: 1.85rem;
+        font-weight: bold;
+        line-height: 2.2rem;
+    }
+
+    #vcomments h2 {
+        font-size: 1.65rem;
+        font-weight: bold;
+        line-height: 1.9rem;
+    }
+
+    #vcomments h3 {
+        font-size: 1.45rem;
+        font-weight: bold;
+        line-height: 1.7rem;
+    }
+
+    #vcomments h4 {
+        font-size: 1.25rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    #vcomments h5 {
+        font-size: 1.1rem;
+        font-weight: bold;
+        line-height: 1.4rem;
+    }
+
+    #vcomments h6 {
+        font-size: 1rem;
+        line-height: 1.3rem;
+    }
+
+    #vcomments p {
+        font-size: 1rem;
+        line-height: 1.5rem;
+    }
+
+    #vcomments hr {
+        margin: 12px 0;
+        border: 0;
+        border-top: 1px solid #ccc;
+    }
+
+    #vcomments blockquote {
+        margin: 15px 0;
+        border-left: 5px solid #42b983;
+        padding: 1rem 0.8rem 0.3rem 0.8rem;
+        color: #666;
+        background-color: rgba(66, 185, 131, .1);
+    }
+
+    #vcomments pre {
+        font-family: monospace, monospace;
+        padding: 1.2em;
+        margin: .5em 0;
+        background: #272822;
+        overflow: auto;
+        border-radius: 0.3em;
+        tab-size: 4;
+    }
+
+    #vcomments code {
+        font-family: monospace, monospace;
+        padding: 1px 3px;
+        font-size: 0.92rem;
+        color: #e96900;
+        background-color: #f8f8f8;
+        border-radius: 2px;
+    }
+
+    #vcomments pre code {
+        font-family: monospace, monospace;
+        padding: 0;
+        color: #e8eaf6;
+        background-color: #272822;
+    }
+
+    #vcomments pre[class*="language-"] {
+        padding: 1.2em;
+        margin: .5em 0;
+    }
+
+    #vcomments code[class*="language-"],
+    pre[class*="language-"] {
+        color: #e8eaf6;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+
+    #vcomments b,
+    strong {
+        font-weight: bold;
+    }
+
+    #vcomments dfn {
+        font-style: italic;
+    }
+
+    #vcomments small {
+        font-size: 85%;
+    }
+
+    #vcomments cite {
+        font-style: normal;
+    }
+
+    #vcomments mark {
+        background-color: #fcf8e3;
+        padding: .2em;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+</style>
+
+<div class="card valine-card" data-aos="fade-up">
+    <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; padding-left: 20px; top: 15px; padding-bottom: 5px;">
+        <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
+        <span>评论</span>
+    </div>
+    <div id="vcomments" class="card-content" style="display: grid">
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/valine/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/valine/Valine.min.js"></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        appId: 'LHOcs74feKlXF84DT091adtu-gzGzoHsz',
+        appKey: '3GFMSQIiaSANJhNA8WJg9lz9',
+        notify: 'false' === 'true',
+        verify: 'false' === 'true',
+        visitor: 'true' === 'true',
+        avatar: 'mm',
+        pageSize: '10',
+        lang: 'zh-cn',
+        placeholder: 'just go go'
+    });
+</script>
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2020/08/17/hmm/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/6.jpg" class="responsive-img" alt="隐马尔可夫模型">
+                        
+                        <span class="card-title">隐马尔可夫模型</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            在这一部分，我将对隐马尔可夫模型(HMM)做简要介绍,该章节分为以下几个部分进行组织:
+
+基本概念
+概率计算算法
+学习算法
+预测算法
+
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-08-17
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/" class="post-category">
+                                    统计学习
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E6%A6%82%E7%8E%87%E6%A8%A1%E5%9E%8B%EF%BC%8CHMM/">
+                        <span class="chip bg-color">概率模型，HMM</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/08/11/xian-xing-pan-bie-han-shu/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/6.jpg" class="responsive-img" alt="线性判别函数">
+                        
+                        <span class="card-title">线性判别函数</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            在这一部分将总结一下关于感知机的一些相关知识点，不过首先我想要介绍下统计学习相关算法的一种分类标准。该部分内容将按照以下几部分进行组织：
+
+
+模型分类-生成式模型与判别式模型
+线性判别-感知机
+
+
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-08-11
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/" class="post-category">
+                                    统计学习
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E7%BA%BF%E6%80%A7%E5%88%A4%E5%88%AB-%E6%84%9F%E7%9F%A5%E6%9C%BA/">
+                        <span class="chip bg-color">线性判别,感知机</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeShrink.js"></script>
+
+
+<!-- 代码块折行 -->
+
+<style type="text/css">
+code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
+</style>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="503838841"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aplayer/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+
+    
+    <div class="container row center-align" style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            <span id="year">2019</span>
+            <a href="/about" target="_blank">思考猫</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                class="white-color">164.9k</span>&nbsp;字
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/xuejy19/" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:xuejianye19@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=2296858626" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 2296858626" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/search.xml", 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/materialize/materialize.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aos/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/js/matery.js"></script>
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    
+    <script async src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+<script type="text/javascript"> //只在桌面版网页启用特效 
+    var windowWidth = $(window).width(); 
+    if (windowWidth > 768) { document.write('<script type="text/javascript" src="/js/sakura.js"><\/script>'); 
+    } 
+</script> 
+
+</body>
+</html>

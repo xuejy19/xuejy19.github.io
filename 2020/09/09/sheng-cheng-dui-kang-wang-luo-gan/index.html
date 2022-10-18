@@ -1,0 +1,1827 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="生成对抗网络GAN, 风之声">
+    <meta name="description" content="与孤独为友">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>生成对抗网络GAN | 风之声</title>
+    <link rel="icon" type="image/jpeg" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/favicon.jpg">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/css/my.css">
+
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/jquery/jquery.min.js"></script>
+
+<meta name="generator" content="Hexo 5.4.2"><link rel="stylesheet" href="/css/prism.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">风之声</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>时光轴</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">风之声</div>
+        <div class="logo-desc">
+            
+            与孤独为友
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			时光轴
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/xuejy19/" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/xuejy19/" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/6.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">生成对抗网络GAN</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        height: calc(100vh - 250px);
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/GAN/">
+                                <span class="chip bg-color">GAN</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/" class="post-category">
+                                统计学习
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-09-09
+                </div>
+                
+
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
+                    2022-08-20
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    4.6k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    20 分
+                </div>
+                
+
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>这一部分介绍一种特殊的神经网路模型——生成对抗网络(GAN)，生成对抗网络由<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Ian_Goodfellow">Lan Goodfellow</a>于2014年提出，该算法在形式上表现为两个神经网络的彼此对抗，对于生成对抗网络，我们可以从以下几个角度来对其进行限定：</p>
+<ul>
+<li><strong>本质：</strong> 学习训练数据集的分布  </li>
+<li><strong>作用：</strong> 产生新的样本，对于小样本任务可以起到数据增强的作用 </li>
+<li><strong>实现形式：</strong> 两个神经网络彼此对抗 </li>
+</ul>
+<p>本文按照以下结构进行组织:</p>
+<ul>
+<li>GAN算法思想</li>
+<li>GAN背后数学推导  </li>
+<li>GAN<code>pytorch</code>实现 </li>
+</ul>
+<span id="more"></span>
+<h3 id="GAN-算法思想"><a href="#GAN-算法思想" class="headerlink" title="GAN 算法思想"></a>GAN 算法思想</h3><p><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/GAN.jpg" alt="GAN"><br>考虑这样一个场景，一个小镇里有一个造假钞的人，同时有一个警察，它们两个各自的目标分别是：</p>
+<ul>
+<li><strong>罪犯：</strong> 不断提高自己的造假钞技术，使得自己的假钞足以以假乱真，让警察鉴别不出来</li>
+<li><strong>警察：</strong> 不断提高自己的鉴别水平，能够准确地识别小偷制造的假钞</li>
+</ul>
+<p>从博弈论的角度来看，这其实是一个零和博弈：</p>
+<blockquote>
+<p>小偷的造假技术越高超，则警察鉴别起来就越困难;反之，警察的鉴别技术越高超，则小偷造出能欺骗过警察的假钞就更加困难，在对抗中，两个人都在变强。</p>
+</blockquote>
+<p>接下来我们分析构想一个场景，我们有一组数据，但是数据的量不足，我们期望能够找到这样一个”造假数据”的人帮助我们产生一些新的图像，以达到数据增强的目的。但在这个”造假数据”的人造出一个假数据之后，我们需要判断一下这个数据到底合不合格，因此我们就需要另外一个鉴别”假数据”的”警察”。 </p>
+<p>其实我们的本质目的是为了<strong>造假数据</strong>,但这个任务若无监督是很难进行下去的，因此我们需要为其提供一个”警察”对其进行监督，因此我们就需要有两个学习器，一个学习如何生成”假数据”，另一个则需要学习如何判别出这些”假数据”，在这两个学习器博弈的过程中我们最终得到了一个”造假数据”比较高超学习器。</p>
+<h3 id="GAN-背后数学推导"><a href="#GAN-背后数学推导" class="headerlink" title="GAN 背后数学推导"></a>GAN 背后数学推导</h3><blockquote>
+<p><strong>沃兹基</strong>曾经说过：算法思想也就图一乐，真涨姿势还是要看数学推导</p>
+</blockquote>
+<h4 id="从最大似然估计谈起"><a href="#从最大似然估计谈起" class="headerlink" title="从最大似然估计谈起"></a>从最大似然估计谈起</h4><p>因为我们本质上是希望能够得到一个学习器，使得其产生的数据的能够与训练集数据同分布，那么数学推导就从分布入手，假设训练集数据概率分布为$p(x|\theta)$,其中$\theta$为该概率分布所依赖的参数，当我们得到一组数据$X = (x_1,x_2,\dots, x_N)$时，我们想要对参数进行估计，那么此时就要祭出已经老生常谈的<strong>最大似然估计</strong>，假设样本独立同分布，则写出似然函数如下:</p>
+<script type="math/tex; mode=display">
+    L(X|\theta) = \prod_{i=1}^N p(x_i | \theta)</script><p>而$\theta$的求解其实就是一个优化问题:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        \theta^* &= argmax L(X|\theta) \\
+        &= argmax \ln L(X|\theta) \\  
+        &= argmax \frac{1}{N} L(X|\theta) \\
+        &= argmax \frac{1}{N} \sum_{i=1}^N \ln p(x_i|\theta) \\
+        &= argmax E_{x \sim p(x)} \ln p(x|\theta)  \\
+        &= argmax \int_{x} p(x) \ln p(x|\theta) dx
+    \end{aligned}</script><p>这里需要特别说明一下这一步：</p>
+<script type="math/tex; mode=display">
+    argmax \frac{1}{N} \sum_{i=1}^N \ln p(x_i|\theta) \Leftrightarrow argmax E_{x \sim p(x)} \ln p(x|\theta)</script><p>当样本数量足够大时，空间中每个样本点都被覆盖，而具体空间中某一个点$x<em>i$会落入多少样本点则取决于数据分布$p(x)$在该点概率密度函数的大小，换句话说，如果从采样的角度，要对某点的概率密度函数进行估计，那么只需要原始数据进行采样，采样$N$个点，若最终有$n</em>{x_i}$个点落在了$x_i$处，那么该点的概率密度函数就可以估计为:</p>
+<script type="math/tex; mode=display">
+    p(x_i) = \frac{n_{x_i}}{N}</script><p>于是上面的等价性也是可以按照这种思想推导出来：</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        \lim_{N \rightarrow \infty} \frac{1}{N} \ln p(x_i|\theta) &= \sum_{x} \frac{n_{x}}{N} \ln p(x_i|\theta)  \\
+        &= \int_x p(x) \ln p(x|\theta)  dx  \\
+        &= E_{x \sim p(x)} \ln p(x|\theta)  
+    \end{aligned}</script><p>最大似然函数估计的目的是找到一组最合适的参数$\theta$使得分布$p(x|\theta)$更加符合数据分布，但是能够应用最大似然估计的场合一般是对数据分布有一个假设，这样才有参数可以优化，搜索空间限制在$\mathcal{p(x|\theta)}$,现在我们将这个约束去掉，在所有可能分布中找到一个分布$q(x)$,使得$q(x)$能够尽可能接近原始数据分布$p_{data}(x)$。 至此我们证明了：</p>
+<script type="math/tex; mode=display">
+    \theta^* = argmax L(X|\theta)  \Leftrightarrow  argmax E_{x \sim p(x)} \ln q(x)</script><h4 id="最大似然估计与KL散度"><a href="#最大似然估计与KL散度" class="headerlink" title="最大似然估计与KL散度"></a>最大似然估计与KL散度</h4><p>紧接上文，我们来看下$E_{x \sim p(x)} \ln q(x)$:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+    argmax_{q(x)}    E_{x \sim p(x)} \ln q(x) &= argmax_{q(x)}\int_x p(x) \ln q(x) dx  \\ 
+    &= argmin_{q(x)} -\int_x p(x) \ln q(x) dx  \\
+    &= argmin_{q(x)} -\int_x p(x) \ln q(x) dx + \int_x p(x) \ln p(x) dx \\
+    &= argmin_{q(x)} D_{KL}(p(x)||q(x))
+    \end{aligned}</script><p>这说明我们要找到一个分布$q(x)$使得其对于原始分布$p(x)$产生数据的极大似然函数最大就等价于找到一个分布$q(x)$使得两个分布之间的KL散度最小(不知道啥是KL散度的，来<a href="https://xuejy19.github.io/2020/08/26/%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83%E4%B8%AD%E7%9A%84%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F/#more">这里</a>补课)。同时中间结果则是也等价于最小化交叉熵，所以我们又得到了一个有用的结论:</p>
+<blockquote>
+<p>最大化似然函数 $\Leftrightarrow$ 最小化交叉熵 $\Leftrightarrow$ 最小化KL散度</p>
+</blockquote>
+<p>然后为了解决KL散度的不对称性，又引入了JS散度：</p>
+<script type="math/tex; mode=display">
+    JS(p(x)||q(x)) = \frac{1}{2} D_{KL}(p(x)||\frac{p(x)+ q(x)}{2}) + \frac{1}{2} D_{KL} (q(x) || \frac{p(x) + q(x)}{2})</script><p>本来想推导下优化KL散度等价于优化JS散度，但没推出来，只有一个不等关系:</p>
+<script type="math/tex; mode=display">
+    JS(p||q) \leq \frac{1}{4} D_{KL}(p||q) + \frac{1}{4} D_{KL}(q||p)</script><p>本身KL散度的取值范围是$[0, +\infty]$,而JS散度的取值范围是$[0,1]$($\log$以2为底)，但是KL散度与JS散度取最小值的条件是一样的，即两个分布完全相同，因此使用JS散度或者KL散度进行优化，应当是同样的优化效果。 因此可以继续将结论补充：</p>
+<blockquote>
+<p>最大化似然函数 $\Leftrightarrow$ 最小化交叉熵 $\Leftrightarrow$ 最小化KL散度$\Leftrightarrow$ 最小化JS散度</p>
+</blockquote>
+<h4 id="生成对抗网络"><a href="#生成对抗网络" class="headerlink" title="生成对抗网络"></a>生成对抗网络</h4><p>之前进行分布拟合，一般通过假设分布是一个高斯分布(或混合高斯分布)，然后对参数进行优化，使得对数据有一个较好的拟合效果，但高斯分布假设很多时候并不满足，因此需要一个更大的模型搜索空间。随着神经网络科学的发展，人们开始思考，能否使用神经网络来将一个高斯分布映射为我们期望的分布$p<em>G$，但由于$p</em>{data}$是未知的，我们并不知道应该如何衡量两个分布之间的差异，因此就需要有一个判别器。GAN的目标函数如下:</p>
+<script type="math/tex; mode=display">
+    V(D, G) = E_{x \sim data} \log D(x) + E_{x \sim p_G} \log (1 - D(x))</script><p>前一项中的$D(x)$表示判别器对来自训练集数据的评分，后一项中的$D(x)$表示判别器对来自生成器数据的评分，如果想提高判别器的性能，则要求判别器对来自训练数据集的数据评分较高，对来自生成器生成数据评分较低，因为$D(x) \in [0,1]$,因此$D(x)$也可以认为是一个样本是来自原始分布的概率。下面我们将$V(D,G)$写开:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        V(D,G) &=  E_{x \sim data} \log D(x) + E_{x \sim p_G} \log (1 - D(x)) \\ 
+        &= \int_x p_{data}(x) \log D(x) dx + \int_x p_G(x) \log(1-D(x)) dx \\
+        &= \int_x [p_{data}(x) \log D(x) + p_G(x) \log(1 - D(x))] dx  
+    \end{aligned}</script><p>判别器希望最大化$V(D,G)$,即对于来自于真实样本分布的样本的打分尽可能多，对来自于生成器的样本的打分尽可能低，想要优化上式，即低于任意一个输入$x$，判别器应当:</p>
+<script type="math/tex; mode=display">
+    \max_{D} v(D) = p_{data}(x) \log D(x) + p_G(x) \log(1 - D(x))</script><p>该函数是一个凹函数，可以直接通过求导等于0求得$D(x)$最优解：</p>
+<script type="math/tex; mode=display">
+    \frac{\partial v(D)}{\partial D(x)} = \frac{p_{data}(x)}{D(x)} - \frac{p_G(x)}{1 - D(x)} = 0</script><p>可以求得： </p>
+<script type="math/tex; mode=display">
+    D^*(x) = \frac{p_{data}(x)}{p_{data}(x) + p_{G}(x)}</script><p>将求得的$D(x)$回代$V(D,G)$:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+         V(D^*,G) &= \int_x p_{data}(x) \log \frac{p_{data}(x)}{p_{data}(x) + p_{G}(x)} dx + \int_x p_G(x) \frac{p_{G}(x)}{p_{data}(x) + p_{G}(x)}  dx \\
+         &= -2\log2 + 2JS(p_{data}(x) || p_G(x)) 
+    \end{aligned}</script><p>所以说我们接下来对生成器G的优化，其实就是:</p>
+<script type="math/tex; mode=display">
+    G^* = \arg \min_G V(D^*,G) = \arg \min_{G} JS(p_{data}(x)||p_G(x))</script><p>这说明我们对生成器进行优化，实质上就是期望能够找到一个分布，使得$p<em>G(x)$与原始数据分布$p</em>{data}(x)$的JS散度最小，由前面的等价性，其实就是找到一个分布使得对训练数据的最大似然函数最大。 因此整个优化问题可以写做:</p>
+<script type="math/tex; mode=display">
+    \min_{G} \max_{D} V(D,G)</script><h4 id="GAN-Pytorch实现"><a href="#GAN-Pytorch实现" class="headerlink" title="GAN Pytorch实现"></a>GAN <code>Pytorch</code>实现</h4><p>在实现的时候需要关注的问题我觉得主要有以下几个：</p>
+<ul>
+<li>损失函数选择 </li>
+<li>网络结构设计 </li>
+<li>优化顺序 <h4 id="损失函数选择"><a href="#损失函数选择" class="headerlink" title="损失函数选择"></a>损失函数选择</h4>首先讨论下损失函数选择，对于判别器而言，其面临的其实就是一个二分类问题，我们看下$V(D,G)$:<script type="math/tex; mode=display">
+  \begin{aligned}
+      V(D,G) &= E_{x \sim data} \log D(x) + E_{x \sim p_G} \log (1 - D(x)) 
+  \end{aligned}</script>从采样的角度来看，$V(D,G)$可以写做:<script type="math/tex; mode=display">
+  \begin{aligned}
+      V(D,G) = \sum_{i=1, x \sim p_{data}(x)}^{batch\_size} \log D(x) + 
+      \sum_{i=1, x \sim p_{G}(x)}^{batch\_size} \log (1 - D(x))
+  \end{aligned}</script>若设置来自于真实数据集的数据的label为1，来自于生成器的数据的label为0，则上式其实可以看作两个二分类交叉熵的和，二分类交叉熵计算公式为：<script type="math/tex; mode=display">
+  BCE(x_n,y_n) = -[y_n \log x_n + (1-y_n) \log (1 - x_n)]</script>对于label为1的样本，保留前一项；而对于label为0的样本，保留后一项，刚好就是$V(D,G)$。当然也可以通过直接就两个类别做one-hot，然后使用普通的交叉熵损失函数也可以。 </li>
+</ul>
+<p>在对生成器进行优化的时候，因为我们期望造出的假样本能够尽可能真，因此只需要将假样本的label设置为1，然后进行反向传播优化生成器即可。</p>
+<h4 id="网络结构设计"><a href="#网络结构设计" class="headerlink" title="网络结构设计"></a>网络结构设计</h4><p>生成对抗网络是出了名的难训练，因此合理的网络结构非常重要，对于新入门的人来说就只能参考一些现成的网络结构,同时对于不同的任务也应当选用不同的网络结构。目前生成对抗网络在图像处理领域较多，因此往往采用卷积神经网络。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/generative-adversarial-network.png" alt="GAN"></p>
+<h4 id="优化顺序"><a href="#优化顺序" class="headerlink" title="优化顺序"></a>优化顺序</h4><p>生成对抗网络的优化是一个交替优化的过程，一般是先对判别器进行优化，接下来再对生成器进行优化，两者进行交替优化，互相博弈，下面简单地写下计算图：</p>
+<blockquote>
+<p><strong>判别器：</strong><br>真实样本、虚假样本(生成器生成) $\rightarrow$ 判别器网络D $\rightarrow$  predict $\rightarrow$ Loss_D<br><strong>生成器：</strong><br>虚假样本 $\rightarrow$ 生成器网络 $\rightarrow$ 虚假样本 $\rightarrow$ 判别器 $\rightarrow$ predict $\rightarrow$ Loss_G  </p>
+</blockquote>
+<h4 id="pytorch-代码实现"><a href="#pytorch-代码实现" class="headerlink" title="pytorch 代码实现"></a><code>pytorch</code> 代码实现</h4><p>数据集采用的是<a target="_blank" rel="noopener" href="http://mmlab.ie.cuhk.edu.hk/projects/CelebA.html">celeb-A faces Dataset</a>,代码实现如下:</p>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">import argparse
+import os
+import random
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.animation
+from tqdm import tqdm   
+from IPython.display import HTML
+
+import torch 
+import torch.nn as nn
+import torch.nn.parallel
+import torch.backends.cudnn as cudnn
+import torch.optim as optim
+import torch.utils.data 
+import torchvision.datasets as datasets
+import torchvision.transforms as transforms
+import torchvision.utils as vision_utils
+def matplotlib_imshow(img , one_channel = False):
+    if one_channel:
+        img = img.mean(dim = 0)
+    img = img/2 + 0.5
+    npimg = img.numpy()
+    if one_channel:
+        plt.imshow(img, cmap = 'Greys') 
+    else:
+        npimg  = np.transpose(npimg, (1,2,0)) 
+        plt.imshow(npimg)
+    plt.show()
+def load_data(dataroot, image_size, batch_size, num_workers):
+    transform = transforms.Compose([
+                   transforms.Resize(image_size) ,
+                   transforms.CenterCrop(image_size),
+                   transforms.ToTensor(),
+                   transforms.Normalize((0.5,0.5,0.5),(0.5,0.5,0.5))])
+    dataset = datasets.ImageFolder(root = dataroot, transform = transform) 
+    # Create the dataloader
+    dataloader = torch.utils.data.DataLoader(dataset, batch_size = batch_size, 
+                                        shuffle = True, num_workers = num_workers)
+    # plot some training images 
+    # real_batch, _ = iter(dataloader).next()
+
+    #batch_image = vision_utils.make_grid(real_batch, padding = 2) 
+    #matplotlib_imshow(batch_image)
+    return dataloader
+def weights_init(model):
+    classname = model.__class__.__name__
+    if classname.find('Conv') != -1:
+        nn.init.normal_(model.weight.data, 0.0, 0.02) 
+    elif classname.find('BatchNorm') != -1:
+        nn.init.normal_(model.weight.data, 1.0, 0.02)
+        nn.init.constant_(model.bias.data, 0)
+
+class Generator(nn.Module):
+    def __init__(self, nz, ngf, nc):
+        super(Generator, self).__init__() 
+        # nz = 100 H_out = (H_in - 1)*stride - 2*padding + kernel_size
+        self.conv1 = nn.Sequential(
+            nn.ConvTranspose2d(nz, ngf*8, 4, 1, 0, bias = False),
+            nn.BatchNorm2d(ngf*8),
+            nn.ReLU())  
+        # state size: (ngf*8)*4*4
+        self.conv2 = nn.Sequential(
+            nn.ConvTranspose2d(ngf*8, ngf*4, 4, 2, 1, bias = False),
+            nn.BatchNorm2d(ngf*4),
+            nn.ReLU())
+        # state size: (ngf*4)*8*8 
+        self.conv3 = nn.Sequential(
+            nn.ConvTranspose2d(ngf*4, ngf*2, 4, 2, 1, bias = False),
+            nn.BatchNorm2d(ngf*2),
+            nn.ReLU())
+        # state size: (ngf*2)*16*16 
+        self.conv4 = nn.Sequential(
+            nn.ConvTranspose2d(ngf*2, ngf, 4, 2, 1, bias = False),
+            nn.BatchNorm2d(ngf),
+            nn.ReLU()) 
+        # state size: ngf*32*32 
+        self.conv5 = nn.Sequential(
+            nn.ConvTranspose2d(ngf, nc, 4, 2, 1, bias = False),
+            nn.Tanh())
+    def forward(self, x):
+        x = self.conv1(x)
+        x = self.conv2(x)
+        x = self.conv3(x)
+        x = self.conv4(x)
+        return self.conv5(x)
+class Discriminator(nn.Module):
+    def __init__(self, nc, ndf):
+        super(Discriminator,self).__init__()
+        # input size: nc*64*64 
+        self.conv1 = nn.Sequential(
+            nn.Conv2d(nc, ndf, 4, 2, 1, bias = False), 
+            nn.LeakyReLU(0.2)) 
+        # state size: ndf*32*32 
+        self.conv2 = nn.Sequential(
+            nn.Conv2d(ndf, 2*ndf, 4, 2, 1, bias = False),
+            nn.BatchNorm2d(2*ndf),
+            nn.LeakyReLU(0.2))  
+        # state size: (ndf*2)*16*16 
+        self.conv3 = nn.Sequential(
+            nn.Conv2d(ndf*2, ndf*4, 4, 2, 1, bias = False),
+            nn.BatchNorm2d(ndf*4),
+            nn.LeakyReLU(0.2)) 
+        # state size: (ndf*4)*8*8 
+        self.conv4 = nn.Sequential(
+            nn.Conv2d(ndf*4, ndf*8, 4, 2, 1, bias = False),
+            nn.BatchNorm2d(ndf*8),
+            nn.LeakyReLU(0.2)) 
+        # state size: (ndf*8)*4*4
+        self.conv5 = nn.Sequential(
+            nn.Conv2d(ndf*8,1, 4,1,0,bias = False),
+            nn.Sigmoid()) 
+        # state size: 1*1 [0,1] 
+    def forward(self, x):
+        x = self.conv1(x) 
+        x = self.conv2(x) 
+        x = self.conv3(x)
+        x = self.conv4(x)
+        return self.conv5(x)
+def get_model():
+    device = args.device
+    netG = Generator(args.nz, args.ngf, args.channels).to(device)
+    netG.apply(weights_init)
+    netD = Discriminator(args.channels, args.ndf).to(device) 
+    netD.apply(weights_init)
+    optimizerD = optim.Adam(netD.parameters(), lr=args.lr, betas = (args.beta1,0.999))
+    optimizerG = optim.Adam(netG.parameters(), lr=args.lr, betas = (args.beta1,0.999))
+    criterion = nn.BCELoss() 
+    return netG, netD, optimizerD, optimizerG, criterion
+def plot_figure(G_loss, D_loss, Dx, D_z1, D_z2, img_list):
+    plt.figure(figsize = (10,5)) 
+    plt.title('Generator and Discriminator Loss During Training') 
+    plt.plot(G_loss, label = 'G') 
+    plt.plot(D_loss, label = 'D') 
+    plt.xlabel('iterations') 
+    plt.ylabel('Loss') 
+    plt.legend()
+    plt.savefig('curve_folder/Loss.png')
+    plt.figure(figsize = (10, 5)) 
+    plt.title('Dx and Dz') 
+    plt.plot(Dx, label = 'Dx') 
+    plt.plot(D_z1, label = 'Dz1')
+    plt.plot(D_z2, label = 'Dz2') 
+    plt.xlabel('iterations')
+    plt.ylabel('P') 
+    plt.legend() 
+    plt.savefig('curve_folder/D.png') 
+    for i in range(len(img_list)):
+        fig = plt.figure(figsize = (8,8)) 
+        plt.axis('off') 
+        plt.imshow(np.transpose(img_list[i], (1,2,0))) 
+        plt.savefig('fake_image/fake_img' + str(i) + '.png')
+def fit(epoches, dataloader, device, netG, netD, optimizerG, optimizerD):
+    # Lists to keep track of progress 
+    img_list = [] 
+    G_losses = [] 
+    D_losses = []
+    Dx_list = [] 
+    Dz1_list = []
+    Dz2_list = []
+    iters = 0
+    real_label = 1.0
+    fake_label = 0.0
+    fixed_noise = torch.randn(64, args.nz, 1, 1, device = device)
+    print('Starting Training Loop...') 
+
+    for epoch in range(epoches):
+        for i, data in enumerate(dataloader, 0):
+            # Update D network: maximize log(D(x)) + log(1-D(G(z))) 
+            ## Train with all real batch
+            netD.zero_grad() 
+            image_batch = data[0].to(device) 
+            batch_size = image_batch.shape[0] 
+            label = torch.full((batch_size,), real_label, dtype = torch.float,device = device) 
+            #Forward pass real batch through D 
+            output = netD(image_batch).view(-1) 
+            errD_real = criterion(output, label)
+            #Calculate gradients for D in backward pass 
+            errD_real.backward() 
+            D_x = output.mean().item() 
+
+            ## Train with all-fake batch 
+            # Generate batch of latent vectors  
+            noise = torch.randn(batch_size,args.nz, 1, 1, device = device)  
+            # Generate fake image batch with G 
+            fake = netG(noise) 
+            label.fill_(fake_label)
+            # Classify all fake batch with D 
+            # use detach() to make sure only change netD params 
+            output = netD(fake.detach()).view(-1)  
+            errD_fake = criterion(output, label) 
+            errD_fake.backward() 
+            D_G_z1 = output.mean().item() 
+            errD = errD_real + errD_fake
+            # update D 
+            optimizerD.step() 
+
+            #############################
+            #(2) Update G network: maximize log(D(G(z))) 
+            ############################# 
+            netG.zero_grad() 
+            label.fill_(real_label) # fake labels are real for generator cost
+            # Since we just updated D, perform another forward pass of all fake
+            # batch through D
+            output = netD(fake).view(-1) 
+            # Calculate G's loss based on this output 
+            errG = criterion(output, label) 
+            # Calculate gradients for  G
+            errG.backward() 
+            D_G_z2 = output.mean().item() 
+            # Update G 
+            optimizerG.step() 
+
+            # Output training stats 
+            if i%50 == 0:
+                print('[%d/%d][%d/%d]\tLoss_D: %.4f\t Loss_G: %.4f\tD(x):%.4f\tD(G(z)): %.4f/%.4f' % (epoch, epoches, i,
+                    len(dataloader), errD.item(), errG.item(), D_x, D_G_z1, D_G_z2))
+                # Save Losses for plotting later
+                G_losses.append(errG.item()) 
+                D_losses.append(errD.item()) 
+                Dx_list.append(D_x) 
+                Dz1_list.append(D_G_z1)
+                Dz2_list.append(D_G_z2)
+                # Check how the generator is doing by saving G's output on
+                # fixed noise
+                if iters % 50 == 0:
+                    with torch.no_grad():
+                        fake = netG(fixed_noise).detach().cpu()
+                    img_list.append(vision_utils.make_grid(fake[:64], padding=2,
+                        normalize = True)) 
+                iters += 1
+
+    plot_figure(G_losses, D_losses, Dx_list, Dz1_list, Dz2_list, img_list)
+
+if __name__ == '__main__':
+    manualSeed = 999
+   # print('Random Seed: ', manualSeed) 
+    random.seed(manualSeed)
+    torch.manual_seed(manualSeed)
+
+    # argparse 
+    parser = argparse.ArgumentParser(description = 'Train DCGAN') 
+    parser.add_argument('--root', type = str, default = 'data', 
+                        help = 'Root directory for dataset') 
+    parser.add_argument('--device', type = str, default= 'cuda:0',
+                        help = 'Choose the training device')
+    parser.add_argument('--workers', type = int, default = 2, 
+                        help = 'Number of workers for dataloader')
+    parser.add_argument('--batch_size', type = int, default = 128, 
+                        help = 'Batch size during training')
+    parser.add_argument('--image_size', type = int, default = 64,
+                        help = 'Spatial size of training images')
+    parser.add_argument('--channels', type = int, default = 3,
+                        help = 'Number of channels in the training images')
+    parser.add_argument('--nz', type = int, default = 100,
+                        help = 'Size of generator input')
+    parser.add_argument('--ngf', type = int, default = 64,
+                        help = 'Size of feature maps in generator') 
+    parser.add_argument('--ndf', type = int, default = 64,
+                        help = 'Size of feature maps in discriminator') 
+    parser.add_argument('--epoches', type = int, default = 10,
+                        help = 'Number of training epoches') 
+    parser.add_argument('--lr', type = float, default = 2e-4,
+                        help = 'Learning rate for optimizer') 
+    parser.add_argument('--beta1', type = float, default = 0.5,
+                        help = 'Beta1 hyperparam for Adam optimizer') 
+    args = parser.parse_args() 
+    dataloader = load_data(args.root, args.image_size, args.batch_size,
+                           args.workers)
+    netG, netD, optimizerD, optimizerG, criterion = get_model()
+
+    fit(args.epoches, dataloader,args.device, netG, netD, optimizerG, optimizerD)
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>最后附上一些结果图：<br><strong>celeb-A faces Dataset</strong><br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/Loss.png" alt="Loss"><br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/fake_image.png" alt="fake_image"></p>
+<p><strong>MNIST</strong><br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/Loss_mn.png" alt="Loss"><br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/mnist_gan.png" alt="fake_msist"></p>
+<p>网络结构比较简单，真正在使用时应当需要根据任务来进行调整，参数初始化以及部分超参数选择，<strong>沃兹基</strong>曾经说过：</p>
+<blockquote>
+<p>深度神经网络理论学习是一门学问，代码实现又是一门学问，网络调参更是一门学问，想把神经网络搞掂，三种学问缺一不可。</p>
+</blockquote>
+<p>GAN目前还面临很多问题，比如训练困难，在图像处理之外的领域效果并不理想，同时在理论支撑方面也不够扎实，如果想进一步学习GAN，可以阅读下面几篇文章：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/56943597">这份攻略帮你「稳住」反复无常的 GAN</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/75789936">海量案例！生成对抗网络（GAN）的18个绝妙应用</a></li>
+</ul>
+
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">思考猫</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://xuejy19.github.io/2020/09/09/sheng-cheng-dui-kang-wang-luo-gan/">https://xuejy19.github.io/2020/09/09/sheng-cheng-dui-kang-wang-luo-gan/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">思考猫</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/GAN/">
+                                    <span class="chip bg-color">GAN</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.4rem;
+        line-height: 38px;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/reward/ali.jpeg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/reward/wechat.jpeg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+        <style>
+    .valine-card {
+        margin: 1.5rem auto;
+    }
+
+    .valine-card .card-content {
+        padding: 20px 20px 5px 20px;
+    }
+
+    #vcomments textarea {
+        box-sizing: border-box;
+        background: url("/medias/comment_bg.png") 100% 100% no-repeat;
+    }
+
+    #vcomments p {
+        margin: 2px 2px 10px;
+        font-size: 1.05rem;
+        line-height: 1.78rem;
+    }
+
+    #vcomments blockquote p {
+        text-indent: 0.2rem;
+    }
+
+    #vcomments a {
+        padding: 0 2px;
+        color: #4cbf30;
+        font-weight: 500;
+        text-decoration: none;
+    }
+
+    #vcomments img {
+        max-width: 100%;
+        height: auto;
+        cursor: pointer;
+    }
+
+    #vcomments ol li {
+        list-style-type: decimal;
+    }
+
+    #vcomments ol,
+    ul {
+        display: block;
+        padding-left: 2em;
+        word-spacing: 0.05rem;
+    }
+
+    #vcomments ul li,
+    ol li {
+        display: list-item;
+        line-height: 1.8rem;
+        font-size: 1rem;
+    }
+
+    #vcomments ul li {
+        list-style-type: disc;
+    }
+
+    #vcomments ul ul li {
+        list-style-type: circle;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    #vcomments table, th, td {
+        border: 0;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments h1 {
+        font-size: 1.85rem;
+        font-weight: bold;
+        line-height: 2.2rem;
+    }
+
+    #vcomments h2 {
+        font-size: 1.65rem;
+        font-weight: bold;
+        line-height: 1.9rem;
+    }
+
+    #vcomments h3 {
+        font-size: 1.45rem;
+        font-weight: bold;
+        line-height: 1.7rem;
+    }
+
+    #vcomments h4 {
+        font-size: 1.25rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    #vcomments h5 {
+        font-size: 1.1rem;
+        font-weight: bold;
+        line-height: 1.4rem;
+    }
+
+    #vcomments h6 {
+        font-size: 1rem;
+        line-height: 1.3rem;
+    }
+
+    #vcomments p {
+        font-size: 1rem;
+        line-height: 1.5rem;
+    }
+
+    #vcomments hr {
+        margin: 12px 0;
+        border: 0;
+        border-top: 1px solid #ccc;
+    }
+
+    #vcomments blockquote {
+        margin: 15px 0;
+        border-left: 5px solid #42b983;
+        padding: 1rem 0.8rem 0.3rem 0.8rem;
+        color: #666;
+        background-color: rgba(66, 185, 131, .1);
+    }
+
+    #vcomments pre {
+        font-family: monospace, monospace;
+        padding: 1.2em;
+        margin: .5em 0;
+        background: #272822;
+        overflow: auto;
+        border-radius: 0.3em;
+        tab-size: 4;
+    }
+
+    #vcomments code {
+        font-family: monospace, monospace;
+        padding: 1px 3px;
+        font-size: 0.92rem;
+        color: #e96900;
+        background-color: #f8f8f8;
+        border-radius: 2px;
+    }
+
+    #vcomments pre code {
+        font-family: monospace, monospace;
+        padding: 0;
+        color: #e8eaf6;
+        background-color: #272822;
+    }
+
+    #vcomments pre[class*="language-"] {
+        padding: 1.2em;
+        margin: .5em 0;
+    }
+
+    #vcomments code[class*="language-"],
+    pre[class*="language-"] {
+        color: #e8eaf6;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+
+    #vcomments b,
+    strong {
+        font-weight: bold;
+    }
+
+    #vcomments dfn {
+        font-style: italic;
+    }
+
+    #vcomments small {
+        font-size: 85%;
+    }
+
+    #vcomments cite {
+        font-style: normal;
+    }
+
+    #vcomments mark {
+        background-color: #fcf8e3;
+        padding: .2em;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+</style>
+
+<div class="card valine-card" data-aos="fade-up">
+    <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; padding-left: 20px; top: 15px; padding-bottom: 5px;">
+        <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
+        <span>评论</span>
+    </div>
+    <div id="vcomments" class="card-content" style="display: grid">
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/valine/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/valine/Valine.min.js"></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        appId: 'LHOcs74feKlXF84DT091adtu-gzGzoHsz',
+        appKey: '3GFMSQIiaSANJhNA8WJg9lz9',
+        notify: 'false' === 'true',
+        verify: 'false' === 'true',
+        visitor: 'true' === 'true',
+        avatar: 'mm',
+        pageSize: '10',
+        lang: 'zh-cn',
+        placeholder: 'just go go'
+    });
+</script>
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2020/09/11/fei-jian-du-xue-xi/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/6.jpg" class="responsive-img" alt="非监督学习">
+                        
+                        <span class="card-title">非监督学习</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            这部分总结下传统统计学习的最后一部分内容——非监督学习，非监督学习又称无监督学习，我们前面讲的大部分算法都是需要样本的标签的，通过标签来构造损失函数，进而进行模型学习，但在有的情况下我们并没有数据的标签，这种情况下我们就什么都不能做了么？当
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-09-11
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/" class="post-category">
+                                    统计学习
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E9%99%8D%E7%BB%B4%EF%BC%8C%E8%81%9A%E7%B1%BB%EF%BC%8C%E6%A6%82%E7%8E%87%E5%AF%86%E5%BA%A6%E4%BC%B0%E8%AE%A1/">
+                        <span class="chip bg-color">降维，聚类，概率密度估计</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/09/06/chu-shi-pytorch/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/3.png" class="responsive-img" alt="pytorch学习">
+                        
+                        <span class="card-title">pytorch学习</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            在前面介绍深度学习的理论知识时，相信大家可以感受到，神经网络的实现主要有以下两个难题：
+
+当网络结构复杂起来时，手写一个神经网络是非常困难(尤其是进行反向误差传播时)，也是十分费时的。
+一个神经网络有着大量的参数，对计算机的计算能力要求非常
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-09-06
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/" class="post-category">
+                                    统计学习
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/pytorch%EF%BC%8C%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6/">
+                        <span class="chip bg-color">pytorch，深度学习框架</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeShrink.js"></script>
+
+
+<!-- 代码块折行 -->
+
+<style type="text/css">
+code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
+</style>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="503838841"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aplayer/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+
+    
+    <div class="container row center-align" style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            <span id="year">2019</span>
+            <a href="/about" target="_blank">思考猫</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                class="white-color">164.9k</span>&nbsp;字
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/xuejy19/" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:xuejianye19@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=2296858626" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 2296858626" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/search.xml", 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/materialize/materialize.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aos/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/js/matery.js"></script>
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    
+    <script async src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+<script type="text/javascript"> //只在桌面版网页启用特效 
+    var windowWidth = $(window).width(); 
+    if (windowWidth > 768) { document.write('<script type="text/javascript" src="/js/sakura.js"><\/script>'); 
+    } 
+</script> 
+
+</body>
+</html>

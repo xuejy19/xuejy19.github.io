@@ -1,0 +1,1582 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="自编码器AE, 风之声">
+    <meta name="description" content="与孤独为友">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>自编码器AE | 风之声</title>
+    <link rel="icon" type="image/jpeg" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/favicon.jpg">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/css/my.css">
+
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/jquery/jquery.min.js"></script>
+
+<meta name="generator" content="Hexo 5.4.2"><link rel="stylesheet" href="/css/prism.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">风之声</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>时光轴</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">风之声</div>
+        <div class="logo-desc">
+            
+            与孤独为友
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			时光轴
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/xuejy19/" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/xuejy19/" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/1.png')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">自编码器AE</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        height: calc(100vh - 250px);
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/%E8%87%AA%E7%BC%96%E7%A0%81%EF%BC%8C%E5%8F%98%E5%88%86%E8%87%AA%E7%BC%96%E7%A0%81%EF%BC%8C%E9%99%8D%E5%99%AA%E8%87%AA%E7%BC%96%E7%A0%81/">
+                                <span class="chip bg-color">自编码，变分自编码，降噪自编码</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/" class="post-category">
+                                统计学习
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-10-10
+                </div>
+                
+
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
+                    2022-09-30
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    5.7k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    20 分
+                </div>
+                
+
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>在进行数据降维和数据降噪时常用的深度学习方法是自编码器<code>AutoEncoder</code>类算法，其具有以下特点:</p>
+<ul>
+<li>自编码器类算法属于无监督学习范畴</li>
+<li>从结构上来看自编码器类算法包含编码器和解码器两部分 </li>
+<li>自编码器算法常用做特征提取 </li>
+</ul>
+<p>本文按照以下结构进行组织:</p>
+<ul>
+<li>自编码器AE</li>
+<li>变分自编码器VAE </li>
+<li>降噪自编码器DAE <span id="more"></span>
+<h3 id="自编码器AE"><a href="#自编码器AE" class="headerlink" title="自编码器AE"></a>自编码器AE</h3></li>
+</ul>
+<h4 id="自编码器算法思想"><a href="#自编码器算法思想" class="headerlink" title="自编码器算法思想"></a>自编码器算法思想</h4><p>所谓的自编码器从名称上来理解，便是对自己进行编码，首先给出维基百科上关于自编码器的定义:</p>
+<blockquote>
+<p><strong>自编码器:</strong> 自编码，也称自动编码器，是一种人工神经网络，在无监督学习中用于有效编码。自编码的目的是对一组数据学出一种表示，通常用于降维。 </p>
+</blockquote>
+<p>一个自编码器一般具有如下结构:<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/AE.png" alt="自编码器"></p>
+<p>从上图可以看出，自编码器模型主要由编码器和解码器组成，其主要目的是将输入变量映射到中间变量$z$，然后再将中间变量$z$映射成$x’$， 模型训练的目标是$x$和$x’$尽可能接近，编码器和解码器分别实现了以下功能: </p>
+<ul>
+<li>编码器: 将输入数据映射到隐含特征空间 </li>
+<li>解码器: 基于隐含特征来重构原始数据 </li>
+</ul>
+<p>单纯从形式上来看，自编码器就是一个普通的神经网络，只是网络输出为输入数据本身；但如果从算法思想的角度，我们一般所接触的神经网络所开展的任务往往是有监督学习问题，比如分类和回归预测，而对于无监督学习问题，比如聚类、降维，还是统计学习中的一些传统算法应用较多，而自编码器则就给予了我们一个应用深度学习方法来开展无监督学习的思路。</p>
+<p>初学者在开展自编码器学习过程中绕不开的一个问题就是:</p>
+<blockquote>
+<p>训练这样一个恒等映射网络有什么意义? </p>
+</blockquote>
+<p>我在刚了解自编码器算法思想时也有这样的疑问，但在对无监督学习思想有了更多理解之后我认为构建这样一个恒等映射网络有以下几方面应用: </p>
+<ul>
+<li><strong>数据压缩/降维:</strong> 在图像压缩领域，一个图像可能动辄几MB甚至几十MB，在进行传输中需要大量的流量，而假设我们已经有了一个训练好的自编码神经网络，而特征空间维度较低，我们就可以在发送端应用训练好的自编码器进行数据压缩，然后将压缩后的数据传输到接收端，接收端再使用解码器来对图像进行还原。</li>
+<li><strong>特征提取:</strong> 数据压缩本身也是一种特征提取，而具体提取什么样的特征则是与数据相关的，而自编码器提取特征的标准则是希望提取的隐层特征能够在自编码器神经网络框架下较精确地重构原始数据，提取后的特征可以送入下游机器学习算法中以完成下游任务。</li>
+</ul>
+<p>在进行自编码器算法应用时，需要注意以下两点问题: </p>
+<ul>
+<li>自动编码器是数据相关的，这也就意味着自动编码器只能压缩那些与训练数据类似的数据，如果从概率分布的角度来进行理解，编码器其实就是学到了一个映射，将原始空间的数据分布映射到特征空间的某个概率分布，这也就意味着如果模型训练的比较充分且新来的样本与训练样本同分布，则自编码器就能较好地对新样本数据进行编码。 </li>
+<li>自动编码器是有损的，这是因为经过编码解码后的输出与输入相比还是有误差的/退化的，这个误差我们一般称之为重构误差。</li>
+<li>自动编码器算法属于一种无监督学习算法。</li>
+</ul>
+<h4 id="自编码器搭建及学习"><a href="#自编码器搭建及学习" class="headerlink" title="自编码器搭建及学习"></a>自编码器搭建及学习</h4><p>自编码器其实可以看作一整个神经网络，包含编码器与解码器两部分，分别学习不同的映射: </p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        &Encoder: x \rightarrow f(x) \quad \mathbb{R}^d \rightarrow \mathbb{R}^{d'}\\ 
+        &Decoder: f(x) \rightarrow x' \quad \mathbb{R}^{d'} \rightarrow \mathbb{R}^d
+    \end{aligned}</script><p>如果对自编码器的算法思想理解了同时具备神经网络搭建训练方面的知识，则自编码器的搭建及训练不需要再单独学习。</p>
+<h4 id="常见自编码器类型"><a href="#常见自编码器类型" class="headerlink" title="常见自编码器类型"></a>常见自编码器类型</h4><p>常用自编码器有以下集中几种类型: </p>
+<ul>
+<li><strong>堆栈自编码器</strong>: 所谓堆栈自编码器实际上就是最普通的自编码器，编码器和解码器网络结构层数均大于1。</li>
+<li><strong>欠完备自编码器</strong>: 如果编码器输出特征维度$h$小于原始数据特征维度$d$，则对应的自编码器称为欠完备自编码器，在进行数据降维时一般都是采用欠完备自编码器。</li>
+<li><strong>正则自编码器</strong>: 普通的堆栈自编码器只是学习了一个恒等映射，而我们有时候期望降维后的特征能够具有某些特性，这些特性包括系数表示、对噪声鲁棒性等，而要达成这样的目的往往会在目标函数上添加一个正则项。</li>
+<li><strong>降噪自编码器</strong>: 降噪自编码器与其说是一个算法结构，实际上更像是一种模型训练的trick，降噪自编码器以损坏/缺失的数据作为输入，然后来预测原始的未损坏/缺失的数据，从而使自编码器学习到从缺失数据恢复为未缺失数据的能力。   <h3 id="变分自编码器VAE"><a href="#变分自编码器VAE" class="headerlink" title="变分自编码器VAE"></a>变分自编码器VAE</h3><h4 id="自编码器生成内容局限性"><a href="#自编码器生成内容局限性" class="headerlink" title="自编码器生成内容局限性"></a>自编码器生成内容局限性</h4>在训练好了一个自编码器以后，我们可能会考虑这样一个问题:<blockquote>
+<p>能否应用自编码器来进行数据生成?<br>如果隐空间足够规则，我们是否可以从隐空间中随机取一个点并将其解码以获得新的内容，就像生成对抗网络中的生成器那样。 </p>
+</blockquote>
+</li>
+</ul>
+<p>这样做是并不行的，主要是因为两个原因:</p>
+<blockquote>
+<ul>
+<li>隐空间缺乏可解释和可利用的结构，缺乏规则性( lack of regularity )，关于这一点我们可以举一个极端的例子，假设编码器和解码器足够强大，将$N$个样本分别映射到了一维的隐空间，分别对应着$1~N$。这也就导致你如果随便取隐空间一个点，然后用解码器进行解码，那么大概率不能生成有用样本。 </li>
+<li>在进行降维时，由于自编码器过于强大，导致很多原始空间中数据的结构信息并没有得到保留，在隐空间中是稀疏的。 </li>
+</ul>
+</blockquote>
+<p>换句话说，普通的自编码器并不是生成式模型，其更像是学习了某种确定性映射，并不能用于生成新的样本。</p>
+<h4 id="变分自编码器思想"><a href="#变分自编码器思想" class="headerlink" title="变分自编码器思想"></a>变分自编码器思想</h4><p>为了能够能够使得自编码器的解码器用于生成目的，我们需要保证隐空间足够规则，获得这种规律性的一种可能方案是在训练过程中引入显示的正则项。<strong>因此，变分自编码器可以看作是一种自编码器，其训练过程经过正则化以避免过拟合，同时使隐变量$z$分布服从某一特定分布，在进行数据生成时便可以从该分布中采样然后送入解码器以进行数据生成。</strong></p>
+<p>变分自编码器与普通自编码器在形式上的不同点在于:</p>
+<blockquote>
+<p>某个输入变量$x$并不是被编码成隐空间中一个点，而是隐空间中的一个概率分布。 </p>
+</blockquote>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        &AE: x \rightarrow Encoder: z = f(x) \rightarrow Decoder: x' = g(z) \\
+        &VAE: x \rightarrow Encoder: z \sim N(x|\mu, \sigma^2) \rightarrow Sample \ z  \rightarrow Decoder: x' = g(z)
+    \end{aligned}</script><p>我们一般假设隐空间中隐变量的分布是高斯分布，而编码器实际上就是学习对应高斯分布的均值和方差,整个变分自编码器的结构如下图所示:<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/VAE.png" alt="VAE"><br>需要注意的是，由多少个样本，则最终在隐空间就会有多少个高斯分布。因为在进行解码之前有一个采样的操作，而采样本身是并不可导的，因此在实际中都是采用一个叫做<code>重参数</code>的技巧，也就是说每一次都是从标准正态分布中采样，然后通过:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        z &= \mu + \sigma \odot \epsilon  \\
+        \epsilon &\sim N(0,1)
+    \end{aligned}</script><p>来重构隐变量，这样$\mu$和$\sigma$就变成了一个参数，是可以应用反向传播进行参数更新。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/VAE1.png" alt="VAE"><br>在进行模型训练时，主要是以下步骤:</p>
+<ul>
+<li>将输入编码为隐空间上一个高斯分布(均值$\mu$, 方差$\sigma^2$) </li>
+<li>从该分布中采样隐空间中一个点</li>
+<li>对采样点进行解码并计算出重构误差 </li>
+<li>重构误差通过网络进行反向传播</li>
+</ul>
+<p>而实现隐空间正态规则化最简单的实现方式便是在目标函数中添加正则项，该正则项期望输入映射到隐空间的这个正态分布能够尽可能接近标准正态分布，度量方式一般选用KL散度，因此最终目标函数一般是如下形式:</p>
+<script type="math/tex; mode=display">
+    loss = ||x - x'||^2 + D_{KL}(N(\mu_x, \sigma_x^2) || N(0,1))</script><h4 id="关于正则化直观解释"><a href="#关于正则化直观解释" class="headerlink" title="关于正则化直观解释"></a>关于正则化直观解释</h4><p>为了使生成过程成为可能，我们期望隐空间具有规则性，而规则性可以通过两个主要属性表示: </p>
+<ul>
+<li>连续性: 隐空间中的两个相邻点解码后不应呈现两个完全不同的内容 </li>
+<li>完整性: 针对给定的分布，从隐空间采样的点在解码后应提供“有意义”的内容 </li>
+</ul>
+<p>VAE将输入编码为分布而不是点并不足以确保连续性和完整性，如果没有明确地定义正则化项，即模型目标函数仅仅期望重构误差尽可能小，那么模型会倾向于让分布的方差等于0以获得更小的重构误差，而此时变分自编码器也就退化成了普通的自编码器。</p>
+<p>因此，为了避免该问题，我们必须同时对协方差矩阵和编码器返回的分布均值进行正则化，在实际应用中则是通过计算投影分布与标准正态分布之间的KL散度作为正则项。 </p>
+<p>使用该正则化项，可以防止模型在隐空间中的编码相互远离，并鼓励尽可能多的返回分布发生重叠，从而满足预期的连续性和完整性条件。自然的对于任何正则化项，都会以训练数据上更高的重建误差为代价。然而，可以调整重建误差和KL散度之间的权重，我们将在下一节中看到如何从形式推导中自然得出平衡的表达。</p>
+<h4 id="数学推导"><a href="#数学推导" class="headerlink" title="数学推导"></a>数学推导</h4><h5 id="概率框架和假设"><a href="#概率框架和假设" class="headerlink" title="概率框架和假设"></a>概率框架和假设</h5><p>我们首先定义一个概率图模型来描述我们的数据，用$x$表示我们的数据变量，并且假定$x$是由未直接观察到的潜在变量$z$生成。因此对于每个数据点，假设以以下两个步骤进行生成:</p>
+<ul>
+<li>首先，从先验分布p(z)中采样一个隐空间表示$z$</li>
+<li>第二，按条件概率$p(x|z)$采集数据$x$<script type="math/tex; mode=display">
+  z \rightarrow x</script></li>
+</ul>
+<p>在这种概率模型下，我们可以重新定义编码器和解码器的概念。实际上，与考虑使用确定性编码器和解码器的简单自编码器不同，我们现在将考虑这两个对象的概率版本。自然地，“概率解码器”由$p(x|z)$定义，描述由给定已编码变量到解码变量的分布，而“概率编码器”由$p(x|z)$定义，描述根据原始变量给出编码变量的分布。</p>
+<p>我们假设隐空间中编码变量$z$遵循先验分布$p(z)$,则由贝叶斯公式，编码条件概率分布可以表示为:</p>
+<script type="math/tex; mode=display">
+    p(z|x) = \frac{p(x|z) p(z)}{p(x)} = \frac{p(x|z)p(z)}{\int_z p(x|z) p(z) dz}</script><p>我们假设$p(z)$是标准高斯分布，而$p(x|z)$是高斯分布，其均值由变量$z$的确定性函数$f$定义，并且协方差矩阵定义为$\Sigma = cI$,因此我们有:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        &z \sim N(0,1)  \\
+        &x|z \sim N(f(z), cI),f \in F, c>0 
+    \end{aligned}</script><p>从理论上讲，我们知道$p(z)$和$p(x|z)$，便可以使用贝叶斯定理来进行计算$p(z|x)$,但是这种计算由于有分母的积分存在，直接计算并不容易，因此需要采用变分推断技术来近似获得$p(x)$。 </p>
+<h5 id="变分推断技术"><a href="#变分推断技术" class="headerlink" title="变分推断技术"></a>变分推断技术</h5><p>首先给出变分贝叶斯方法的维基百科定义:</p>
+<blockquote>
+<p><strong>变分贝叶斯方法</strong>是一类用于近似贝叶斯推理和机器学习中产生的棘手积分的技术。它们通常用于由观察变量以及未知参数和潜在变量组成的复杂统计模型中，如图模型描述，这三种类型的随机变量之间具有各种关系。变分贝叶斯方法主要用于两个目的:</p>
+<ul>
+<li>为了对未观察变量的为了对未观察变量的后验概率提供解析近似，以便对这些变量进行统计推断。</li>
+<li>得出观察数据的边际可能性（有时称为“证据”）的下限（即，给定模型的数据的边际概率，对未观察变量进行边际化）。这通常用于执行模型选择，通常的想法是，给定模型的边际可能性越高，表明该模型对数据的拟合度越高，因此，所讨论的模型是生成数据的模型的可能性就越大。（另请参阅贝叶斯因子文章。）</li>
+</ul>
+</blockquote>
+<p>变分推断是一种近似复杂分布的技术，基本的思路便是设置一个参数化的分布，并在该族中寻找目标分布的最佳近似，分布差异之间的度量一般采用<a target="_blank" rel="noopener" href="https://soundofwind.top/2020/08/26/gai-lu-fen-bu-zhong-de-ju-chi-du-liang/">KL散度</a>来作为分布之间的度量指标。在这里，我们将通过高斯分布$q_x(z)$来近似后验概率$p(z|x)$，我们可以写出如下表示:</p>
+<script type="math/tex; mode=display">
+    q_x(z) = N(g(x), h(x)), g \in G, h \in H</script><p>我们期待这个合适的参数$g(x), h(x)$以尽可能缩小两个变量之间的KL散度: </p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        (g^\ast, h^\ast) &= \arg \min_{g,h} D_{KL}(q_x(z), p(z|x)) \\
+        &= \arg \min_{g,h} E_{z \sim q_x} (log q_x(z)) - E_{z \sim q_x } (log \frac{p(x|z) p(z)}{p(x)}) \\ 
+        &= \arg \min_{g,h} E_{z \sim q_x} (log q_x(z))  - E_{z \sim q(x)} (log p(z)) - E_{z \sim q_x} (log p(x|z)) + E_{z \sim q_x} (log p(x)) \\
+        &= \arg \max_{g,h} E_{z \sim q_x} (log p(x|z)) - KL(q_x(z), p(z)) \\ 
+        &= \arg \max_{g,h} E_{z \sim q_x} (-\frac{||x-f(z)||^2}{2c}) - KL(q_x(z), p(z))
+    \end{aligned}</script><p>从最终优化目标的表达式来看，一方面期望最大化重构出的样本的对数似然最大，另一方面期望$q_x(z)$接近先验分布$p(z)$。这种折衷体现了在贝叶斯推理中，在数据置信度与先验分布置信度之间的平衡。</p>
+<h5 id="条件变分自编码器CVAE"><a href="#条件变分自编码器CVAE" class="headerlink" title="条件变分自编码器CVAE"></a>条件变分自编码器CVAE</h5><p>用VAE生成数据的一个问题是，我们对于生成的数据没有任何控制。例如, 如果我们用MNIST数据集训练VAE，并尝试通过相解码器输入$Z \sim N(0,1)$来生成图像，它也会产生不同的随机数字图像，但我们并不能控制究竟生成哪一个数字的图像，而我们拿到的数据是有着标签信息，因此我们期望能够将标签信息也融入到训练过程当中，以使编码器具有生成任意标签数据的能力。<br>为此，我们需要对VAE体系进行修改，假设给定一个输入标签$Y$，我们希望生成模型能够输出该标签对应的图像，那么可以在普通自编码器基础上做如下修改，在进行编码时同时加上标签信息，然后在进行解码时也加上标签信息，整个生成过如下:</p>
+<script type="math/tex; mode=display">
+    y,x \rightarrow z,y \rightarrow x</script><p>在这里编码器学习后验概率分布$p(z|x,y)$实际上相当于是将标签信息从隐空间分离表征，然后在进行解码时再加入标签信息，表明需要生成哪一类的样本。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/CVAE.png" alt="CVAE"></p>
+<h5 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h5><p>到目前为止，如果假设函数$f$是已知且固定的，则我们可以使用变分推理技术来近似后验$p(z|x)$。但是实际上，定义解码器的函数$f$是未知的，而且也需要求解。但我们最初的目标是找到一种性能良好的编码/解码方案，其隐空间又足够规则，可以用于生成目的。如果规则性主要由在隐空间上假定的先验分布所决定，则整个编码-解码方案的性能高度取决于函数$f$的选择。确实，由于$p(z|x)$可以从$p(z)$和p(x|z)近似（通过变分推论），而$p(z)$是简单的标准高斯模型，仅存的两个需要我们优化的对象是参数$c$(决定了分布的协方差)和函数$f$(决定了分布的均值)。</p>
+<p>对于$F$中的任意一个函数$f$都定义了一个概率解码器(p(x|z)),然后可以得到$p(z|x)$的最佳近似$q^\ast_x(z)$,然后当给定从$q_x^\ast(z)$中的一次采样$z$时，我们期望选择函数$f$使$x$的期望对数似然概率最大。<strong>换句话说，对于给定的输入$x$,当我们从分布$q_x^\ast(z)$采样$z$然后从分布$p(x|z)$采样$\hat{x}$时，我们希望寻找到合适的参数$f$，使得 $x = \hat{x}$的概率最大。</strong></p>
+<p>将上面所有部分总在一起，我们正在寻找最优的$f^\ast, h^\ast, g^\ast$，使得:</p>
+<script type="math/tex; mode=display">
+\left(f^{*}, g^{*}, h^{*}\right)=\arg \max _{(f, g, h) \in F \times G \times H}\left(\mathbb{E}_{z \sim q_{x}}\left(-\frac{\|x-f(z)\|^{2}}{2 c}-K L\left(q_{x}(z), p(z)\right)\right)\right)</script><p>常数$c$决定了两个条件之间的平衡，$c$越高，则表示我们对重构误差的容忍度越大，更加关注正则化项，如果$c$低，则相反。</p>
+<h4 id="将神经网络引入模型"><a href="#将神经网络引入模型" class="headerlink" title="将神经网络引入模型"></a>将神经网络引入模型</h4><p>到目前为止，我们已经建立了一个依赖于三个函数$f, g$和$h$的概率模型，我们无法轻松地在整个函数空间上进行优化，因此我们限制了优化域，并将$f,g,h$用神经网络来定义。因此，$F,G,H$分别对应于网络体系结构上的参数族。</p>
+<p>实际上，$g$和$h$不是由两个完全独立的网络定义的，而是共享它们一部分结构和参数，因此我们可以:</p>
+<script type="math/tex; mode=display">
+    g(x) = g_2(g_1(x)),h(x) = h_2(h_1(x)),g_1(x) = h_1(x)</script><p>解码器则是一般的神经网络结构，这样就获得了整体的网络结构，可以进行优化。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/beta-VAE.png" alt="VAE"> </p>
+<h3 id="正则自编码器"><a href="#正则自编码器" class="headerlink" title="正则自编码器"></a>正则自编码器</h3><p>变分自编码器也可以看作是一种特殊的正则自编码器, 这部分主要介绍下降噪自编码器和稀疏自编码器。 </p>
+<h4 id="降噪自编码器DAE"><a href="#降噪自编码器DAE" class="headerlink" title="降噪自编码器DAE"></a>降噪自编码器DAE</h4><p>降噪自编码的核心思想是，建立一个恒等映射的自编码器未必是好的，能够将“损坏”的数据还原成“好”的数据的自编码器才是好的。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/Denoising-Autoencoder_qm5AOQM.png" alt="DAE"><br>因此网络输入往往会对输入$x$做加噪处理$\hat{x}$，然后经过自编码器重构未加噪的输入$x$,这样训练得到的自编码器可以获得一定的对于原始数据波动的鲁棒性。</p>
+<h4 id="稀疏自编码器"><a href="#稀疏自编码器" class="headerlink" title="稀疏自编码器"></a>稀疏自编码器</h4><p>我们有时期望能够获得输入数据的高维稀疏表示，则需要对加入一个正则项来实现这个目的，稀疏自编码器一般是一个三层的神经网络，其目标函数包含两部分，一部分是重构误差，另一部分则是稀疏正则项。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/xishu.jpg" alt="稀疏自编码"><br>若输入样本个数为$m$个，隐层神经元个数为$s_2$个，在这里首先定义隐层神经元$j$对于所有训练数据的平均激活度:</p>
+<script type="math/tex; mode=display">
+    \hat{\rho}_j = \frac{1}{m} \sum_{i=1}^m [a_j^{(2)} (x^{(i)})]</script><p>其中$a_j^{(2)}(x^{(i)})$为隐层第$j$个神经元对第$i$个样本的响应输出，然后我们会设置一个稀疏系数$\rho = 0.05/0.1$,通过KL散度来度量$\rho, \hat{\rho}_j$之间的差异:</p>
+<script type="math/tex; mode=display">
+    D_{KL}(\rho || \hat{\rho}_j) = \rho log \frac{\rho}{\hat{\rho}_j} + (1-\rho) log \frac{1-\rho}{1-\hat{\rho}_j}</script><p>因为有$s_2$个隐层神经元，因此最终稀疏正则项表达式为:</p>
+<script type="math/tex; mode=display">
+    sparse_{loss} = \sum_{j=1}^{s_2} D_{KL} (\rho || \hat{\rho}_j)</script><p>通过这样的一项稀疏正则化，最终训练得到的编码器将会把输入$x$编码为高维空间的稀疏表达，有助于提取更具意义的边缘特征。</p>
+<p>可以这样简单进行理解，使用普通的自编码器对图像进行压缩/编码是在像素级别上的编码，而对于图像而言，像素层次上的编码往往并不具备意义，通过加入稀疏正则化项，网络会更加关注一些high level的特征，比如眼睛是大是小，嘴巴形状等等，而不仅仅是拘泥于像素层级的特征提取。 </p>
+
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">思考猫</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://xuejy19.github.io/2020/10/10/zi-bian-ma-qi-ae/">https://xuejy19.github.io/2020/10/10/zi-bian-ma-qi-ae/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">思考猫</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/%E8%87%AA%E7%BC%96%E7%A0%81%EF%BC%8C%E5%8F%98%E5%88%86%E8%87%AA%E7%BC%96%E7%A0%81%EF%BC%8C%E9%99%8D%E5%99%AA%E8%87%AA%E7%BC%96%E7%A0%81/">
+                                    <span class="chip bg-color">自编码，变分自编码，降噪自编码</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.4rem;
+        line-height: 38px;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/reward/ali.jpeg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/reward/wechat.jpeg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+        <style>
+    .valine-card {
+        margin: 1.5rem auto;
+    }
+
+    .valine-card .card-content {
+        padding: 20px 20px 5px 20px;
+    }
+
+    #vcomments textarea {
+        box-sizing: border-box;
+        background: url("/medias/comment_bg.png") 100% 100% no-repeat;
+    }
+
+    #vcomments p {
+        margin: 2px 2px 10px;
+        font-size: 1.05rem;
+        line-height: 1.78rem;
+    }
+
+    #vcomments blockquote p {
+        text-indent: 0.2rem;
+    }
+
+    #vcomments a {
+        padding: 0 2px;
+        color: #4cbf30;
+        font-weight: 500;
+        text-decoration: none;
+    }
+
+    #vcomments img {
+        max-width: 100%;
+        height: auto;
+        cursor: pointer;
+    }
+
+    #vcomments ol li {
+        list-style-type: decimal;
+    }
+
+    #vcomments ol,
+    ul {
+        display: block;
+        padding-left: 2em;
+        word-spacing: 0.05rem;
+    }
+
+    #vcomments ul li,
+    ol li {
+        display: list-item;
+        line-height: 1.8rem;
+        font-size: 1rem;
+    }
+
+    #vcomments ul li {
+        list-style-type: disc;
+    }
+
+    #vcomments ul ul li {
+        list-style-type: circle;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    #vcomments table, th, td {
+        border: 0;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments h1 {
+        font-size: 1.85rem;
+        font-weight: bold;
+        line-height: 2.2rem;
+    }
+
+    #vcomments h2 {
+        font-size: 1.65rem;
+        font-weight: bold;
+        line-height: 1.9rem;
+    }
+
+    #vcomments h3 {
+        font-size: 1.45rem;
+        font-weight: bold;
+        line-height: 1.7rem;
+    }
+
+    #vcomments h4 {
+        font-size: 1.25rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    #vcomments h5 {
+        font-size: 1.1rem;
+        font-weight: bold;
+        line-height: 1.4rem;
+    }
+
+    #vcomments h6 {
+        font-size: 1rem;
+        line-height: 1.3rem;
+    }
+
+    #vcomments p {
+        font-size: 1rem;
+        line-height: 1.5rem;
+    }
+
+    #vcomments hr {
+        margin: 12px 0;
+        border: 0;
+        border-top: 1px solid #ccc;
+    }
+
+    #vcomments blockquote {
+        margin: 15px 0;
+        border-left: 5px solid #42b983;
+        padding: 1rem 0.8rem 0.3rem 0.8rem;
+        color: #666;
+        background-color: rgba(66, 185, 131, .1);
+    }
+
+    #vcomments pre {
+        font-family: monospace, monospace;
+        padding: 1.2em;
+        margin: .5em 0;
+        background: #272822;
+        overflow: auto;
+        border-radius: 0.3em;
+        tab-size: 4;
+    }
+
+    #vcomments code {
+        font-family: monospace, monospace;
+        padding: 1px 3px;
+        font-size: 0.92rem;
+        color: #e96900;
+        background-color: #f8f8f8;
+        border-radius: 2px;
+    }
+
+    #vcomments pre code {
+        font-family: monospace, monospace;
+        padding: 0;
+        color: #e8eaf6;
+        background-color: #272822;
+    }
+
+    #vcomments pre[class*="language-"] {
+        padding: 1.2em;
+        margin: .5em 0;
+    }
+
+    #vcomments code[class*="language-"],
+    pre[class*="language-"] {
+        color: #e8eaf6;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+
+    #vcomments b,
+    strong {
+        font-weight: bold;
+    }
+
+    #vcomments dfn {
+        font-style: italic;
+    }
+
+    #vcomments small {
+        font-size: 85%;
+    }
+
+    #vcomments cite {
+        font-style: normal;
+    }
+
+    #vcomments mark {
+        background-color: #fcf8e3;
+        padding: .2em;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+</style>
+
+<div class="card valine-card" data-aos="fade-up">
+    <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; padding-left: 20px; top: 15px; padding-bottom: 5px;">
+        <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
+        <span>评论</span>
+    </div>
+    <div id="vcomments" class="card-content" style="display: grid">
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/valine/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/valine/Valine.min.js"></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        appId: 'LHOcs74feKlXF84DT091adtu-gzGzoHsz',
+        appKey: '3GFMSQIiaSANJhNA8WJg9lz9',
+        notify: 'false' === 'true',
+        verify: 'false' === 'true',
+        visitor: 'true' === 'true',
+        avatar: 'mm',
+        pageSize: '10',
+        lang: 'zh-cn',
+        placeholder: 'just go go'
+    });
+</script>
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2020/10/25/xiang-ji-ji-ben-zhi-shi/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/3.png" class="responsive-img" alt="相机基本知识">
+                        
+                        <span class="card-title">相机基本知识</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            俗话说，没有金刚钻就不揽瓷器活，既然要进行摄影的系统性学习，那么自然就首先从设备讲起，本文按照以下结构进行组织:
+
+单反与微单 
+传感器 
+相机推荐
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-10-25
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E7%82%B9%E6%BB%B4%E7%94%9F%E6%B4%BB/" class="post-category">
+                                    点滴生活
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E7%9B%B8%E6%9C%BA%EF%BC%8C%E5%8D%95%E5%8F%8D/">
+                        <span class="chip bg-color">相机，单反</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/10/07/zhi-shu-zu-fen-bu-yu-guang-yi-xian-xing-mo-xing/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/1.png" class="responsive-img" alt="指数族分布与广义线性模型">
+                        
+                        <span class="card-title">指数族分布与广义线性模型</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            在再谈极大似然估计中已经讨论过指数分布族的概念，并且推导出了若概率分布是指数分布族分布，则最终的对数似然函数一定是一个凹函数，直接求偏导等于0便可得到参数估计。
+在听了朱军老师的关于指数分布族函数的讲解之后，发现可以从一个更加general
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-10-07
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/" class="post-category">
+                                    统计学习
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E6%8C%87%E6%95%B0%E5%88%86%E5%B8%83%E6%97%8F%EF%BC%8C-%E5%B9%BF%E4%B9%89%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B/">
+                        <span class="chip bg-color">指数分布族， 广义线性模型</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeShrink.js"></script>
+
+
+<!-- 代码块折行 -->
+
+<style type="text/css">
+code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
+</style>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="503838841"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aplayer/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+
+    
+    <div class="container row center-align" style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            <span id="year">2019</span>
+            <a href="/about" target="_blank">思考猫</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                class="white-color">164.9k</span>&nbsp;字
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/xuejy19/" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:xuejianye19@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=2296858626" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 2296858626" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/search.xml", 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/materialize/materialize.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aos/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/js/matery.js"></script>
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    
+    <script async src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+<script type="text/javascript"> //只在桌面版网页启用特效 
+    var windowWidth = $(window).width(); 
+    if (windowWidth > 768) { document.write('<script type="text/javascript" src="/js/sakura.js"><\/script>'); 
+    } 
+</script> 
+
+</body>
+</html>

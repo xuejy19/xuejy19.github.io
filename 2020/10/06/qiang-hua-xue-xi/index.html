@@ -1,0 +1,1578 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="强化学习, 风之声">
+    <meta name="description" content="与孤独为友">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>强化学习 | 风之声</title>
+    <link rel="icon" type="image/jpeg" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/favicon.jpg">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/css/my.css">
+
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/jquery/jquery.min.js"></script>
+
+<meta name="generator" content="Hexo 5.4.2"><link rel="stylesheet" href="/css/prism.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">风之声</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>时光轴</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">风之声</div>
+        <div class="logo-desc">
+            
+            与孤独为友
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			时光轴
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/xuejy19/" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/xuejy19/" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/6.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">强化学习</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        height: calc(100vh - 250px);
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/">
+                                <span class="chip bg-color">强化学习</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/" class="post-category">
+                                统计学习
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-10-06
+                </div>
+                
+
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
+                    2022-08-20
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    5.2k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    20 分
+                </div>
+                
+
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>这部分将根据周志华老师的西瓜书对强化学习部分做一个简单介绍，该部分按照以下章节进行组织:</p>
+<ul>
+<li>思想介绍——任务与奖赏 </li>
+<li>K-摇臂赌博机 </li>
+<li>有模型学习 </li>
+<li>免模型学习 </li>
+<li>值函数近似 </li>
+<li>模仿学习 <span id="more"></span>
+</li>
+</ul>
+<h3 id="思想介绍-任务与奖赏"><a href="#思想介绍-任务与奖赏" class="headerlink" title="思想介绍-任务与奖赏"></a>思想介绍-任务与奖赏</h3><p><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/reinforce.png" alt="强化学习"><br>考虑这样病人看病的场景，假设我们是看病的医生，在我们与病人的交互过程中，大概是这么一个交互顺序:</p>
+<ul>
+<li>病人本身有一个状态，记做$S$，表示病人目前的身体状况。</li>
+<li>在看病的过程中，我认为病人处于某个状态$S’$，然后对病人施加了一个动作A，比如给病人吃了一些药，或者打了针。</li>
+<li>在病人接受了治疗之后，其本身状态发生了一个变化，该状态的转移我们用概率矩$P$来表示，表示病人状态发生了一个变化，比如痊愈了或者病情更加严重了。 </li>
+<li>在病人的状态发生了变化之后，会给作为医生的我们一个反馈，记做$R$,如果病人痊愈了，那我们得到的反馈可能会是一面锦旗和很多钱，如果病情更加严重了，我们得到的反馈可能就是埋怨。 </li>
+</ul>
+<p>上面我所描述的场景其实就构成了一轮强化学习的过程，强化学习任务常用马尔可夫决策过程来描述，这意味着环境下一时刻的状态仅仅与当前时刻状态有关而与之前状态无关:</p>
+<script type="math/tex; mode=display">
+    P(s_{t+1}| s_t,\dots, s_1) = P(s_{t+1}|s_{t})</script><p>综合起来，强化学习对应了四元组$E = <S,A,P,R>$,其中:</S,A,P,R></p>
+<script type="math/tex; mode=display">
+    P: X \times A \times X \rightarrow \mathbb{R}</script><p>而:</p>
+<script type="math/tex; mode=display">
+    R: X \times A \times X \rightarrow \mathbb{R}</script><p>指定了奖赏，在有的应用中，状态可能仅与状态转移有关，即$R: X \times X \rightarrow \mathbb{R}$, 下面给出一个种瓜的马尔可夫决策过程的栗子。<br><img src="https://github.com/xuejy19/xuejy19.github.io/blob/source/Img/Markov_decision.png" alt="马尔可夫决策过程"><br>在该过程中只有四个状态:健康、缺水、溢水和凋亡和两个动作:浇水和不浇水。在每一步转移后，若状态是保持瓜苗健康则获得奖励1，瓜苗缺水或者溢水奖赏为-1，这时通过浇水或者不浇水可以让瓜苗恢复健康状态，当瓜苗凋零时奖赏是最小值-100且无法恢复。图中箭头表示状态转移，$a、p、r$分别表示导致状态转移的动作、转移概率以及返回的奖赏。容易看出，最优策略是在“健康”和“缺少”状态下选择浇水，而在“溢水”状态下选择不浇水。</p>
+<p>需要注意区分“机器”和“环境”的界限，在下棋中，棋盘是环境与对手；在机器人控制中，环境是机器人的躯体与物理世界。总之，在环境中状态的转移以及奖赏的返回是不受机器控制的，机器只能通过选择要执行的动作来影响环境，也只能通过观察转移后的状态和返回的奖赏来感知世界。</p>
+<p>机器要做的是学习到一个策略$\pi$，根据这个策略，在状态$x$下就能得知想要执行的动作$a = \pi(x)$, 例如看到瓜苗状态为缺水时，能返回动作“浇水”。策略有两种表示:</p>
+<ul>
+<li>一种是将策略表示为函数$\pi: X \rightarrow A$,确定性策略通常用这种表示。 </li>
+<li>一种是概率表示$\pi: X \times A \rightarrow R$ ,随机性概率通常用这种表示，$\pi(x,a)$为状态$x$下选择动作$a$的概率，这里必须有$\sum_a \pi(x,a) = 1$</li>
+</ul>
+<p>策略的优劣取决于长期执行这一策略后得到的累计奖赏，例如某个策略使得瓜苗枯死，那么它的累积奖赏会很小，另一个策略种出了好瓜，它的累积奖赏会很大。在强化学习中，学习的目的就是要找到能使长期累积奖赏最大化的策略。长期累积奖赏有多种计算方式，常用的有两种:</p>
+<ul>
+<li>T步累积奖赏$E[\frac{1}{T} \sum_{t=1}^T r_t]$</li>
+<li>$\gamma$折扣累积奖赏: $E[\sum<em>{t=0}^\infty] \gamma^t r</em>{t+1}$, 其中$\gamma$表示贴现系数。 </li>
+</ul>
+<p>最后讨论下强化学习与监督学习的关系:</p>
+<ul>
+<li>强化学习中的“状态”对应于监督学习中的“示例”。</li>
+<li>强化学习中的“动作”对应于监督学习中的“标记” </li>
+<li>强化学习中的“策略”实际上就相当于监督学习中的“分类器”或“回归性” </li>
+</ul>
+<p>但是在强化学习中，并没有监督学习中的有标记样本，换言之，没有人直接告诉机器在什么状态下应该做什么动作，只有等到最终结果揭晓，才能通过“反思”之前的动作是否正确来进行学习，因此，强化学习在某种意义上可以看作具有“延迟标记信息”的监督学习问题。 </p>
+<h3 id="K-摇臂赌博机"><a href="#K-摇臂赌博机" class="headerlink" title="K 摇臂赌博机"></a>K 摇臂赌博机</h3><h4 id="概念介绍"><a href="#概念介绍" class="headerlink" title="概念介绍"></a>概念介绍</h4><p>与一般监督学习不同，强化学习最终奖赏需要在多步动作后才能够观察到，这里我们首先考虑最简单的情形:最大化单步奖赏。<br>欲最大化单步奖赏需要考虑两个方面:一是需要知道每个动作带来的奖赏，二是要执行奖赏最大的动作。若每个动作对应的奖赏是确定值，那么尝试一遍所有动作便可以找到奖赏最大的动作。但更一般的情形是，一个动作的奖赏值是来自一个概率分布，仅通过一次尝试并不能确切地获得平均奖赏值。<br>实际上，单步强化学习任务对应了一个理论模型-“K-摇臂赌博机”，K摇臂赌博机有K个摇臂，赌徒在投入硬币后可选择按下其中一个摇臂，每个摇臂以一定的概率吐出硬币，但这个概率赌徒并不知道，赌徒的目标是通过一定的策略最大化自己的奖赏，即获得最多的硬币。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/K-armed.jpeg" alt="K摇臂赌博机"><br>若仅为获知每个摇臂的期望奖赏，则可以采用“仅搜索法”:将所有尝试机会平均分配给每个摇臂，最后以每个摇臂各自平均的吐币概率作为其奖赏期望的近似估计。若仅为执行奖赏最大的动作，则可采用“仅利用”法: 按下目前最优的摇臂。显然，“仅探索”法能够很好地估计每个摇臂的奖赏，却会失去很多选择最优摇臂的机会；仅利用法则相反，它没有很好地估计摇臂期望奖赏，很可能经常选不到最优摇臂。因此，这两种方法都难以使得最终累积奖赏最大化。<br>事实上，“探索”和“利用”这两者是矛盾的，因为尝试次数有限，加强了一方则自然就会削弱另一方，这就是强化学习所面临的“探索-利用”窘境。显然，如欲累积奖赏最大，则必须在探索与利用之间达成较好的折衷。</p>
+<h4 id="epsilon-贪心"><a href="#epsilon-贪心" class="headerlink" title="$\epsilon-$贪心"></a>$\epsilon-$贪心</h4><p>$\epsilon-$贪心基于一个概率$\epsilon$来对探索和利用进行折中: 每次尝试时，以$\epsilon$概率进行探索，即以均匀概率随机选取一个摇臂；以$1- \epsilon$概率进行利用，即选择当前平均奖赏最高的摇臂。<br>令$Q(k)$记录摇臂$k$的平均奖赏，若摇臂$k$被尝试了$n$次，得到的奖赏为$v_1,v_2,\dots, v_n$,则平均奖赏为:</p>
+<script type="math/tex; mode=display">
+    Q(k) = \frac{1}{n} \sum_{i=1}^n v_i</script><p>更高效的方法是进行增量式计算，即每一次尝试后就立刻更新$Q(k)$，不妨用下标来表示尝试的次数，初始时$Q<em>0(k) = 0$。对于任意的$n \geq 1$,若第$n-1$次尝试后的平均奖赏为$Q</em>{n-1}(k)$,则在经过第$n$次尝试获得奖赏$v_n$后，平均奖赏应更新为:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        Q_n(k) &= \frac{1}{n} ((n-1) \times Q_{n-1}(k) + v_n) \\
+               &= Q_{n-1}(k) + \frac{1}{n} (v_n - Q_{n-1}(k))        
+    \end{aligned}</script><p>若摇臂奖赏的不确定性较大， 例如概率分布较宽时，则需要更多的探索，此时需要较大的$\epsilon$值；若摇臂的不确定性较小，例如概率分布较集中时，此时只需要少量的探索即可，将$\epsilon$设置值较小即可。随着尝试次数的增多，在一段时间后，摇臂的奖赏都能够较好地近似出来，不再需要探索，这种情况下可以让$\epsilon$随着尝试次数的增加而逐步减小，例如取$\epsilon = \frac{1}{\sqrt{t}}$ </p>
+<h4 id="Softmax"><a href="#Softmax" class="headerlink" title="Softmax"></a>Softmax</h4><p>Softmax 算法中摇臂概率的分配是基于Boltzmann分布:</p>
+<script type="math/tex; mode=display">
+    P(k) = \frac{e^{\frac{Q(k)}{\tau}}}{\sum_{i=1}^K e^{\frac{Q(k)}{\tau}}}</script><p>其中$q(i)$记录当前摇臂的平均奖赏，$\tau &gt;0$称为温度，$\tau$越小则平均奖赏高的摇臂被选取的概率越高，$\tau$趋于0时Softmax将趋于“仅利用”，$\tau$趋于无穷大时Softmax将趋于“仅搜索”。 </p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>前面通过K摇臂赌博机给出了单步强化学习的概念，同时介绍了单步强化学习实现的两种算法:$\epsilon$-贪心算法和Softmax算法，这两种算法并无绝对优劣差距，在进行应用中需要具体问题具体分析。<br>对于离散状态空间、离散动作空间上的多步强化学习任务，一种直接的办法是将每个状态上动作的选择看作是一个K摇臂赌博机问题，用强化学习任务的累积奖赏来代替K摇臂赌博机算法中的奖赏函数，即可将赌博机算法应用于每个状态: 对每个状态分别记录各动作的尝试次数、当前平均累积奖赏等信息，基于赌博机算法选择想要尝试的动作。<strong>然而这样做有很多局限，因为它没有考虑强化学习任务马尔可夫决策过程的结构。</strong> </p>
+<h3 id="有模型学习"><a href="#有模型学习" class="headerlink" title="有模型学习"></a>有模型学习</h3><p>考虑一个多步强化学习任务，我们假设任务对应的马尔可夫决策过程四元组$E  =<X, a,p,r>$均为已知，这样的情形称为<strong>模型已知</strong>,即机器已经对环境进行了建模。在已知模型的环境中学习称为“有模型学习”。此时，对于任意状态$x,x’$和动作$a$，在$x$状态下执行动作$a$转移到状态$x’$的概率$P<em>{x \rightarrow x’}^a$ 是已知的，该转移所带来的奖赏$R</em>{x \rightarrow x’}^a$也是已知的。为便于讨论，不妨假设状态空间和动作空间均有限。 </X,></p>
+<h4 id="策略评估"><a href="#策略评估" class="headerlink" title="策略评估"></a>策略评估</h4><p>在模型已知时，对任意策略能估计出该策略带来的期望累积奖赏，令函数$V^\pi(x)$表示从状态$x$出发，使用策略$\pi$所带来的累积奖赏。函数$Q^{\pi}(x,a)$ 表示从状态$x$出发，执行动作$a$后再使用策略$\pi$所带来的累积奖赏，这里:</p>
+<ul>
+<li>$V(\cdot)$ 称为“状态值”函数，表示指定“状态”上的累积奖赏</li>
+<li>$Q(\cdot)$ 称为“状态-动作值”函数，表示指定“状态-动作”上的累积奖赏。 </li>
+</ul>
+<p>由累积奖赏的定义，有状态值函数: </p>
+<script type="math/tex; mode=display">
+\left\{\begin{array}{l}
+V_{T}^{\pi}(x)=\mathbb{E}_{\pi}\left[\frac{1}{T} \sum_{t=1}^{T} r_{t} \mid x_{0}=x\right], \quad T \text { 步累积奖赏 } \\
+V_{\gamma}^{\pi}(x)=\mathbb{E}_{\pi}\left[\sum_{t=0}^{+\infty} \gamma^{t} r_{t+1} \mid x_{0}=x\right], \quad \gamma \text { 折扣累积奖赏. }
+\end{array}\right.</script><p>令$x_0$表示起始状态，$a_0$表示起始状态上采取的第一个动作；对于$T$步累积奖赏，用下标$t$表示后续执行的步数，我们有状态动作值函数: </p>
+<script type="math/tex; mode=display">
+\left\{\begin{array}{l}
+Q_{T}^{\pi}(x,a)=\mathbb{E}_{\pi}\left[\frac{1}{T} \sum_{t=1}^{T} r_{t} \mid x_{0}=x, a_0 = a\right], \quad T \text { 步累积奖赏 } \\
+Q_{\gamma}^{\pi}(x,a)=\mathbb{E}_{\pi}\left[\sum_{t=0}^{+\infty} \gamma^{t} r_{t+1} \mid x_{0}=x, a_0 = a\right], \quad \gamma \text { 折扣累积奖赏. }
+\end{array}\right.</script><p>根据马尔可夫决策过程的马尔可夫性，值函数可以有更加简单的递推形式，对于$T$步累积奖赏有:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        V_T^\pi (x) &= E_{\pi} [\frac{1}{T} \sum_{t=1}^T r_t| x =x_0] \\
+        &= E_{\pi} [\frac{1}{T} r_1 + \frac{T-1}{T} \frac{1}{T-1} \sum_{t=2}^T r_t | x_0 = x] \\ 
+        &= \sum_{a \in A} \pi(x,a) \sum_{x' \in X}  P_{x \rightarrow x'}^a (\frac{1}{T} R_{x \rightarrow x'}^a  + \frac{T-1}{T} E_{\pi} [\frac{1}{T-1} \sum_{t=1}^{T-1} r_t|x_0 = x'])  \\
+        &= \sum_{a \in x} \pi(x,a) \sum_{x' \in X}  P_{x \rightarrow x'} (\frac{1}{T} R_{x \rightarrow x'}^a + \frac{T-1}{T} V_{T-1}^\pi (x')) 
+    \end{aligned}</script><p>类似的，对于$\gamma$折扣累积奖赏有: </p>
+<script type="math/tex; mode=display">
+V_{\gamma}^{\pi}(x)=\sum_{a \in A} \pi(x, a) \sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(R_{x \rightarrow x^{\prime}}^{a}+\gamma V_{\gamma}^{\pi}\left(x^{\prime}\right)\right)</script><p>值函数的递推方程也被称作<strong>Bellman方程</strong>。<br>用这种递归等式来计算值函数，实际上就是一种动态规划算法。换言之，从值函数的初始值$V_0(\pi)$出发，通过每一次迭代能够计算出每个状态的单步奖赏$V_1^\pi$,进而从单步奖赏出发，通过一次迭代计算出两步累积奖赏$V_2^\pi$,对于$T$步累积奖赏，只需要迭代$T$轮就能精确地求解出值函数。<br>可以总结基于$T$步累积奖赏的策略评估办法:</p>
+<blockquote>
+<p><strong>输入:</strong> MDP四元组$E = <X,A,P,R>$; 被评估的策略$\pi$; 累积奖赏参数$T$<br><strong>算法流程:</strong> </X,A,P,R></p>
+<ul>
+<li>初始化$V(x) = 0$</li>
+<li>递推计算$V_1^\pi, V_2^\pi, \dots, V_t^\pi, \dots$ </li>
+<li>递推直到$V_t^\pi = V_T^\pi$</li>
+</ul>
+<p><strong>输出:</strong> 状态值函数$V$ </p>
+</blockquote>
+<p>对于$\gamma$折扣累积奖赏算法，与普通$T$步累积累积奖赏递推类似，同时考虑到当$t$很大时，$\gamma^t$ 会趋于0，因此算法计算终止常通过阈值来进行确定:</p>
+<script type="math/tex; mode=display">
+    \max_{x \in X} |V(x) - V'(x)| < 0</script><p>有了状态值函数，就能直接计算出状态-动作值函数:</p>
+<script type="math/tex; mode=display">
+\left\{\begin{array}{l}
+Q_{T}^{\pi}(x, a)=\sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(\frac{1}{T} R_{x \rightarrow x^{\prime}}^{a}+\frac{T-1}{T} V_{T-1}^{\pi}\left(x^{\prime}\right)\right) \\
+Q_{\gamma}^{\pi}(x, a)=\sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(R_{x \rightarrow x^{\prime}}^{a}+\gamma V_{\gamma}^{\pi}\left(x^{\prime}\right)\right)
+\end{array}\right.</script><h4 id="策略改进"><a href="#策略改进" class="headerlink" title="策略改进"></a>策略改进</h4><p>对某个策略的累积奖赏进行评估后，若发现某个策略并非最优策略，则自然期望改变策略以使累积奖赏最大：</p>
+<script type="math/tex; mode=display">
+    \pi^\ast = \argmax_{\pi} \sum_{x \in X} V^{\pi}(x)</script><p>一个强化学习任务可能有多个最优策略，最优策略所对应的值函数$V^\ast$称为最优值函数，即:</p>
+<script type="math/tex; mode=display">
+    \forall x \in X: V^{\ast} (x) = V^{\pi^\ast} (x)</script><p>注意，当策略空间无约束时$V^\ast$才是最优策略所对应的值函数，对于离散状态空间与离散动作空间，策略空间是状态上所有动作的组合，共有$|A|^|X|$种不同的策略，若策略空间有约束，则违背约束的策略是“不合法”的，即便其值函数所取得的累积奖赏最大，也不能作为最优值函数。<br>对于前面值函数的递推方程<strong>Bellman</strong>方程稍加改动便可得到最优值函数的递推公式: </p>
+<script type="math/tex; mode=display">
+\left\{\begin{array}{l}
+V_{T}^{*}(x)=\max _{a \in A} \sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(\frac{1}{T} R_{x \rightarrow x^{\prime}}^{a}+\frac{T-1}{T} V_{T-1}^{*}\left(x^{\prime}\right)\right) \\
+V_{\gamma}^{*}(x)=\max _{a \in A} \sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(R_{x \rightarrow x^{\prime}}^{a}+\gamma V_{\gamma}^{*}\left(x^{\prime}\right)\right)
+\end{array}\right.</script><p>换言之:</p>
+<script type="math/tex; mode=display">
+    V^{*}(x)=\max _{a \in A} Q^{\pi^{*}}(x, a)</script><p>将该式代入状态-动作值函数刻度可得最优状态-动作值函数: </p>
+<script type="math/tex; mode=display">
+\left\{\begin{array}{l}
+Q_{T}^{*}(x, a)=\sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(\frac{1}{T} R_{x \rightarrow x^{\prime}}^{a}+\frac{T-1}{T} \max _{a^{\prime} \in A} Q_{T-1}^{*}\left(x^{\prime}, a^{\prime}\right)\right) \\
+Q_{\gamma}^{*}(x, a)=\sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(R_{x \rightarrow x^{\prime}}^{a}+\gamma \max _{a^{\prime} \in A} Q_{\gamma}^{*}\left(x^{\prime}, a^{\prime}\right)\right)
+\end{array}\right.</script><p>上述关于最优值函数的等式，称为最优Bellman等式，其唯一解是最优值函数。<br>最优Bellman等式揭示了非最优策略的改进方式: 将策略选择的动作改编为当前最优的动作。显然，这样的改变能使策略更好，不妨记动作改变后对应的策略为$\pi’$,改变动作的条件为$Q^\pi (x, \pi^i(x)) \geq V^\pi(x)$, 以$\gamma$折扣累积奖赏为例，由式可计算递推不等式: </p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        V^{\pi}(x) &\leq Q^{\pi}(x, \pi'(x)) \\ 
+                   &= \sum_{x' \in X} P_{x \rightarrow x'}^{\pi'(x)} (R_{x \rightarrow x'}^{\pi'(x)} + \gamma V^\pi(x')) \\ 
+                   &\leq \sum_{x' \in X} P_{x \rightarrow x'}^{\pi'(x)} (R_{x \rightarrow x'}^{\pi'(x)} + \gamma Q^{\pi}(x', \pi'(x'))) \\
+                   &= .... \\
+                   &= V^{\pi'}(x)
+    \end{aligned}</script><p>值函数每一次对于策略的改进都是递增的，因此对于当前的策略$\pi$，可以放心地将其改进为:</p>
+<script type="math/tex; mode=display">
+    \pi'(x) = \argmax_{a \in A} Q^{\pi}(x, a)</script><p>直到$\pi’$与$\pi$一致、不再发生变化，此时就满足了最优Bellman等式，即找到了最优策略。</p>
+<h4 id="策略迭代与值迭代"><a href="#策略迭代与值迭代" class="headerlink" title="策略迭代与值迭代"></a>策略迭代与值迭代</h4><p>在前面介绍了两部分内容:</p>
+<ul>
+<li>如何评估一个策略的值函数 </li>
+<li>在策略评估后如何改进以获得最优策略 </li>
+</ul>
+<p>将这两者结合起来即可得到求解最优解的方法: </p>
+<blockquote>
+<p>从一个初始策略(通常是随机策略)出发，先进性策略评估，然后改进策略，评估改进的策略，再进一步改进策略，……不断迭代进行策略评估和改进直到策略不再改变为止，这样的做法称为“策略迭代”.</p>
+</blockquote>
+<p>下面给出基于$T$步累积奖赏的策略迭代算法:<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E7%AD%96%E7%95%A5%E8%BF%AD%E4%BB%A3.png" alt="策略迭代算法"></p>
+<p>策略迭代算法在每次改进策略后都需要进行策略评估，这通常比较耗时。但是实际上策略改进与值函数的改进是一致的，因此可讲策略改进视为值函数的改善:</p>
+<script type="math/tex; mode=display">
+\left\{\begin{array}{l}
+V_{T}(x)=\max _{a \in A} \sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(\frac{1}{T} R_{x \rightarrow x^{\prime}}^{a}+\frac{T-1}{T} V_{T-1}\left(x^{\prime}\right)\right) \\
+V_{\gamma}(x)=\max _{a \in A} \sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(R_{x \rightarrow x^{\prime}}^{a}+\gamma V_{\gamma}\left(x^{\prime}\right)\right)
+\end{array}\right.</script><p>于是可以得到值迭代算法:<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E5%80%BC%E8%BF%AD%E4%BB%A3.png" alt="值迭代算法"> </p>
+<p>在模型已知时，强化学习任务能归结为基于动态规划的寻优问题。与监督学习不同，这里并未涉及泛化能力，仅仅是为每一个状态寻找的一个最佳动作。</p>
+<h3 id="免模型学习"><a href="#免模型学习" class="headerlink" title="免模型学习"></a>免模型学习</h3><p>在现实的强化学习任务中，环境的转移概率、奖赏函数往往很难得知，甚至很难直到环境中有几个状态，若学习算法不依赖于环境建模，则称为<strong>“免模型学习”</strong>。 </p>
+<h4 id="蒙特卡罗强化学习"><a href="#蒙特卡罗强化学习" class="headerlink" title="蒙特卡罗强化学习"></a>蒙特卡罗强化学习</h4><p>在免模型情况下，策略迭代算法首先碰到的问题便是策略无法评估，这是由于模型未知而导致无法做全概率展开。此时，只能通过在环境中执行选择的动作，来观察转移的状态和得到的奖赏。受K摇臂赌博机的启发，一种直接的策略评估方法是“多次采样”，然后求取平均累积奖赏作为期望累积奖赏的近似，这称为蒙特卡罗强化学习方法，由于采样必须为有限次数，因此该方法更适合于使用$T$步累积奖赏的强化学习任务。 </p>
+<p>另一方面，策略迭代算法估计的是值函数，而在进行策略选择时依赖的是状态-动作值函数$Q$，当模型已知时，从$V$到$Q$有很简单的转化方法，而当模型未知时，这也会出现困难。于是我们将估计对象从$V$转变为$Q$,即估计每一对“状态-动作”的值函数。 </p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        az^{-1} u(k) &= au(k-1) \\
+        a z^{-1} u(k)^2 &= au(k-1) u(k)
+    \end{aligned}</script>
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">思考猫</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://xuejy19.github.io/2020/10/06/qiang-hua-xue-xi/">https://xuejy19.github.io/2020/10/06/qiang-hua-xue-xi/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">思考猫</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/">
+                                    <span class="chip bg-color">强化学习</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.4rem;
+        line-height: 38px;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/reward/ali.jpeg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/reward/wechat.jpeg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+        <style>
+    .valine-card {
+        margin: 1.5rem auto;
+    }
+
+    .valine-card .card-content {
+        padding: 20px 20px 5px 20px;
+    }
+
+    #vcomments textarea {
+        box-sizing: border-box;
+        background: url("/medias/comment_bg.png") 100% 100% no-repeat;
+    }
+
+    #vcomments p {
+        margin: 2px 2px 10px;
+        font-size: 1.05rem;
+        line-height: 1.78rem;
+    }
+
+    #vcomments blockquote p {
+        text-indent: 0.2rem;
+    }
+
+    #vcomments a {
+        padding: 0 2px;
+        color: #4cbf30;
+        font-weight: 500;
+        text-decoration: none;
+    }
+
+    #vcomments img {
+        max-width: 100%;
+        height: auto;
+        cursor: pointer;
+    }
+
+    #vcomments ol li {
+        list-style-type: decimal;
+    }
+
+    #vcomments ol,
+    ul {
+        display: block;
+        padding-left: 2em;
+        word-spacing: 0.05rem;
+    }
+
+    #vcomments ul li,
+    ol li {
+        display: list-item;
+        line-height: 1.8rem;
+        font-size: 1rem;
+    }
+
+    #vcomments ul li {
+        list-style-type: disc;
+    }
+
+    #vcomments ul ul li {
+        list-style-type: circle;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    #vcomments table, th, td {
+        border: 0;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments h1 {
+        font-size: 1.85rem;
+        font-weight: bold;
+        line-height: 2.2rem;
+    }
+
+    #vcomments h2 {
+        font-size: 1.65rem;
+        font-weight: bold;
+        line-height: 1.9rem;
+    }
+
+    #vcomments h3 {
+        font-size: 1.45rem;
+        font-weight: bold;
+        line-height: 1.7rem;
+    }
+
+    #vcomments h4 {
+        font-size: 1.25rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    #vcomments h5 {
+        font-size: 1.1rem;
+        font-weight: bold;
+        line-height: 1.4rem;
+    }
+
+    #vcomments h6 {
+        font-size: 1rem;
+        line-height: 1.3rem;
+    }
+
+    #vcomments p {
+        font-size: 1rem;
+        line-height: 1.5rem;
+    }
+
+    #vcomments hr {
+        margin: 12px 0;
+        border: 0;
+        border-top: 1px solid #ccc;
+    }
+
+    #vcomments blockquote {
+        margin: 15px 0;
+        border-left: 5px solid #42b983;
+        padding: 1rem 0.8rem 0.3rem 0.8rem;
+        color: #666;
+        background-color: rgba(66, 185, 131, .1);
+    }
+
+    #vcomments pre {
+        font-family: monospace, monospace;
+        padding: 1.2em;
+        margin: .5em 0;
+        background: #272822;
+        overflow: auto;
+        border-radius: 0.3em;
+        tab-size: 4;
+    }
+
+    #vcomments code {
+        font-family: monospace, monospace;
+        padding: 1px 3px;
+        font-size: 0.92rem;
+        color: #e96900;
+        background-color: #f8f8f8;
+        border-radius: 2px;
+    }
+
+    #vcomments pre code {
+        font-family: monospace, monospace;
+        padding: 0;
+        color: #e8eaf6;
+        background-color: #272822;
+    }
+
+    #vcomments pre[class*="language-"] {
+        padding: 1.2em;
+        margin: .5em 0;
+    }
+
+    #vcomments code[class*="language-"],
+    pre[class*="language-"] {
+        color: #e8eaf6;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+
+    #vcomments b,
+    strong {
+        font-weight: bold;
+    }
+
+    #vcomments dfn {
+        font-style: italic;
+    }
+
+    #vcomments small {
+        font-size: 85%;
+    }
+
+    #vcomments cite {
+        font-style: normal;
+    }
+
+    #vcomments mark {
+        background-color: #fcf8e3;
+        padding: .2em;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+</style>
+
+<div class="card valine-card" data-aos="fade-up">
+    <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; padding-left: 20px; top: 15px; padding-bottom: 5px;">
+        <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
+        <span>评论</span>
+    </div>
+    <div id="vcomments" class="card-content" style="display: grid">
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/valine/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/valine/Valine.min.js"></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        appId: 'LHOcs74feKlXF84DT091adtu-gzGzoHsz',
+        appKey: '3GFMSQIiaSANJhNA8WJg9lz9',
+        notify: 'false' === 'true',
+        verify: 'false' === 'true',
+        visitor: 'true' === 'true',
+        avatar: 'mm',
+        pageSize: '10',
+        lang: 'zh-cn',
+        placeholder: 'just go go'
+    });
+</script>
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2020/10/07/zhi-shu-zu-fen-bu-yu-guang-yi-xian-xing-mo-xing/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/1.png" class="responsive-img" alt="指数族分布与广义线性模型">
+                        
+                        <span class="card-title">指数族分布与广义线性模型</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            在再谈极大似然估计中已经讨论过指数分布族的概念，并且推导出了若概率分布是指数分布族分布，则最终的对数似然函数一定是一个凹函数，直接求偏导等于0便可得到参数估计。
+在听了朱军老师的关于指数分布族函数的讲解之后，发现可以从一个更加general
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-10-07
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/" class="post-category">
+                                    统计学习
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E6%8C%87%E6%95%B0%E5%88%86%E5%B8%83%E6%97%8F%EF%BC%8C-%E5%B9%BF%E4%B9%89%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B/">
+                        <span class="chip bg-color">指数分布族， 广义线性模型</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/10/05/bei-xie-si-fen-lei-bu-chong/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/5.jpg" class="responsive-img" alt="贝叶斯分类补充">
+                        
+                        <span class="card-title">贝叶斯分类补充</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            在前面我已经介绍过有关贝叶斯决策的相关知识，在进行实际应用时如果假设在给定类别情况下，各特征是彼此独立的:
+
+    Ind(x_1,x_2, \dots, x_d |y)则这样导出的分类器称为朴素贝叶斯分类器，这部分我主要总结一些贝叶斯分
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-10-05
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/" class="post-category">
+                                    统计学习
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%88%86%E7%B1%BB%EF%BC%8C%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92/">
+                        <span class="chip bg-color">贝叶斯分类，逻辑回归</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeShrink.js"></script>
+
+
+<!-- 代码块折行 -->
+
+<style type="text/css">
+code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
+</style>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="503838841"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aplayer/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+
+    
+    <div class="container row center-align" style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            <span id="year">2019</span>
+            <a href="/about" target="_blank">思考猫</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                class="white-color">164.9k</span>&nbsp;字
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/xuejy19/" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:xuejianye19@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=2296858626" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 2296858626" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/search.xml", 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/materialize/materialize.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aos/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/js/matery.js"></script>
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    
+    <script async src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+<script type="text/javascript"> //只在桌面版网页启用特效 
+    var windowWidth = $(window).width(); 
+    if (windowWidth > 768) { document.write('<script type="text/javascript" src="/js/sakura.js"><\/script>'); 
+    } 
+</script> 
+
+</body>
+</html>

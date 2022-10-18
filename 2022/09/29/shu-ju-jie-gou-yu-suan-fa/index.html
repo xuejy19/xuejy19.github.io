@@ -1,0 +1,1842 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="数据结构与算法, 风之声">
+    <meta name="description" content="与孤独为友">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>数据结构与算法 | 风之声</title>
+    <link rel="icon" type="image/jpeg" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/favicon.jpg">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/css/my.css">
+
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/jquery/jquery.min.js"></script>
+
+<meta name="generator" content="Hexo 5.4.2"><link rel="stylesheet" href="/css/prism.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">风之声</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>时光轴</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">风之声</div>
+        <div class="logo-desc">
+            
+            与孤独为友
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			时光轴
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/xuejy19/" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/xuejy19/" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/3.png')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">数据结构与算法</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        height: calc(100vh - 250px);
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
+                                <span class="chip bg-color">数据结构</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E7%AE%97%E6%B3%95%E5%B2%97%E5%85%AB%E8%82%A1%E6%96%87/" class="post-category">
+                                算法岗八股文
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2022-09-29
+                </div>
+                
+
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
+                    2022-10-17
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    3.6k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    12 分
+                </div>
+                
+
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>数据结构与算法算是必考内容，如果能在笔试/面试的过程中快速找到算法题的解题思路，无疑会给面试官留下很好的印象，这类题目主要考察两个方面: </p>
+<ul>
+<li>数据结构的掌握程度，能否熟练掌握各类数据结构的特点及操作</li>
+<li>常见算法，比如贪心算法、动态规划、BFS/DFS等 <span id="more"></span>
+面试官的考察一般是循序渐进的：</li>
+<li>一般首先会考察一些数据结构的知识来看被面试者的数据结构基础 </li>
+<li>接下来会抛出一些常见算法，询问算法的实现细节、优缺点 </li>
+<li>最后从一道具体的算法题目出发，考察被面试者分析问题，对算法举一反三的运用能力，一定要多注意思考有没有更好的解法</li>
+<li>上机编程，考察被面试者的编程实现功底</li>
+</ul>
+<p>从上面的分析可以看出，前两项是后两项的理论基础，只有有了扎实的理论基础，后续在leetcode/牛客网刷题的时候才能事倍功半。 </p>
+<h3 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h3><h4 id="编程语言"><a href="#编程语言" class="headerlink" title="编程语言"></a>编程语言</h4><p>从大的层面来看，编程语言分为两类: </p>
+<ul>
+<li>高级语言: 编译型语言、解释型语言 </li>
+<li>低级语言: 机器语言、汇编语言 </li>
+</ul>
+<h5 id="编译型语言"><a href="#编译型语言" class="headerlink" title="编译型语言"></a>编译型语言</h5><blockquote>
+<p><strong>编译型语言:</strong> C/C++、Pascal/Object Pascal、Golang<br><strong>定义:</strong> 程序在执行之前需要一个专门的编译过程，把程序编译成为机器语言的文件，运行时则不需要重新编译，直接运行编译后的结果就可以。</p>
+<ul>
+<li>优点: 程序执行效率高 </li>
+<li>缺点: 依赖于编译器，跨平台性差 </li>
+</ul>
+</blockquote>
+<h5 id="解释型语言"><a href="#解释型语言" class="headerlink" title="解释型语言"></a>解释型语言</h5><blockquote>
+<p><strong>解释型语言:</strong> Python、Matlab、Javascript、Java、Ruby、C#、PHP等<br><strong>定义:</strong> 程序不需要编译，每次运行，都需要一边运行，一边翻译</p>
+<ul>
+<li>优点: 跨平台性能好 </li>
+<li>缺点: 效率低 </li>
+</ul>
+</blockquote>
+<h4 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h4><blockquote>
+<p><strong>算法复杂度：</strong> 输入数据为$N$时，算法运行所需花费的时间 </p>
+<ul>
+<li>统计的是算法的<strong>计算操作数量</strong>，而不是算法的<strong>运行绝对时间</strong>，计算操作数量与算法运行绝对时间成正相关，但并不相等，还受到<strong>编程语言、计算机处理器速度、运行环境</strong>等多种因素的影响。 </li>
+<li>体现的是计算操作随数据大小$N$变化时的变化情况，按照从小到大，常见的时间复杂度有: <script type="math/tex; mode=display">O(1) < O(logN) < O(N) < O(NlogN) < O(N^2) < O(2^N) < O(N!)</script></li>
+</ul>
+</blockquote>
+<h4 id="空间复杂度"><a href="#空间复杂度" class="headerlink" title="空间复杂度"></a>空间复杂度</h4><p>空间复杂度涉及的空间类型有: </p>
+<ul>
+<li>输入空间: 存储输入数据所需的空间大小 </li>
+<li>暂存空间: 算法运行过程中，存储所有中间变量和对象等数据所需的空间大小 </li>
+<li>输出空间: 算法运行返回时，存储输出数据所需的空间 </li>
+</ul>
+<p>空间复杂度的计算一般只需要考虑 <strong>暂存空间</strong> + <strong>输出空间</strong><br>根据不同来源，算法使用的内存空间分为三类： </p>
+<ul>
+<li>指令空间: 编译后，程序指令所使用的内存空间 </li>
+<li>数据空间: 算法中的各项变量使用的空间</li>
+<li>栈帧空间: 一般在递归时会需要考虑 </li>
+</ul>
+<p>按照从小到大排列，常见的算法空间复杂度有: </p>
+<script type="math/tex; mode=display">O(1) < O(logN) < O(N) < O(N^2) < O(2^N)</script><h3 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h3><p>在这一部分，我将回顾各种数据结构的概念以及优劣势</p>
+<h4 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h4><p>数组一般用来存储相同类型的数据 </p>
+<ul>
+<li>特点<ul>
+<li>长度固定，一般不可以动态扩展 </li>
+<li>占据连续的内存空间 </li>
+<li>数据的访问方式为随机访问 </li>
+</ul>
+</li>
+<li>优点: 查改效率高，通过数组名和下标进行访问，¬$O(1)$复杂度 </li>
+<li>缺点: 增删效率低，需要移动增删元素之后的所有元素 </li>
+</ul>
+<p><img src="/.io//%E6%95%B0%E7%BB%84.jpeg" alt="数组"></p>
+<h4 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h4><p>链表相较于数组，除了数据域，还增加了指针域用于存储下一个节点的地址，链表中每一个元素都包含此节点的数据和指向下一节点地址的指针。</p>
+<ul>
+<li>特点<ul>
+<li>长度可动态变化</li>
+<li>非连续的内存空间</li>
+<li>数据的访问方式为顺序访问 </li>
+</ul>
+</li>
+<li>优点: 增删效率后，$O(1)$的时间复杂度 </li>
+<li>缺点: 查改效率低，只能通过遍历节点依次查询，$O(N)$的时间复杂度  </li>
+</ul>
+<p><img src="/.io//%E9%93%BE%E8%A1%A8.jpeg" alt="链表"></p>
+<h4 id="栈"><a href="#栈" class="headerlink" title="栈"></a>栈</h4><p>栈本身是一个线性表，但在这个表中只有一个口子允许数据的进出，其特点在于栈中元素的<strong>先进后出(FILO)</strong>，常用的操作有<code>push()、pop()、top()</code></p>
+<p><img src="/.io//%E6%A0%88.gif" alt="栈"></p>
+<h5 id="单调栈"><a href="#单调栈" class="headerlink" title="单调栈"></a>单调栈</h5><p>单调栈是一种特殊的栈，栈中的元素是单调递增/递减: </p>
+<ul>
+<li>单调递增栈: 可以找到元素向左遍历第一个比它小的元素 </li>
+<li>单调递减栈: 可以找到元素向左遍历第一个比它大的元素 </li>
+</ul>
+<p>借助单调栈可以在线性时间内完成左侧第一个小于/大于元素的搜索，下面介绍几个典型题目 </p>
+<ul>
+<li>接雨水<br><img src="/.io//%E6%8E%A5%E9%9B%A8%E6%B0%B4.png" alt><ul>
+<li><blockquote>
+<p>题目描述: 给定一个列表表示高度图，计算下雨后能接多少雨水 </p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>解题思路: 维护一个单调递减栈，一旦发现当前元素大于栈顶元素，当前元素便是右边界，栈顶元素出栈，此时单调栈的栈顶元素便成为了左侧边界，取两者最小值作为高度，乘以左右距离便得到了装水量。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li>求直方图中最大矩阵面积<br><img src="/.io//%E6%9C%80%E5%A4%A7%E7%9F%A9%E9%98%B5%E9%9D%A2%E7%A7%AF.png" alt><ul>
+<li><blockquote>
+<p>题目描述: 给定一个列表表示直方图，求该直方图中最大矩阵面积</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>解题思路: 维护一个单调递增栈，当遇到大的元素时直接进栈，一旦发现当前元素小于栈顶元素，则当前元素便是栈顶元素的右边界，而栈顶元素出栈后，下一个栈顶元素便是左边界，由此便可计算矩阵面积，遍历一次找到最大的矩阵面积即可。 </p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li>最大矩形<br><img src="/.io//%E6%9C%80%E5%A4%A7%E7%9F%A9%E5%BD%A2.png" alt><ul>
+<li><blockquote>
+<p>题目描述: 给定一个仅包含 0 和 1 、大小为 rows x cols 的二维二进制矩阵，找出只包含 1 的最大矩形，并返回其面积。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>解题思路: 按行遍历，然后每次都堆叠列得到一个柱状图，然后通过单调栈算法，求最大矩形面积</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<p>单调栈算法总结: </p>
+<blockquote>
+<p>单调栈是一个原理简单，但不太好想到的一种思路，在leetcode往往是以hard题目形式出现，线性时间复杂度是该数据结构最大的优势，对于此类题目往往会先考虑暴力解法，如果需要寻找各个元素的左边界/右边界，则考虑能否应用单调栈降低时间复杂度。 </p>
+</blockquote>
+<h4 id="队列"><a href="#队列" class="headerlink" title="队列"></a>队列</h4><p>队列是一种线性数据结构，与栈的后进先出相对应，队列是<strong>先进先出(FIFO)</strong><br><img src="/.io//%E9%98%9F%E5%88%97.gif" alt="队列"></p>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">import queue 
+q = queue.Queue()
+q.put(1)   #向队列中加入元素 
+q.get()    #取出队列中最先进入的元素 
+q.empty()  #判断队列是否为空 
+q.qsize()  #获取队列长度
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="树"><a href="#树" class="headerlink" title="树"></a>树</h4><p>树作为一种树状的数据机构，其将有限个节点根据不同的层次关系进行排列，从而形成数据之间的父子关系，从某种角度来说，可以将树看作链表的高配版，对普通链表的指针域进行了扩展。<br>下面介绍一些常见的树的类型: </p>
+<ul>
+<li>完全二叉树: 除了最后一层节点，其他层的节点数都达到了最大值，同时最后一层的节点都是按照从左到右依次排布</li>
+<li>满二叉树: 除了最后一层，其他层的节点都有两个子节点 </li>
+<li>二叉排序树((二叉搜索树): 左子树上所有结点的值均小于根结点的值，右子树上所有结点的值均大于根结点，左右子树也分别时二叉排序树</li>
+<li>平衡二叉树: 平衡二叉树又被称为AVL树，它是一个二叉排序树，且左右子树的高度差距不超过1，左右子树也都是二叉平衡树 <ul>
+<li>优点: 平衡二叉树为了追求高度平衡，需要通过平衡处理使得左右子树的高度差必须小于等于1，高度平衡带来了更高的搜索效</li>
+<li>缺点： 缺点则是对树中结点进行插入删除时需要经过多次旋转实现复衡，这导致AVL的插入和删除效率并不高。</li>
+</ul>
+</li>
+<li>红黑树: <ul>
+<li>每个结点要么是红的，要么是黑的</li>
+<li>根结点是黑的 </li>
+<li>每个叶结点(None)都是黑的 </li>
+<li>如果一个结点是红的，那么它的两个儿子都是黑的</li>
+<li>对于任意结点而言，其到叶结点树尾端None指针的每条路径都包含相同数目的黑结点<br><img src="/.io//%E7%BA%A2%E9%BB%91%E6%A0%91.jpeg" alt="红黑树"></li>
+</ul>
+</li>
+<li>红黑树与平衡二叉树对比<br><img src="/.io//%E7%BA%A2%E9%BB%91vs%E5%B9%B3%E8%A1%A1.png" alt="AVLvs红黑树"></li>
+</ul>
+<p>树的遍历方式有四种: </p>
+<ul>
+<li>前序遍历: 按照 根结点-&gt;左子结点-&gt;右子结点的顺序进行遍历 </li>
+<li>中序遍历: 按照 左子结点-&gt;根结点-&gt;右子结点的顺序进行遍历 </li>
+<li>后序遍历: 按照 左子结点-&gt;右子结点-&gt;根结点的顺序进行遍历 </li>
+<li>层次遍历: 从根结点开始，按结点所处层级进行遍历 <h4 id="堆"><a href="#堆" class="headerlink" title="堆"></a>堆</h4>堆通常可以看做一棵树的数组对象，堆的实现一般不通过指针域，而是通过构建一个一维数组与二叉树的父子结点进行对应，因此堆总是一棵完全二叉树。</li>
+<li>对于任意一个父结点的序号$n$来说，它的子结点的序号一定是$2n+1, 2n+2$，因此可以直接用一个数组表示一个堆</li>
+<li>堆中某个结点的值总是不大于或者不小于其父节点的值: 根结点最大的堆称为<strong>最大堆</strong>;根结点最小的堆称为<strong>最小堆</strong></li>
+<li>堆常用来实现优先队列，比如堆排序、top$K$问题等 </li>
+</ul>
+<p><img src="/.io//%E5%A0%86.jpeg" alt></p>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">import heapq  
+pq = [] 
+value = 1
+heapq.heappush(pq, value)    #向小根堆中加入元素 
+heapq.heapreplace(pq, value) #替换堆顶元素 
+heapq.pop(pq)                #弹出堆顶元素
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="哈希表"><a href="#哈希表" class="headerlink" title="哈希表"></a>哈希表</h4><p>哈希表也叫散列表，是一种通过键值堆直接访问数据的结构，借助于哈希表可以实现$O(1)$的数据访问效率。<br><img src="/.io//%E5%93%88%E5%B8%8C%E8%A1%A8.jpeg" alt></p>
+<p>哈希表实现的最关键就是哈希函数的定义和选择，一般常用的有以下几种： </p>
+<ul>
+<li>直接寻址法: 取关键字或者关键字的某个线性函数作为哈希地址 </li>
+<li>数字分析法: 通过数据的特点，发现数据中冲突较少的部分，构造哈希地址。 </li>
+<li>平方取中法:</li>
+<li>取随机数法: 通常适用于关键字长度不同的场合</li>
+<li>除留取余法: 取关键字被某个不大于散列表的表长$n$的数$m$除后所得的余数$p$作为散列地址，一般取素数或者直接用$n$。 </li>
+</ul>
+<p><strong>哈希冲突</strong>: 当不同的key值访问到同一个地址时，就发生了哈希冲突。<br>哈希冲突主要有以下解决方案： </p>
+<ul>
+<li>链地址法: 在冲突的地方再做一个链表</li>
+<li>开放寻址法: 探测后续未被占用的地址 </li>
+<li>再哈希: 使用关键字的其他部分继续计算地址，更换哈希函数 </li>
+</ul>
+<p><img src="/.io//%E9%93%BE%E5%9C%B0%E5%9D%80%E6%B3%95.jpeg" alt> </p>
+<h4 id="图"><a href="#图" class="headerlink" title="图"></a>图</h4><p>图一般包含顶点和边，可粗略分为有向图和无向图。</p>
+<ul>
+<li>图的存储一般通过<strong>邻接矩阵</strong>实现<br><img src="/.io//%E9%82%BB%E6%8E%A5%E7%9F%A9%E9%98%B51.jpeg" alt></li>
+<li>邻接矩阵往往是稀疏的，存储大量的0导致浪费了大量的空间，，一种只存储相连顶点关系的邻接表应运而生。<ul>
+<li>在邻接表中，图的每一个顶点都是一个链表的头结点，其后连接着该节点能够到达的相邻节点。</li>
+<li>邻接表只包含个个结点的出度信息</li>
+</ul>
+</li>
+<li>逆邻接表: 包含结点的入度信息</li>
+<li>十字链表 </li>
+</ul>
+<h3 id="常见算法"><a href="#常见算法" class="headerlink" title="常见算法"></a>常见算法</h3><h4 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h4><p>动态规划是算法与数据结构的重难点，其中包含了「分治思想」、「空间换时间」、「最优解」等多种算法思想，这部分将从以下三个方面对动态规划算法进行介绍: </p>
+<ul>
+<li>动态规划问题特点，<strong>动态规划</strong>和<strong>分治算法</strong>的联系与区别 </li>
+<li>介绍<strong>重叠子问题</strong>与<strong>最优子结构</strong>分别是什么，以及动态规划是如何解决的 </li>
+<li>动态规划的解题框架总结 </li>
+</ul>
+<h5 id="动态规划与分治"><a href="#动态规划与分治" class="headerlink" title="动态规划与分治"></a>动态规划与分治</h5><ol>
+<li><strong>分治算法</strong>: 「分治」是算法中的一种基本思想，通过将<strong>原问题分解为子问题</strong>，不断递归地将子问题分解为更小的子问题，并通过<strong>组合子问题的解</strong>来得到原问题的解， e.g. 归并排序 </li>
+<li><strong>动态规划</strong>: 与「分治」的相同点在于「动态规划」也是通过组合子问题的解来得到原问题的解，不同的是，能用「动态规划」解决的问题具有「<strong>重叠子问题</strong>」和「<strong>最优子结构</strong>」两大特性。</li>
+</ol>
+<h5 id="动态规划问题特性"><a href="#动态规划问题特性" class="headerlink" title="动态规划问题特性"></a>动态规划问题特性</h5><ul>
+<li><strong>重叠子问题</strong>: 动态规划的子问题是有重叠的，即各个子问题中包含<strong>重复的更小子问题</strong>，若使用暴力法穷举，求解这些相同子问题会产生大量重复计算，效率低下。<br><img src="/.io//%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E6%95%B0%E5%88%97.png" alt><pre class="line-numbers language-lang-python"><code class="language-lang-python"># 求第 n 个斐波那契数
+def fibonacci(n):
+  if n == 0: return 0       # 若求 f(0) 则直接返回 0
+  a, b = 0, 1               # 初始化 f(0), f(1)
+  for i in range(2, n + 1): # 状态转移求取 f(2), f(3), ..., f(n) 
+      a, b = b, a + b
+  return b                  # 返回 f(n)
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><strong>最优子结构</strong>: 如果一个问题的最优解可以由其子问题的最优解组合而成，并且这些子问题可以独立求解，那么称此问题具有最优子结构。<br><img src="/.io//%E8%9B%8B%E7%B3%95%E6%9C%80%E9%AB%98%E5%94%AE%E4%BB%B7.png" alt><pre class="line-numbers language-lang-python"><code class="language-lang-python"># 输入蛋糕价格列表 price_list ，求重量为 n 蛋糕的最高售价
+def max_cake_price(n, price_list):
+  if n <= 1: return price_list[n] # 蛋糕重量 <= 1 时直接返回
+  dp = [0] * (n + 1)              # 初始化 dp 列表
+  for j in range(1, n + 1):       # 按顺序计算 f(1), f(2), ..., f(n)
+      for i in range(j):          # 从 j 种组合种选择最高售价的组合作为 f(j)
+          dp[j] = max(dp[j], dp[i] + price_list[j - i])
+  return dp[n]
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ul>
+<h5 id="动态规划解题框架"><a href="#动态规划解题框架" class="headerlink" title="动态规划解题框架"></a>动态规划解题框架</h5><p>首先分析问题是否具有「<strong>重叠子问题</strong>」与「<strong>最优子结构</strong>」两个特性，若有则可以考虑用动态规划按照以下步骤进行求解: </p>
+<ol>
+<li><strong>状态定义</strong>: 构建问题最优解模型，包括问题<strong>问题最优解的定义</strong>、<strong>有哪些计算解的自变量</strong></li>
+<li><strong>初始状态</strong>: 确定基础子问题的解，原问题和子问题的解都是以基础子问题的解为起始点，在迭代计算中得到 </li>
+<li><strong>转移方程</strong>: 确定原问题与子问题之间的关系，以及使用何种选择规则从子问题最优解中组合出原问题的最优解 </li>
+<li><strong>返回值</strong>: 确定应返回的问题的解是什么，即动态规划在何处停止迭代</li>
+</ol>
+<p><strong>示例: 斐波那契数列</strong></p>
+<ul>
+<li><strong>状态定义</strong>: 一维$dp$列表，设第$i$个斐波那契数为$dp[i]$ </li>
+<li><strong>初始状态</strong>: 已知第$0,1$个斐波那契数为$dp[0] = 0, dp[1] = 1$</li>
+<li><strong>转移方程</strong>: 后一个数字等于前两个数字之和<script type="math/tex; mode=display">dp[i] = dp[i-1] + dp[i-2]</script></li>
+<li><strong>返回值</strong>: 第$n$个斐波那契数$dp[n]$</li>
+</ul>
+<h4 id="排序算法"><a href="#排序算法" class="headerlink" title="排序算法"></a>排序算法</h4><h5 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h5><p>排序算法用作实现列表的排序，列表元素可以是整数，也可以是浮点数、字符串等其他数据类型，生活中有许多需要用到排序算法的场景: </p>
+<ul>
+<li><strong>数字排序</strong>: 对于一个数组，我们希望将所有数字从小到大/从大到小排序 </li>
+<li><strong>字符串排序</strong>: 对于一个字符串列表，我们希望将所有单词按照字符先后排序 </li>
+<li><strong>自定义排序</strong>: 对于任意一个<strong>已定义比较规则</strong>的集合，我们希望将其按规则排序 </li>
+</ul>
+<p><img src="/.io//%E6%8E%92%E5%BA%8F%E6%A6%82%E8%BF%B0.png" alt></p>
+<h5 id="常见排序算法"><a href="#常见排序算法" class="headerlink" title="常见排序算法"></a>常见排序算法</h5><p>常见排序算法包括「冒泡排序」、「插入排序」、「选择排序」、「快速排序」、「归并排序」、「堆排序」、「基数排序」、「桶排序」。如下图所示，为各排序算法的核心特性与时空复杂度总结<br><img src="/.io//%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E6%97%B6%E7%A9%BA%E5%A4%8D%E6%9D%82%E5%BA%A6.png" alt><br>如下图所示，为在 「随机乱序」、「接近有序」、「完全倒序」、「少数独特」四类输入数据下，各常见排序算法的排序过程。</p>
+<p><img src="/.io//%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F%E5%8A%A8%E7%94%BB.gif" alt><br><img src="/.io//%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F%E5%8A%A8%E7%94%BB.gif" alt><br><img src="/.io//%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F%E5%8A%A8%E7%94%BB.gif" alt><br><img src="/.io//%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%E5%8A%A8%E7%94%BB.gif" alt><br><img src="/.io//%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F%E5%8A%A8%E7%94%BB.gif" alt><br><img src="/.io//%E5%A0%86%E6%8E%92%E5%BA%8F%E5%8A%A8%E7%94%BB.gif" alt></p>
+<h5 id="排序算法主要可根据稳定性、就地性、自适应性分类，理想的排序算法具有以下特征"><a href="#排序算法主要可根据稳定性、就地性、自适应性分类，理想的排序算法具有以下特征" class="headerlink" title="排序算法主要可根据稳定性、就地性、自适应性分类，理想的排序算法具有以下特征:"></a>排序算法主要可根据<strong>稳定性、就地性、自适应性</strong>分类，理想的排序算法具有以下特征:</h5><ul>
+<li><strong>稳定性</strong>: 相等元素的相对位置不变化 </li>
+<li><strong>就地性</strong>: 不使用额外的辅助空间 </li>
+<li><strong>自适应性</strong>: 时间复杂度受元素分布影响 </li>
+</ul>
+<p>按照稳定性来分类: </p>
+<ul>
+<li>稳定排序: 冒泡排序、插入排序、归并排序、基数排序、桶排序 </li>
+<li>非稳定排序: 选择排序、快速排序、堆排序 </li>
+</ul>
+<p>按照就地性进行分类: </p>
+<ul>
+<li>原地排序: 不使用额外辅助数组，例如: 冒泡排序、插入排序、选择排序、快速排序、堆排序 </li>
+<li>非原地排序: 使用额外辅助数组，例如: 基数排序、桶排序等 </li>
+</ul>
+<h5 id="时空复杂度"><a href="#时空复杂度" class="headerlink" title="时空复杂度"></a>时空复杂度</h5><p>常见排序算法时空复杂度见下图</p>
+<p><img src="/.io//%E6%8E%92%E5%BA%8F%E5%A4%8D%E6%9D%82%E5%BA%A6.png" alt></p>
+<ul>
+<li>普通「冒泡排序」的最佳时间复杂度为$O(N^2)$，通过增加标志位实现提前返回 ，可以将最佳时间复杂度降低至$O(N)$</li>
+<li>在输入列表完全倒序下，普通「快速排序」的空间复杂度劣化至$O(N)$通过代码优化 Tail Call Optimization 保持算法递归较短子数组，可以将最差递归深度降低至 $\log N$ </li>
+<li>普通「快速排序」总以最左或最右元素为基准数，因此在输入列表有序或倒序下，时间复杂度劣化至$O(N^2)$; 通过随机选择基准数, 可极大减少此类最差情况发生, 尽可能地保持$O(NlogN)$的时间复杂度。</li>
+<li>若输入列表是数组，则归并排序的空间复杂度为$O(N)$; 而若排序链表, 则「归并排序」不需要借助额外辅助空间，空间复杂度可以降低至$O(1)$</li>
+</ul>
+<h5 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h5><p>快速排序分为两步: </p>
+<ul>
+<li><strong>哨兵划分</strong>: 以数组某个元素为<strong>基准数</strong>，将所有小于基准数的元素移至其左边，大于基准数的元素移动至其右边</li>
+<li><strong>递归</strong>: 对左子数组和右子数组分别执行<strong>哨兵划分</strong>，直至子数组长度为1终止递归 </li>
+</ul>
+<p><img src="/.io//%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F.png" alt></p>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">def quick_sort(nums, l, r):
+    # 子数组长度为 1 时终止递归
+    if l >= r: return
+    # 哨兵划分操作
+    i = partition(nums, l, r)
+    # 递归左（右）子数组执行哨兵划分
+    quick_sort(nums, l, i - 1)
+    quick_sort(nums, i + 1, r)
+
+def partition(nums, l, r):
+    # 以 nums[l] 作为基准数
+    i, j = l, r
+    while i < j:
+        while i < j and nums[j] >= nums[l]: j -= 1
+        while i < j and nums[i] <= nums[l]: i += 1
+        nums[i], nums[j] = nums[j], nums[i]
+    nums[l], nums[i] = nums[i], nums[l]
+    return i
+
+# 调用
+nums = [3, 4, 1, 5, 2]
+quick_sort(nums, 0, len(nums) - 1)
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="归并排序"><a href="#归并排序" class="headerlink" title="归并排序"></a>归并排序</h5><p>归并排序体现了<strong>分治</strong>的算法思想，具体为: </p>
+<ul>
+<li><strong>分</strong>: 不断将数组从中点位置划分开，将原数组的排序问题转化为子数组的排序问题</li>
+<li><strong>治</strong>: 划分到子数组长度为1时，开始向上合并，不断将<strong>左右两个较短排序数组</strong>合并为一个<strong>较长排序数组</strong>，直至合并至原数组完成排序</li>
+</ul>
+<p><img src="/.io//%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F.png" alt></p>
+<p>代码实现</p>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">def merge_sort(nums, l, r):
+    # 终止条件
+    if l >= r: return
+    # 递归划分数组
+    m = (l + r) // 2
+    merge_sort(nums, l, m)
+    merge_sort(nums, m + 1, r)
+    # 合并子数组
+    tmp = nums[l:r + 1]       # 暂存需合并区间元素
+    i, j = 0, m - l + 1       # 两指针分别指向左/右子数组的首个元素
+    for k in range(l, r + 1): # 遍历合并左/右子数组
+        if i == m - l + 1:
+            nums[k] = tmp[j]
+            j += 1
+        elif j == r - l + 1 or tmp[i] <= tmp[j]:
+            nums[k] = tmp[i]
+            i += 1
+        else:
+            nums[k] = tmp[j]
+            j += 1
+
+# 调用
+nums = [3, 4, 1, 5, 2, 1]
+merge_sort(0, len(nums) - 1)
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="搜索与回溯算法"><a href="#搜索与回溯算法" class="headerlink" title="搜索与回溯算法"></a>搜索与回溯算法</h4><h5 id="概述-1"><a href="#概述-1" class="headerlink" title="概述"></a>概述</h5><ul>
+<li><strong>搜索</strong>是计算机解题中的常用算法，其本质是通过某种规则实现对解空间的遍历</li>
+<li><strong>回溯</strong>搜索算法中的一种控制策略，它的基本思想是: 为了求得问题的解，先选择某一种可能的情况向前探索，在探索过程中，一旦发现上一步选择是错的，就退回一步重新选择，继续向前探索，直至得到解或者证明无解。 </li>
+</ul>
+<p>这类算法大致可以分为两类: </p>
+<ul>
+<li>暴力搜索(无信息搜索算法): 广度优先搜索(BFS)、广度优先搜索(DFS)</li>
+<li>启发式搜索(有信息搜索算法): 贪心搜索、A*搜索 </li>
+</ul>
+<h5 id="广度优先搜索算法"><a href="#广度优先搜索算法" class="headerlink" title="广度优先搜索算法"></a>广度优先搜索算法</h5><p>BFS，类似地毯式搜索，以距离为层数逐层搜索，直到找到答案或者确认无解<br><img src="/.io//BFS.gif" alt><br>广度优先搜索一般通过队列实现: </p>
+<ul>
+<li>起始结点入队列</li>
+<li>遍历与启示结点有连通的结点，入队列 </li>
+<li>起始结点出队列</li>
+<li>重复以上步骤，直至找到目标点或者队列为空(无解)</li>
+</ul>
+<h5 id="深度优先搜索算法"><a href="#深度优先搜索算法" class="headerlink" title="深度优先搜索算法"></a>深度优先搜索算法</h5><p>深度优先搜索(DFS)会从第一个指定的顶点开始遍历图，沿着这条路径直到最后一个顶点被访问了，再原路折回(回溯)探索下一条路径。<br><img src="/.io//DFS.gif" alt></p>
+<p>深度优先搜索一般是通过递归回溯实现 </p>
+<h5 id="贪心搜索"><a href="#贪心搜索" class="headerlink" title="贪心搜索"></a>贪心搜索</h5><p>当边上有权值时，BFS便不适用了，此时需要加入松弛变量来表示结点与顶点之间的距离，这就是dijkstra算法，对于无权图/树，dijkstra算法就退化成了BFS</p>
+<p>动态规划是贪心的泛化，贪心是动态规划的特例(贪婪解也恰好是Bellman最优时)</p>
+<h5 id="A-搜索"><a href="#A-搜索" class="headerlink" title="A*搜索"></a>A*搜索</h5><p>做到题目了再来补</p>
+<h4 id="位运算"><a href="#位运算" class="headerlink" title="位运算"></a>位运算</h4><h5 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h5><p>程序中的所有数在计算机内存中都是以二进制的形式存储的，位运算就是直接对整数在内存中的二进制位进行运算，常见的运算操作符有: </p>
+<ul>
+<li>与(&amp;) </li>
+<li>或(|) </li>
+<li>异或(^) </li>
+<li>取反(~) </li>
+<li>左移(&lt;&lt;) </li>
+<li>右移(&gt;&gt;) </li>
+</ul>
+<h5 id="与运算"><a href="#与运算" class="headerlink" title="与运算"></a>与运算</h5><p>两位同时为1，结果为1，否则为0<br>与运算的特殊用途: </p>
+<ul>
+<li>清零: 任何数字与0相与都是0 </li>
+<li>取指定位: 与一个特定位为1，其他位为0的数字进行与运算即可取原数字中该特定位</li>
+</ul>
+<p><img src="/.io//%E4%B8%8E%E8%BF%90%E7%AE%97.png" alt></p>
+<h5 id="或运算"><a href="#或运算" class="headerlink" title="或运算"></a>或运算</h5><p>二进制对应位两两进行或运算(有1则1，无1则0)<br>或运算的特殊用途: </p>
+<ul>
+<li>用来将数字的某些位置1 </li>
+</ul>
+<p><img src="/.io//%E6%88%96%E8%BF%90%E7%AE%97.png" alt></p>
+<h5 id="异或运算"><a href="#异或运算" class="headerlink" title="异或运算"></a>异或运算</h5><p>二进制对应位两两进行异或运算(相同为1，不同为0)<br><img src="/.io//%E5%BC%82%E6%88%96%E8%BF%90%E7%AE%97.png" alt></p>
+<p>异或运算的特殊用途: </p>
+<ul>
+<li>将低位1置0(n&amp;(n-1)将低位1置0) </li>
+<li>使某些特定的位翻转(与指定位为1的数字进行异或运算) </li>
+<li>判断两个值是否相等(相等则异或值为0)</li>
+<li>实现两个值的交换(a = a^b, b = b^a, a = a^b) </li>
+</ul>
+<h5 id="按位取反"><a href="#按位取反" class="headerlink" title="按位取反"></a>按位取反</h5><p>二进制的0变成1，1变成0<br><img src="/.io//%E5%8F%96%E5%8F%8D%E8%BF%90%E7%AE%97.png" alt> </p>
+<h5 id="移位运算符"><a href="#移位运算符" class="headerlink" title="移位运算符"></a>移位运算符</h5><ul>
+<li>左移运算符$&lt;&lt;$: 左移后右侧补0 </li>
+<li>右移运算符$&gt;&gt;$: 右移后左边补原左位值</li>
+</ul>
+<p>说明: </p>
+<ul>
+<li>左移一位相当于整个数乘以二 </li>
+<li>右移一位相当于整数除以二</li>
+</ul>
+<p><img src="/.io//%E7%A7%BB%E4%BD%8D%E8%BF%90%E7%AE%97%E7%AC%A6.png" alt> </p>
+<h5 id="位运算小技巧"><a href="#位运算小技巧" class="headerlink" title="位运算小技巧"></a>位运算小技巧</h5><ul>
+<li>判断奇偶数<br>```python</li>
+</ul>
+<p>if(n &amp; 1 == 1){<br>// n 是个奇数。<br>} </p>
+<pre><code>- 交换两个数
+```python
+a=a^b; #a=a^b
+b=a^b; #b=(a^b)^b=a^0=a
+a=a^b; #a=(a^b)^(a^b^b)=0^b=0
+</code></pre><h5 id="经典问题"><a href="#经典问题" class="headerlink" title="经典问题"></a>经典问题</h5><ul>
+<li>不用加减乘除做加法</li>
+<li>二进制中1的个数</li>
+<li>只出现一次的数字 </li>
+</ul>
+<p>….未完待续，后序刷题碰到未掌握的知识点后回来补充</p>
+
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">思考猫</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://xuejy19.github.io/2022/09/29/shu-ju-jie-gou-yu-suan-fa/">https://xuejy19.github.io/2022/09/29/shu-ju-jie-gou-yu-suan-fa/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">思考猫</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
+                                    <span class="chip bg-color">数据结构</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.4rem;
+        line-height: 38px;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/reward/ali.jpeg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/reward/wechat.jpeg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+        <style>
+    .valine-card {
+        margin: 1.5rem auto;
+    }
+
+    .valine-card .card-content {
+        padding: 20px 20px 5px 20px;
+    }
+
+    #vcomments textarea {
+        box-sizing: border-box;
+        background: url("/medias/comment_bg.png") 100% 100% no-repeat;
+    }
+
+    #vcomments p {
+        margin: 2px 2px 10px;
+        font-size: 1.05rem;
+        line-height: 1.78rem;
+    }
+
+    #vcomments blockquote p {
+        text-indent: 0.2rem;
+    }
+
+    #vcomments a {
+        padding: 0 2px;
+        color: #4cbf30;
+        font-weight: 500;
+        text-decoration: none;
+    }
+
+    #vcomments img {
+        max-width: 100%;
+        height: auto;
+        cursor: pointer;
+    }
+
+    #vcomments ol li {
+        list-style-type: decimal;
+    }
+
+    #vcomments ol,
+    ul {
+        display: block;
+        padding-left: 2em;
+        word-spacing: 0.05rem;
+    }
+
+    #vcomments ul li,
+    ol li {
+        display: list-item;
+        line-height: 1.8rem;
+        font-size: 1rem;
+    }
+
+    #vcomments ul li {
+        list-style-type: disc;
+    }
+
+    #vcomments ul ul li {
+        list-style-type: circle;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    #vcomments table, th, td {
+        border: 0;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments h1 {
+        font-size: 1.85rem;
+        font-weight: bold;
+        line-height: 2.2rem;
+    }
+
+    #vcomments h2 {
+        font-size: 1.65rem;
+        font-weight: bold;
+        line-height: 1.9rem;
+    }
+
+    #vcomments h3 {
+        font-size: 1.45rem;
+        font-weight: bold;
+        line-height: 1.7rem;
+    }
+
+    #vcomments h4 {
+        font-size: 1.25rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    #vcomments h5 {
+        font-size: 1.1rem;
+        font-weight: bold;
+        line-height: 1.4rem;
+    }
+
+    #vcomments h6 {
+        font-size: 1rem;
+        line-height: 1.3rem;
+    }
+
+    #vcomments p {
+        font-size: 1rem;
+        line-height: 1.5rem;
+    }
+
+    #vcomments hr {
+        margin: 12px 0;
+        border: 0;
+        border-top: 1px solid #ccc;
+    }
+
+    #vcomments blockquote {
+        margin: 15px 0;
+        border-left: 5px solid #42b983;
+        padding: 1rem 0.8rem 0.3rem 0.8rem;
+        color: #666;
+        background-color: rgba(66, 185, 131, .1);
+    }
+
+    #vcomments pre {
+        font-family: monospace, monospace;
+        padding: 1.2em;
+        margin: .5em 0;
+        background: #272822;
+        overflow: auto;
+        border-radius: 0.3em;
+        tab-size: 4;
+    }
+
+    #vcomments code {
+        font-family: monospace, monospace;
+        padding: 1px 3px;
+        font-size: 0.92rem;
+        color: #e96900;
+        background-color: #f8f8f8;
+        border-radius: 2px;
+    }
+
+    #vcomments pre code {
+        font-family: monospace, monospace;
+        padding: 0;
+        color: #e8eaf6;
+        background-color: #272822;
+    }
+
+    #vcomments pre[class*="language-"] {
+        padding: 1.2em;
+        margin: .5em 0;
+    }
+
+    #vcomments code[class*="language-"],
+    pre[class*="language-"] {
+        color: #e8eaf6;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+
+    #vcomments b,
+    strong {
+        font-weight: bold;
+    }
+
+    #vcomments dfn {
+        font-style: italic;
+    }
+
+    #vcomments small {
+        font-size: 85%;
+    }
+
+    #vcomments cite {
+        font-style: normal;
+    }
+
+    #vcomments mark {
+        background-color: #fcf8e3;
+        padding: .2em;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+</style>
+
+<div class="card valine-card" data-aos="fade-up">
+    <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; padding-left: 20px; top: 15px; padding-bottom: 5px;">
+        <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
+        <span>评论</span>
+    </div>
+    <div id="vcomments" class="card-content" style="display: grid">
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/valine/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/valine/Valine.min.js"></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        appId: 'LHOcs74feKlXF84DT091adtu-gzGzoHsz',
+        appKey: '3GFMSQIiaSANJhNA8WJg9lz9',
+        notify: 'false' === 'true',
+        verify: 'false' === 'true',
+        visitor: 'true' === 'true',
+        avatar: 'mm',
+        pageSize: '10',
+        lang: 'zh-cn',
+        placeholder: 'just go go'
+    });
+</script>
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2022/10/03/zheng-yi-lun-du-shu-bi-ji/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/0.jpg" class="responsive-img" alt="《正义论》读书笔记">
+                        
+                        <span class="card-title">《正义论》读书笔记</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            人生路走的愈远，愈发意识到个人的边界，愈发对社会现实有了更加清醒的认识。一切的矛盾说到根源也逃不出分配二字，什么样的分配制度是正义的呢？带着这样一个问题，我翻开了罗尔斯的《正义论》，期待罗尔斯能够给我一个答案。
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-10-03
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E7%81%B5%E9%AD%82%E9%9B%95%E7%90%A2/" class="post-category">
+                                    灵魂雕琢
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E6%AD%A3%E4%B9%89/">
+                        <span class="chip bg-color">正义</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2022/09/29/suan-fa-ti-zong-jie/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/4.png" class="responsive-img" alt="剑指offer题目总结">
+                        
+                        <span class="card-title">剑指offer题目总结</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            剑指offer题目总结链表题目
+从尾到头打印链表  
+反转链表 
+合并两个排序的链表(递归/遍历)
+两个链表的第一个公共节点(双指针/哈希表) 
+链表中环的入口节点(快慢指针/字典) 
+链表中倒数最后k个节点(快慢指针) 
+复杂链表的复制(
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-09-29
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E7%AE%97%E6%B3%95%E5%B2%97%E5%85%AB%E8%82%A1%E6%96%87/" class="post-category">
+                                    算法岗八股文
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
+                        <span class="chip bg-color">数据结构</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeShrink.js"></script>
+
+
+<!-- 代码块折行 -->
+
+<style type="text/css">
+code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
+</style>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="503838841"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aplayer/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+
+    
+    <div class="container row center-align" style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            <span id="year">2019</span>
+            <a href="/about" target="_blank">思考猫</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                class="white-color">164.9k</span>&nbsp;字
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/xuejy19/" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:xuejianye19@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=2296858626" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 2296858626" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/search.xml", 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/materialize/materialize.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aos/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/js/matery.js"></script>
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    
+    <script async src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+<script type="text/javascript"> //只在桌面版网页启用特效 
+    var windowWidth = $(window).width(); 
+    if (windowWidth > 768) { document.write('<script type="text/javascript" src="/js/sakura.js"><\/script>'); 
+    } 
+</script> 
+
+</body>
+</html>

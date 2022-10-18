@@ -1,0 +1,1583 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="深度学习基础, 风之声">
+    <meta name="description" content="与孤独为友">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>深度学习基础 | 风之声</title>
+    <link rel="icon" type="image/jpeg" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/favicon.jpg">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/css/my.css">
+
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/jquery/jquery.min.js"></script>
+
+<meta name="generator" content="Hexo 5.4.2"><link rel="stylesheet" href="/css/prism.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">风之声</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>时光轴</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">风之声</div>
+        <div class="logo-desc">
+            
+            与孤独为友
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			时光轴
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/xuejy19/" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/xuejy19/" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/3.png')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">深度学习基础</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        height: calc(100vh - 250px);
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/BP%E7%AE%97%E6%B3%95%EF%BC%8C-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%EF%BC%8C-CNN/">
+                                <span class="chip bg-color">BP算法， 深度学习， CNN</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/" class="post-category">
+                                统计学习
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-09-02
+                </div>
+                
+
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
+                    2022-08-20
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    7.9k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    29 分
+                </div>
+                
+
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>近些年来，神经网络算法家族蓬勃发展，本部分主要介绍一下这些算法的一些通用原理基础，该部分按照以下结构组织:</p>
+<ul>
+<li>神经元模型</li>
+<li>多层神经网络</li>
+<li><strong>反向传播算法(BP)</strong></li>
+<li>网络训练中常见问题</li>
+<li>常见网络模型介绍</li>
+</ul>
+<span id="more"></span>
+<h3 id="神经元模型"><a href="#神经元模型" class="headerlink" title="神经元模型"></a>神经元模型</h3><p>时至今日，神经网络已经是一个相当大的、多学科交叉的学科领域，下面给出神经网络的定义：</p>
+<blockquote>
+<p><strong>神经网络:</strong> 神经网络是由具有适应性的简单单元所组成的广泛并进行互联的网络，它的组织能够模拟生物神经系统对真实世界物体所做出的交互反应。</p>
+</blockquote>
+<p>神经网络的基本组成成分是神经元模型，即神经网络定义中的“简单单元”。在生物神经网络中，每个神经元与其他神经元相连，当它“兴奋”时，就会向相连的神经元发送化学物质，从而改变这些神经元内的电位；如果某神经元的电位超过了一个“阈值”，那么它就会被激活，向其他神经元发送化学物质。</p>
+<p><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/Neuro-model1.png" alt="神经元"><br>将生物学概念中的神经元模型可以抽象成如下图所示的数学模型，这就是一直沿用至今的“M-P神经元模型”，在这个模型中，神经元接受到来自$n$个其他神经元传递过来的输入信号，这些输入信号通过带权重的连接进行传递，神经元接收到的总输入值将与神经元的阈值做比较，然后同过“激活函数”处理以产生神经元的输出。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/Neuro-model.jpg" alt="神经元模型"><br>理想的激活函数是阶跃函数，它将输入值映射为输出值0或1，1对应着神经元兴奋，0对应着神经元抑制，然而阶跃函数具有不连续、不光滑等性质，因此实际常用sigmoid函数作为激活函数:</p>
+<script type="math/tex; mode=display">
+    sigmoid(x) = \frac{1}{1 + e^{-x}}</script><p>sigmoid函数能够将在较大范围内变化的输入值压缩到$(0,1)$输出范围内，因此有时也被称为“挤压函数”。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/act_function.png" alt="激活函数"><br>把许多这样的神经元按照一定的层次结构连接起来，就得到了一个神经网络，尽管神经网络类型有很多，但其组成基本单元几乎都是“M-P神经元模型”。从计算机科学的角度看，我们可以先不考虑神经网络是否真的模拟了神经网络，只需要将一个神经网络视为包含了许多参数的数学模型，这个模型是若干函数，例如$y_j = f(\sum_i w_i x_i - \theta_j)$相互嵌套代入而得，有效的神经网络算法大多以数学证明为支撑。</p>
+<h3 id="多层感知机"><a href="#多层感知机" class="headerlink" title="多层感知机"></a>多层感知机</h3><h4 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h4><p>在前面已经介绍过感知机模型，感知机模型也可以看作一个以符号函数为激活函数的神经网络，只有两层，一个是输入层，一个是输出层,如下图所示<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/Perceptron.jpg" alt="Perceptron"><br>但是这只是一个线性模型，只能够处理线性可分数据，其学习能力非常有限，甚至对于简单的异或问题都无法解决，更一般的，常见的神经网络是多层结构，如下图所示<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/MLP.png" alt="多层感知机"><br>在多层感知机中，每层神经元与下一层神经元全互连，神经元之间不存在同层连接，也不存在跨层连接，这样的神经网络结构通常称为“多层前馈神经网络”，其中输入层神经元接收外界输出，隐层与输出层神经元对信号进行加工，最终结果由输出层神经网络输出；换言之，输入层神经元仅是接受输入，不进行函数处理，隐层与输出层包含功能神经元，一个神经网络只要包含隐层，就可以称为多层网络。神经网络的学习过程，就是根据训练数据来调整神经元之间的连接权以及每个功能神经元的阈值；换言之，神经网络学到的东西，蕴含在连接权与阈值之中。</p>
+<h4 id="多层感知机逼近能力"><a href="#多层感知机逼近能力" class="headerlink" title="多层感知机逼近能力"></a>多层感知机逼近能力</h4><p>多层感知机的逼近能力由如下定理保证:</p>
+<blockquote>
+<p><strong>定理：</strong> 令$\phi(\cdot)$ 为有界、非常量单调递增连续函数，$I<em>p$表示$p$维单位超立方体$[0,1]^p$,$C(I_p)$表示定义在$I_p$上的连续函数构成的集合，则给定任意函数$f \in C(I_p)$和$\epsilon &gt;0$ ,存在整数$M$和一组实常数$\alpha_i,\theta_i,w</em>{ij}$,其中$i=1,2,\dots,M;j=1,2,\dots,p$,使得网络输出:</p>
+<script type="math/tex; mode=display">
+    F(x_1,x_2,\dots,x_p) = \sum_{i=1}^M \alpha_i \phi(\sum_{j=1}^p w_{ij}x_j - \theta_i)</script><p>可任意逼近$f(\cdot)$,即：</p>
+<script type="math/tex; mode=display">
+    |F(x_1,x_2,\dots,x_p) - f(x_1,x_2,\dots,x_p)| < \epsilon , \forall (x_1,\dots,x_p) \in I</script></blockquote>
+<h3 id="反向传播算法"><a href="#反向传播算法" class="headerlink" title="反向传播算法"></a>反向传播算法</h3><p>多层网络的学习能力比单层感知机强得多，欲训练多层网络，则需要更加强大的学习算法，误差逆传播(BP)算法就是其中最杰出的代表，它是迄今为止最成功的神经网络学习算法，现实任务中在使用神经网络时，大多是使用BP算法进行训练。</p>
+<p>下面对BP算法做简单推导，给定训练集$D = { (\boldsymbol{x<em>1,y_1}),(\boldsymbol{x_2,y_2}),\dots , (\boldsymbol{x_N,y_N})}$ ,其中$\boldsymbol{x_i} \in \mathbb{R}^d,\boldsymbol{y_i} \in \mathbb{R}^l$,即输入是由$d$个属性描述，输出$l$维实值向量，下面以一个三层前馈网络来进行反向传播算法推导，输入层有$d$个神经元，隐藏层有$q$个神经元，输出层有$l$个神经元。输出层第$j$个神经元的阈值用$\theta_j$表示，隐层第$h$个神经元的阈值用$\gamma_h$表示，输入层第$i$个神经元与隐层第$h$个神经元之间的连接权重为$v</em>{ih}$,隐层第$h$个神经元与输出层第$j$个神经元之间的连接权重为$w<em>{hj}$,记隐层第$h$个神经元接收到的输入为$\alpha_h = \sum</em>{i=1}^d v<em>{ih} x_i$,输出层第$j$个神经元输入为$\beta_j = \sum</em>{h=1}^q w_{hj} b_h $,其中$b_h$为隐层第$h$个神经元的输出。假设隐层和输出层神经元都是用Sigmoid函数作为激活函数。<br>对训练例$(\boldsymbol{x_k,y_k})$,假定网络输出为$\hat{\boldsymbol{y}}_k = (\hat{y}_1^k, \hat{y}_2^k, \dots, \hat{y}_l^k)$,即：</p>
+<script type="math/tex; mode=display">
+    \hat{y}_j^k = f(\beta_j - \theta_j)</script><p>则网络在$(\boldsymbol{x_k,y_k})$用方差和来定义:</p>
+<script type="math/tex; mode=display">
+    E_k = \frac{1}{2} \sum_{j=1}^l (\hat{y_j}^k - y_j^k)^2</script><p>首先来考虑对于这样一个三层网络，有多少个参数需要确定，权重参数有$d \times q + q \times l$个,阈值参数有$ q + l$个，因此总共需要学习的参数个数为$(d+l+1)q +l$个，BP是一个迭代学习算法，在每一轮中采用广义的感知机策略(链式法则求梯度)进行参数学习，任意参数$v$的更新估计式为:</p>
+<script type="math/tex; mode=display">
+    v \leftarrow v + \Delta v</script><p>具体参数的求解其实就是一个链式法则求导的过程，比如以隐藏层到输出层的权重$w<em>{hj}$为例，其实只需要找到从$w</em>{hj}$到误差函数中间有哪些中间变量，然后反向传播时便将误差按照变量路径传递回来即可，对于$w_{hj}$,我们可以写出一条变量路径:</p>
+<script type="math/tex; mode=display">
+    w_{hj} \rightarrow  \beta_j \rightarrow \hat{y}_j^k \rightarrow E_k</script><p>因此由链式法则，可得:</p>
+<script type="math/tex; mode=display">
+    \frac{\partial E_k}{\partial w_{hj}} = \frac{\partial E_k}{\partial \hat{y}_j^k} \frac{ \partial \hat{y}_j^k}{\partial \beta_j} \frac{\partial \beta_j}{\partial w_{hj}} = (\hat{y}_j^k - y_j^k) \hat{y}_j^k (1 - \hat{y}_j^k) b_h</script><p>$\frac{ \partial \hat{y}_j^k}{\partial \beta_j} $应用了Sigmoid函数$f’(x) = f(x)(1 - f(x))$的性质，由此梯度下降算法原理，可得：</p>
+<script type="math/tex; mode=display">
+    \Delta w_{hj} = -\eta \frac{\partial E_k}{\partial w_{hj}}</script><p>下面给出$v_{ih}$的前向变量传递路径：</p>
+<script type="math/tex; mode=display">
+    v_{ih} \rightarrow \alpha_h \rightarrow b_h \rightarrow \beta_1,\dots,\beta_l \rightarrow \hat{y}_1^k, \hat{y}_2^k \dots \hat{y}_l^k \rightarrow E_k</script><p>此时前向路径共有$l$条，因此计算梯度时需要分别极计算$l$部分，计算结果为:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+         \Delta v_{ih} &= -\eta \frac{\partial E_k}{b_h} \frac{\partial b_h}{\partial \alpha_h} \frac{\partial \alpha_h}{\partial v_{ih}}  \\
+         &= -\eta [\sum_{j=1}^l \frac{\partial E_k}{\partial \beta_j} \frac{\partial \beta_j}{\partial b_h}] f'(\alpha_h - \gamma_h) x_i 
+    \end{aligned}</script><p>其他参数更新也都是同样思路，在这里便不做过多赘述，其实BP算法就只是应用链式求导法则反向计算梯度(更新权重)的方法。与随机梯度下降以及批梯度下降相对应，BP算法也可以分为标准BP算法(一次更新一个实例)，累积BP算法(一次更新所有样例)，在实际中训练时往往采取折中的策略，每次取一批数据进行权重更新。</p>
+<h3 id="网络训练中常见问题"><a href="#网络训练中常见问题" class="headerlink" title="网络训练中常见问题"></a>网络训练中常见问题</h3><p>对于这样一个简单BP网络，在训练中也会面临很多问题，这些问题是神经网络算法所固有的一些问题，很多研究也是以解决这些问题为出发点，这部分主要介绍三个问题:</p>
+<ul>
+<li>过拟合问题</li>
+<li>梯度消失与梯度爆炸</li>
+<li>局部极小值问题</li>
+</ul>
+<h4 id="过拟合问题"><a href="#过拟合问题" class="headerlink" title="过拟合问题"></a>过拟合问题</h4><p>正是由于BP网络具有强大的表示能力，BP神经网络经常遭遇过拟合，即随着训练的进行，训练误差进一步降低，但测试误差却可能上升。有两种策略可以缓解过拟合问题：</p>
+<ul>
+<li>早停：将数据划分为训练集和验证集，训练集用来计算梯度、更新连接权和阈值，验证集用来估计误差，若训练集误差降低但验证集误差升高，则停止训练，并返回具有最小验证集误差的连接权和阈值。</li>
+<li>正则化： 在目标误差函数中增加一个用于描述网络复杂度的部分，例如连接权和阈值的平方和，仍令$E_k$表示第$k$个训练样例上的误差，$w_i$表示连接权和阈值，则对于批反向传播的误差函数可以写为:<script type="math/tex; mode=display">
+  E = \lambda \frac{1}{m} \sum_{k=1}^m E_k + (1 - \lambda) \sum_i w_i^2</script>其中$\lambda$用于对经验误差和网络复杂度进行折中，常通过交叉验证法进行估计。</li>
+</ul>
+<h4 id="梯度消失与梯度爆炸"><a href="#梯度消失与梯度爆炸" class="headerlink" title="梯度消失与梯度爆炸"></a>梯度消失与梯度爆炸</h4><p>我们在反向计算梯度时实际上是一个链式求导的过程，假设有一个层数为5的神经网络(包含输入层和输出层)，假设我们欲更新输入层到第一隐层的一个权重$w$，中间需要经过若干变量($w_1,\dots,w_k$)才能到达损失函数,则进行反向传播时，损失函数$L$对$w$求偏导是一个连乘积的形式：</p>
+<script type="math/tex; mode=display">
+    \frac{\partial L}{\partial w} = \frac{\partial L}{\partial w_k} \cdot \frac{\partial w_k}{\partial w_{k-1}} \dots \frac{\partial w_1}{\partial w}</script><p>若这些连乘积每一项都大于1，则就出现了梯度爆炸情况，导致参数更新不稳定，若连乘积每一项都小于1，则连乘之后就会是一个非常小的值，也就是说出现了梯度消失。<br>梯度在反向传播过程中，没经过一层就会经过一次对激活函数求导的过程，加入选的是Sigmoid函数作为激活函数，其导数$f’(x) \leq 0.25$,因此随着网络的变深，使用Sigmoid函数作为激活函数会不可避免地导致出现梯度消失。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/sigmoid.png" alt="sigmoid"><br>下面介绍三个解决梯度消失/爆炸问题的思路。</p>
+<h5 id="Relu激活函数"><a href="#Relu激活函数" class="headerlink" title="Relu激活函数"></a>Relu激活函数</h5><p>为解决使用Sigmoid激活函数导致梯度消失的问题，在深层神经网络的训练中人们往往采用另一种激活函数——Relu以及它的变形Leakage-Relu，函数图像如下图所示:<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/relu.jpg" alt="relu"><br>可以看到，Relu函数在被激活后($&gt;0$),梯度恒为1，既不会导致梯度消失也不会导致梯度爆炸，但relu函数有一个明显的缺点:当relu的输入值为负时，输出始终为0，这样会导致神经元不能够更新参数，也就是该神经元无法学习了，为了解决relu函数这个问题，在relu的负半区引入了一个泄漏值，也就是说当输入小于0时仍旧有一个小的梯度，该泄漏值可以指定也可以作为一个参数与神经网络其他参数一同被学习。</p>
+<h5 id="Batchnorm"><a href="#Batchnorm" class="headerlink" title="Batchnorm"></a>Batchnorm</h5><p>机器学习领域有一个非常重要的假设:IID，即独立同分布假设， 假设训练数据和测试数据是满足相同分布的，这也是通过训练数据获得的模型能够在测试集获得好的效果的一个基本保障，而：</p>
+<blockquote>
+<p><strong>Batchnorm就是在深度神经网络训练过程中使每一层神经网络的输入保持相同分布。</strong></p>
+</blockquote>
+<p>由于深度神经网络往往具有复杂的网络结构，在进行训练过程中，各层神经元的参数都在变化，导致各层神经元的输入分布不断发生偏移，BN的思想相当直观，之所以训练收敛慢，一般是整体分布逐渐往非线性函数取值区间的上下限两端端靠近，这就导致向后传播时低层神经网络出现梯度消失现象，这是训练神经网络收敛越来越慢的本质原因，而BN就是通过一定规范化手段，把每层神经网络任意神经元的输入值强行拉回到均值为0，方差为1的正态分布，这样使得激活函数的输入落在非线性函数对输入较为敏感的区域(以Sigmoid函数为例，落在0附近区域)，这样进行梯度反向传播时求导得到的梯度值就会较大，一定程度上缓和了梯度消失现象。</p>
+<p>但是很明显，从Sigmoid函数图像可以看出，0附近区域其实是接近线性的，如果把所有的输入都拉到Sigmoid函数的线性区域内，那么不就相当于是激活函数是线性函数了么，而我们知道多层线性网络与一层线性网络其实是等价的，所以BN为了保持激活函数的非线性，对norm之后的输入又做了一步变换:</p>
+<script type="math/tex; mode=display">
+    y_i = \gamma \hat{x}_i +    \beta</script><p>每个神经元增加了两个参数：尺度参数$\gamma$，偏移参数$\beta$,这等价于让输入从线性区域向非线性区域移动了一点，引入这两个参数本质上是想找到一个线性和非线性的平衡点，使得网络既具有非线性的强表达能力，又在一定程度上减轻了梯度消失问题。<br>下面给出Batchnorm的具体流程:<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/BN.png" alt="Batchnorm"></p>
+<h5 id="残差结构"><a href="#残差结构" class="headerlink" title="残差结构"></a>残差结构</h5><p>首先来谈一谈深层网络的退化问题，理论上来说，深层网络的性能应当不会比浅层网络性能更差，因为深层网络可以考虑对浅层网络进行拷贝，然后剩下来的层作为一个恒等映射，这样最起码深层网络的性能应当与浅层网络性能一致，然而事实却并非这样，实验表明，深层网络表现并不总是优于浅层网络。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/deep.png" alt="网络性能对比"></p>
+<p>深度网络的退化说明深度网络不易训练，前面讨论到深层网络往往并不能够通过建立恒等映射的形式来达到与浅层网络相同的性能，因此何凯明等考虑显式的引入该恒等映射，而让中间的网络学习一个残差，假设我们希望一个堆叠非线性层(stacked nonlinear layers)学习的映射是$\mathcal{H(x)}$,我们现在让该堆叠非线性层学习另一个映射$\mathcal{F(x)} = \mathcal{H(x)} - x$，通过$\mathcal{F(x)}+x$来重构期望映射， 而在网络中实现这个目的的操作则是“跳连”(shortcut connection)，如下图所示：<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/res.png" alt="resnet"></p>
+<p>上图所示的结构一般被称为一个残差单元，下面我们来仔细讨论下这样的结构为什么可以解决梯度消失问题，假设上述残差单元的输入为$x$,则残差单元的输出可以表示为:</p>
+<script type="math/tex; mode=display">
+    \boldsymbol{y} = \mathcal{F(\boldsymbol{x},\{(\boldsymbol{W_i})\})} + \boldsymbol{x}，i=1,2,\dots,k</script><p>$k$表示该残差单元包含几个权重层，需要说明的是，一个残差单元至少应该包含两个层，若只有一个层，则会出现:</p>
+<script type="math/tex; mode=display">
+    \boldsymbol{y} = \boldsymbol{W_1^T x + x} = \boldsymbol{(W_1^T + 1)x}</script><p>而若包含两层，则残差单元的输出写做:</p>
+<script type="math/tex; mode=display">
+    \boldsymbol{y} = \boldsymbol{W_2^T \sigma(W_1^Tx) + \boldsymbol{x}}</script><p>其中,假设$\boldsymbol{x} \in \mathbb{R}^d$,残差单元第一层有$n_1$个神经元，则上式中$\boldsymbol{W_1} \in \mathbb{R}^{d \times n_1}, \boldsymbol{W_2} \in \mathbb{R}^{n_1 \times d}$,损失函数到$\boldsymbol{y}$的梯度为$\frac{\partial L}{\partial \boldsymbol{y}}$,那么我们可以用该梯度表示$\frac{\partial L}{\partial \boldsymbol{x}}$:</p>
+<script type="math/tex; mode=display">
+    \frac{\partial L}{\partial \boldsymbol{x}} = \frac{\partial L}{\partial \boldsymbol{y}} \frac{\partial \boldsymbol{y}}{\partial \boldsymbol{x}} = \frac{\partial L}{\partial \boldsymbol{y}} (\boldsymbol{I} +  \boldsymbol{(W_1 W_2)^T})</script><p>其中激活函数取得Relu激活函数，可以看到，在进行反向传播过程中，到$\boldsymbol{y}$的梯度会无损再传递到其前层的$\boldsymbol{x}$，哪怕是残差梯度等于0或者是一个大于$-1$的负值，也可以保证有梯度传递到前面的层，这使得Resnet相对于普通的神经网络更不容易发生梯度消失现象。<br>何凯明博士这篇提出Resnet的论文也因为其突出贡献获得了2016年CVPR最佳论文奖，整篇论文非常简洁易懂，非常建议大家去读一下，这里给出论文链接<a target="_blank" rel="noopener" href="https://openaccess.thecvf.com/content_cvpr_2016/papers/He_Deep_Residual_Learning_CVPR_2016_paper.pdf">Deep Residual Learning for Image Recognition</a></p>
+<h4 id="局部极小值问题"><a href="#局部极小值问题" class="headerlink" title="局部极小值问题"></a>局部极小值问题</h4><p>神经网络训练过程其实就是一个参数寻优的过程，反向传播算法可以看作是在神经网络这种架构下梯度下降法的实现形式，因此最终收敛的点往往具有梯度为0的特点，这是一个局部极小点，若优化问题是一个凸问题，则局部极小点同时也是全局极小值，而神经网络的优化大多数情况都是一个非凸优化问题，这也就意味着最终训练收敛的点大概率只是一个“局部极小值点”，而非“全局极小值”点,如下图所示:<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/min.png" alt="局部极小与全局极小"><br>在现实任务中，人们常采用以下策略试图跳出局部极小，到达全局极小：</p>
+<ul>
+<li>以多组不同参数值初始化多个网络，按标准方法训练后，取其中误差最小的解作为最终参数，这相当于从多个不同的初始点开始搜索，这样就可能陷入不同的局部极小，从中进行选择有可能获得更接近全局最小的结果。</li>
+<li>使用“模拟退火”策略，模拟退火在每一步都以一定概率接受比当前解更差的结果，从而有助于跳出局部极小，在迭代过程中，接受“次优解“的概率要随着时间推移而逐渐降低，从而保证算法稳定。</li>
+<li>使用随机梯度下降(SGD)算法，即便陷入了局部极小点，所计算出的梯度仍可能不为0，这样就有机会跳出局部极小继续搜索。</li>
+</ul>
+<h3 id="常见网络模型介绍"><a href="#常见网络模型介绍" class="headerlink" title="常见网络模型介绍"></a>常见网络模型介绍</h3><p>神经网络家族成员庞杂，除了前面介绍的BP神经网络外，还有很多类型的神经网络，这部分就一些常见的做简要介绍，后面用到的话再补充。</p>
+<h4 id="卷积神经网络"><a href="#卷积神经网络" class="headerlink" title="卷积神经网络"></a>卷积神经网络</h4><p>卷积神经网络在图像处理领域有着广泛应用，一个完整的卷积神经网络其实包含两个部分:</p>
+<ul>
+<li><strong>特征提取</strong></li>
+<li>分类</li>
+</ul>
+<p>后面分类所用的网络其实就是前面所讨论的全连接神经网络或者它的一些变形，卷积神经网络名字的由来则主要是在特征提取阶段，下面就以图片处理为例重点讲解一下特征提取过程。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/CNN.png" alt="CNN"><br>其实我们不论做什么样的机器学习任务，都可以分为特征提取和算法学习两个阶段，而CNN则将这两个阶段结合了起来，然后一起优化，是一种“end2end”的算法，对于一张$n \times n$像素的黑白图像，其实该图像所有信息都包含在$n \times n$个值当中，若要完成一个分类任务，最简单粗暴的方法可能是直接将这$n \times n$个值直接作为特征输入到到全连接层来进行分类，但是这样做有以下两个缺点:</p>
+<ul>
+<li>输入特征维度非常高，因此网络的规模会很大，参数量会非常大，计算开销会非常大，训练困难。</li>
+<li>单个像素值本身并不具备什么意义，最终神经网络结果很有可能并不理想。</li>
+</ul>
+<p>卷积神经网络的出发点也是为了解决这样一个问题，特征提取部分主要包含三种操作:</p>
+<ul>
+<li>卷积层</li>
+<li>ReLu层</li>
+<li>池化层</li>
+</ul>
+<h4 id="卷积层"><a href="#卷积层" class="headerlink" title="卷积层"></a>卷积层</h4><p>一个图像中的单个像素点并不具备什么含义，但是一簇像素点(比如一幅图像中的眼睛区域)可能就具备某种含义了，而卷积层的出发点就是希望能够提取图像中某部分区域的信息，而具体操作则是通过卷积核与图像区域进行加权求和，这其实本质上就是一个线性映射，如下图所示，图像处理中的卷积与信号处理中的卷积不同之处在于其仅仅只有加权求和操作，而并没有翻转操作。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/conv.png" alt="图像卷积"><br>上图中所示的是一个$3 \times 3$的卷积核，可以看出该卷积核对于一个区域左上角像素与有下降像素更加关注，而一正一负操作则表明该卷积核更关注的是左上角像素值与由下角像素值的差。选用不同的卷积核可以从原始图像中提取不同的特征，因此在实际应用中，一般会选用多个大小不一的卷积核以全面捕捉不同大小的区域所包含的信息。<br>在进行卷积操作时，有时会对图像周围区域进行填充，以提高卷积操作对图像边缘特征提取的能力。</p>
+<h4 id="ReLu层"><a href="#ReLu层" class="headerlink" title="ReLu层"></a>ReLu层</h4><p>经过Relu层则主要是为了实现非线性变换，以提高网络的表示能力，比如上图中的-8经过ReLu层之后就变成了0。</p>
+<h4 id="池化层-下采样层"><a href="#池化层-下采样层" class="headerlink" title="池化层(下采样层)"></a>池化层(下采样层)</h4><p>经过卷积操作之后，我们得到了一张张有着不同值的特征图(feature map)，尽管数据量比原图少了很多，但还是过于庞大，而池化层的作用就是进一步减少数据量,扩大特征图的感受野。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/Pooling.png" alt="池化"><br>池化一般有两种操作，一种是Max pooling,一种是Average pooling,前一种就是取一个区域的最大值，而后一种则是取一个区域的平均值。</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>以上这三种操作就是就是卷积神经网络特征提取部分的三个基本单元，对这三种基本单元进行组合便可以组成特征提取部分，需要说明的是卷积神经网络中一个非常重要的操作就是<strong>共享权重</strong>：</p>
+<blockquote>
+<p>假设输入图像为$32 \times 32$,用两个$5 \times 5$卷积核，则一幅图片经过卷积操作之后变为$28 \times 28$的特征图，该特征图中每个神经元还有一个偏置，因此连接数为:</p>
+<script type="math/tex; mode=display">
+    (5 \times 5 + 1) \times 28 \times 28 \times 2</script><p>但在卷积神经网络中，一个特征图共用一套权值，因此实际需要更新的连接权数为:</p>
+<script type="math/tex; mode=display">
+    (5 \times 5 +1 )\times 2</script></blockquote>
+<p>最后给出经过卷积和池化操作后特征图尺寸变化计算公式:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        &卷积： Size_{out} = (Size_{in} - Kernel_{conv} + 2*Padding)/Stride + 1 \\
+        &池化： Size_{out} = (Size_{in} - Kernel_{pooling}) /stride + 1
+    \end{aligned}</script><h3 id="循环神经网络-RNN"><a href="#循环神经网络-RNN" class="headerlink" title="循环神经网络(RNN)"></a>循环神经网络(RNN)</h3><h4 id="标准循环神经网络"><a href="#标准循环神经网络" class="headerlink" title="标准循环神经网络"></a>标准循环神经网络</h4><h5 id="直观理解"><a href="#直观理解" class="headerlink" title="直观理解"></a>直观理解</h5><p>在实际应用中，我们常常会碰到序列数据，这类数据的特点是相邻数据点之间有着较强的联系，比如语句数据、车辆轨迹数据、财经数据等，传统的神经网络已经有着很强的表示能力，但传统的神经网络只能够单独地处理一个接一个输入，前一个输入与后一个输入并没有任何关系，但是对于序列数据，很明显我们对于后一个数据点的预测是依赖于前面的数据的，下面举一个简单的🌰：</p>
+<blockquote>
+<p><strong>词性标注任务：</strong><br><strong>任务输入：</strong> 我/吃/苹果<br><strong>任务输出：</strong> 我/nn 吃/v 苹果/nn<br>对于这样一个任务，我们当然可以直接用普通的神经网络来做，输入为单独的单词，输出为词性标注好的单词。<strong>但是很明显，一个句子中，前一个单词其实对当前单词的词性预测有很大的影响，比如预测“苹果”词性的时候，由于前面的“吃”是一个动词，那么“苹果”作为名次的概率就会远大于动词的概率，因为动词后面接名次很常见，而动词后面接动词不常见</strong></p>
+</blockquote>
+<p>为了解决这样类似的问题，更好地处理序列信息，循环神经网络就诞生了，下图就是一个简单的RNN的示意图。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/RNN.png" alt="RNN"><br>如果将上图中$h^{(t-1)} \rightarrow h^{(t)}$的连线断开，那么一个RNN就被分解成了若干独立的三层神经网络，现在加入了隐层之间的连接，就使得时刻靠后的神经网络的输出会依赖于前面时刻神经网络的值，以$O^{(t        )}$为例，往前回推，可以写出一条变量链如下:</p>
+<script type="math/tex; mode=display">
+    O^{(t)} \rightarrow h^{(t)} \rightarrow x^{(t)},h^{(t-1)} \rightarrow x^{(t)}, x^{(t-1)},h^{(t-2)} \rightarrow \dots</script><p>从该变量链可以看出，$t$时刻的预测输出是依赖于其之前所有的输入。</p>
+<h5 id="权重共享"><a href="#权重共享" class="headerlink" title="权重共享"></a>权重共享</h5><p>在RNN中也沿用了权重共享的思想，可以看到，不同时刻的神经网络共享输入权重矩阵$\boldsymbol{U}$，输出权重矩阵$\boldsymbol{V}$以及循环权重矩阵$\boldsymbol{W}$,下面简单分析下这样做的好处：</p>
+<ul>
+<li>运算量减少，模型训练加快</li>
+<li>序列长度可以不固定，模型更具泛化能力</li>
+</ul>
+<p>在进行BP的时候，由于权重共享，因此误差传递每个时刻都会有，假设序列长度为$T$，要对$\boldsymbol{U}$进行权重更新，可以写出误差传递链为：</p>
+<script type="math/tex; mode=display">
+    E \rightarrow E_1, E_2,\dots E_T \rightarrow O^{(1)},O^{(2)},\dots,O^{(T)} \rightarrow  \rightarrow h^{(1)}, h^{(2)}, \dots, h^{(T)} \rightarrow x^{(1)}, x^{(2)},\dots,x^{(T)}</script><p>当然，在反向传播的过程中，$h^{t}$到$h^{(t-1)},\dots,h^{(1)}$都是有着传播链条的， 是一个连乘积求和的形式,下面给出$\frac{\partial L_t}{\partial U}$的公式:</p>
+<script type="math/tex; mode=display">
+    \frac{\partial L_t}{\partial U} = \sum_{k=0}^t \frac{\partial L_t}{\partial O^{(t)}}  \frac{\partial O^{(t)}}{\partial h^{(t)}}(\prod_{j=k+1}^t \frac{\partial h^{(j)}}{\partial h^{(j-1)}}) \frac{\partial h^{(k)}}{U}</script><h5 id="RNN梯度消失"><a href="#RNN梯度消失" class="headerlink" title="RNN梯度消失"></a>RNN梯度消失</h5><p>从上面的梯度表达式可以看出，$L_t$对输入矩阵$U$的梯度由它$t$项组成，由于有着激活函数存在，因此对靠前时刻的$U$求导是连乘积形成，因此随着序列的增长，累加项中距离当前时刻较远的时刻的项会出现梯度消失或者梯度爆炸，这就导致梯度被近距离梯度主导，模型难以学得远距离的依赖关系。</p>
+<h4 id="LSTM"><a href="#LSTM" class="headerlink" title="LSTM"></a>LSTM</h4><p>前面讲到普通的RNN由于存在对远距离依赖的梯度消失或者爆炸现象，因此对于长序列表现并不是很好，为解决这一问题，LSTM便诞生了，首先给出LSTM的结构图。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/LSTM.png" alt="LSTM"><br>与标准RNN相比，LSTM增加了三个门控组建，输入门控制当前时刻$t$的计算输出，<strong>与普通RNN相比，LSTM还另外又用遗忘门来控制之前时刻的细胞状态相连接，这个操作类似于前面介绍的Resnet的跳连(skip connection)操作，通过这样的跳连操作，使得若遗忘门初始化较大(接近1)，则在误差反向传播时，可以通过该通路无损地传递到前面时刻，这在一定程度上缓解了RNN中的梯度消失问题，使得LSTM可以处理较长序列</strong>。下面重点讨论下为何引入这三个门控：</p>
+<ul>
+<li>输入门$i_t$：输入门控制当前词$\boldsymbol{x_t}$融入细胞状态$\boldsymbol{c_t}$, 在做句子理解任务时，当前词$\boldsymbol{x_t}$可能对整句话的意思很重要，也可能并不重要，要不要将它加入输出中则是由输入门来进行控制。</li>
+<li>遗忘门$f<em>t$：$f_t$控制上一时刻的细胞状态$\boldsymbol{c</em>{t-1}}$融入当前细胞状态$\boldsymbol{c_t}$。在理解一句话时，当前词$\boldsymbol{x_t}$可能继续延续上文的意思进行叙述，也可能从当前词$\boldsymbol{x_t}$开始叙述新的内容，与上文无关。</li>
+<li>输出们$o_t$：输出门的目的是从细胞状态$\boldsymbol{c_t}$产生隐层单元$\boldsymbol{h_t}$,细胞状态中的信息并非都与输出隐层状态有关，其中可能包含了很多对$\boldsymbol{h_t}$无用的信息，通过输出门可以对细胞状态中的信息进行筛选。</li>
+</ul>
+<p>总结而言，门机制的引入带来了两点好处：</p>
+<ul>
+<li>门机制极大地减轻了梯度消失问题，降低了调参难度</li>
+<li>门机制引入了特征过滤，将有用的特征保存，没用的特征丢弃，这极大地丰富了我们向量的表示信息。<br>同样RNN的参数共享思想在LSTM中也得到了继承，但由于引入了三个门控组件，LSTM参数量相较于RNN增多，训练速度较RNN要慢一些。</li>
+</ul>
+<h4 id="GRU"><a href="#GRU" class="headerlink" title="GRU"></a>GRU</h4><p>GRU的全称是 Gated Recurrent Unit(门控循环单位)，与LSTM相比，GRU仅仅只有两个门控组件，一个是重置门$r_t$,一个是更新门$z_t$。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/gru.png" alt="GRU"></p>
+<p>从上图可以看出，gru实际上就是LSTM的变形，取消了LSTM中的细胞状态(cell state)，只用隐藏状态(hidden state)，并使用更新门来代替LSTM中的输入门与遗忘门，取消了输出门，加入了重置门。实验证明，gru效果与LSTM差不多，但是参数更少，训练计算开销小，训练速度更快。</p>
+
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">思考猫</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://xuejy19.github.io/2020/09/02/shen-du-xue-xi-ji-chu/">https://xuejy19.github.io/2020/09/02/shen-du-xue-xi-ji-chu/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">思考猫</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/BP%E7%AE%97%E6%B3%95%EF%BC%8C-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%EF%BC%8C-CNN/">
+                                    <span class="chip bg-color">BP算法， 深度学习， CNN</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.4rem;
+        line-height: 38px;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/reward/ali.jpeg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/reward/wechat.jpeg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+        <style>
+    .valine-card {
+        margin: 1.5rem auto;
+    }
+
+    .valine-card .card-content {
+        padding: 20px 20px 5px 20px;
+    }
+
+    #vcomments textarea {
+        box-sizing: border-box;
+        background: url("/medias/comment_bg.png") 100% 100% no-repeat;
+    }
+
+    #vcomments p {
+        margin: 2px 2px 10px;
+        font-size: 1.05rem;
+        line-height: 1.78rem;
+    }
+
+    #vcomments blockquote p {
+        text-indent: 0.2rem;
+    }
+
+    #vcomments a {
+        padding: 0 2px;
+        color: #4cbf30;
+        font-weight: 500;
+        text-decoration: none;
+    }
+
+    #vcomments img {
+        max-width: 100%;
+        height: auto;
+        cursor: pointer;
+    }
+
+    #vcomments ol li {
+        list-style-type: decimal;
+    }
+
+    #vcomments ol,
+    ul {
+        display: block;
+        padding-left: 2em;
+        word-spacing: 0.05rem;
+    }
+
+    #vcomments ul li,
+    ol li {
+        display: list-item;
+        line-height: 1.8rem;
+        font-size: 1rem;
+    }
+
+    #vcomments ul li {
+        list-style-type: disc;
+    }
+
+    #vcomments ul ul li {
+        list-style-type: circle;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    #vcomments table, th, td {
+        border: 0;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments h1 {
+        font-size: 1.85rem;
+        font-weight: bold;
+        line-height: 2.2rem;
+    }
+
+    #vcomments h2 {
+        font-size: 1.65rem;
+        font-weight: bold;
+        line-height: 1.9rem;
+    }
+
+    #vcomments h3 {
+        font-size: 1.45rem;
+        font-weight: bold;
+        line-height: 1.7rem;
+    }
+
+    #vcomments h4 {
+        font-size: 1.25rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    #vcomments h5 {
+        font-size: 1.1rem;
+        font-weight: bold;
+        line-height: 1.4rem;
+    }
+
+    #vcomments h6 {
+        font-size: 1rem;
+        line-height: 1.3rem;
+    }
+
+    #vcomments p {
+        font-size: 1rem;
+        line-height: 1.5rem;
+    }
+
+    #vcomments hr {
+        margin: 12px 0;
+        border: 0;
+        border-top: 1px solid #ccc;
+    }
+
+    #vcomments blockquote {
+        margin: 15px 0;
+        border-left: 5px solid #42b983;
+        padding: 1rem 0.8rem 0.3rem 0.8rem;
+        color: #666;
+        background-color: rgba(66, 185, 131, .1);
+    }
+
+    #vcomments pre {
+        font-family: monospace, monospace;
+        padding: 1.2em;
+        margin: .5em 0;
+        background: #272822;
+        overflow: auto;
+        border-radius: 0.3em;
+        tab-size: 4;
+    }
+
+    #vcomments code {
+        font-family: monospace, monospace;
+        padding: 1px 3px;
+        font-size: 0.92rem;
+        color: #e96900;
+        background-color: #f8f8f8;
+        border-radius: 2px;
+    }
+
+    #vcomments pre code {
+        font-family: monospace, monospace;
+        padding: 0;
+        color: #e8eaf6;
+        background-color: #272822;
+    }
+
+    #vcomments pre[class*="language-"] {
+        padding: 1.2em;
+        margin: .5em 0;
+    }
+
+    #vcomments code[class*="language-"],
+    pre[class*="language-"] {
+        color: #e8eaf6;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+
+    #vcomments b,
+    strong {
+        font-weight: bold;
+    }
+
+    #vcomments dfn {
+        font-style: italic;
+    }
+
+    #vcomments small {
+        font-size: 85%;
+    }
+
+    #vcomments cite {
+        font-style: normal;
+    }
+
+    #vcomments mark {
+        background-color: #fcf8e3;
+        padding: .2em;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+</style>
+
+<div class="card valine-card" data-aos="fade-up">
+    <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; padding-left: 20px; top: 15px; padding-bottom: 5px;">
+        <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
+        <span>评论</span>
+    </div>
+    <div id="vcomments" class="card-content" style="display: grid">
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/valine/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/valine/Valine.min.js"></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        appId: 'LHOcs74feKlXF84DT091adtu-gzGzoHsz',
+        appKey: '3GFMSQIiaSANJhNA8WJg9lz9',
+        notify: 'false' === 'true',
+        verify: 'false' === 'true',
+        visitor: 'true' === 'true',
+        avatar: 'mm',
+        pageSize: '10',
+        lang: 'zh-cn',
+        placeholder: 'just go go'
+    });
+</script>
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2020/09/06/chu-shi-pytorch/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/3.png" class="responsive-img" alt="pytorch学习">
+                        
+                        <span class="card-title">pytorch学习</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            在前面介绍深度学习的理论知识时，相信大家可以感受到，神经网络的实现主要有以下两个难题：
+
+当网络结构复杂起来时，手写一个神经网络是非常困难(尤其是进行反向误差传播时)，也是十分费时的。
+一个神经网络有着大量的参数，对计算机的计算能力要求非常
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-09-06
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/" class="post-category">
+                                    统计学习
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/pytorch%EF%BC%8C%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6/">
+                        <span class="chip bg-color">pytorch，深度学习框架</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/09/01/ti-sheng-suan-fa-zong-jie/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/5.jpg" class="responsive-img" alt="提升算法总结">
+                        
+                        <span class="card-title">提升算法总结</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            对于一个特定机器学习问题，我们可能会建立很多模型，这些单个模型可能表现都不是非常好，由此便会引出一个问题:
+
+问题1: 能否通过一个算法将这些模型组合起来(Ensemble)，产生一个效果更好的组合模型？
+
+这个问题的答案是肯定的，历史上，
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-09-01
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/" class="post-category">
+                                    统计学习
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Bagging-AdaBoost-%E6%8F%90%E5%8D%87%E6%A0%91%E6%A8%A1%E5%9E%8B/">
+                        <span class="chip bg-color">Bagging, AdaBoost, 提升树模型</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeShrink.js"></script>
+
+
+<!-- 代码块折行 -->
+
+<style type="text/css">
+code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
+</style>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="503838841"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aplayer/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+
+    
+    <div class="container row center-align" style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            <span id="year">2019</span>
+            <a href="/about" target="_blank">思考猫</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                class="white-color">164.9k</span>&nbsp;字
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/xuejy19/" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:xuejianye19@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=2296858626" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 2296858626" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/search.xml", 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/materialize/materialize.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aos/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/js/matery.js"></script>
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    
+    <script async src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+<script type="text/javascript"> //只在桌面版网页启用特效 
+    var windowWidth = $(window).width(); 
+    if (windowWidth > 768) { document.write('<script type="text/javascript" src="/js/sakura.js"><\/script>'); 
+    } 
+</script> 
+
+</body>
+</html>
