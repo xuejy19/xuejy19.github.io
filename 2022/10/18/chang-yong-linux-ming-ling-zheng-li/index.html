@@ -470,14 +470,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.5k
+                    1.7k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    5 分
+                    6 分
                 </div>
                 
 
@@ -691,9 +691,54 @@ Filesystem     1K-blocks     Used Available Use% Mounted on
 <li><code>ping</code>: 用于检测主机，</li>
 </ul>
 <h4 id="系统管理"><a href="#系统管理" class="headerlink" title="系统管理"></a>系统管理</h4><ul>
-<li><code>kill</code>: 用于删除执行中的程序或工作</li>
+<li><code>kill</code>: 用于删除执行中的程序或工作<ul>
+<li>语法: <pre class="line-numbers language-lang-shell"><code class="language-lang-shell">kill [-s <信息名称或编号>][程序]　或　kill [-l <信息编号>]
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</li>
+<li>常用参数: <ul>
+<li>-HUP: 重新加载进程 </li>
+<li>-KILL: 杀死一个进程 </li>
+<li>-TERM: 正常停止一个进程</li>
 </ul>
-
+</li>
+<li>使用示例: <pre class="line-numbers language-lang-shell"><code class="language-lang-shell">kill 12345
+kill -KILL 123456 #强制杀死进程
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+</li>
+</ul>
+</li>
+<li><code>ps</code>: 显示当前进程的状态，类似于windows的任务管理器 <ul>
+<li>语法: <pre class="line-numbers language-lang-shell"><code class="language-lang-shell">ps [options] [--help]
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</li>
+<li>参数 <ul>
+<li>-a: 列出所有的进程 </li>
+</ul>
+</li>
+<li>使用示例: <pre class="line-numbers language-lang-shell"><code class="language-lang-shell">ps -ef | grep 进程关键字
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="系统设置"><a href="#系统设置" class="headerlink" title="系统设置"></a>系统设置</h4><ul>
+<li><code>clear</code>: 用于清除屏幕 </li>
+<li><code>export</code>: 用于设置或者显示环境变量,效力仅限于该次登陆操作 <ul>
+<li>语法: <pre class="line-numbers language-lang-shell"><code class="language-lang-shell">export [-fnp][变量名称]=[变量设置值]
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</li>
+<li>参数名称<ul>
+<li>-n: 删除指定的变量 </li>
+<li>-p: 列出所有的shell赋予程序的环境变量 </li>
+</ul>
+</li>
+<li>使用示例: <pre class="line-numbers language-lang-shell"><code class="language-lang-shell">export CUDA_VISIBLE_DEVICES=0,3
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="备份压缩"><a href="#备份压缩" class="headerlink" title="备份压缩"></a>备份压缩</h4><h4 id="设备管理"><a href="#设备管理" class="headerlink" title="设备管理"></a>设备管理</h4>
             </div>
             <hr/>
 
@@ -1492,7 +1537,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">166.3k</span>&nbsp;字
+                class="white-color">166.5k</span>&nbsp;字
             
             
             
