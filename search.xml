@@ -100,91 +100,6 @@ P(e) &= P(x \in \mathcal{R_1},\omega_2) + P(x \in \mathcal{R_2},\omega_1) \\
       </categories>
   </entry>
   <entry>
-    <title>Domain generalization</title>
-    <url>/2022/10/28/domain-generalization/</url>
-    <content><![CDATA[<p>本篇文章是对文章<a href="https://arxiv.org/pdf/2103.03097.pdf">Generalizing to Unseen Domains: A Survey on<br>Domain Generalization</a>的研读介绍，旨在对域泛化(domain generalization)领域研究现状有粗略了解，考虑将该领域的一些研究思想迁移到故障检测/溯源/软测量等任务上去。<span id="more"></span> </p>
-<h3 id="出发点"><a href="#出发点" class="headerlink" title="出发点"></a>出发点</h3><ul>
-<li><p>现有算法面临的挑战<br>传统的机器学习算法的泛化能力依赖于训练域与测试域的独立同分布(i.i.d)假设，而在现实数据中，这样的假设往往无法得到满足。</p>
-</li>
-<li><p>目的<br>如果我们已经拥有了一个/多个域的数据，希望让训练得到的模型在未知域上仍能有良好的泛化能力。 </p>
-</li>
-</ul>
-<h3 id="问题数学描述"><a href="#问题数学描述" class="headerlink" title="问题数学描述"></a>问题数学描述</h3><blockquote>
-<ul>
-<li><p>domain: 记$\mathcal{X}$为非空的输入空间，$\mathcal{Y}$为输出空间，输入输出之间的关系通过联合概率分布$P<em>{XY}$来描述，域则由从该分布中采样得到的样本组成$S = {(x_i,y_i)}</em>{i=1}^n \sim P_{XY}$。</p>
-</li>
-<li><p>domain generalization: 在域泛化任务中，我们有$M$个训练/源域的数据</p>
-<script type="math/tex; mode=display">
-  S_{train} = {S_i|i=1,...,M}, where \quad S^i = \{(x_j^i, y_j^i)\}_{j=1}^{n_i} \quad denotes \quad i_{th} \quad domain</script><p>不同域的数据具有不同的联合概率分布，即$P<em>{XY}^i \neq P</em>{XY}^j $；域泛化的目标是学习到一个<strong>鲁棒且可泛化的预测方程</strong>$h: \mathcal{X} \rightarrow \mathcal{Y}$, 该模型在未知域$S_{test}$上的预测误差要尽可能小: </p>
-<script type="math/tex; mode=display">
-  \min_{h} \mathbb{E}_{(x,y) \in S_{test}} [\ell(h(x),y)]</script></li>
-</ul>
-</blockquote>
-<h3 id="相关研究领域介绍"><a href="#相关研究领域介绍" class="headerlink" title="相关研究领域介绍"></a>相关研究领域介绍</h3><ul>
-<li><strong>多任务学习(Multi-task learning)</strong>: 在多个任务上联合优化模型，目的是为了提高模型在原始任务上的泛化能力，多域学习(multi-domain learning)可以看作多任务学习的一种特例。</li>
-<li><strong>迁移学习(Transfer learning)</strong>: 在源任务/域上训练得到模型，目的在于提高模型在目标任务/域上的性能，迁移学习最广泛的应用就是<strong>预训练模型+微调</strong>的范式，与域泛化的区别在于迁移学习中目标域的数据是可获取的。</li>
-<li><strong>域适应(domain adaptation)</strong>: 该领域可以看作是迁移学习的一个分支，也是需要能够获取目标域的数据。 </li>
-<li><strong>元学习(Meta-learning)</strong>: 学习学习算法，即learning to learn, 元学习是一种通用的学习策略可以用于实现域泛化。 </li>
-<li><strong>终身学习/持续学习</strong>: 随着任务/数据域的不断更新，模型需要不断利用新的知识来更新模型参数。 </li>
-<li><strong>零样本学习(Zero-shot learning)</strong>: 利用已有类别的数据学习模型，对新类别的样本仍能分辨出来。 </li>
-</ul>
-<h3 id="方法分类"><a href="#方法分类" class="headerlink" title="方法分类"></a>方法分类</h3><p><img src="/.io//%E6%96%B9%E6%B3%95%E5%88%86%E7%B1%BB.png" alt></p>
-<p>目前域泛化的方法可以分为三类： </p>
-<ul>
-<li><strong>数据操纵</strong>: 基本思路是提高训练数据的涵盖范围，常用的思路有两个: <ul>
-<li>数据扩充: 数据扩展/随机变换 </li>
-<li>数据生成: 生成更具多样性的样本 </li>
-</ul>
-</li>
-<li><strong>表征学习</strong>: 基本思想是学习到一些稳定的特征，可细分为两个方向: <ul>
-<li>域不变表征学习 </li>
-<li>特征解偶</li>
-</ul>
-</li>
-<li><strong>学习策略</strong>: 探索一般性的学习策略以提升模型泛化能力，常用思路有: <ul>
-<li>集成学习</li>
-<li>元学习 </li>
-<li>梯度操作 </li>
-<li>分布鲁棒优化 </li>
-<li>自监督学习 </li>
-</ul>
-</li>
-</ul>
-<h4 id="数据操纵-data-manipulation"><a href="#数据操纵-data-manipulation" class="headerlink" title="数据操纵(data manipulation)"></a>数据操纵(data manipulation)</h4><p>提高训练数据的多样性，数据增强的有效性在于增强过后的数据未来有可能出现在测试域中，<strong>能否考虑应用一些机理知识来进行数据增强，类似于反事实的概念</strong>。 </p>
-<h5 id="基于数据扩充的域泛化"><a href="#基于数据扩充的域泛化" class="headerlink" title="基于数据扩充的域泛化"></a>基于数据扩充的域泛化</h5><p>常用的数据扩充操作有翻转、旋转、裁剪、添加噪声等</p>
-<ul>
-<li>域随机化: 改变目标大小/位置/光线/随机噪声 </li>
-<li>对抗数据增广: 实现有效数据增广，同标签，沿差异大的方向扩充样本 </li>
-</ul>
-<h5 id="基于数据生成的域泛化"><a href="#基于数据生成的域泛化" class="headerlink" title="基于数据生成的域泛化"></a>基于数据生成的域泛化</h5><p>一般是通过VAE或者GAN来实现数据增强</p>
-<h4 id="表征学习"><a href="#表征学习" class="headerlink" title="表征学习"></a>表征学习</h4><p>将预测方程$h$拆分未$h = f \cdot g$, 表征学习的目标为: </p>
-<script type="math/tex; mode=display">
-\min _{f, g} \mathbb{E}_{\mathbf{x}, y} \ell(f(g(\mathbf{x})), y)+\lambda \ell_{\mathrm{reg}}</script><h5 id="基于域不变性表征学习的域泛化"><a href="#基于域不变性表征学习的域泛化" class="headerlink" title="基于域不变性表征学习的域泛化"></a>基于域不变性表征学习的域泛化</h5><p>理论保证: 如果不同数据域的表征相同，那么说明该表征具有一般性并且可以迁移到其他域，在该表征函数下，源域的数据和目标域的数据更接近了，使得泛化误差上界更紧。</p>
-<ul>
-<li>基于核的方法(Kernel-based methods): 将原始数据映射到高维空间，通过核函数可以在不知道样本高维坐标情况下计算两样本内积，将不同域样本映射到高维空间，分布一致。</li>
-<li>域对抗学习(Domain adversarial learning): 判别器来识别数据属于不同域，生成器用来学习不变表征让判别器分辨不出来。</li>
-<li>显式特征对齐(Explicit feature alignment): 在学习的过程显式让特征对齐 </li>
-<li>不变风险最小化(Invariant risk minimization): </li>
-</ul>
-<h5 id="基于特征解耦的域泛化"><a href="#基于特征解耦的域泛化" class="headerlink" title="基于特征解耦的域泛化"></a>基于特征解耦的域泛化</h5><p>将原始数据投影到特征空间，将特征分为domain-shared feature 和 domain-specific feature, 目标函数一般为如下形式: </p>
-<script type="math/tex; mode=display">
-\min _{g_c, g_s, f} \mathbb{E}_{\mathbf{x}, y} \ell\left(f\left(g_c(\mathbf{x})\right), y\right)+\lambda \ell_{\mathrm{reg}}+\mu \ell_{\mathrm{recon}}\left(\left[g_c(\mathbf{x}), g_s(\mathbf{x})\right], \mathbf{x}\right)</script><ul>
-<li>多成分分析: 用不同的特征提取器来提取数据中的不同成分 </li>
-<li>生成模型: Domain-invariant VAE </li>
-<li>因果启发的方法: </li>
-</ul>
-<h4 id="学习策略"><a href="#学习策略" class="headerlink" title="学习策略"></a>学习策略</h4><h5 id="基于集成学习的域泛化"><a href="#基于集成学习的域泛化" class="headerlink" title="基于集成学习的域泛化"></a>基于集成学习的域泛化</h5><p>每个域都有一个模型，结合输出结果 </p>
-<h5 id="基于元学习的域泛化"><a href="#基于元学习的域泛化" class="headerlink" title="基于元学习的域泛化"></a>基于元学习的域泛化</h5><p>元学习的关键思想是从多个任务中学习一个通用的模型</p>
-<h5 id="基于梯度操作的域泛化"><a href="#基于梯度操作的域泛化" class="headerlink" title="基于梯度操作的域泛化"></a>基于梯度操作的域泛化</h5><p>self-challenging训练算法 </p>
-<h5 id="基于分布鲁棒优化的方法"><a href="#基于分布鲁棒优化的方法" class="headerlink" title="基于分布鲁棒优化的方法"></a>基于分布鲁棒优化的方法</h5><h5 id="基于自监督学习的域泛化"><a href="#基于自监督学习的域泛化" class="headerlink" title="基于自监督学习的域泛化"></a>基于自监督学习的域泛化</h5>]]></content>
-      <categories>
-        <category>论文阅读</category>
-      </categories>
-      <tags>
-        <tag>前沿方向</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>EM</title>
     <url>/2020/07/30/em/</url>
     <content><![CDATA[<p>在前面概率密度函数估计中，若概率模型的变量都是可观测变量，那么给定数据，便可以直接用极大似然估计法或者贝叶斯估计法来直接估计模型参数。但是当模型中含有隐变量时，便不能直接使用这些估计方法，<strong>EM算法就是含有隐变量的概率模型参数的极大似然估计法</strong><span id="more"></span>,本文便围绕EM算法展开，主要包含以下几部分：</p>
@@ -343,88 +258,6 @@ P(Y|\theta^{i+1}) \geq P(Y|\theta^i)</script><p><strong>定理2</strong>:设$L(\
       </categories>
       <tags>
         <tag>EM算法,隐变量,高斯混合模型</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>马尔可夫网络</title>
-    <url>/2020/07/25/markov-network/</url>
-    <content><![CDATA[<p>在这一部分我将介绍另一种常见的概率图模型:马尔可夫网络，或称马尔可夫随机场。接下来分为以下几部分进行组织<span id="more"></span>：</p>
-<ul>
-<li>马尔可夫网络</li>
-<li>独立性假设</li>
-<li>势函数</li>
-</ul>
-<h3 id="马尔可夫网络"><a href="#马尔可夫网络" class="headerlink" title="马尔可夫网络"></a>马尔可夫网络</h3><p>首先给出维基百科上关于马尔可夫网络的定义：</p>
-<blockquote>
-<p>马尔可夫网络是一组有马尔可夫性质随机变量$X$的全联合概率分布模型。马尔可夫网络类似贝叶斯网络用于表示依赖关系。但是，一方面它可以表示贝叶斯网络无法表示的一些关系，如循环依赖；另一方面，它不能表示贝叶斯网络能够表示的某些关系，如推导关系。</p>
-</blockquote>
-<p>马尔可夫网络具有以下特征：</p>
-<ul>
-<li>无向图$H = (V,E)$</li>
-<li>每个顶点$v \in V$表示一个在集合$X$的随机变量，每条边${u,v}\in E$ 表示随机变量$u$和$v$之间的依赖关系</li>
-</ul>
-<h3 id="独立性假设"><a href="#独立性假设" class="headerlink" title="独立性假设"></a>独立性假设</h3><p>马尔可夫网络与贝叶斯网络类似，以图的形式对独立性假设进行编码，首先给出图中激活路径的概念：</p>
-<ul>
-<li>激活路径：一个路径$X_1,X_2,\dots,X_n$是激活的 $\Leftrightarrow$ 没有路径上的变量被观测到  </li>
-</ul>
-<p>有了激活路径概念之后，便可以讨论图中的条件独立关系：</p>
-<ul>
-<li>在图$H$中，节点集$X$与节点集$Y$相对于是节点集$Z$是分离的 $\Leftrightarrow$ $X$与$Y$之间不存在激活路径</li>
-<li>表示为$sep_H(X;Y|Z)$,栗子如下图所示。</li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/xuejy19/Images/master/mav1.png" alt="栗子"></p>
-<h3 id="势函数"><a href="#势函数" class="headerlink" title="势函数"></a>势函数</h3><p>在贝叶斯网络中，节点之间的关系通过条件概率进行表征，而在马尔可夫网络中，节点之间的关系通过势函数来表征，势函数定义如下：</p>
-<blockquote>
-<p>一个函数集合$f_k$(也称为因子或者团因子有时也称为特征)，每一个$f_k$的定义域是图$G$的团或子团$k$,每一个$f_k$是从可能的特定联合的指派(到元素$k$)到非负实数的映射。</p>
-</blockquote>
-<p>总结而言，势函数具有以下特征：</p>
-<blockquote>
-<ul>
-<li>非负</li>
-<li>与条件概率不同，其求和不必为1</li>
-</ul>
-</blockquote>
-<h3 id="吉布斯分布"><a href="#吉布斯分布" class="headerlink" title="吉布斯分布"></a>吉布斯分布</h3><p>我们引入该图模型的目的在于：<strong>通过马尔可夫网络来对变量之间的独立性关系进行编码，然后获得对于联合概率分布更加紧凑的表示形式</strong>，而吉布斯分布便是将联合概率与势函数相连接的桥梁。<br>一个概率分布$P$可以分解为图$H$：</p>
-<blockquote>
-<ul>
-<li>$H$可以分为若干子团$D_i$</li>
-<li>在每个子团上相应定义了势函数$\pi_i$</li>
-</ul>
-</blockquote>
-<p>由此便可以写出吉布斯分布形式：</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-     P(X_1,X_2,\dots,X_n) = \frac{1}{Z} f(X_1,X_2,\dots,X_n) 
-\end{aligned}</script><p>其中:</p>
-<blockquote>
-<ul>
-<li>$f(X<em>1,X_2,\dots,X_n) = \prod</em>{i=1}^m \pi_i(D_i)$</li>
-<li>$Z = \sum_{X_1,\dots,X_n} f(X_1,\dots,X_n)$</li>
-</ul>
-</blockquote>
-<p>每一个势函数定义了一个映射:$Sub(X) \rightarrow \mathcal{R^+}$ ,一个势函数的定义域相当于是一个集合，而这个集合中的变量彼此之间是直接依赖关系，从这个视角来看，条件概率可以看作是势函数的特例(仅仅表征两个变量之间依赖关系)。</p>
-<p>下面我们讨论下一个势函数(因子)应该定义在一个多大的集合上，首先考虑如果在每条边上均定义一个势函数，那么马尔可夫网络能否表征联合概率分布？答案是并不行，为此我以一个7个节点(均为二值变量)的全连接网络为例，分别讨论两种情况下具有的独立参数的数量：</p>
-<ul>
-<li>联合概率分布：$2^7 - 1 = 127$</li>
-<li>边上势函数：$4*C_7^2 = 84$</li>
-</ul>
-<p>显然对于全连接网络，若给予每个边一个势函数并不足以表征联合概率分布，在前面已经说明一个势函数定义域中的变量应当是两两直接相关，因此势函数的定义域应当是一个团(clique)。<br>$\Rightarrow$ <strong>马尔可夫网络中的局部结构是团</strong></p>
-<h3 id="马尔可夫网络分解"><a href="#马尔可夫网络分解" class="headerlink" title="马尔可夫网络分解"></a>马尔可夫网络分解</h3><p>首先给出$I-Map$的概念:$H$为一个马尔可夫网络，$P$为联合概率分布，若有$I(H) \subseteq I(P)$，则称马尔可夫网络$H$为分布$P$的一个$I-Map$。 </p>
-<p>记$D_i$为马尔可夫网络$H$中的子团，Hammersley-Clifford定理如下：</p>
-<blockquote>
-<p>对于一个无向图$H$和分布$P$,$P$可以被分解成$P(X) = \frac{1}{Z}\prod \pi_i (D_i) \Leftrightarrow$ $H$是$P$的$I-Map$</p>
-</blockquote>
-<p>在实际进行分解时一般都是在最大团上定义势函数</p>
-<h3 id="对数表示"><a href="#对数表示" class="headerlink" title="对数表示"></a>对数表示</h3><p>在马尔可夫网络中，联合分布除了可以利用吉布斯分布来进行表示，也可以采取对数表示的方法，将原始的势函数$\pi_i(D_i)$ 表示成$exp(-\epsilon(D_i))$的形式，其中$\epsilon(D_i) = -log(\pi_i(D_i))$,据此，联合概率分布可以表示成：</p>
-<script type="math/tex; mode=display">
-    P(X_1,X_2,\dots,X_n) = \frac{1}{Z} exp(-\sum_{i=1}^m \epsilon(D_i))</script><p>这种表示方法将连乘变成了连家，计算更加方便，同时有定理证明，若无向图$H$是分布$P$的一个独立映射，那么$\epsilon(D_i) = \omega_i \phi_i(D_i)$,此时$\phi$被称作特征函数，与势函数关系为：</p>
-<script type="math/tex; mode=display">
-    \pi_i(D_i) = exp(\omega_i \phi_i(D_i))</script>]]></content>
-      <categories>
-        <category>统计学习</category>
-      </categories>
-      <tags>
-        <tag>无向图</tag>
       </tags>
   </entry>
   <entry>
@@ -673,6 +506,173 @@ i_t^* = \varPhi_{t+1}(i_{t+1}^*)</script>求得最优路径$I^{\ast} = (i_1^\ast
       </categories>
       <tags>
         <tag>概率模型，HMM</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Domain generalization</title>
+    <url>/2022/10/28/domain-generalization/</url>
+    <content><![CDATA[<p>本篇文章是对文章<a href="https://arxiv.org/pdf/2103.03097.pdf">Generalizing to Unseen Domains: A Survey on<br>Domain Generalization</a>的研读介绍，旨在对域泛化(domain generalization)领域研究现状有粗略了解，考虑将该领域的一些研究思想迁移到故障检测/溯源/软测量等任务上去。<span id="more"></span> </p>
+<h3 id="出发点"><a href="#出发点" class="headerlink" title="出发点"></a>出发点</h3><ul>
+<li><p>现有算法面临的挑战<br>传统的机器学习算法的泛化能力依赖于训练域与测试域的独立同分布(i.i.d)假设，而在现实数据中，这样的假设往往无法得到满足。</p>
+</li>
+<li><p>目的<br>如果我们已经拥有了一个/多个域的数据，希望让训练得到的模型在未知域上仍能有良好的泛化能力。 </p>
+</li>
+</ul>
+<h3 id="问题数学描述"><a href="#问题数学描述" class="headerlink" title="问题数学描述"></a>问题数学描述</h3><blockquote>
+<ul>
+<li><p>domain: 记$\mathcal{X}$为非空的输入空间，$\mathcal{Y}$为输出空间，输入输出之间的关系通过联合概率分布$P<em>{XY}$来描述，域则由从该分布中采样得到的样本组成$S = {(x_i,y_i)}</em>{i=1}^n \sim P_{XY}$。</p>
+</li>
+<li><p>domain generalization: 在域泛化任务中，我们有$M$个训练/源域的数据</p>
+<script type="math/tex; mode=display">
+  S_{train} = {S_i|i=1,...,M}, where \quad S^i = \{(x_j^i, y_j^i)\}_{j=1}^{n_i} \quad denotes \quad i_{th} \quad domain</script><p>不同域的数据具有不同的联合概率分布，即$P<em>{XY}^i \neq P</em>{XY}^j $；域泛化的目标是学习到一个<strong>鲁棒且可泛化的预测方程</strong>$h: \mathcal{X} \rightarrow \mathcal{Y}$, 该模型在未知域$S_{test}$上的预测误差要尽可能小: </p>
+<script type="math/tex; mode=display">
+  \min_{h} \mathbb{E}_{(x,y) \in S_{test}} [\ell(h(x),y)]</script></li>
+</ul>
+</blockquote>
+<h3 id="相关研究领域介绍"><a href="#相关研究领域介绍" class="headerlink" title="相关研究领域介绍"></a>相关研究领域介绍</h3><ul>
+<li><strong>多任务学习(Multi-task learning)</strong>: 在多个任务上联合优化模型，目的是为了提高模型在原始任务上的泛化能力，多域学习(multi-domain learning)可以看作多任务学习的一种特例。</li>
+<li><strong>迁移学习(Transfer learning)</strong>: 在源任务/域上训练得到模型，目的在于提高模型在目标任务/域上的性能，迁移学习最广泛的应用就是<strong>预训练模型+微调</strong>的范式，与域泛化的区别在于迁移学习中目标域的数据是可获取的。</li>
+<li><strong>域适应(domain adaptation)</strong>: 该领域可以看作是迁移学习的一个分支，也是需要能够获取目标域的数据。 </li>
+<li><strong>元学习(Meta-learning)</strong>: 学习学习算法，即learning to learn, 元学习是一种通用的学习策略可以用于实现域泛化。 </li>
+<li><strong>终身学习/持续学习</strong>: 随着任务/数据域的不断更新，模型需要不断利用新的知识来更新模型参数。 </li>
+<li><strong>零样本学习(Zero-shot learning)</strong>: 利用已有类别的数据学习模型，对新类别的样本仍能分辨出来。 </li>
+</ul>
+<h3 id="方法分类"><a href="#方法分类" class="headerlink" title="方法分类"></a>方法分类</h3><p><img src="/.io//%E6%96%B9%E6%B3%95%E5%88%86%E7%B1%BB.png" alt></p>
+<p>目前域泛化的方法可以分为三类： </p>
+<ul>
+<li><strong>数据操纵</strong>: 基本思路是提高训练数据的涵盖范围，常用的思路有两个: <ul>
+<li>数据扩充: 数据扩展/随机变换 </li>
+<li>数据生成: 生成更具多样性的样本 </li>
+</ul>
+</li>
+<li><strong>表征学习</strong>: 基本思想是学习到一些稳定的特征，可细分为两个方向: <ul>
+<li>域不变表征学习 </li>
+<li>特征解偶</li>
+</ul>
+</li>
+<li><strong>学习策略</strong>: 探索一般性的学习策略以提升模型泛化能力，常用思路有: <ul>
+<li>集成学习</li>
+<li>元学习 </li>
+<li>梯度操作 </li>
+<li>分布鲁棒优化 </li>
+<li>自监督学习 </li>
+</ul>
+</li>
+</ul>
+<h4 id="数据操纵-data-manipulation"><a href="#数据操纵-data-manipulation" class="headerlink" title="数据操纵(data manipulation)"></a>数据操纵(data manipulation)</h4><p>提高训练数据的多样性，数据增强的有效性在于增强过后的数据未来有可能出现在测试域中，<strong>能否考虑应用一些机理知识来进行数据增强，类似于反事实的概念</strong>。 </p>
+<h5 id="基于数据扩充的域泛化"><a href="#基于数据扩充的域泛化" class="headerlink" title="基于数据扩充的域泛化"></a>基于数据扩充的域泛化</h5><p>常用的数据扩充操作有翻转、旋转、裁剪、添加噪声等</p>
+<ul>
+<li>域随机化: 改变目标大小/位置/光线/随机噪声 </li>
+<li>对抗数据增广: 实现有效数据增广，同标签，沿差异大的方向扩充样本 </li>
+</ul>
+<h5 id="基于数据生成的域泛化"><a href="#基于数据生成的域泛化" class="headerlink" title="基于数据生成的域泛化"></a>基于数据生成的域泛化</h5><p>一般是通过VAE或者GAN来实现数据增强</p>
+<h4 id="表征学习"><a href="#表征学习" class="headerlink" title="表征学习"></a>表征学习</h4><p>将预测方程$h$拆分未$h = f \cdot g$, 表征学习的目标为: </p>
+<script type="math/tex; mode=display">
+\min _{f, g} \mathbb{E}_{\mathbf{x}, y} \ell(f(g(\mathbf{x})), y)+\lambda \ell_{\mathrm{reg}}</script><h5 id="基于域不变性表征学习的域泛化"><a href="#基于域不变性表征学习的域泛化" class="headerlink" title="基于域不变性表征学习的域泛化"></a>基于域不变性表征学习的域泛化</h5><p>理论保证: 如果不同数据域的表征相同，那么说明该表征具有一般性并且可以迁移到其他域，在该表征函数下，源域的数据和目标域的数据更接近了，使得泛化误差上界更紧。</p>
+<ul>
+<li>基于核的方法(Kernel-based methods): 将原始数据映射到高维空间，通过核函数可以在不知道样本高维坐标情况下计算两样本内积，将不同域样本映射到高维空间，分布一致。</li>
+<li>域对抗学习(Domain adversarial learning): 判别器来识别数据属于不同域，生成器用来学习不变表征让判别器分辨不出来。</li>
+<li>显式特征对齐(Explicit feature alignment): 在学习的过程显式让特征对齐 </li>
+<li>不变风险最小化(Invariant risk minimization): </li>
+</ul>
+<h5 id="基于特征解耦的域泛化"><a href="#基于特征解耦的域泛化" class="headerlink" title="基于特征解耦的域泛化"></a>基于特征解耦的域泛化</h5><p>将原始数据投影到特征空间，将特征分为domain-shared feature 和 domain-specific feature, 目标函数一般为如下形式: </p>
+<script type="math/tex; mode=display">
+\min _{g_c, g_s, f} \mathbb{E}_{\mathbf{x}, y} \ell\left(f\left(g_c(\mathbf{x})\right), y\right)+\lambda \ell_{\mathrm{reg}}+\mu \ell_{\mathrm{recon}}\left(\left[g_c(\mathbf{x}), g_s(\mathbf{x})\right], \mathbf{x}\right)</script><ul>
+<li>多成分分析: 用不同的特征提取器来提取数据中的不同成分 </li>
+<li>生成模型: Domain-invariant VAE </li>
+<li>因果启发的方法: </li>
+</ul>
+<h4 id="学习策略"><a href="#学习策略" class="headerlink" title="学习策略"></a>学习策略</h4><h5 id="基于集成学习的域泛化"><a href="#基于集成学习的域泛化" class="headerlink" title="基于集成学习的域泛化"></a>基于集成学习的域泛化</h5><p>每个域都有一个模型，结合输出结果 </p>
+<h5 id="基于元学习的域泛化"><a href="#基于元学习的域泛化" class="headerlink" title="基于元学习的域泛化"></a>基于元学习的域泛化</h5><p>元学习的关键思想是从多个任务中学习一个通用的模型</p>
+<h5 id="基于梯度操作的域泛化"><a href="#基于梯度操作的域泛化" class="headerlink" title="基于梯度操作的域泛化"></a>基于梯度操作的域泛化</h5><p>self-challenging训练算法 </p>
+<h5 id="基于分布鲁棒优化的方法"><a href="#基于分布鲁棒优化的方法" class="headerlink" title="基于分布鲁棒优化的方法"></a>基于分布鲁棒优化的方法</h5><h5 id="基于自监督学习的域泛化"><a href="#基于自监督学习的域泛化" class="headerlink" title="基于自监督学习的域泛化"></a>基于自监督学习的域泛化</h5>]]></content>
+      <categories>
+        <category>论文阅读</category>
+      </categories>
+      <tags>
+        <tag>前沿方向</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>马尔可夫网络</title>
+    <url>/2020/07/25/markov-network/</url>
+    <content><![CDATA[<p>在这一部分我将介绍另一种常见的概率图模型:马尔可夫网络，或称马尔可夫随机场。接下来分为以下几部分进行组织<span id="more"></span>：</p>
+<ul>
+<li>马尔可夫网络</li>
+<li>独立性假设</li>
+<li>势函数</li>
+</ul>
+<h3 id="马尔可夫网络"><a href="#马尔可夫网络" class="headerlink" title="马尔可夫网络"></a>马尔可夫网络</h3><p>首先给出维基百科上关于马尔可夫网络的定义：</p>
+<blockquote>
+<p>马尔可夫网络是一组有马尔可夫性质随机变量$X$的全联合概率分布模型。马尔可夫网络类似贝叶斯网络用于表示依赖关系。但是，一方面它可以表示贝叶斯网络无法表示的一些关系，如循环依赖；另一方面，它不能表示贝叶斯网络能够表示的某些关系，如推导关系。</p>
+</blockquote>
+<p>马尔可夫网络具有以下特征：</p>
+<ul>
+<li>无向图$H = (V,E)$</li>
+<li>每个顶点$v \in V$表示一个在集合$X$的随机变量，每条边${u,v}\in E$ 表示随机变量$u$和$v$之间的依赖关系</li>
+</ul>
+<h3 id="独立性假设"><a href="#独立性假设" class="headerlink" title="独立性假设"></a>独立性假设</h3><p>马尔可夫网络与贝叶斯网络类似，以图的形式对独立性假设进行编码，首先给出图中激活路径的概念：</p>
+<ul>
+<li>激活路径：一个路径$X_1,X_2,\dots,X_n$是激活的 $\Leftrightarrow$ 没有路径上的变量被观测到  </li>
+</ul>
+<p>有了激活路径概念之后，便可以讨论图中的条件独立关系：</p>
+<ul>
+<li>在图$H$中，节点集$X$与节点集$Y$相对于是节点集$Z$是分离的 $\Leftrightarrow$ $X$与$Y$之间不存在激活路径</li>
+<li>表示为$sep_H(X;Y|Z)$,栗子如下图所示。</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/xuejy19/Images/master/mav1.png" alt="栗子"></p>
+<h3 id="势函数"><a href="#势函数" class="headerlink" title="势函数"></a>势函数</h3><p>在贝叶斯网络中，节点之间的关系通过条件概率进行表征，而在马尔可夫网络中，节点之间的关系通过势函数来表征，势函数定义如下：</p>
+<blockquote>
+<p>一个函数集合$f_k$(也称为因子或者团因子有时也称为特征)，每一个$f_k$的定义域是图$G$的团或子团$k$,每一个$f_k$是从可能的特定联合的指派(到元素$k$)到非负实数的映射。</p>
+</blockquote>
+<p>总结而言，势函数具有以下特征：</p>
+<blockquote>
+<ul>
+<li>非负</li>
+<li>与条件概率不同，其求和不必为1</li>
+</ul>
+</blockquote>
+<h3 id="吉布斯分布"><a href="#吉布斯分布" class="headerlink" title="吉布斯分布"></a>吉布斯分布</h3><p>我们引入该图模型的目的在于：<strong>通过马尔可夫网络来对变量之间的独立性关系进行编码，然后获得对于联合概率分布更加紧凑的表示形式</strong>，而吉布斯分布便是将联合概率与势函数相连接的桥梁。<br>一个概率分布$P$可以分解为图$H$：</p>
+<blockquote>
+<ul>
+<li>$H$可以分为若干子团$D_i$</li>
+<li>在每个子团上相应定义了势函数$\pi_i$</li>
+</ul>
+</blockquote>
+<p>由此便可以写出吉布斯分布形式：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+     P(X_1,X_2,\dots,X_n) = \frac{1}{Z} f(X_1,X_2,\dots,X_n) 
+\end{aligned}</script><p>其中:</p>
+<blockquote>
+<ul>
+<li>$f(X<em>1,X_2,\dots,X_n) = \prod</em>{i=1}^m \pi_i(D_i)$</li>
+<li>$Z = \sum_{X_1,\dots,X_n} f(X_1,\dots,X_n)$</li>
+</ul>
+</blockquote>
+<p>每一个势函数定义了一个映射:$Sub(X) \rightarrow \mathcal{R^+}$ ,一个势函数的定义域相当于是一个集合，而这个集合中的变量彼此之间是直接依赖关系，从这个视角来看，条件概率可以看作是势函数的特例(仅仅表征两个变量之间依赖关系)。</p>
+<p>下面我们讨论下一个势函数(因子)应该定义在一个多大的集合上，首先考虑如果在每条边上均定义一个势函数，那么马尔可夫网络能否表征联合概率分布？答案是并不行，为此我以一个7个节点(均为二值变量)的全连接网络为例，分别讨论两种情况下具有的独立参数的数量：</p>
+<ul>
+<li>联合概率分布：$2^7 - 1 = 127$</li>
+<li>边上势函数：$4*C_7^2 = 84$</li>
+</ul>
+<p>显然对于全连接网络，若给予每个边一个势函数并不足以表征联合概率分布，在前面已经说明一个势函数定义域中的变量应当是两两直接相关，因此势函数的定义域应当是一个团(clique)。<br>$\Rightarrow$ <strong>马尔可夫网络中的局部结构是团</strong></p>
+<h3 id="马尔可夫网络分解"><a href="#马尔可夫网络分解" class="headerlink" title="马尔可夫网络分解"></a>马尔可夫网络分解</h3><p>首先给出$I-Map$的概念:$H$为一个马尔可夫网络，$P$为联合概率分布，若有$I(H) \subseteq I(P)$，则称马尔可夫网络$H$为分布$P$的一个$I-Map$。 </p>
+<p>记$D_i$为马尔可夫网络$H$中的子团，Hammersley-Clifford定理如下：</p>
+<blockquote>
+<p>对于一个无向图$H$和分布$P$,$P$可以被分解成$P(X) = \frac{1}{Z}\prod \pi_i (D_i) \Leftrightarrow$ $H$是$P$的$I-Map$</p>
+</blockquote>
+<p>在实际进行分解时一般都是在最大团上定义势函数</p>
+<h3 id="对数表示"><a href="#对数表示" class="headerlink" title="对数表示"></a>对数表示</h3><p>在马尔可夫网络中，联合分布除了可以利用吉布斯分布来进行表示，也可以采取对数表示的方法，将原始的势函数$\pi_i(D_i)$ 表示成$exp(-\epsilon(D_i))$的形式，其中$\epsilon(D_i) = -log(\pi_i(D_i))$,据此，联合概率分布可以表示成：</p>
+<script type="math/tex; mode=display">
+    P(X_1,X_2,\dots,X_n) = \frac{1}{Z} exp(-\sum_{i=1}^m \epsilon(D_i))</script><p>这种表示方法将连乘变成了连家，计算更加方便，同时有定理证明，若无向图$H$是分布$P$的一个独立映射，那么$\epsilon(D_i) = \omega_i \phi_i(D_i)$,此时$\phi$被称作特征函数，与势函数关系为：</p>
+<script type="math/tex; mode=display">
+    \pi_i(D_i) = exp(\omega_i \phi_i(D_i))</script>]]></content>
+      <categories>
+        <category>统计学习</category>
+      </categories>
+      <tags>
+        <tag>无向图</tag>
       </tags>
   </entry>
   <entry>
@@ -2027,6 +2027,26 @@ data.time = data.time.apply(lambda x: time.strftime(format, x.tuple))
       </tags>
   </entry>
   <entry>
+    <title>《生之欲》观后感</title>
+    <url>/2021/05/27/sheng-zhi-yu-guan-hou-gan/</url>
+    <content><![CDATA[<p>今天以讨论座谈的形式观看了电影《生之欲》，借这个博客记录一下我觉得这部电影想要表达的内容。<br><span id="more"></span></p>
+<ul>
+<li><p><strong>对人生的反思</strong><br>该部电影的日语题名为“<strong>生きる</strong>”，直译过来的意思是“<strong>活着</strong>”。人活着究竟是为什么？ 这是一个永远不会过时的哲学命题，对于本部电影中的主人公渡边堪治而言，在妻子死后，他活着唯一让他感到有价值的事情就是将他的儿子抚养长大，而在得知自己时日无多之时，又了解到自己的儿子更看重的其实只是他的退休金，这让他万念俱灰，人生仿佛失去了方向，已然接近终点的人生再不见一丝光亮。在这种情况下，他经历了两周的灯红酒绿，经历了与部门离职小姑娘小田切美纪的相伴，似乎，这些都不能让他感觉到活着的意义，而在了解到小田切美纪认为自己现在的工作很有意义时，渡边开始反省自己的工作，认为自己也能改变一些东西，由此渡边找到了继续活下去的理由，开始“真正”地活着。 </p>
+</li>
+<li><p><strong>对于公共部门官僚主义的讽刺</strong><br>这应当是这部电影最直接表现的主题了，公共部门中的每个人似乎都很忙，但似乎又什么都没干，大家都浑浑噩噩，不求有功，但求无过。<br>当初公共部门的创立是为了更好地服务，然而随着时间的推进，整个机构仿佛就已经僵化了，人人都在自己的位置上如一个没有思想的木偶，机械地运转着，大家都已经忘记了公共部门本身存在的意义。 </p>
+</li>
+<li><p><strong>理想主义与现实主义的冲突</strong><br>当渡边决定将建儿童公园作为其人生的意义之时，理想主义与现实主义的冲突就展开了，建立一个对人民有利的公园是理想，而公共部门彼此之间的扯皮是现实，两者似乎很难达成一致。<br>从这个角度来说，渡边是幸运的，好像是所有人最终都被他“说服”了，公园最终如期建成，然而黑泽明也在片中隐晦地透露道，如果不是刚好赶上副市长和议员竞选，渡边将很难说服市里的领导批准建公园，这不由传递出了一丝悲哀，哪怕另一边是死亡在追逐自己，可能最终也并不能跑赢现实。<br>但是努力改变，学会真正地“活着”又是应当去追求的，儿童乐园、儿童玩具，剧中的这些细节无不在透露着，哪怕现实已经如此的糟糕，但因为这些孩子的存在，我们也应当心存期待。 </p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>电影观后感</category>
+      </categories>
+      <tags>
+        <tag>日本电影、黑泽明</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>《正义论》读书笔记</title>
     <url>/2022/10/03/zheng-yi-lun-du-shu-bi-ji/</url>
     <content><![CDATA[<p>人生路走的愈远，愈发意识到个人的边界，愈发对社会现实有了更加清醒的认识。一切的矛盾说到根源也逃不出分配二字，什么样的分配制度是正义的呢？带着这样一个问题，我翻开了罗尔斯的《正义论》，期待罗尔斯能够给我一个答案。<span id="more"></span> </p>
@@ -2056,26 +2076,6 @@ data.time = data.time.apply(lambda x: time.strftime(format, x.tuple))
       </categories>
       <tags>
         <tag>正义</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>《生之欲》观后感</title>
-    <url>/2021/05/27/sheng-zhi-yu-guan-hou-gan/</url>
-    <content><![CDATA[<p>今天以讨论座谈的形式观看了电影《生之欲》，借这个博客记录一下我觉得这部电影想要表达的内容。<br><span id="more"></span></p>
-<ul>
-<li><p><strong>对人生的反思</strong><br>该部电影的日语题名为“<strong>生きる</strong>”，直译过来的意思是“<strong>活着</strong>”。人活着究竟是为什么？ 这是一个永远不会过时的哲学命题，对于本部电影中的主人公渡边堪治而言，在妻子死后，他活着唯一让他感到有价值的事情就是将他的儿子抚养长大，而在得知自己时日无多之时，又了解到自己的儿子更看重的其实只是他的退休金，这让他万念俱灰，人生仿佛失去了方向，已然接近终点的人生再不见一丝光亮。在这种情况下，他经历了两周的灯红酒绿，经历了与部门离职小姑娘小田切美纪的相伴，似乎，这些都不能让他感觉到活着的意义，而在了解到小田切美纪认为自己现在的工作很有意义时，渡边开始反省自己的工作，认为自己也能改变一些东西，由此渡边找到了继续活下去的理由，开始“真正”地活着。 </p>
-</li>
-<li><p><strong>对于公共部门官僚主义的讽刺</strong><br>这应当是这部电影最直接表现的主题了，公共部门中的每个人似乎都很忙，但似乎又什么都没干，大家都浑浑噩噩，不求有功，但求无过。<br>当初公共部门的创立是为了更好地服务，然而随着时间的推进，整个机构仿佛就已经僵化了，人人都在自己的位置上如一个没有思想的木偶，机械地运转着，大家都已经忘记了公共部门本身存在的意义。 </p>
-</li>
-<li><p><strong>理想主义与现实主义的冲突</strong><br>当渡边决定将建儿童公园作为其人生的意义之时，理想主义与现实主义的冲突就展开了，建立一个对人民有利的公园是理想，而公共部门彼此之间的扯皮是现实，两者似乎很难达成一致。<br>从这个角度来说，渡边是幸运的，好像是所有人最终都被他“说服”了，公园最终如期建成，然而黑泽明也在片中隐晦地透露道，如果不是刚好赶上副市长和议员竞选，渡边将很难说服市里的领导批准建公园，这不由传递出了一丝悲哀，哪怕另一边是死亡在追逐自己，可能最终也并不能跑赢现实。<br>但是努力改变，学会真正地“活着”又是应当去追求的，儿童乐园、儿童玩具，剧中的这些细节无不在透露着，哪怕现实已经如此的糟糕，但因为这些孩子的存在，我们也应当心存期待。 </p>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>电影观后感</category>
-      </categories>
-      <tags>
-        <tag>日本电影、黑泽明</tag>
       </tags>
   </entry>
   <entry>
@@ -2425,110 +2425,6 @@ data.time = data.time.apply(lambda x: time.strftime(format, x.tuple))
       </categories>
       <tags>
         <tag>人像摄影入门，流程解析</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>再谈极大似然估计求解</title>
-    <url>/2020/08/24/zai-tan-ji-da-si-ran-gu-ji-qiu-jie/</url>
-    <content><![CDATA[<p>首先我们思考这样一个问题：</p>
-<blockquote>
-<p>当我们用最大似然估计进行概率模型参数估计时，为什么基本都是直接求导，一阶导数等于0的点就是我们待求的最优估计?</p>
-</blockquote>
-<p>问到这个地方的时候，可能有一部分人就不知该如何回答了，因为一阶导数为0显然不是函数最大值点的充要条件，但我相信肯定有的答案是:</p>
-<blockquote>
-<p>因为碰到的对数似然函数是一个凹函数形式，这样一阶导数为0的点就与函数最大值点互为充要条件了</p>
-</blockquote>
-<p>这个答案是正确的，但是不够严谨，我相信基本没人会在应用最大似然进行参数估计时首先进行对数似然函数的凸性判定，这篇文章主要就是想通过严谨的数学推导来说明一类概率密度函数的对数似然函数是凹函数，可以直接利用求导等于0这种简单直接的方法寻找最优估计，而若碰到不属于这一类的概率密度函数，则在使用最大似然估计时还是先判断对数似然函数凹凸性为妙，本篇文章按照以下结构组织:</p>
-<ul>
-<li>指数分布族</li>
-<li>指数族函数举例</li>
-<li>对数似然函数凹凸性证明</li>
-<li>总结<span id="more"></span>
-<h3 id="指数分布族"><a href="#指数分布族" class="headerlink" title="指数分布族"></a>指数分布族</h3>首先给出指数分布族的定义：<blockquote>
-<p>指数分布族是一类概率分布的总称，这类分布的概率密度函数具有这样的形式：</p>
-<script type="math/tex; mode=display">
-  p_\theta(x) = h(x) \exp(\theta^T \phi(x) - A(\theta))</script><p>式中，$x$是密度函数自变量，$x \in \mathcal{X}$;$\phi(x)$是充分统计量，可以看做是原始变量的一个映射:</p>
-<script type="math/tex; mode=display">
-  \phi: \mathcal{X} \rightarrow R^d</script><p>$\theta$是模型参数向量，与充分统计量维度相同，$h(x)$是一个只与$x$有关的统计量，$A(\theta)$为配分函数，通过该函数来保证$p_\theta(x)$满足概率密度函数的定义：</p>
-<script type="math/tex; mode=display">
-   \int_{\mathcal{X}} p_{\theta}(x) dx = 1</script><p>由此约束条件，我们可以得到$A(\theta)$的解析表达式：</p>
-<script type="math/tex; mode=display">
-  A(\theta) = \log (\int h(x) \exp(\theta^T \phi(x))dx )</script></blockquote>
-</li>
-</ul>
-<h3 id="指数分布族函数举例"><a href="#指数分布族函数举例" class="headerlink" title="指数分布族函数举例"></a>指数分布族函数举例</h3><p>首先给出结论，按照笔者调研，属于指数分布族的分布有：</p>
-<ul>
-<li>正态分布$N(\mu,\sigma^2)$</li>
-<li>伯努利分布(两点分布)$B(1,\pi)$</li>
-<li>二项分布$B(n,\pi)$</li>
-<li>泊松分布$P(\lambda)$</li>
-<li>伽马分布$G(\mu,v)$</li>
-<li>……. </li>
-</ul>
-<p>下面就将其中几个分布化成指数分布族的标准形式</p>
-<h4 id="伯努利分布"><a href="#伯努利分布" class="headerlink" title="伯努利分布"></a>伯努利分布</h4><p>对于伯努利分布，我们有$\mathcal{X} = { 0,1 }$,模型参数为$P(x = 1) = \pi,P(x = -1) = 1 - \pi$,因此我们有:</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        P(X = x)  = \pi^x (1 - \pi)^{1-x} &= \exp(x \log \pi + (1-x) \log(1-\pi) )  \\
-        &= \exp(x \log \frac{\pi}{1-\pi} + \log (1-\pi)) 
-    \end{aligned}</script><p>因此令$\theta = \log \frac{\pi}{1 - \pi}$, 则$P(X = x)$可以写做:</p>
-<script type="math/tex; mode=display">
-    P(X = x) = \exp(x\theta - \log(1 + e^\theta))</script><p>因此对于伯努利分布$h(x) = 1,\phi(x) = x, \theta = log \frac{\pi}{1-\pi}, A(\theta) = log(1 + e^\theta)$ </p>
-<h4 id="泊松分布"><a href="#泊松分布" class="headerlink" title="泊松分布"></a>泊松分布</h4><p>首先给出泊松分布的形式:</p>
-<script type="math/tex; mode=display">
-    P_\lambda(X = x) = \frac{\lambda^x}{x!} e^{- \lambda}</script><p>下面将其转化成指数分布族标准形式:</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        P_\lambda(X = x) &= \frac{\lambda^x}{x!} e^{- \lambda} \\
-        &= \frac{1}{x!} e^{x\log \lambda - \lambda}
-    \end{aligned}</script><p>因此，对于泊松分布，$h(x) = \frac{1}{x!}, \theta = \log \lambda,\phi(x) = x,A(\theta) = e^\theta$   </p>
-<h4 id="高斯分布"><a href="#高斯分布" class="headerlink" title="高斯分布"></a>高斯分布</h4><p>高斯分布的概率密度函数形式如下:</p>
-<script type="math/tex; mode=display">
-    p_{\mu,\sigma}(x) = \frac{1}{\sqrt{2 \pi} \sigma} \exp(- \frac{(x-\mu)^2}{2\sigma^2})</script><p>下面将其转化成指数分布族标准形式: </p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-         p_{\mu,\sigma}(x) &= \frac{1}{\sqrt{2 \pi} \sigma} \exp(- \frac{(x-\mu)^2}{2\sigma^2})  \\
-         &= \frac{1}{\sqrt{2 \pi} \sigma} \exp(\frac{-x^2}{2 \sigma^2} + \frac{x \mu}{\sigma^2} - \frac{\mu^2}{2\sigma^2}) \\
-         &= \frac{1}{\sqrt{2 \pi} } \exp(\frac{-x^2}{2 \sigma^2} + \frac{x \mu}{\sigma^2} - \frac{\mu^2}{2\sigma^2} + \log \sigma)
-    \end{aligned}</script><p>因此，对于高斯分布:</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        h(x) &= \frac{1}{\sqrt{2 \pi} \sigma}  \\
-        \phi(x) &= [\frac{x^2}{2}, x]^T \\
-        \theta &= [-\frac{1}{\sigma^2}, \frac{\mu}{\sigma^2}]^T \\
-        A(\theta) &= -\frac{1}{2} (log \theta^{(1)} + \theta^{(2)})
-    \end{aligned}</script><h3 id="对数似然函数凹凸性证明"><a href="#对数似然函数凹凸性证明" class="headerlink" title="对数似然函数凹凸性证明"></a>对数似然函数凹凸性证明</h3><p>我们关心的是最终对数似然函数的凹凸性，因为最终的对数似然函数是各个样本的概率密度函数取对数后累加的形式，由保凸运算可知，若单个对数概率密度函数的凹凸性可以确定，那么最终对数似然函数的凹凸性也就确定了。对于指数族分布，单个样本的概率密度函数取对数如下:</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        \log p_{\theta}(x) &= \log h(x) \exp(\theta^T \phi(x) - A(\theta)) \\
-        &= \log h(x) + \theta^T \phi(x) + \log(-A(\theta))
-    \end{aligned}</script><p>第一项与$\theta$无关，第二项为$\theta$的线性组合，不影响函数的凹凸性，所以整个函数的凹凸性是由第三项来确定，对于外层函数是对数函数的对数函数$\log f(x)$而言:</p>
-<script type="math/tex; mode=display">
-    (\log f(x))^{''} = \frac{f(x) f^{''}(x) - f^{'}(x)^2}{f(x)^2}</script><p>由对数函数性质有$f(x) &gt; 0$,因此，若$f(x)$是凹函数,即$f^{‘’}(x) \leq 0$,则可推出$(\log f(x))^{‘’} \leq 0$,即$\log f(x)$为凹函数，若$f(x)$为凸函数则不能有直接的结论，因此我们的重点放在讨论$A(\theta)$的凹凸性上。</p>
-<p>下面证明$A(\theta)$为凸函数,从定义出发证明，记$\theta_{\lambda} = \lambda \theta_1 + (1 - \lambda) \theta_2$,其中$\theta_1,\theta_2 \in dom f, \lambda \in [0,1]$,由Hölder不等式，可知:</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        A(\theta_\lambda) &= \log (\int h(x) \exp(\theta_{\lambda}^T \phi(x))dx ) \\ 
-        &= \log (\int \exp(\theta_{\lambda}^T \phi(x))d\mu(x)\\
-        &= \log (\int \exp[ (\lambda \theta_1 \phi(x) + (1-\lambda)\theta_2)\phi(x)]d\mu(x) ) \\
-        &= \log (\int \exp(\theta_1 \phi(x)^{\lambda}) \exp (\theta_2 \phi(x))^{1-\lambda} d \mu(x)) \\
-        &\leq \log (\int \exp(\theta_1 \phi(x))^{\frac{\lambda}{\lambda}} d\mu(x) )^\lambda (\int \exp(\theta_2 \phi(x))^{\frac{1-\lambda}{1- \lambda}}d\mu(x))^{1-\lambda}  (Hölder不等式) \\
-        &= \lambda \log (\int \exp(\theta_1 \phi(x)) d\mu(x) ) + (1-\lambda)
-        \log (\int \exp(\theta_2 \phi(x)) d\mu(x) ) \\
-        &= \lambda A(\theta_1) + (1-\lambda) A(\theta_2)
-    \end{aligned}</script><p>从凸函数定义可知,$A(\theta)$为凸函数，至此我们便得到了对数似然函数的凹凸性:</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        &A(\theta) 凸 \rightarrow -A(\theta) 凹 \rightarrow \log(-A(\theta)) 凹 \\
-        & log(p_\theta(x)) 凹  \rightarrow 对数似然函数 凹
-    \end{aligned}</script><h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>从前面列出的指数分布族所包含的分布来看，我们日常所碰到的绝大多数概率分布都属于指数族分布，是可以直接通过求导等于0这种方法来得到参数估计，而对于不属于指数分布族的分布，则是有必要对对数似然函数进行分析，而不能直接通过求导来解最优参数估计值。</p>
-<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p>本文内容主要参考以下链接：<br>[1] <a href="https://www.zhihu.com/question/263423642/answer/269353169">为什么极大似然估计求导为 0 就是要求的值呢？</a><br>[2] <a href="https://web.stanford.edu/class/stats311/Lectures/lec-07.pdf">指数分布族函数</a></p>
-]]></content>
-      <categories>
-        <category>统计学习</category>
-      </categories>
-      <tags>
-        <tag>统计学习，凸优化</tag>
       </tags>
   </entry>
   <entry>
@@ -3391,6 +3287,110 @@ if __name__ == '__main__':
       </tags>
   </entry>
   <entry>
+    <title>再谈极大似然估计求解</title>
+    <url>/2020/08/24/zai-tan-ji-da-si-ran-gu-ji-qiu-jie/</url>
+    <content><![CDATA[<p>首先我们思考这样一个问题：</p>
+<blockquote>
+<p>当我们用最大似然估计进行概率模型参数估计时，为什么基本都是直接求导，一阶导数等于0的点就是我们待求的最优估计?</p>
+</blockquote>
+<p>问到这个地方的时候，可能有一部分人就不知该如何回答了，因为一阶导数为0显然不是函数最大值点的充要条件，但我相信肯定有的答案是:</p>
+<blockquote>
+<p>因为碰到的对数似然函数是一个凹函数形式，这样一阶导数为0的点就与函数最大值点互为充要条件了</p>
+</blockquote>
+<p>这个答案是正确的，但是不够严谨，我相信基本没人会在应用最大似然进行参数估计时首先进行对数似然函数的凸性判定，这篇文章主要就是想通过严谨的数学推导来说明一类概率密度函数的对数似然函数是凹函数，可以直接利用求导等于0这种简单直接的方法寻找最优估计，而若碰到不属于这一类的概率密度函数，则在使用最大似然估计时还是先判断对数似然函数凹凸性为妙，本篇文章按照以下结构组织:</p>
+<ul>
+<li>指数分布族</li>
+<li>指数族函数举例</li>
+<li>对数似然函数凹凸性证明</li>
+<li>总结<span id="more"></span>
+<h3 id="指数分布族"><a href="#指数分布族" class="headerlink" title="指数分布族"></a>指数分布族</h3>首先给出指数分布族的定义：<blockquote>
+<p>指数分布族是一类概率分布的总称，这类分布的概率密度函数具有这样的形式：</p>
+<script type="math/tex; mode=display">
+  p_\theta(x) = h(x) \exp(\theta^T \phi(x) - A(\theta))</script><p>式中，$x$是密度函数自变量，$x \in \mathcal{X}$;$\phi(x)$是充分统计量，可以看做是原始变量的一个映射:</p>
+<script type="math/tex; mode=display">
+  \phi: \mathcal{X} \rightarrow R^d</script><p>$\theta$是模型参数向量，与充分统计量维度相同，$h(x)$是一个只与$x$有关的统计量，$A(\theta)$为配分函数，通过该函数来保证$p_\theta(x)$满足概率密度函数的定义：</p>
+<script type="math/tex; mode=display">
+   \int_{\mathcal{X}} p_{\theta}(x) dx = 1</script><p>由此约束条件，我们可以得到$A(\theta)$的解析表达式：</p>
+<script type="math/tex; mode=display">
+  A(\theta) = \log (\int h(x) \exp(\theta^T \phi(x))dx )</script></blockquote>
+</li>
+</ul>
+<h3 id="指数分布族函数举例"><a href="#指数分布族函数举例" class="headerlink" title="指数分布族函数举例"></a>指数分布族函数举例</h3><p>首先给出结论，按照笔者调研，属于指数分布族的分布有：</p>
+<ul>
+<li>正态分布$N(\mu,\sigma^2)$</li>
+<li>伯努利分布(两点分布)$B(1,\pi)$</li>
+<li>二项分布$B(n,\pi)$</li>
+<li>泊松分布$P(\lambda)$</li>
+<li>伽马分布$G(\mu,v)$</li>
+<li>……. </li>
+</ul>
+<p>下面就将其中几个分布化成指数分布族的标准形式</p>
+<h4 id="伯努利分布"><a href="#伯努利分布" class="headerlink" title="伯努利分布"></a>伯努利分布</h4><p>对于伯努利分布，我们有$\mathcal{X} = { 0,1 }$,模型参数为$P(x = 1) = \pi,P(x = -1) = 1 - \pi$,因此我们有:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        P(X = x)  = \pi^x (1 - \pi)^{1-x} &= \exp(x \log \pi + (1-x) \log(1-\pi) )  \\
+        &= \exp(x \log \frac{\pi}{1-\pi} + \log (1-\pi)) 
+    \end{aligned}</script><p>因此令$\theta = \log \frac{\pi}{1 - \pi}$, 则$P(X = x)$可以写做:</p>
+<script type="math/tex; mode=display">
+    P(X = x) = \exp(x\theta - \log(1 + e^\theta))</script><p>因此对于伯努利分布$h(x) = 1,\phi(x) = x, \theta = log \frac{\pi}{1-\pi}, A(\theta) = log(1 + e^\theta)$ </p>
+<h4 id="泊松分布"><a href="#泊松分布" class="headerlink" title="泊松分布"></a>泊松分布</h4><p>首先给出泊松分布的形式:</p>
+<script type="math/tex; mode=display">
+    P_\lambda(X = x) = \frac{\lambda^x}{x!} e^{- \lambda}</script><p>下面将其转化成指数分布族标准形式:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        P_\lambda(X = x) &= \frac{\lambda^x}{x!} e^{- \lambda} \\
+        &= \frac{1}{x!} e^{x\log \lambda - \lambda}
+    \end{aligned}</script><p>因此，对于泊松分布，$h(x) = \frac{1}{x!}, \theta = \log \lambda,\phi(x) = x,A(\theta) = e^\theta$   </p>
+<h4 id="高斯分布"><a href="#高斯分布" class="headerlink" title="高斯分布"></a>高斯分布</h4><p>高斯分布的概率密度函数形式如下:</p>
+<script type="math/tex; mode=display">
+    p_{\mu,\sigma}(x) = \frac{1}{\sqrt{2 \pi} \sigma} \exp(- \frac{(x-\mu)^2}{2\sigma^2})</script><p>下面将其转化成指数分布族标准形式: </p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+         p_{\mu,\sigma}(x) &= \frac{1}{\sqrt{2 \pi} \sigma} \exp(- \frac{(x-\mu)^2}{2\sigma^2})  \\
+         &= \frac{1}{\sqrt{2 \pi} \sigma} \exp(\frac{-x^2}{2 \sigma^2} + \frac{x \mu}{\sigma^2} - \frac{\mu^2}{2\sigma^2}) \\
+         &= \frac{1}{\sqrt{2 \pi} } \exp(\frac{-x^2}{2 \sigma^2} + \frac{x \mu}{\sigma^2} - \frac{\mu^2}{2\sigma^2} + \log \sigma)
+    \end{aligned}</script><p>因此，对于高斯分布:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        h(x) &= \frac{1}{\sqrt{2 \pi} \sigma}  \\
+        \phi(x) &= [\frac{x^2}{2}, x]^T \\
+        \theta &= [-\frac{1}{\sigma^2}, \frac{\mu}{\sigma^2}]^T \\
+        A(\theta) &= -\frac{1}{2} (log \theta^{(1)} + \theta^{(2)})
+    \end{aligned}</script><h3 id="对数似然函数凹凸性证明"><a href="#对数似然函数凹凸性证明" class="headerlink" title="对数似然函数凹凸性证明"></a>对数似然函数凹凸性证明</h3><p>我们关心的是最终对数似然函数的凹凸性，因为最终的对数似然函数是各个样本的概率密度函数取对数后累加的形式，由保凸运算可知，若单个对数概率密度函数的凹凸性可以确定，那么最终对数似然函数的凹凸性也就确定了。对于指数族分布，单个样本的概率密度函数取对数如下:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        \log p_{\theta}(x) &= \log h(x) \exp(\theta^T \phi(x) - A(\theta)) \\
+        &= \log h(x) + \theta^T \phi(x) + \log(-A(\theta))
+    \end{aligned}</script><p>第一项与$\theta$无关，第二项为$\theta$的线性组合，不影响函数的凹凸性，所以整个函数的凹凸性是由第三项来确定，对于外层函数是对数函数的对数函数$\log f(x)$而言:</p>
+<script type="math/tex; mode=display">
+    (\log f(x))^{''} = \frac{f(x) f^{''}(x) - f^{'}(x)^2}{f(x)^2}</script><p>由对数函数性质有$f(x) &gt; 0$,因此，若$f(x)$是凹函数,即$f^{‘’}(x) \leq 0$,则可推出$(\log f(x))^{‘’} \leq 0$,即$\log f(x)$为凹函数，若$f(x)$为凸函数则不能有直接的结论，因此我们的重点放在讨论$A(\theta)$的凹凸性上。</p>
+<p>下面证明$A(\theta)$为凸函数,从定义出发证明，记$\theta_{\lambda} = \lambda \theta_1 + (1 - \lambda) \theta_2$,其中$\theta_1,\theta_2 \in dom f, \lambda \in [0,1]$,由Hölder不等式，可知:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        A(\theta_\lambda) &= \log (\int h(x) \exp(\theta_{\lambda}^T \phi(x))dx ) \\ 
+        &= \log (\int \exp(\theta_{\lambda}^T \phi(x))d\mu(x)\\
+        &= \log (\int \exp[ (\lambda \theta_1 \phi(x) + (1-\lambda)\theta_2)\phi(x)]d\mu(x) ) \\
+        &= \log (\int \exp(\theta_1 \phi(x)^{\lambda}) \exp (\theta_2 \phi(x))^{1-\lambda} d \mu(x)) \\
+        &\leq \log (\int \exp(\theta_1 \phi(x))^{\frac{\lambda}{\lambda}} d\mu(x) )^\lambda (\int \exp(\theta_2 \phi(x))^{\frac{1-\lambda}{1- \lambda}}d\mu(x))^{1-\lambda}  (Hölder不等式) \\
+        &= \lambda \log (\int \exp(\theta_1 \phi(x)) d\mu(x) ) + (1-\lambda)
+        \log (\int \exp(\theta_2 \phi(x)) d\mu(x) ) \\
+        &= \lambda A(\theta_1) + (1-\lambda) A(\theta_2)
+    \end{aligned}</script><p>从凸函数定义可知,$A(\theta)$为凸函数，至此我们便得到了对数似然函数的凹凸性:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        &A(\theta) 凸 \rightarrow -A(\theta) 凹 \rightarrow \log(-A(\theta)) 凹 \\
+        & log(p_\theta(x)) 凹  \rightarrow 对数似然函数 凹
+    \end{aligned}</script><h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>从前面列出的指数分布族所包含的分布来看，我们日常所碰到的绝大多数概率分布都属于指数族分布，是可以直接通过求导等于0这种方法来得到参数估计，而对于不属于指数分布族的分布，则是有必要对对数似然函数进行分析，而不能直接通过求导来解最优参数估计值。</p>
+<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p>本文内容主要参考以下链接：<br>[1] <a href="https://www.zhihu.com/question/263423642/answer/269353169">为什么极大似然估计求导为 0 就是要求的值呢？</a><br>[2] <a href="https://web.stanford.edu/class/stats311/Lectures/lec-07.pdf">指数分布族函数</a></p>
+]]></content>
+      <categories>
+        <category>统计学习</category>
+      </categories>
+      <tags>
+        <tag>统计学习，凸优化</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>司马相如与卓文君</title>
     <url>/2020/09/20/si-ma-xiang-ru-yu-zhuo-wen-jun/</url>
     <content><![CDATA[<p>是夜，余观《王立群读史记》毕，感于司马相如与卓文君之逸事，为此文，记<strong>后世文学之演绎</strong>。</p>
@@ -3573,6 +3573,165 @@ if __name__ == '__main__':
       </categories>
       <tags>
         <tag>心智成熟，心理学</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>强化学习</title>
+    <url>/2020/10/06/qiang-hua-xue-xi/</url>
+    <content><![CDATA[<p>这部分将根据周志华老师的西瓜书对强化学习部分做一个简单介绍，该部分按照以下章节进行组织:</p>
+<ul>
+<li>思想介绍——任务与奖赏 </li>
+<li>K-摇臂赌博机 </li>
+<li>有模型学习 </li>
+<li>免模型学习 </li>
+<li>值函数近似 </li>
+<li>模仿学习 <span id="more"></span>
+</li>
+</ul>
+<h3 id="思想介绍-任务与奖赏"><a href="#思想介绍-任务与奖赏" class="headerlink" title="思想介绍-任务与奖赏"></a>思想介绍-任务与奖赏</h3><p><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/reinforce.png" alt="强化学习"><br>考虑这样病人看病的场景，假设我们是看病的医生，在我们与病人的交互过程中，大概是这么一个交互顺序:</p>
+<ul>
+<li>病人本身有一个状态，记做$S$，表示病人目前的身体状况。</li>
+<li>在看病的过程中，我认为病人处于某个状态$S’$，然后对病人施加了一个动作A，比如给病人吃了一些药，或者打了针。</li>
+<li>在病人接受了治疗之后，其本身状态发生了一个变化，该状态的转移我们用概率矩$P$来表示，表示病人状态发生了一个变化，比如痊愈了或者病情更加严重了。 </li>
+<li>在病人的状态发生了变化之后，会给作为医生的我们一个反馈，记做$R$,如果病人痊愈了，那我们得到的反馈可能会是一面锦旗和很多钱，如果病情更加严重了，我们得到的反馈可能就是埋怨。 </li>
+</ul>
+<p>上面我所描述的场景其实就构成了一轮强化学习的过程，强化学习任务常用马尔可夫决策过程来描述，这意味着环境下一时刻的状态仅仅与当前时刻状态有关而与之前状态无关:</p>
+<script type="math/tex; mode=display">
+    P(s_{t+1}| s_t,\dots, s_1) = P(s_{t+1}|s_{t})</script><p>综合起来，强化学习对应了四元组$E = <S,A,P,R>$,其中:</S,A,P,R></p>
+<script type="math/tex; mode=display">
+    P: X \times A \times X \rightarrow \mathbb{R}</script><p>而:</p>
+<script type="math/tex; mode=display">
+    R: X \times A \times X \rightarrow \mathbb{R}</script><p>指定了奖赏，在有的应用中，状态可能仅与状态转移有关，即$R: X \times X \rightarrow \mathbb{R}$, 下面给出一个种瓜的马尔可夫决策过程的栗子。<br><img src="https://github.com/xuejy19/xuejy19.github.io/blob/source/Img/Markov_decision.png" alt="马尔可夫决策过程"><br>在该过程中只有四个状态:健康、缺水、溢水和凋亡和两个动作:浇水和不浇水。在每一步转移后，若状态是保持瓜苗健康则获得奖励1，瓜苗缺水或者溢水奖赏为-1，这时通过浇水或者不浇水可以让瓜苗恢复健康状态，当瓜苗凋零时奖赏是最小值-100且无法恢复。图中箭头表示状态转移，$a、p、r$分别表示导致状态转移的动作、转移概率以及返回的奖赏。容易看出，最优策略是在“健康”和“缺少”状态下选择浇水，而在“溢水”状态下选择不浇水。</p>
+<p>需要注意区分“机器”和“环境”的界限，在下棋中，棋盘是环境与对手；在机器人控制中，环境是机器人的躯体与物理世界。总之，在环境中状态的转移以及奖赏的返回是不受机器控制的，机器只能通过选择要执行的动作来影响环境，也只能通过观察转移后的状态和返回的奖赏来感知世界。</p>
+<p>机器要做的是学习到一个策略$\pi$，根据这个策略，在状态$x$下就能得知想要执行的动作$a = \pi(x)$, 例如看到瓜苗状态为缺水时，能返回动作“浇水”。策略有两种表示:</p>
+<ul>
+<li>一种是将策略表示为函数$\pi: X \rightarrow A$,确定性策略通常用这种表示。 </li>
+<li>一种是概率表示$\pi: X \times A \rightarrow R$ ,随机性概率通常用这种表示，$\pi(x,a)$为状态$x$下选择动作$a$的概率，这里必须有$\sum_a \pi(x,a) = 1$</li>
+</ul>
+<p>策略的优劣取决于长期执行这一策略后得到的累计奖赏，例如某个策略使得瓜苗枯死，那么它的累积奖赏会很小，另一个策略种出了好瓜，它的累积奖赏会很大。在强化学习中，学习的目的就是要找到能使长期累积奖赏最大化的策略。长期累积奖赏有多种计算方式，常用的有两种:</p>
+<ul>
+<li>T步累积奖赏$E[\frac{1}{T} \sum_{t=1}^T r_t]$</li>
+<li>$\gamma$折扣累积奖赏: $E[\sum<em>{t=0}^\infty] \gamma^t r</em>{t+1}$, 其中$\gamma$表示贴现系数。 </li>
+</ul>
+<p>最后讨论下强化学习与监督学习的关系:</p>
+<ul>
+<li>强化学习中的“状态”对应于监督学习中的“示例”。</li>
+<li>强化学习中的“动作”对应于监督学习中的“标记” </li>
+<li>强化学习中的“策略”实际上就相当于监督学习中的“分类器”或“回归性” </li>
+</ul>
+<p>但是在强化学习中，并没有监督学习中的有标记样本，换言之，没有人直接告诉机器在什么状态下应该做什么动作，只有等到最终结果揭晓，才能通过“反思”之前的动作是否正确来进行学习，因此，强化学习在某种意义上可以看作具有“延迟标记信息”的监督学习问题。 </p>
+<h3 id="K-摇臂赌博机"><a href="#K-摇臂赌博机" class="headerlink" title="K 摇臂赌博机"></a>K 摇臂赌博机</h3><h4 id="概念介绍"><a href="#概念介绍" class="headerlink" title="概念介绍"></a>概念介绍</h4><p>与一般监督学习不同，强化学习最终奖赏需要在多步动作后才能够观察到，这里我们首先考虑最简单的情形:最大化单步奖赏。<br>欲最大化单步奖赏需要考虑两个方面:一是需要知道每个动作带来的奖赏，二是要执行奖赏最大的动作。若每个动作对应的奖赏是确定值，那么尝试一遍所有动作便可以找到奖赏最大的动作。但更一般的情形是，一个动作的奖赏值是来自一个概率分布，仅通过一次尝试并不能确切地获得平均奖赏值。<br>实际上，单步强化学习任务对应了一个理论模型-“K-摇臂赌博机”，K摇臂赌博机有K个摇臂，赌徒在投入硬币后可选择按下其中一个摇臂，每个摇臂以一定的概率吐出硬币，但这个概率赌徒并不知道，赌徒的目标是通过一定的策略最大化自己的奖赏，即获得最多的硬币。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/K-armed.jpeg" alt="K摇臂赌博机"><br>若仅为获知每个摇臂的期望奖赏，则可以采用“仅搜索法”:将所有尝试机会平均分配给每个摇臂，最后以每个摇臂各自平均的吐币概率作为其奖赏期望的近似估计。若仅为执行奖赏最大的动作，则可采用“仅利用”法: 按下目前最优的摇臂。显然，“仅探索”法能够很好地估计每个摇臂的奖赏，却会失去很多选择最优摇臂的机会；仅利用法则相反，它没有很好地估计摇臂期望奖赏，很可能经常选不到最优摇臂。因此，这两种方法都难以使得最终累积奖赏最大化。<br>事实上，“探索”和“利用”这两者是矛盾的，因为尝试次数有限，加强了一方则自然就会削弱另一方，这就是强化学习所面临的“探索-利用”窘境。显然，如欲累积奖赏最大，则必须在探索与利用之间达成较好的折衷。</p>
+<h4 id="epsilon-贪心"><a href="#epsilon-贪心" class="headerlink" title="$\epsilon-$贪心"></a>$\epsilon-$贪心</h4><p>$\epsilon-$贪心基于一个概率$\epsilon$来对探索和利用进行折中: 每次尝试时，以$\epsilon$概率进行探索，即以均匀概率随机选取一个摇臂；以$1- \epsilon$概率进行利用，即选择当前平均奖赏最高的摇臂。<br>令$Q(k)$记录摇臂$k$的平均奖赏，若摇臂$k$被尝试了$n$次，得到的奖赏为$v_1,v_2,\dots, v_n$,则平均奖赏为:</p>
+<script type="math/tex; mode=display">
+    Q(k) = \frac{1}{n} \sum_{i=1}^n v_i</script><p>更高效的方法是进行增量式计算，即每一次尝试后就立刻更新$Q(k)$，不妨用下标来表示尝试的次数，初始时$Q<em>0(k) = 0$。对于任意的$n \geq 1$,若第$n-1$次尝试后的平均奖赏为$Q</em>{n-1}(k)$,则在经过第$n$次尝试获得奖赏$v_n$后，平均奖赏应更新为:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        Q_n(k) &= \frac{1}{n} ((n-1) \times Q_{n-1}(k) + v_n) \\
+               &= Q_{n-1}(k) + \frac{1}{n} (v_n - Q_{n-1}(k))        
+    \end{aligned}</script><p>若摇臂奖赏的不确定性较大， 例如概率分布较宽时，则需要更多的探索，此时需要较大的$\epsilon$值；若摇臂的不确定性较小，例如概率分布较集中时，此时只需要少量的探索即可，将$\epsilon$设置值较小即可。随着尝试次数的增多，在一段时间后，摇臂的奖赏都能够较好地近似出来，不再需要探索，这种情况下可以让$\epsilon$随着尝试次数的增加而逐步减小，例如取$\epsilon = \frac{1}{\sqrt{t}}$ </p>
+<h4 id="Softmax"><a href="#Softmax" class="headerlink" title="Softmax"></a>Softmax</h4><p>Softmax 算法中摇臂概率的分配是基于Boltzmann分布:</p>
+<script type="math/tex; mode=display">
+    P(k) = \frac{e^{\frac{Q(k)}{\tau}}}{\sum_{i=1}^K e^{\frac{Q(k)}{\tau}}}</script><p>其中$q(i)$记录当前摇臂的平均奖赏，$\tau &gt;0$称为温度，$\tau$越小则平均奖赏高的摇臂被选取的概率越高，$\tau$趋于0时Softmax将趋于“仅利用”，$\tau$趋于无穷大时Softmax将趋于“仅搜索”。 </p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>前面通过K摇臂赌博机给出了单步强化学习的概念，同时介绍了单步强化学习实现的两种算法:$\epsilon$-贪心算法和Softmax算法，这两种算法并无绝对优劣差距，在进行应用中需要具体问题具体分析。<br>对于离散状态空间、离散动作空间上的多步强化学习任务，一种直接的办法是将每个状态上动作的选择看作是一个K摇臂赌博机问题，用强化学习任务的累积奖赏来代替K摇臂赌博机算法中的奖赏函数，即可将赌博机算法应用于每个状态: 对每个状态分别记录各动作的尝试次数、当前平均累积奖赏等信息，基于赌博机算法选择想要尝试的动作。<strong>然而这样做有很多局限，因为它没有考虑强化学习任务马尔可夫决策过程的结构。</strong> </p>
+<h3 id="有模型学习"><a href="#有模型学习" class="headerlink" title="有模型学习"></a>有模型学习</h3><p>考虑一个多步强化学习任务，我们假设任务对应的马尔可夫决策过程四元组$E  =<X, a,p,r>$均为已知，这样的情形称为<strong>模型已知</strong>,即机器已经对环境进行了建模。在已知模型的环境中学习称为“有模型学习”。此时，对于任意状态$x,x’$和动作$a$，在$x$状态下执行动作$a$转移到状态$x’$的概率$P<em>{x \rightarrow x’}^a$ 是已知的，该转移所带来的奖赏$R</em>{x \rightarrow x’}^a$也是已知的。为便于讨论，不妨假设状态空间和动作空间均有限。 </X,></p>
+<h4 id="策略评估"><a href="#策略评估" class="headerlink" title="策略评估"></a>策略评估</h4><p>在模型已知时，对任意策略能估计出该策略带来的期望累积奖赏，令函数$V^\pi(x)$表示从状态$x$出发，使用策略$\pi$所带来的累积奖赏。函数$Q^{\pi}(x,a)$ 表示从状态$x$出发，执行动作$a$后再使用策略$\pi$所带来的累积奖赏，这里:</p>
+<ul>
+<li>$V(\cdot)$ 称为“状态值”函数，表示指定“状态”上的累积奖赏</li>
+<li>$Q(\cdot)$ 称为“状态-动作值”函数，表示指定“状态-动作”上的累积奖赏。 </li>
+</ul>
+<p>由累积奖赏的定义，有状态值函数: </p>
+<script type="math/tex; mode=display">
+\left\{\begin{array}{l}
+V_{T}^{\pi}(x)=\mathbb{E}_{\pi}\left[\frac{1}{T} \sum_{t=1}^{T} r_{t} \mid x_{0}=x\right], \quad T \text { 步累积奖赏 } \\
+V_{\gamma}^{\pi}(x)=\mathbb{E}_{\pi}\left[\sum_{t=0}^{+\infty} \gamma^{t} r_{t+1} \mid x_{0}=x\right], \quad \gamma \text { 折扣累积奖赏. }
+\end{array}\right.</script><p>令$x_0$表示起始状态，$a_0$表示起始状态上采取的第一个动作；对于$T$步累积奖赏，用下标$t$表示后续执行的步数，我们有状态动作值函数: </p>
+<script type="math/tex; mode=display">
+\left\{\begin{array}{l}
+Q_{T}^{\pi}(x,a)=\mathbb{E}_{\pi}\left[\frac{1}{T} \sum_{t=1}^{T} r_{t} \mid x_{0}=x, a_0 = a\right], \quad T \text { 步累积奖赏 } \\
+Q_{\gamma}^{\pi}(x,a)=\mathbb{E}_{\pi}\left[\sum_{t=0}^{+\infty} \gamma^{t} r_{t+1} \mid x_{0}=x, a_0 = a\right], \quad \gamma \text { 折扣累积奖赏. }
+\end{array}\right.</script><p>根据马尔可夫决策过程的马尔可夫性，值函数可以有更加简单的递推形式，对于$T$步累积奖赏有:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        V_T^\pi (x) &= E_{\pi} [\frac{1}{T} \sum_{t=1}^T r_t| x =x_0] \\
+        &= E_{\pi} [\frac{1}{T} r_1 + \frac{T-1}{T} \frac{1}{T-1} \sum_{t=2}^T r_t | x_0 = x] \\ 
+        &= \sum_{a \in A} \pi(x,a) \sum_{x' \in X}  P_{x \rightarrow x'}^a (\frac{1}{T} R_{x \rightarrow x'}^a  + \frac{T-1}{T} E_{\pi} [\frac{1}{T-1} \sum_{t=1}^{T-1} r_t|x_0 = x'])  \\
+        &= \sum_{a \in x} \pi(x,a) \sum_{x' \in X}  P_{x \rightarrow x'} (\frac{1}{T} R_{x \rightarrow x'}^a + \frac{T-1}{T} V_{T-1}^\pi (x')) 
+    \end{aligned}</script><p>类似的，对于$\gamma$折扣累积奖赏有: </p>
+<script type="math/tex; mode=display">
+V_{\gamma}^{\pi}(x)=\sum_{a \in A} \pi(x, a) \sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(R_{x \rightarrow x^{\prime}}^{a}+\gamma V_{\gamma}^{\pi}\left(x^{\prime}\right)\right)</script><p>值函数的递推方程也被称作<strong>Bellman方程</strong>。<br>用这种递归等式来计算值函数，实际上就是一种动态规划算法。换言之，从值函数的初始值$V_0(\pi)$出发，通过每一次迭代能够计算出每个状态的单步奖赏$V_1^\pi$,进而从单步奖赏出发，通过一次迭代计算出两步累积奖赏$V_2^\pi$,对于$T$步累积奖赏，只需要迭代$T$轮就能精确地求解出值函数。<br>可以总结基于$T$步累积奖赏的策略评估办法:</p>
+<blockquote>
+<p><strong>输入:</strong> MDP四元组$E = <X,A,P,R>$; 被评估的策略$\pi$; 累积奖赏参数$T$<br><strong>算法流程:</strong> </X,A,P,R></p>
+<ul>
+<li>初始化$V(x) = 0$</li>
+<li>递推计算$V_1^\pi, V_2^\pi, \dots, V_t^\pi, \dots$ </li>
+<li>递推直到$V_t^\pi = V_T^\pi$</li>
+</ul>
+<p><strong>输出:</strong> 状态值函数$V$ </p>
+</blockquote>
+<p>对于$\gamma$折扣累积奖赏算法，与普通$T$步累积累积奖赏递推类似，同时考虑到当$t$很大时，$\gamma^t$ 会趋于0，因此算法计算终止常通过阈值来进行确定:</p>
+<script type="math/tex; mode=display">
+    \max_{x \in X} |V(x) - V'(x)| < 0</script><p>有了状态值函数，就能直接计算出状态-动作值函数:</p>
+<script type="math/tex; mode=display">
+\left\{\begin{array}{l}
+Q_{T}^{\pi}(x, a)=\sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(\frac{1}{T} R_{x \rightarrow x^{\prime}}^{a}+\frac{T-1}{T} V_{T-1}^{\pi}\left(x^{\prime}\right)\right) \\
+Q_{\gamma}^{\pi}(x, a)=\sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(R_{x \rightarrow x^{\prime}}^{a}+\gamma V_{\gamma}^{\pi}\left(x^{\prime}\right)\right)
+\end{array}\right.</script><h4 id="策略改进"><a href="#策略改进" class="headerlink" title="策略改进"></a>策略改进</h4><p>对某个策略的累积奖赏进行评估后，若发现某个策略并非最优策略，则自然期望改变策略以使累积奖赏最大：</p>
+<script type="math/tex; mode=display">
+    \pi^\ast = \argmax_{\pi} \sum_{x \in X} V^{\pi}(x)</script><p>一个强化学习任务可能有多个最优策略，最优策略所对应的值函数$V^\ast$称为最优值函数，即:</p>
+<script type="math/tex; mode=display">
+    \forall x \in X: V^{\ast} (x) = V^{\pi^\ast} (x)</script><p>注意，当策略空间无约束时$V^\ast$才是最优策略所对应的值函数，对于离散状态空间与离散动作空间，策略空间是状态上所有动作的组合，共有$|A|^|X|$种不同的策略，若策略空间有约束，则违背约束的策略是“不合法”的，即便其值函数所取得的累积奖赏最大，也不能作为最优值函数。<br>对于前面值函数的递推方程<strong>Bellman</strong>方程稍加改动便可得到最优值函数的递推公式: </p>
+<script type="math/tex; mode=display">
+\left\{\begin{array}{l}
+V_{T}^{*}(x)=\max _{a \in A} \sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(\frac{1}{T} R_{x \rightarrow x^{\prime}}^{a}+\frac{T-1}{T} V_{T-1}^{*}\left(x^{\prime}\right)\right) \\
+V_{\gamma}^{*}(x)=\max _{a \in A} \sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(R_{x \rightarrow x^{\prime}}^{a}+\gamma V_{\gamma}^{*}\left(x^{\prime}\right)\right)
+\end{array}\right.</script><p>换言之:</p>
+<script type="math/tex; mode=display">
+    V^{*}(x)=\max _{a \in A} Q^{\pi^{*}}(x, a)</script><p>将该式代入状态-动作值函数刻度可得最优状态-动作值函数: </p>
+<script type="math/tex; mode=display">
+\left\{\begin{array}{l}
+Q_{T}^{*}(x, a)=\sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(\frac{1}{T} R_{x \rightarrow x^{\prime}}^{a}+\frac{T-1}{T} \max _{a^{\prime} \in A} Q_{T-1}^{*}\left(x^{\prime}, a^{\prime}\right)\right) \\
+Q_{\gamma}^{*}(x, a)=\sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(R_{x \rightarrow x^{\prime}}^{a}+\gamma \max _{a^{\prime} \in A} Q_{\gamma}^{*}\left(x^{\prime}, a^{\prime}\right)\right)
+\end{array}\right.</script><p>上述关于最优值函数的等式，称为最优Bellman等式，其唯一解是最优值函数。<br>最优Bellman等式揭示了非最优策略的改进方式: 将策略选择的动作改编为当前最优的动作。显然，这样的改变能使策略更好，不妨记动作改变后对应的策略为$\pi’$,改变动作的条件为$Q^\pi (x, \pi^i(x)) \geq V^\pi(x)$, 以$\gamma$折扣累积奖赏为例，由式可计算递推不等式: </p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        V^{\pi}(x) &\leq Q^{\pi}(x, \pi'(x)) \\ 
+                   &= \sum_{x' \in X} P_{x \rightarrow x'}^{\pi'(x)} (R_{x \rightarrow x'}^{\pi'(x)} + \gamma V^\pi(x')) \\ 
+                   &\leq \sum_{x' \in X} P_{x \rightarrow x'}^{\pi'(x)} (R_{x \rightarrow x'}^{\pi'(x)} + \gamma Q^{\pi}(x', \pi'(x'))) \\
+                   &= .... \\
+                   &= V^{\pi'}(x)
+    \end{aligned}</script><p>值函数每一次对于策略的改进都是递增的，因此对于当前的策略$\pi$，可以放心地将其改进为:</p>
+<script type="math/tex; mode=display">
+    \pi'(x) = \argmax_{a \in A} Q^{\pi}(x, a)</script><p>直到$\pi’$与$\pi$一致、不再发生变化，此时就满足了最优Bellman等式，即找到了最优策略。</p>
+<h4 id="策略迭代与值迭代"><a href="#策略迭代与值迭代" class="headerlink" title="策略迭代与值迭代"></a>策略迭代与值迭代</h4><p>在前面介绍了两部分内容:</p>
+<ul>
+<li>如何评估一个策略的值函数 </li>
+<li>在策略评估后如何改进以获得最优策略 </li>
+</ul>
+<p>将这两者结合起来即可得到求解最优解的方法: </p>
+<blockquote>
+<p>从一个初始策略(通常是随机策略)出发，先进性策略评估，然后改进策略，评估改进的策略，再进一步改进策略，……不断迭代进行策略评估和改进直到策略不再改变为止，这样的做法称为“策略迭代”.</p>
+</blockquote>
+<p>下面给出基于$T$步累积奖赏的策略迭代算法:<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E7%AD%96%E7%95%A5%E8%BF%AD%E4%BB%A3.png" alt="策略迭代算法"></p>
+<p>策略迭代算法在每次改进策略后都需要进行策略评估，这通常比较耗时。但是实际上策略改进与值函数的改进是一致的，因此可讲策略改进视为值函数的改善:</p>
+<script type="math/tex; mode=display">
+\left\{\begin{array}{l}
+V_{T}(x)=\max _{a \in A} \sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(\frac{1}{T} R_{x \rightarrow x^{\prime}}^{a}+\frac{T-1}{T} V_{T-1}\left(x^{\prime}\right)\right) \\
+V_{\gamma}(x)=\max _{a \in A} \sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(R_{x \rightarrow x^{\prime}}^{a}+\gamma V_{\gamma}\left(x^{\prime}\right)\right)
+\end{array}\right.</script><p>于是可以得到值迭代算法:<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E5%80%BC%E8%BF%AD%E4%BB%A3.png" alt="值迭代算法"> </p>
+<p>在模型已知时，强化学习任务能归结为基于动态规划的寻优问题。与监督学习不同，这里并未涉及泛化能力，仅仅是为每一个状态寻找的一个最佳动作。</p>
+<h3 id="免模型学习"><a href="#免模型学习" class="headerlink" title="免模型学习"></a>免模型学习</h3><p>在现实的强化学习任务中，环境的转移概率、奖赏函数往往很难得知，甚至很难直到环境中有几个状态，若学习算法不依赖于环境建模，则称为<strong>“免模型学习”</strong>。 </p>
+<h4 id="蒙特卡罗强化学习"><a href="#蒙特卡罗强化学习" class="headerlink" title="蒙特卡罗强化学习"></a>蒙特卡罗强化学习</h4><p>在免模型情况下，策略迭代算法首先碰到的问题便是策略无法评估，这是由于模型未知而导致无法做全概率展开。此时，只能通过在环境中执行选择的动作，来观察转移的状态和得到的奖赏。受K摇臂赌博机的启发，一种直接的策略评估方法是“多次采样”，然后求取平均累积奖赏作为期望累积奖赏的近似，这称为蒙特卡罗强化学习方法，由于采样必须为有限次数，因此该方法更适合于使用$T$步累积奖赏的强化学习任务。 </p>
+<p>另一方面，策略迭代算法估计的是值函数，而在进行策略选择时依赖的是状态-动作值函数$Q$，当模型已知时，从$V$到$Q$有很简单的转化方法，而当模型未知时，这也会出现困难。于是我们将估计对象从$V$转变为$Q$,即估计每一对“状态-动作”的值函数。 </p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        az^{-1} u(k) &= au(k-1) \\
+        a z^{-1} u(k)^2 &= au(k-1) u(k)
+    \end{aligned}</script>]]></content>
+      <categories>
+        <category>统计学习</category>
+      </categories>
+      <tags>
+        <tag>强化学习</tag>
       </tags>
   </entry>
   <entry>
@@ -3830,165 +3989,6 @@ kill -KILL 123456 #强制杀死进程
       </categories>
       <tags>
         <tag>命令行</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>强化学习</title>
-    <url>/2020/10/06/qiang-hua-xue-xi/</url>
-    <content><![CDATA[<p>这部分将根据周志华老师的西瓜书对强化学习部分做一个简单介绍，该部分按照以下章节进行组织:</p>
-<ul>
-<li>思想介绍——任务与奖赏 </li>
-<li>K-摇臂赌博机 </li>
-<li>有模型学习 </li>
-<li>免模型学习 </li>
-<li>值函数近似 </li>
-<li>模仿学习 <span id="more"></span>
-</li>
-</ul>
-<h3 id="思想介绍-任务与奖赏"><a href="#思想介绍-任务与奖赏" class="headerlink" title="思想介绍-任务与奖赏"></a>思想介绍-任务与奖赏</h3><p><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/reinforce.png" alt="强化学习"><br>考虑这样病人看病的场景，假设我们是看病的医生，在我们与病人的交互过程中，大概是这么一个交互顺序:</p>
-<ul>
-<li>病人本身有一个状态，记做$S$，表示病人目前的身体状况。</li>
-<li>在看病的过程中，我认为病人处于某个状态$S’$，然后对病人施加了一个动作A，比如给病人吃了一些药，或者打了针。</li>
-<li>在病人接受了治疗之后，其本身状态发生了一个变化，该状态的转移我们用概率矩$P$来表示，表示病人状态发生了一个变化，比如痊愈了或者病情更加严重了。 </li>
-<li>在病人的状态发生了变化之后，会给作为医生的我们一个反馈，记做$R$,如果病人痊愈了，那我们得到的反馈可能会是一面锦旗和很多钱，如果病情更加严重了，我们得到的反馈可能就是埋怨。 </li>
-</ul>
-<p>上面我所描述的场景其实就构成了一轮强化学习的过程，强化学习任务常用马尔可夫决策过程来描述，这意味着环境下一时刻的状态仅仅与当前时刻状态有关而与之前状态无关:</p>
-<script type="math/tex; mode=display">
-    P(s_{t+1}| s_t,\dots, s_1) = P(s_{t+1}|s_{t})</script><p>综合起来，强化学习对应了四元组$E = <S,A,P,R>$,其中:</S,A,P,R></p>
-<script type="math/tex; mode=display">
-    P: X \times A \times X \rightarrow \mathbb{R}</script><p>而:</p>
-<script type="math/tex; mode=display">
-    R: X \times A \times X \rightarrow \mathbb{R}</script><p>指定了奖赏，在有的应用中，状态可能仅与状态转移有关，即$R: X \times X \rightarrow \mathbb{R}$, 下面给出一个种瓜的马尔可夫决策过程的栗子。<br><img src="https://github.com/xuejy19/xuejy19.github.io/blob/source/Img/Markov_decision.png" alt="马尔可夫决策过程"><br>在该过程中只有四个状态:健康、缺水、溢水和凋亡和两个动作:浇水和不浇水。在每一步转移后，若状态是保持瓜苗健康则获得奖励1，瓜苗缺水或者溢水奖赏为-1，这时通过浇水或者不浇水可以让瓜苗恢复健康状态，当瓜苗凋零时奖赏是最小值-100且无法恢复。图中箭头表示状态转移，$a、p、r$分别表示导致状态转移的动作、转移概率以及返回的奖赏。容易看出，最优策略是在“健康”和“缺少”状态下选择浇水，而在“溢水”状态下选择不浇水。</p>
-<p>需要注意区分“机器”和“环境”的界限，在下棋中，棋盘是环境与对手；在机器人控制中，环境是机器人的躯体与物理世界。总之，在环境中状态的转移以及奖赏的返回是不受机器控制的，机器只能通过选择要执行的动作来影响环境，也只能通过观察转移后的状态和返回的奖赏来感知世界。</p>
-<p>机器要做的是学习到一个策略$\pi$，根据这个策略，在状态$x$下就能得知想要执行的动作$a = \pi(x)$, 例如看到瓜苗状态为缺水时，能返回动作“浇水”。策略有两种表示:</p>
-<ul>
-<li>一种是将策略表示为函数$\pi: X \rightarrow A$,确定性策略通常用这种表示。 </li>
-<li>一种是概率表示$\pi: X \times A \rightarrow R$ ,随机性概率通常用这种表示，$\pi(x,a)$为状态$x$下选择动作$a$的概率，这里必须有$\sum_a \pi(x,a) = 1$</li>
-</ul>
-<p>策略的优劣取决于长期执行这一策略后得到的累计奖赏，例如某个策略使得瓜苗枯死，那么它的累积奖赏会很小，另一个策略种出了好瓜，它的累积奖赏会很大。在强化学习中，学习的目的就是要找到能使长期累积奖赏最大化的策略。长期累积奖赏有多种计算方式，常用的有两种:</p>
-<ul>
-<li>T步累积奖赏$E[\frac{1}{T} \sum_{t=1}^T r_t]$</li>
-<li>$\gamma$折扣累积奖赏: $E[\sum<em>{t=0}^\infty] \gamma^t r</em>{t+1}$, 其中$\gamma$表示贴现系数。 </li>
-</ul>
-<p>最后讨论下强化学习与监督学习的关系:</p>
-<ul>
-<li>强化学习中的“状态”对应于监督学习中的“示例”。</li>
-<li>强化学习中的“动作”对应于监督学习中的“标记” </li>
-<li>强化学习中的“策略”实际上就相当于监督学习中的“分类器”或“回归性” </li>
-</ul>
-<p>但是在强化学习中，并没有监督学习中的有标记样本，换言之，没有人直接告诉机器在什么状态下应该做什么动作，只有等到最终结果揭晓，才能通过“反思”之前的动作是否正确来进行学习，因此，强化学习在某种意义上可以看作具有“延迟标记信息”的监督学习问题。 </p>
-<h3 id="K-摇臂赌博机"><a href="#K-摇臂赌博机" class="headerlink" title="K 摇臂赌博机"></a>K 摇臂赌博机</h3><h4 id="概念介绍"><a href="#概念介绍" class="headerlink" title="概念介绍"></a>概念介绍</h4><p>与一般监督学习不同，强化学习最终奖赏需要在多步动作后才能够观察到，这里我们首先考虑最简单的情形:最大化单步奖赏。<br>欲最大化单步奖赏需要考虑两个方面:一是需要知道每个动作带来的奖赏，二是要执行奖赏最大的动作。若每个动作对应的奖赏是确定值，那么尝试一遍所有动作便可以找到奖赏最大的动作。但更一般的情形是，一个动作的奖赏值是来自一个概率分布，仅通过一次尝试并不能确切地获得平均奖赏值。<br>实际上，单步强化学习任务对应了一个理论模型-“K-摇臂赌博机”，K摇臂赌博机有K个摇臂，赌徒在投入硬币后可选择按下其中一个摇臂，每个摇臂以一定的概率吐出硬币，但这个概率赌徒并不知道，赌徒的目标是通过一定的策略最大化自己的奖赏，即获得最多的硬币。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/K-armed.jpeg" alt="K摇臂赌博机"><br>若仅为获知每个摇臂的期望奖赏，则可以采用“仅搜索法”:将所有尝试机会平均分配给每个摇臂，最后以每个摇臂各自平均的吐币概率作为其奖赏期望的近似估计。若仅为执行奖赏最大的动作，则可采用“仅利用”法: 按下目前最优的摇臂。显然，“仅探索”法能够很好地估计每个摇臂的奖赏，却会失去很多选择最优摇臂的机会；仅利用法则相反，它没有很好地估计摇臂期望奖赏，很可能经常选不到最优摇臂。因此，这两种方法都难以使得最终累积奖赏最大化。<br>事实上，“探索”和“利用”这两者是矛盾的，因为尝试次数有限，加强了一方则自然就会削弱另一方，这就是强化学习所面临的“探索-利用”窘境。显然，如欲累积奖赏最大，则必须在探索与利用之间达成较好的折衷。</p>
-<h4 id="epsilon-贪心"><a href="#epsilon-贪心" class="headerlink" title="$\epsilon-$贪心"></a>$\epsilon-$贪心</h4><p>$\epsilon-$贪心基于一个概率$\epsilon$来对探索和利用进行折中: 每次尝试时，以$\epsilon$概率进行探索，即以均匀概率随机选取一个摇臂；以$1- \epsilon$概率进行利用，即选择当前平均奖赏最高的摇臂。<br>令$Q(k)$记录摇臂$k$的平均奖赏，若摇臂$k$被尝试了$n$次，得到的奖赏为$v_1,v_2,\dots, v_n$,则平均奖赏为:</p>
-<script type="math/tex; mode=display">
-    Q(k) = \frac{1}{n} \sum_{i=1}^n v_i</script><p>更高效的方法是进行增量式计算，即每一次尝试后就立刻更新$Q(k)$，不妨用下标来表示尝试的次数，初始时$Q<em>0(k) = 0$。对于任意的$n \geq 1$,若第$n-1$次尝试后的平均奖赏为$Q</em>{n-1}(k)$,则在经过第$n$次尝试获得奖赏$v_n$后，平均奖赏应更新为:</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        Q_n(k) &= \frac{1}{n} ((n-1) \times Q_{n-1}(k) + v_n) \\
-               &= Q_{n-1}(k) + \frac{1}{n} (v_n - Q_{n-1}(k))        
-    \end{aligned}</script><p>若摇臂奖赏的不确定性较大， 例如概率分布较宽时，则需要更多的探索，此时需要较大的$\epsilon$值；若摇臂的不确定性较小，例如概率分布较集中时，此时只需要少量的探索即可，将$\epsilon$设置值较小即可。随着尝试次数的增多，在一段时间后，摇臂的奖赏都能够较好地近似出来，不再需要探索，这种情况下可以让$\epsilon$随着尝试次数的增加而逐步减小，例如取$\epsilon = \frac{1}{\sqrt{t}}$ </p>
-<h4 id="Softmax"><a href="#Softmax" class="headerlink" title="Softmax"></a>Softmax</h4><p>Softmax 算法中摇臂概率的分配是基于Boltzmann分布:</p>
-<script type="math/tex; mode=display">
-    P(k) = \frac{e^{\frac{Q(k)}{\tau}}}{\sum_{i=1}^K e^{\frac{Q(k)}{\tau}}}</script><p>其中$q(i)$记录当前摇臂的平均奖赏，$\tau &gt;0$称为温度，$\tau$越小则平均奖赏高的摇臂被选取的概率越高，$\tau$趋于0时Softmax将趋于“仅利用”，$\tau$趋于无穷大时Softmax将趋于“仅搜索”。 </p>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>前面通过K摇臂赌博机给出了单步强化学习的概念，同时介绍了单步强化学习实现的两种算法:$\epsilon$-贪心算法和Softmax算法，这两种算法并无绝对优劣差距，在进行应用中需要具体问题具体分析。<br>对于离散状态空间、离散动作空间上的多步强化学习任务，一种直接的办法是将每个状态上动作的选择看作是一个K摇臂赌博机问题，用强化学习任务的累积奖赏来代替K摇臂赌博机算法中的奖赏函数，即可将赌博机算法应用于每个状态: 对每个状态分别记录各动作的尝试次数、当前平均累积奖赏等信息，基于赌博机算法选择想要尝试的动作。<strong>然而这样做有很多局限，因为它没有考虑强化学习任务马尔可夫决策过程的结构。</strong> </p>
-<h3 id="有模型学习"><a href="#有模型学习" class="headerlink" title="有模型学习"></a>有模型学习</h3><p>考虑一个多步强化学习任务，我们假设任务对应的马尔可夫决策过程四元组$E  =<X, a,p,r>$均为已知，这样的情形称为<strong>模型已知</strong>,即机器已经对环境进行了建模。在已知模型的环境中学习称为“有模型学习”。此时，对于任意状态$x,x’$和动作$a$，在$x$状态下执行动作$a$转移到状态$x’$的概率$P<em>{x \rightarrow x’}^a$ 是已知的，该转移所带来的奖赏$R</em>{x \rightarrow x’}^a$也是已知的。为便于讨论，不妨假设状态空间和动作空间均有限。 </X,></p>
-<h4 id="策略评估"><a href="#策略评估" class="headerlink" title="策略评估"></a>策略评估</h4><p>在模型已知时，对任意策略能估计出该策略带来的期望累积奖赏，令函数$V^\pi(x)$表示从状态$x$出发，使用策略$\pi$所带来的累积奖赏。函数$Q^{\pi}(x,a)$ 表示从状态$x$出发，执行动作$a$后再使用策略$\pi$所带来的累积奖赏，这里:</p>
-<ul>
-<li>$V(\cdot)$ 称为“状态值”函数，表示指定“状态”上的累积奖赏</li>
-<li>$Q(\cdot)$ 称为“状态-动作值”函数，表示指定“状态-动作”上的累积奖赏。 </li>
-</ul>
-<p>由累积奖赏的定义，有状态值函数: </p>
-<script type="math/tex; mode=display">
-\left\{\begin{array}{l}
-V_{T}^{\pi}(x)=\mathbb{E}_{\pi}\left[\frac{1}{T} \sum_{t=1}^{T} r_{t} \mid x_{0}=x\right], \quad T \text { 步累积奖赏 } \\
-V_{\gamma}^{\pi}(x)=\mathbb{E}_{\pi}\left[\sum_{t=0}^{+\infty} \gamma^{t} r_{t+1} \mid x_{0}=x\right], \quad \gamma \text { 折扣累积奖赏. }
-\end{array}\right.</script><p>令$x_0$表示起始状态，$a_0$表示起始状态上采取的第一个动作；对于$T$步累积奖赏，用下标$t$表示后续执行的步数，我们有状态动作值函数: </p>
-<script type="math/tex; mode=display">
-\left\{\begin{array}{l}
-Q_{T}^{\pi}(x,a)=\mathbb{E}_{\pi}\left[\frac{1}{T} \sum_{t=1}^{T} r_{t} \mid x_{0}=x, a_0 = a\right], \quad T \text { 步累积奖赏 } \\
-Q_{\gamma}^{\pi}(x,a)=\mathbb{E}_{\pi}\left[\sum_{t=0}^{+\infty} \gamma^{t} r_{t+1} \mid x_{0}=x, a_0 = a\right], \quad \gamma \text { 折扣累积奖赏. }
-\end{array}\right.</script><p>根据马尔可夫决策过程的马尔可夫性，值函数可以有更加简单的递推形式，对于$T$步累积奖赏有:</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        V_T^\pi (x) &= E_{\pi} [\frac{1}{T} \sum_{t=1}^T r_t| x =x_0] \\
-        &= E_{\pi} [\frac{1}{T} r_1 + \frac{T-1}{T} \frac{1}{T-1} \sum_{t=2}^T r_t | x_0 = x] \\ 
-        &= \sum_{a \in A} \pi(x,a) \sum_{x' \in X}  P_{x \rightarrow x'}^a (\frac{1}{T} R_{x \rightarrow x'}^a  + \frac{T-1}{T} E_{\pi} [\frac{1}{T-1} \sum_{t=1}^{T-1} r_t|x_0 = x'])  \\
-        &= \sum_{a \in x} \pi(x,a) \sum_{x' \in X}  P_{x \rightarrow x'} (\frac{1}{T} R_{x \rightarrow x'}^a + \frac{T-1}{T} V_{T-1}^\pi (x')) 
-    \end{aligned}</script><p>类似的，对于$\gamma$折扣累积奖赏有: </p>
-<script type="math/tex; mode=display">
-V_{\gamma}^{\pi}(x)=\sum_{a \in A} \pi(x, a) \sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(R_{x \rightarrow x^{\prime}}^{a}+\gamma V_{\gamma}^{\pi}\left(x^{\prime}\right)\right)</script><p>值函数的递推方程也被称作<strong>Bellman方程</strong>。<br>用这种递归等式来计算值函数，实际上就是一种动态规划算法。换言之，从值函数的初始值$V_0(\pi)$出发，通过每一次迭代能够计算出每个状态的单步奖赏$V_1^\pi$,进而从单步奖赏出发，通过一次迭代计算出两步累积奖赏$V_2^\pi$,对于$T$步累积奖赏，只需要迭代$T$轮就能精确地求解出值函数。<br>可以总结基于$T$步累积奖赏的策略评估办法:</p>
-<blockquote>
-<p><strong>输入:</strong> MDP四元组$E = <X,A,P,R>$; 被评估的策略$\pi$; 累积奖赏参数$T$<br><strong>算法流程:</strong> </X,A,P,R></p>
-<ul>
-<li>初始化$V(x) = 0$</li>
-<li>递推计算$V_1^\pi, V_2^\pi, \dots, V_t^\pi, \dots$ </li>
-<li>递推直到$V_t^\pi = V_T^\pi$</li>
-</ul>
-<p><strong>输出:</strong> 状态值函数$V$ </p>
-</blockquote>
-<p>对于$\gamma$折扣累积奖赏算法，与普通$T$步累积累积奖赏递推类似，同时考虑到当$t$很大时，$\gamma^t$ 会趋于0，因此算法计算终止常通过阈值来进行确定:</p>
-<script type="math/tex; mode=display">
-    \max_{x \in X} |V(x) - V'(x)| < 0</script><p>有了状态值函数，就能直接计算出状态-动作值函数:</p>
-<script type="math/tex; mode=display">
-\left\{\begin{array}{l}
-Q_{T}^{\pi}(x, a)=\sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(\frac{1}{T} R_{x \rightarrow x^{\prime}}^{a}+\frac{T-1}{T} V_{T-1}^{\pi}\left(x^{\prime}\right)\right) \\
-Q_{\gamma}^{\pi}(x, a)=\sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(R_{x \rightarrow x^{\prime}}^{a}+\gamma V_{\gamma}^{\pi}\left(x^{\prime}\right)\right)
-\end{array}\right.</script><h4 id="策略改进"><a href="#策略改进" class="headerlink" title="策略改进"></a>策略改进</h4><p>对某个策略的累积奖赏进行评估后，若发现某个策略并非最优策略，则自然期望改变策略以使累积奖赏最大：</p>
-<script type="math/tex; mode=display">
-    \pi^\ast = \argmax_{\pi} \sum_{x \in X} V^{\pi}(x)</script><p>一个强化学习任务可能有多个最优策略，最优策略所对应的值函数$V^\ast$称为最优值函数，即:</p>
-<script type="math/tex; mode=display">
-    \forall x \in X: V^{\ast} (x) = V^{\pi^\ast} (x)</script><p>注意，当策略空间无约束时$V^\ast$才是最优策略所对应的值函数，对于离散状态空间与离散动作空间，策略空间是状态上所有动作的组合，共有$|A|^|X|$种不同的策略，若策略空间有约束，则违背约束的策略是“不合法”的，即便其值函数所取得的累积奖赏最大，也不能作为最优值函数。<br>对于前面值函数的递推方程<strong>Bellman</strong>方程稍加改动便可得到最优值函数的递推公式: </p>
-<script type="math/tex; mode=display">
-\left\{\begin{array}{l}
-V_{T}^{*}(x)=\max _{a \in A} \sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(\frac{1}{T} R_{x \rightarrow x^{\prime}}^{a}+\frac{T-1}{T} V_{T-1}^{*}\left(x^{\prime}\right)\right) \\
-V_{\gamma}^{*}(x)=\max _{a \in A} \sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(R_{x \rightarrow x^{\prime}}^{a}+\gamma V_{\gamma}^{*}\left(x^{\prime}\right)\right)
-\end{array}\right.</script><p>换言之:</p>
-<script type="math/tex; mode=display">
-    V^{*}(x)=\max _{a \in A} Q^{\pi^{*}}(x, a)</script><p>将该式代入状态-动作值函数刻度可得最优状态-动作值函数: </p>
-<script type="math/tex; mode=display">
-\left\{\begin{array}{l}
-Q_{T}^{*}(x, a)=\sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(\frac{1}{T} R_{x \rightarrow x^{\prime}}^{a}+\frac{T-1}{T} \max _{a^{\prime} \in A} Q_{T-1}^{*}\left(x^{\prime}, a^{\prime}\right)\right) \\
-Q_{\gamma}^{*}(x, a)=\sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(R_{x \rightarrow x^{\prime}}^{a}+\gamma \max _{a^{\prime} \in A} Q_{\gamma}^{*}\left(x^{\prime}, a^{\prime}\right)\right)
-\end{array}\right.</script><p>上述关于最优值函数的等式，称为最优Bellman等式，其唯一解是最优值函数。<br>最优Bellman等式揭示了非最优策略的改进方式: 将策略选择的动作改编为当前最优的动作。显然，这样的改变能使策略更好，不妨记动作改变后对应的策略为$\pi’$,改变动作的条件为$Q^\pi (x, \pi^i(x)) \geq V^\pi(x)$, 以$\gamma$折扣累积奖赏为例，由式可计算递推不等式: </p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        V^{\pi}(x) &\leq Q^{\pi}(x, \pi'(x)) \\ 
-                   &= \sum_{x' \in X} P_{x \rightarrow x'}^{\pi'(x)} (R_{x \rightarrow x'}^{\pi'(x)} + \gamma V^\pi(x')) \\ 
-                   &\leq \sum_{x' \in X} P_{x \rightarrow x'}^{\pi'(x)} (R_{x \rightarrow x'}^{\pi'(x)} + \gamma Q^{\pi}(x', \pi'(x'))) \\
-                   &= .... \\
-                   &= V^{\pi'}(x)
-    \end{aligned}</script><p>值函数每一次对于策略的改进都是递增的，因此对于当前的策略$\pi$，可以放心地将其改进为:</p>
-<script type="math/tex; mode=display">
-    \pi'(x) = \argmax_{a \in A} Q^{\pi}(x, a)</script><p>直到$\pi’$与$\pi$一致、不再发生变化，此时就满足了最优Bellman等式，即找到了最优策略。</p>
-<h4 id="策略迭代与值迭代"><a href="#策略迭代与值迭代" class="headerlink" title="策略迭代与值迭代"></a>策略迭代与值迭代</h4><p>在前面介绍了两部分内容:</p>
-<ul>
-<li>如何评估一个策略的值函数 </li>
-<li>在策略评估后如何改进以获得最优策略 </li>
-</ul>
-<p>将这两者结合起来即可得到求解最优解的方法: </p>
-<blockquote>
-<p>从一个初始策略(通常是随机策略)出发，先进性策略评估，然后改进策略，评估改进的策略，再进一步改进策略，……不断迭代进行策略评估和改进直到策略不再改变为止，这样的做法称为“策略迭代”.</p>
-</blockquote>
-<p>下面给出基于$T$步累积奖赏的策略迭代算法:<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E7%AD%96%E7%95%A5%E8%BF%AD%E4%BB%A3.png" alt="策略迭代算法"></p>
-<p>策略迭代算法在每次改进策略后都需要进行策略评估，这通常比较耗时。但是实际上策略改进与值函数的改进是一致的，因此可讲策略改进视为值函数的改善:</p>
-<script type="math/tex; mode=display">
-\left\{\begin{array}{l}
-V_{T}(x)=\max _{a \in A} \sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(\frac{1}{T} R_{x \rightarrow x^{\prime}}^{a}+\frac{T-1}{T} V_{T-1}\left(x^{\prime}\right)\right) \\
-V_{\gamma}(x)=\max _{a \in A} \sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(R_{x \rightarrow x^{\prime}}^{a}+\gamma V_{\gamma}\left(x^{\prime}\right)\right)
-\end{array}\right.</script><p>于是可以得到值迭代算法:<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E5%80%BC%E8%BF%AD%E4%BB%A3.png" alt="值迭代算法"> </p>
-<p>在模型已知时，强化学习任务能归结为基于动态规划的寻优问题。与监督学习不同，这里并未涉及泛化能力，仅仅是为每一个状态寻找的一个最佳动作。</p>
-<h3 id="免模型学习"><a href="#免模型学习" class="headerlink" title="免模型学习"></a>免模型学习</h3><p>在现实的强化学习任务中，环境的转移概率、奖赏函数往往很难得知，甚至很难直到环境中有几个状态，若学习算法不依赖于环境建模，则称为<strong>“免模型学习”</strong>。 </p>
-<h4 id="蒙特卡罗强化学习"><a href="#蒙特卡罗强化学习" class="headerlink" title="蒙特卡罗强化学习"></a>蒙特卡罗强化学习</h4><p>在免模型情况下，策略迭代算法首先碰到的问题便是策略无法评估，这是由于模型未知而导致无法做全概率展开。此时，只能通过在环境中执行选择的动作，来观察转移的状态和得到的奖赏。受K摇臂赌博机的启发，一种直接的策略评估方法是“多次采样”，然后求取平均累积奖赏作为期望累积奖赏的近似，这称为蒙特卡罗强化学习方法，由于采样必须为有限次数，因此该方法更适合于使用$T$步累积奖赏的强化学习任务。 </p>
-<p>另一方面，策略迭代算法估计的是值函数，而在进行策略选择时依赖的是状态-动作值函数$Q$，当模型已知时，从$V$到$Q$有很简单的转化方法，而当模型未知时，这也会出现困难。于是我们将估计对象从$V$转变为$Q$,即估计每一对“状态-动作”的值函数。 </p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        az^{-1} u(k) &= au(k-1) \\
-        a z^{-1} u(k)^2 &= au(k-1) u(k)
-    \end{aligned}</script>]]></content>
-      <categories>
-        <category>统计学习</category>
-      </categories>
-      <tags>
-        <tag>强化学习</tag>
       </tags>
   </entry>
   <entry>
@@ -4928,18 +4928,6 @@ a=a^b; #a=(a^b)^(a^b^b)=0^b=0
       </tags>
   </entry>
   <entry>
-    <title>有感</title>
-    <url>/2020/02/22/you-gan/</url>
-    <content><![CDATA[<p>&emsp;    或许逃避是人的天性，整个博一上学期，似乎整天忙忙碌碌，在若干门课程中来回斡旋，<span id="more"></span>但当闲下来细细一想，似乎也有很多时间自己并没有好好利用，用那些时间在逃避、在咸鱼、在发呆。整个博一上学期自己也读了一些书，比如《历史的教训》、《贫穷的本质》、《禅与摩托车维修技术》、《变革中国》，相比于完整读下来的书，挖的坑自然是更多，《纯粹理性批判》、《世界文明史》、《资本论》……如果你要问我为什么选择这些书，我只能回答机缘巧合吧，这些书或是来源于上课时某位同学的推荐，或是来自于自己查询某些资料时的推荐，不一而足。其实我认为读这些书一方面是一种对自己空余时间的填充，对纯粹理工科学习的一种暂时逃避，也是一个不断寻找答案的过程，寻找一些理工科的书籍里缺乏的一些答案。其实我一直在思考一个问题，一个人的强大究竟是来源于其内心的强大，还是来源于其所凭外物，当你一无所有（指外物）之时，你还能剩下什么？是没有灵魂的一具空壳，还是一个拥有强大生命的种子。<br>&emsp;    读史教会我的第一点是作为历史当中普通人的世事无常，我们所接触的历史往往是王侯将相的历史，是英雄名士的历史，若人类发展的角度来看历史，一个人的历史观总会趋于无情，这种无情我们可以理解为作为现代人的傲慢/优越，如今我们去各地旅游，惊叹于种种历史古迹，惊叹于古人的智慧，但是孰又会在意这些历史古迹下面是当时多少奴隶的血泪。这些遗迹显示了当时高超的建造技术，为后人留下了宝贵遗产，我们或可以说这是历史的进步，然而那些建造他们的奴隶们则消逝于历史的阴影之中。若我们接受这样的历史进步性说法，由此会自然引出下一个结论——历史的发展是必然伴随着牺牲的，作为现代人，我们可以一方面斥责当时的暴政，另一方面又可以欣赏到这些暴政所留下的历史遗迹，每每想到这些，总觉如鲠在喉。或许从这些历史中我们可以得出这样的经验，某些我们认为错误的做法确实促进了当时历史的发展，但是历史发展途径许多，我们应当选择让人民整体更加幸福的发展道路，唉，不过聊以自慰耳。<br>&emsp;行路者需要背负东西，然而不能背负太多。我第一个放入背包的叫做责任，从诞生开始，我就开始与这个世界产生联系，父母、家庭、国家、人类，这些名词限定了我是我，梁启超在《最苦与最乐》中写道：“人生最苦，莫过于身上背负着一种未了的责任；人生最乐，莫过于尽责之时。“责任二字，说来轻巧，实则沉甸甸，也因责任二字，人生少了些凄清，多了些烟火；我第二个放入背包的叫做知识，在我看来，当曾经模糊看不清楚的东西在你眼前变得清晰之时，也是精神愉悦满足之时，文学史哲让你反求诸己，塑造清明的内心世界，理血工学让你更好地认识客观世界，改造客观世界，两种知识于我而言同样重要。吾之一生，有此两者，足矣。</p>
-]]></content>
-      <categories>
-        <category>闲谈</category>
-      </categories>
-      <tags>
-        <tag>无感而发</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>机器学习理论</title>
     <url>/2020/07/06/ji-qi-xue-xi-li-lun/</url>
     <content><![CDATA[<p>笔者近期想做一下<strong>机器学习</strong>相关理论总结<span id="more"></span>，计划划分为以下章节：</p>
@@ -4972,6 +4960,18 @@ a=a^b; #a=(a^b)^(a^b^b)=0^b=0
       </categories>
       <tags>
         <tag>机器学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>有感</title>
+    <url>/2020/02/22/you-gan/</url>
+    <content><![CDATA[<p>&emsp;    或许逃避是人的天性，整个博一上学期，似乎整天忙忙碌碌，在若干门课程中来回斡旋，<span id="more"></span>但当闲下来细细一想，似乎也有很多时间自己并没有好好利用，用那些时间在逃避、在咸鱼、在发呆。整个博一上学期自己也读了一些书，比如《历史的教训》、《贫穷的本质》、《禅与摩托车维修技术》、《变革中国》，相比于完整读下来的书，挖的坑自然是更多，《纯粹理性批判》、《世界文明史》、《资本论》……如果你要问我为什么选择这些书，我只能回答机缘巧合吧，这些书或是来源于上课时某位同学的推荐，或是来自于自己查询某些资料时的推荐，不一而足。其实我认为读这些书一方面是一种对自己空余时间的填充，对纯粹理工科学习的一种暂时逃避，也是一个不断寻找答案的过程，寻找一些理工科的书籍里缺乏的一些答案。其实我一直在思考一个问题，一个人的强大究竟是来源于其内心的强大，还是来源于其所凭外物，当你一无所有（指外物）之时，你还能剩下什么？是没有灵魂的一具空壳，还是一个拥有强大生命的种子。<br>&emsp;    读史教会我的第一点是作为历史当中普通人的世事无常，我们所接触的历史往往是王侯将相的历史，是英雄名士的历史，若人类发展的角度来看历史，一个人的历史观总会趋于无情，这种无情我们可以理解为作为现代人的傲慢/优越，如今我们去各地旅游，惊叹于种种历史古迹，惊叹于古人的智慧，但是孰又会在意这些历史古迹下面是当时多少奴隶的血泪。这些遗迹显示了当时高超的建造技术，为后人留下了宝贵遗产，我们或可以说这是历史的进步，然而那些建造他们的奴隶们则消逝于历史的阴影之中。若我们接受这样的历史进步性说法，由此会自然引出下一个结论——历史的发展是必然伴随着牺牲的，作为现代人，我们可以一方面斥责当时的暴政，另一方面又可以欣赏到这些暴政所留下的历史遗迹，每每想到这些，总觉如鲠在喉。或许从这些历史中我们可以得出这样的经验，某些我们认为错误的做法确实促进了当时历史的发展，但是历史发展途径许多，我们应当选择让人民整体更加幸福的发展道路，唉，不过聊以自慰耳。<br>&emsp;行路者需要背负东西，然而不能背负太多。我第一个放入背包的叫做责任，从诞生开始，我就开始与这个世界产生联系，父母、家庭、国家、人类，这些名词限定了我是我，梁启超在《最苦与最乐》中写道：“人生最苦，莫过于身上背负着一种未了的责任；人生最乐，莫过于尽责之时。“责任二字，说来轻巧，实则沉甸甸，也因责任二字，人生少了些凄清，多了些烟火；我第二个放入背包的叫做知识，在我看来，当曾经模糊看不清楚的东西在你眼前变得清晰之时，也是精神愉悦满足之时，文学史哲让你反求诸己，塑造清明的内心世界，理血工学让你更好地认识客观世界，改造客观世界，两种知识于我而言同样重要。吾之一生，有此两者，足矣。</p>
+]]></content>
+      <categories>
+        <category>闲谈</category>
+      </categories>
+      <tags>
+        <tag>无感而发</tag>
       </tags>
   </entry>
   <entry>
@@ -5506,6 +5506,121 @@ $$ \hat{P} = \frac{k}{N}</script><p>若超立方体$\mathcal{R}$很小，则可�
       </tags>
   </entry>
   <entry>
+    <title>毛选第四卷选读</title>
+    <url>/2020/11/30/mao-xuan-di-si-juan-xuan-du/</url>
+    <content><![CDATA[<p>因为报名了一个讨论毛选第四卷微沙龙活动(想白嫖咖啡喝)，我也就借此机会读一读毛选第四卷，本次主要读以下三个章节的内容: </p>
+<ul>
+<li>目前的形势和我们的任务 </li>
+<li>论人民民主专政 </li>
+<li>丢掉幻想，准备战斗 </li>
+</ul>
+<span id="more"></span> 
+<h4 id="目前的形势和我们的任务"><a href="#目前的形势和我们的任务" class="headerlink" title="目前的形势和我们的任务"></a>目前的形势和我们的任务</h4><blockquote>
+<p>这篇文章写于1947年12月25日，此时国内革命战争已经进入战略反攻阶段。</p>
+</blockquote>
+<p>毛泽东对蒋介石发动战争的性质的定性: </p>
+<blockquote>
+<p>是一个在美帝国主义指挥之下的反对中国民族独立和中国人民解放的反革命战争。</p>
+</blockquote>
+<p>1946年7月，蒋介石开始发动全国规模的反革命战争，这场战争，在毛泽东看来: </p>
+<blockquote>
+<ul>
+<li>蒋介石军事力量的优势，只是暂时的现象，只是临时起作用的因素；美帝国主义的援助，也只是临时起作用的因素。</li>
+<li>蒋介石战争的反人民的性质，人心的向背，则是经常起作用的因素。 </li>
+</ul>
+</blockquote>
+<p>在第三篇里，毛泽东总结了战略防御阶段解放军取得胜利的战略原因: </p>
+<ul>
+<li>先打分散和孤立之敌，后打集中和强大之敌。 </li>
+<li>先取小城市、中等城市和广大乡村，后取大城市。 </li>
+<li>以歼灭敌人有生力量为主要目标，不以保守或夺取城市和地方为主要目标。 </li>
+<li>每战集中绝对优势兵力，四面包围敌人，力求全歼，不使漏网。 </li>
+<li>不打无准备之仗，不打无把握之仗。 </li>
+<li>发扬勇敢战斗、不怕牺牲、不怕疲劳和连续作战的作风。</li>
+<li>力求在运动中歼灭敌人。 </li>
+<li>在攻城问题上，根据城市状况制定相应的夺取策略。 </li>
+<li>以俘获敌人的全部武器和大部人员，补充自己。</li>
+<li>善于利用两个战役之间的间隙，休息和整训部队。</li>
+</ul>
+<p>没有绝对正确的战略，只有相对适合的战略，上述战略之所以能够取得成功，也从侧面反映了国民党军队的一些问题: </p>
+<ul>
+<li>组织调动困难，将领各怀心意。</li>
+<li>过分计较一城之得失，以占领城市多少来衡量作战胜利与否。   </li>
+<li>战术上的失当。 </li>
+</ul>
+<p>总结完了前线战争取得胜利的原因之后，毛泽东也对后方根据地巩固的原因进行了总结; </p>
+<blockquote>
+<p>土地改革，在抗战之前是没收地主土地给农民，抗战期间改为减租减息，抗战结束后又变为没收地主土地，给农民，这样的措施，一方面是团结了根据地的最广大人群，同时因为土地本身的不可移动性，也进一步巩固了根据地的统治，为了团结最广大人群，在进行土地改革时需格外注意<strong>中农</strong>的意见。</p>
+</blockquote>
+<p>同时毛泽东也强调了随着党员规模的扩大，党员队伍的自我净化的重要性: </p>
+<blockquote>
+<p>在党内开展批评和自我批评，彻底地揭发各地组织内的离开党的路线的错误思想和严重现象。全党同志必须明白，解决这个党内不纯的问题，整编党的队伍，使党能够和最广大的劳动群众完全站在一个方向，并领导他们前进，是解决土地问题和支援长期战争的一个决定性的环节。 </p>
+</blockquote>
+<p>新民主主义革命要消灭的对象: </p>
+<blockquote>
+<p>只是封建主义和垄断资本主义，只是地主阶级和官僚资产阶级，而不是一般地消灭资本主义，不是消灭上层小资产阶级和中等资产阶级。</p>
+</blockquote>
+<p>在第八篇里，毛泽东分析了国内战争爆发时的国际形势,回答了这么几个问题: </p>
+<blockquote>
+<p>第二次世界大战以后的美国帝国主义，是否真如蒋介石和各国反动派所设想的那么强大呢？是否真能像流水一样接济蒋介石和各国反动派呢？ </p>
+</blockquote>
+<p>在毛泽东看来: </p>
+<blockquote>
+<p>美国国内国外的各种不可调和的矛盾。就像是一座火山，每天都在威胁美帝国主义。 </p>
+</blockquote>
+<h4 id="论人民民主专政"><a href="#论人民民主专政" class="headerlink" title="论人民民主专政"></a>论人民民主专政</h4><blockquote>
+<p>本篇文章写于1949年6月30日，此时国内战争胜负已经基本尘埃落定。</p>
+</blockquote>
+<p>毛泽东明确说明: </p>
+<blockquote>
+<p>消灭阶级，消灭国家权力，消灭党，全人类都要走这一条路，问题只是时间和条件。 </p>
+</blockquote>
+<p>一个新生的全国性政权即将建立，此时需要展望下一步国家的愿景: </p>
+<blockquote>
+<p>对于工人阶级、劳动人民和共产党，则不是什么被推翻的问题，而是努力工作，创设条件，使阶级、国家权力和政党自然地归于消灭，使人类进入到大同境遇。</p>
+</blockquote>
+<p>毛泽东首先回顾了中国鸦片战争以来的救亡图存运动，从最开始的效法西方，到十月革命后马克思列宁主义在中国的广泛传播，20多年的新民主主义革命证明了: </p>
+<blockquote>
+<p>西方资产阶级的文明，资产阶级的民主主义，资产阶级共和国的方案，在中国人民的心目中，一齐破了产。资产阶级的民主主义让位给工人阶级领导的人民民主主义，资产阶级共和国让位给人民共和国。</p>
+</blockquote>
+<p>同时毛泽东就一些观点进行了相应的分析: </p>
+<ul>
+<li>“你们一边倒。”</li>
+<li>“你们太刺激了。” </li>
+<li>“我们要做生意。” </li>
+<li>“不要国际援助也可以胜利。”</li>
+<li>“我们需要英美政府的援助。” </li>
+<li>“你们独裁。”</li>
+</ul>
+<p>人民是什么？ </p>
+<blockquote>
+<p>在中国，在现阶段，是工人阶级，农民阶级，城市小资产阶级和民族资产阶级。</p>
+</blockquote>
+<p>专政的对象是谁？</p>
+<blockquote>
+<p>向着帝国主义的走狗即地主阶级和官僚资产阶级以及代表这些阶级的国民党反动派及其帮凶实行专政，实行独裁，压迫这些人，只许他们规规矩矩，不许他们乱说乱动。</p>
+</blockquote>
+<p>总结来说:</p>
+<blockquote>
+<p>对人民内部的民主方面和反动派的专政方面，互相结合起来，这就是人民民主专政。</p>
+</blockquote>
+<ul>
+<li>人民民主专政的基础是工人阶级、农民阶级和城市小资产阶级的联盟，而主要是工人和农民的联盟。 </li>
+<li>人民民主专政需要工人阶级的领导，因为工人阶级最有远见，大公无私，最富革命的彻底性。</li>
+</ul>
+<p>党的二十八年，斗争经验总结为一句话，那就是: </p>
+<blockquote>
+<p>工人阶级(经过共产党)领导的以工农联盟为基础的人民民主专政。 </p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>读书笔记</category>
+      </categories>
+      <tags>
+        <tag>毛选，历史，哲学</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>毛选第一卷读后感</title>
     <url>/2020/11/05/mao-xuan-di-yi-juan-du-hou-gan/</url>
     <content><![CDATA[<p>在柳州出差的20多天里，我每天回宾馆后会读上半个小时到1个小时毛选第一卷，回学校后又读了几天，昨晚算是正式将这本书给读完了，在阅读的过程中自己还是颇有所得的，现藉此文系统地总结一下这本书的内容并谈一下我个人的心得体会。<br><span id="more"></span><br>在详细叙述书的内容之前，我希望首先先谈一谈这本书的性质，在之前很久的一段时间里，我认为这本书单纯是一本红色读物。这次阅读的出发点一方面是党支部学习的需要，另一方面也是来验证我自己内心的观点，看一看这本被老一辈奉为圭臬的书究竟价值几分几两。在我读完这本书后，我提供几个读这本书的视角: </p>
@@ -5849,121 +5964,6 @@ $$ \hat{P} = \frac{k}{N}</script><p>若超立方体$\mathcal{R}$很小，则可�
       </categories>
       <tags>
         <tag>毛选、辩证唯物主义</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>毛选第四卷选读</title>
-    <url>/2020/11/30/mao-xuan-di-si-juan-xuan-du/</url>
-    <content><![CDATA[<p>因为报名了一个讨论毛选第四卷微沙龙活动(想白嫖咖啡喝)，我也就借此机会读一读毛选第四卷，本次主要读以下三个章节的内容: </p>
-<ul>
-<li>目前的形势和我们的任务 </li>
-<li>论人民民主专政 </li>
-<li>丢掉幻想，准备战斗 </li>
-</ul>
-<span id="more"></span> 
-<h4 id="目前的形势和我们的任务"><a href="#目前的形势和我们的任务" class="headerlink" title="目前的形势和我们的任务"></a>目前的形势和我们的任务</h4><blockquote>
-<p>这篇文章写于1947年12月25日，此时国内革命战争已经进入战略反攻阶段。</p>
-</blockquote>
-<p>毛泽东对蒋介石发动战争的性质的定性: </p>
-<blockquote>
-<p>是一个在美帝国主义指挥之下的反对中国民族独立和中国人民解放的反革命战争。</p>
-</blockquote>
-<p>1946年7月，蒋介石开始发动全国规模的反革命战争，这场战争，在毛泽东看来: </p>
-<blockquote>
-<ul>
-<li>蒋介石军事力量的优势，只是暂时的现象，只是临时起作用的因素；美帝国主义的援助，也只是临时起作用的因素。</li>
-<li>蒋介石战争的反人民的性质，人心的向背，则是经常起作用的因素。 </li>
-</ul>
-</blockquote>
-<p>在第三篇里，毛泽东总结了战略防御阶段解放军取得胜利的战略原因: </p>
-<ul>
-<li>先打分散和孤立之敌，后打集中和强大之敌。 </li>
-<li>先取小城市、中等城市和广大乡村，后取大城市。 </li>
-<li>以歼灭敌人有生力量为主要目标，不以保守或夺取城市和地方为主要目标。 </li>
-<li>每战集中绝对优势兵力，四面包围敌人，力求全歼，不使漏网。 </li>
-<li>不打无准备之仗，不打无把握之仗。 </li>
-<li>发扬勇敢战斗、不怕牺牲、不怕疲劳和连续作战的作风。</li>
-<li>力求在运动中歼灭敌人。 </li>
-<li>在攻城问题上，根据城市状况制定相应的夺取策略。 </li>
-<li>以俘获敌人的全部武器和大部人员，补充自己。</li>
-<li>善于利用两个战役之间的间隙，休息和整训部队。</li>
-</ul>
-<p>没有绝对正确的战略，只有相对适合的战略，上述战略之所以能够取得成功，也从侧面反映了国民党军队的一些问题: </p>
-<ul>
-<li>组织调动困难，将领各怀心意。</li>
-<li>过分计较一城之得失，以占领城市多少来衡量作战胜利与否。   </li>
-<li>战术上的失当。 </li>
-</ul>
-<p>总结完了前线战争取得胜利的原因之后，毛泽东也对后方根据地巩固的原因进行了总结; </p>
-<blockquote>
-<p>土地改革，在抗战之前是没收地主土地给农民，抗战期间改为减租减息，抗战结束后又变为没收地主土地，给农民，这样的措施，一方面是团结了根据地的最广大人群，同时因为土地本身的不可移动性，也进一步巩固了根据地的统治，为了团结最广大人群，在进行土地改革时需格外注意<strong>中农</strong>的意见。</p>
-</blockquote>
-<p>同时毛泽东也强调了随着党员规模的扩大，党员队伍的自我净化的重要性: </p>
-<blockquote>
-<p>在党内开展批评和自我批评，彻底地揭发各地组织内的离开党的路线的错误思想和严重现象。全党同志必须明白，解决这个党内不纯的问题，整编党的队伍，使党能够和最广大的劳动群众完全站在一个方向，并领导他们前进，是解决土地问题和支援长期战争的一个决定性的环节。 </p>
-</blockquote>
-<p>新民主主义革命要消灭的对象: </p>
-<blockquote>
-<p>只是封建主义和垄断资本主义，只是地主阶级和官僚资产阶级，而不是一般地消灭资本主义，不是消灭上层小资产阶级和中等资产阶级。</p>
-</blockquote>
-<p>在第八篇里，毛泽东分析了国内战争爆发时的国际形势,回答了这么几个问题: </p>
-<blockquote>
-<p>第二次世界大战以后的美国帝国主义，是否真如蒋介石和各国反动派所设想的那么强大呢？是否真能像流水一样接济蒋介石和各国反动派呢？ </p>
-</blockquote>
-<p>在毛泽东看来: </p>
-<blockquote>
-<p>美国国内国外的各种不可调和的矛盾。就像是一座火山，每天都在威胁美帝国主义。 </p>
-</blockquote>
-<h4 id="论人民民主专政"><a href="#论人民民主专政" class="headerlink" title="论人民民主专政"></a>论人民民主专政</h4><blockquote>
-<p>本篇文章写于1949年6月30日，此时国内战争胜负已经基本尘埃落定。</p>
-</blockquote>
-<p>毛泽东明确说明: </p>
-<blockquote>
-<p>消灭阶级，消灭国家权力，消灭党，全人类都要走这一条路，问题只是时间和条件。 </p>
-</blockquote>
-<p>一个新生的全国性政权即将建立，此时需要展望下一步国家的愿景: </p>
-<blockquote>
-<p>对于工人阶级、劳动人民和共产党，则不是什么被推翻的问题，而是努力工作，创设条件，使阶级、国家权力和政党自然地归于消灭，使人类进入到大同境遇。</p>
-</blockquote>
-<p>毛泽东首先回顾了中国鸦片战争以来的救亡图存运动，从最开始的效法西方，到十月革命后马克思列宁主义在中国的广泛传播，20多年的新民主主义革命证明了: </p>
-<blockquote>
-<p>西方资产阶级的文明，资产阶级的民主主义，资产阶级共和国的方案，在中国人民的心目中，一齐破了产。资产阶级的民主主义让位给工人阶级领导的人民民主主义，资产阶级共和国让位给人民共和国。</p>
-</blockquote>
-<p>同时毛泽东就一些观点进行了相应的分析: </p>
-<ul>
-<li>“你们一边倒。”</li>
-<li>“你们太刺激了。” </li>
-<li>“我们要做生意。” </li>
-<li>“不要国际援助也可以胜利。”</li>
-<li>“我们需要英美政府的援助。” </li>
-<li>“你们独裁。”</li>
-</ul>
-<p>人民是什么？ </p>
-<blockquote>
-<p>在中国，在现阶段，是工人阶级，农民阶级，城市小资产阶级和民族资产阶级。</p>
-</blockquote>
-<p>专政的对象是谁？</p>
-<blockquote>
-<p>向着帝国主义的走狗即地主阶级和官僚资产阶级以及代表这些阶级的国民党反动派及其帮凶实行专政，实行独裁，压迫这些人，只许他们规规矩矩，不许他们乱说乱动。</p>
-</blockquote>
-<p>总结来说:</p>
-<blockquote>
-<p>对人民内部的民主方面和反动派的专政方面，互相结合起来，这就是人民民主专政。</p>
-</blockquote>
-<ul>
-<li>人民民主专政的基础是工人阶级、农民阶级和城市小资产阶级的联盟，而主要是工人和农民的联盟。 </li>
-<li>人民民主专政需要工人阶级的领导，因为工人阶级最有远见，大公无私，最富革命的彻底性。</li>
-</ul>
-<p>党的二十八年，斗争经验总结为一句话，那就是: </p>
-<blockquote>
-<p>工人阶级(经过共产党)领导的以工农联盟为基础的人民民主专政。 </p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>读书笔记</category>
-      </categories>
-      <tags>
-        <tag>毛选，历史，哲学</tag>
       </tags>
   </entry>
   <entry>
@@ -6782,6 +6782,248 @@ if __name__ == '__main__':
       </tags>
   </entry>
   <entry>
+    <title>剑指offer题目总结</title>
+    <url>/2022/09/29/suan-fa-ti-zong-jie/</url>
+    <content><![CDATA[<h3 id="剑指offer题目总结"><a href="#剑指offer题目总结" class="headerlink" title="剑指offer题目总结"></a>剑指offer题目总结</h3><h4 id="链表题目"><a href="#链表题目" class="headerlink" title="链表题目"></a>链表题目</h4><ul>
+<li>从尾到头打印链表  </li>
+<li>反转链表 </li>
+<li>合并两个排序的链表(递归/遍历)</li>
+<li>两个链表的第一个公共节点(双指针/哈希表) </li>
+<li>链表中环的入口节点(快慢指针/字典) </li>
+<li>链表中倒数最后k个节点(快慢指针) </li>
+<li>复杂链表的复制(1. 复制 2. 随机指针复制 3.打断两个链表) -手写可能出错 </li>
+<li>删除链表中的节点(简单遍历)<span id="more"></span>
+<blockquote>
+<p>总结：简单遍历+快慢指针+哈希 </p>
+</blockquote>
+</li>
+</ul>
+<h4 id="树题目"><a href="#树题目" class="headerlink" title="树题目"></a>树题目</h4><ul>
+<li>二叉树的深度(简单递归/队列辅助层次遍历)</li>
+<li>按之字顺序打印二叉树(层次遍历 + flag判断奇偶层)</li>
+<li>二叉搜索树的第k个节点(深度优先遍历，结合二叉搜索树的特点)</li>
+<li>重建二叉树(递归 + 结合前序中序遍历的特点) </li>
+<li>树的子结构(递归，注意三种匹配情况) </li>
+<li>二叉树的镜像(递归，左右子树镜像，交换)</li>
+<li>从上往下打印二叉树(简单的层次遍历) </li>
+<li>二叉搜索树的后序遍历序列(递归，后序遍历，根节点) </li>
+<li>二叉树中和为某一值的路径1(递归，不需保存路径)</li>
+<li>二叉树中和为某一值的路径2(递归，保存路径, dfs)</li>
+<li>二叉搜索树与双向链表(中序遍历，维护一个pre_node)</li>
+<li>判断是不是平衡二叉树(递归判断，专门写一个判断树深度的函数即可)</li>
+<li>二叉树的下一个节点(获取中序遍历序列/分情况讨论)</li>
+<li>对称的二叉树(递归，输入两棵树，左右子树是否match， 因为单一递归，同时只能到一部分，需要两部分同步递归)</li>
+<li>把二叉树打印成多行(用队列实现树的BFS)</li>
+<li>序列化二叉树(确定规则，指针遍历，节点值后面加符号来分割树节点) </li>
+<li>二叉树中和为某一值的路径3(层次遍历 + dfs/借助哈希表，一次遍历)</li>
+<li>在二叉树中找到两个节点的最近公共祖先(dfs+最后一个共同节点/递归)</li>
+<li>二叉搜索树的最近公共祖先(简单递归，利用二叉搜索树的特点)</li>
+</ul>
+<blockquote>
+<p>总结: 树的题目基本都是围绕递归遍历展开 </p>
+<ul>
+<li>几种遍历方式: 前序、中序、后序、层次 </li>
+<li>合理考虑递归边界，特殊情况 </li>
+</ul>
+</blockquote>
+<h4 id="队列-amp-栈"><a href="#队列-amp-栈" class="headerlink" title="队列&amp;栈"></a>队列&amp;栈</h4><ul>
+<li>用两个栈实现队列(进行两次压栈操作即可) </li>
+<li>包含min函数的栈(普通栈+最小栈) </li>
+<li>栈的压入弹出序列(辅助栈模拟) </li>
+<li>翻转单词序列(两次翻转/直接split+join)</li>
+<li>滑动窗口的最大值(双向队列，维护前向最大值)</li>
+</ul>
+<blockquote>
+<p>总结：数据结构特点的基础应用 </p>
+</blockquote>
+<h4 id="搜索算法"><a href="#搜索算法" class="headerlink" title="搜索算法"></a>搜索算法</h4><ul>
+<li>数字在升序数组中出现的次数(二分查找 target-0.5 target+0.5) </li>
+<li>二维数组中的查找(有序数组，从角落开始搜索)</li>
+<li>旋转数组中的最小数字(二分查找，特殊情况考虑，注意等号) </li>
+<li>字符串的排列(遍历) </li>
+<li>数字序列中的某一位数字(模拟, 几位数字位数关系) </li>
+</ul>
+<blockquote>
+<p>总结：二分搜索 or 模拟遍历  </p>
+</blockquote>
+<h4 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h4><ul>
+<li>连续子数组的最大和(一维dp, 可以不另外开辟数组) </li>
+<li>连续子数组最大和(二)(一维dp,维护起始位置，可以不另外开辟数组) </li>
+<li>跳台阶(斐波那契数列) </li>
+<li>斐波那契数列 </li>
+<li>正则表达式匹配(二维dp) </li>
+<li>跳台阶扩展问题($2^{n-1}$) </li>
+<li>矩阵覆盖(斐波那契数列)</li>
+<li>买股票的最好时机(一维dp) </li>
+<li>礼物的最大价值(二维dp, 可以不另外开辟数组) </li>
+<li>最长不含重复字符的子字符串(借助字典，1维dp)</li>
+<li>把数字翻译成字符串(一维dp) </li>
+</ul>
+<blockquote>
+<p>总结： 这类问题的关键在于</p>
+<ul>
+<li>状态的定义 </li>
+<li>状态转移方程的形式 </li>
+</ul>
+</blockquote>
+<h4 id="回溯"><a href="#回溯" class="headerlink" title="回溯"></a>回溯</h4><ul>
+<li>矩阵中的路径(dfs + 标志矩阵)</li>
+<li>机器人的运动范围(dfs + 标志矩阵)</li>
+</ul>
+<blockquote>
+<p>dfs + 标志矩阵  </p>
+</blockquote>
+<h4 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h4><ul>
+<li>数组中重复的数字(哈希/位置重排) </li>
+<li>数组中的逆序对(归并排序) </li>
+<li>最小的k个数 </li>
+<li>数据流中的中位数 </li>
+</ul>
+<blockquote>
+<p>总结：熟练掌握归并排序和快速排序 </p>
+</blockquote>
+<h4 id="位运算"><a href="#位运算" class="headerlink" title="位运算"></a>位运算</h4><ul>
+<li>不用加减乘除做加法(异或运算获取非进位和，与运算加左移算子获取进位信息) </li>
+<li>二进制中1的个数(n&amp;n-1, 将低位1变为0，注意处理负数) </li>
+<li>数值的整数次方(借助二进制运算实现快速幂) </li>
+<li>数组中只出现一次的两个数字(异或运算的特点) </li>
+<li>求1+2+…+n(通过与运算终止递归) </li>
+</ul>
+<h4 id="模拟"><a href="#模拟" class="headerlink" title="模拟"></a>模拟</h4><ul>
+<li>顺时针打印矩阵(简单模拟，通过边界控制循环结束)</li>
+<li>扑克牌顺子(借助hash)</li>
+<li>把字符串转换成整数(去空格，找符号，转换，取模)</li>
+<li>表示数值的字符串 </li>
+</ul>
+<h4 id="其他算法"><a href="#其他算法" class="headerlink" title="其他算法"></a>其他算法</h4><ul>
+<li>构建乘积数组 </li>
+<li>第一个只出现一次的字符 </li>
+<li>替换空格 </li>
+<li>调整数组顺序使奇数位于偶数前面 </li>
+<li>数组中出现超过一半次数的数字 </li>
+<li>整数中1出现的次数 </li>
+<li>把数组排成最小的数 </li>
+<li>丑数 </li>
+<li>和为S的连续正数序列 </li>
+<li>和为S的两个数字 </li>
+<li>左旋转字符串 </li>
+<li>孩子们的游戏(约瑟夫环)</li>
+<li>字符流中第一个不重复地字符 </li>
+<li>剪绳子 </li>
+<li>调整数组顺序使奇数位于偶数前面</li>
+<li>剪绳子(进阶版)</li>
+<li>打印从1到最大的n位数<h4 id="python中常用数据结构模块"><a href="#python中常用数据结构模块" class="headerlink" title="python中常用数据结构模块"></a>python中常用数据结构模块</h4></li>
+</ul>
+<ol>
+<li>队列 <code>queue.Queue()</code> </li>
+</ol>
+<ul>
+<li><code>Queue().qsize()</code>: 返回队列的大小 </li>
+<li><code>Queue().empty()</code>: 如果队列为空返回<code>True</code>，反之返回<code>False</code> </li>
+<li><code>Queue().full()</code>: 如果队列满了，返回<code>True</code>,反之返回<code>False</code> </li>
+<li><code>Queue().get()</code>: 获取队列的第一个值，出队列 </li>
+<li><code>Queue().put()</code>: 写入队列 </li>
+<li>题目: 从上往下打印二叉树 <pre class="line-numbers language-lang-python"><code class="language-lang-python">import queue 
+class Solution:
+  def PrintFromTopToBottom(self , root: TreeNode) -> List[int]:
+      # write code here 
+      res = [] 
+      if not root:
+          return res 
+      q = queue.Queue() 
+      q.put(root) 
+      while not q.empty(): 
+          cur_node = q.get() 
+          res.append(cur_node.val) 
+          if cur_node.left: 
+              q.put(cur_node.left) 
+          if cur_node.right: 
+              q.put(cur_node.right) 
+      return res
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ul>
+<ol>
+<li>双向队列<code>collections.deque()</code> </li>
+</ol>
+<ul>
+<li><code>deque()</code>: 创建 </li>
+<li><code>deque().append()</code>: 向队列中添加元素 </li>
+<li><code>deque().pop()</code>: 抛出最后一个元素 </li>
+<li><code>deque().leftpop()</code>: 抛出第一个元素 </li>
+<li><code>deque().extend()</code>: 添加list项到原<code>deque()</code>中 </li>
+<li><code>deque().extendleft()</code>: 添加list项到原<code>deque()</code>头部 </li>
+<li><p>题目: 滑动窗口的最大值 </p>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">from collections import deque 
+class Solution:
+  def maxInWindows(self , num: List[int], size: int) -> List[int]:
+      # write code here 
+      res = [] 
+      dq = deque()
+      if size > len(num) or not size: 
+          return [] 
+
+      for i in range(size): 
+          while len(dq) > 0 and num[dq[-1]] < num[i]: 
+              dq.pop() 
+          dq.append(i) 
+
+      for i in range(size, len(num)): 
+          res.append(num[dq[0]]) 
+          while len(dq) > 0 and dq[0] < i - size + 1: 
+              dq.popleft() 
+          while len(dq) > 0 and num[dq[-1]] < num[i]:
+              dq.pop() 
+          dq.append(i) 
+      res.append(num[dq[0]]) 
+      return res
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ul>
+<ol>
+<li>小根堆<code>heapq</code></li>
+</ol>
+<ul>
+<li><code>heapq.heappush(pq, value)</code> 入堆 </li>
+<li><code>heapq.heapreplace(pq,value)</code> 替换堆中元素 </li>
+<li><code>heapq.pop(pq)</code> 出堆 </li>
+</ul>
+<ol>
+<li><code>collections.defaultdict()</code><br><code>dict</code>的一个子类，可以使创建的字典具有默认值，可以预先指定默认值类型：<pre class="line-numbers language-lang-python"><code class="language-lang-python">import collections 
+mp = collections.defaultdict(list) # 默认值为[]
+mp = collections.defaultdict(int)  # 默认值为0
+mp = collections.defaultdict(lambda:999) # 默认值为999
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+在python中，可哈希的数据类型有：</li>
+</ol>
+<ul>
+<li>数字类型(<code>int</code>、<code>float</code>、<code>bool</code>), 字符串<code>str</code>、元组<code>tuple</code></li>
+</ul>
+<p>不可哈希的数据类型有:</p>
+<ul>
+<li>字典<code>dict</code>、列表<code>list</code>、集合<code>set</code><h4 id="算法题常用解题思路"><a href="#算法题常用解题思路" class="headerlink" title="算法题常用解题思路"></a>算法题常用解题思路</h4><h5 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h5></li>
+<li>什么样的问题可以用递归解决? <ul>
+<li>主问题可以拆分为若干子问题 </li>
+<li>主问题和子问题的解题思路一致</li>
+<li>存在终止条件 </li>
+</ul>
+</li>
+<li>递归问题如何解决？ <ul>
+<li>找到递推公式 </li>
+<li>找到终止条件 </li>
+<li>翻译成代码 </li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>算法岗八股文</category>
+      </categories>
+      <tags>
+        <tag>数据结构</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>社会学的想象力</title>
     <url>/2020/11/30/she-hui-xue-de-xiang-xiang-li/</url>
     <content><![CDATA[<p>为了适当打破一下自己固化的圈子，也为了读一本新书，自己鬼使神差般报名了乐学组织的读书打卡活动，我所选读的书是:</p>
@@ -7295,248 +7537,6 @@ if __name__ == '__main__':
       </categories>
       <tags>
         <tag>米尔斯，社会学</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>剑指offer题目总结</title>
-    <url>/2022/09/29/suan-fa-ti-zong-jie/</url>
-    <content><![CDATA[<h3 id="剑指offer题目总结"><a href="#剑指offer题目总结" class="headerlink" title="剑指offer题目总结"></a>剑指offer题目总结</h3><h4 id="链表题目"><a href="#链表题目" class="headerlink" title="链表题目"></a>链表题目</h4><ul>
-<li>从尾到头打印链表  </li>
-<li>反转链表 </li>
-<li>合并两个排序的链表(递归/遍历)</li>
-<li>两个链表的第一个公共节点(双指针/哈希表) </li>
-<li>链表中环的入口节点(快慢指针/字典) </li>
-<li>链表中倒数最后k个节点(快慢指针) </li>
-<li>复杂链表的复制(1. 复制 2. 随机指针复制 3.打断两个链表) -手写可能出错 </li>
-<li>删除链表中的节点(简单遍历)<span id="more"></span>
-<blockquote>
-<p>总结：简单遍历+快慢指针+哈希 </p>
-</blockquote>
-</li>
-</ul>
-<h4 id="树题目"><a href="#树题目" class="headerlink" title="树题目"></a>树题目</h4><ul>
-<li>二叉树的深度(简单递归/队列辅助层次遍历)</li>
-<li>按之字顺序打印二叉树(层次遍历 + flag判断奇偶层)</li>
-<li>二叉搜索树的第k个节点(深度优先遍历，结合二叉搜索树的特点)</li>
-<li>重建二叉树(递归 + 结合前序中序遍历的特点) </li>
-<li>树的子结构(递归，注意三种匹配情况) </li>
-<li>二叉树的镜像(递归，左右子树镜像，交换)</li>
-<li>从上往下打印二叉树(简单的层次遍历) </li>
-<li>二叉搜索树的后序遍历序列(递归，后序遍历，根节点) </li>
-<li>二叉树中和为某一值的路径1(递归，不需保存路径)</li>
-<li>二叉树中和为某一值的路径2(递归，保存路径, dfs)</li>
-<li>二叉搜索树与双向链表(中序遍历，维护一个pre_node)</li>
-<li>判断是不是平衡二叉树(递归判断，专门写一个判断树深度的函数即可)</li>
-<li>二叉树的下一个节点(获取中序遍历序列/分情况讨论)</li>
-<li>对称的二叉树(递归，输入两棵树，左右子树是否match， 因为单一递归，同时只能到一部分，需要两部分同步递归)</li>
-<li>把二叉树打印成多行(用队列实现树的BFS)</li>
-<li>序列化二叉树(确定规则，指针遍历，节点值后面加符号来分割树节点) </li>
-<li>二叉树中和为某一值的路径3(层次遍历 + dfs/借助哈希表，一次遍历)</li>
-<li>在二叉树中找到两个节点的最近公共祖先(dfs+最后一个共同节点/递归)</li>
-<li>二叉搜索树的最近公共祖先(简单递归，利用二叉搜索树的特点)</li>
-</ul>
-<blockquote>
-<p>总结: 树的题目基本都是围绕递归遍历展开 </p>
-<ul>
-<li>几种遍历方式: 前序、中序、后序、层次 </li>
-<li>合理考虑递归边界，特殊情况 </li>
-</ul>
-</blockquote>
-<h4 id="队列-amp-栈"><a href="#队列-amp-栈" class="headerlink" title="队列&amp;栈"></a>队列&amp;栈</h4><ul>
-<li>用两个栈实现队列(进行两次压栈操作即可) </li>
-<li>包含min函数的栈(普通栈+最小栈) </li>
-<li>栈的压入弹出序列(辅助栈模拟) </li>
-<li>翻转单词序列(两次翻转/直接split+join)</li>
-<li>滑动窗口的最大值(双向队列，维护前向最大值)</li>
-</ul>
-<blockquote>
-<p>总结：数据结构特点的基础应用 </p>
-</blockquote>
-<h4 id="搜索算法"><a href="#搜索算法" class="headerlink" title="搜索算法"></a>搜索算法</h4><ul>
-<li>数字在升序数组中出现的次数(二分查找 target-0.5 target+0.5) </li>
-<li>二维数组中的查找(有序数组，从角落开始搜索)</li>
-<li>旋转数组中的最小数字(二分查找，特殊情况考虑，注意等号) </li>
-<li>字符串的排列(遍历) </li>
-<li>数字序列中的某一位数字(模拟, 几位数字位数关系) </li>
-</ul>
-<blockquote>
-<p>总结：二分搜索 or 模拟遍历  </p>
-</blockquote>
-<h4 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h4><ul>
-<li>连续子数组的最大和(一维dp, 可以不另外开辟数组) </li>
-<li>连续子数组最大和(二)(一维dp,维护起始位置，可以不另外开辟数组) </li>
-<li>跳台阶(斐波那契数列) </li>
-<li>斐波那契数列 </li>
-<li>正则表达式匹配(二维dp) </li>
-<li>跳台阶扩展问题($2^{n-1}$) </li>
-<li>矩阵覆盖(斐波那契数列)</li>
-<li>买股票的最好时机(一维dp) </li>
-<li>礼物的最大价值(二维dp, 可以不另外开辟数组) </li>
-<li>最长不含重复字符的子字符串(借助字典，1维dp)</li>
-<li>把数字翻译成字符串(一维dp) </li>
-</ul>
-<blockquote>
-<p>总结： 这类问题的关键在于</p>
-<ul>
-<li>状态的定义 </li>
-<li>状态转移方程的形式 </li>
-</ul>
-</blockquote>
-<h4 id="回溯"><a href="#回溯" class="headerlink" title="回溯"></a>回溯</h4><ul>
-<li>矩阵中的路径(dfs + 标志矩阵)</li>
-<li>机器人的运动范围(dfs + 标志矩阵)</li>
-</ul>
-<blockquote>
-<p>dfs + 标志矩阵  </p>
-</blockquote>
-<h4 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h4><ul>
-<li>数组中重复的数字(哈希/位置重排) </li>
-<li>数组中的逆序对(归并排序) </li>
-<li>最小的k个数 </li>
-<li>数据流中的中位数 </li>
-</ul>
-<blockquote>
-<p>总结：熟练掌握归并排序和快速排序 </p>
-</blockquote>
-<h4 id="位运算"><a href="#位运算" class="headerlink" title="位运算"></a>位运算</h4><ul>
-<li>不用加减乘除做加法(异或运算获取非进位和，与运算加左移算子获取进位信息) </li>
-<li>二进制中1的个数(n&amp;n-1, 将低位1变为0，注意处理负数) </li>
-<li>数值的整数次方(借助二进制运算实现快速幂) </li>
-<li>数组中只出现一次的两个数字(异或运算的特点) </li>
-<li>求1+2+…+n(通过与运算终止递归) </li>
-</ul>
-<h4 id="模拟"><a href="#模拟" class="headerlink" title="模拟"></a>模拟</h4><ul>
-<li>顺时针打印矩阵(简单模拟，通过边界控制循环结束)</li>
-<li>扑克牌顺子(借助hash)</li>
-<li>把字符串转换成整数(去空格，找符号，转换，取模)</li>
-<li>表示数值的字符串 </li>
-</ul>
-<h4 id="其他算法"><a href="#其他算法" class="headerlink" title="其他算法"></a>其他算法</h4><ul>
-<li>构建乘积数组 </li>
-<li>第一个只出现一次的字符 </li>
-<li>替换空格 </li>
-<li>调整数组顺序使奇数位于偶数前面 </li>
-<li>数组中出现超过一半次数的数字 </li>
-<li>整数中1出现的次数 </li>
-<li>把数组排成最小的数 </li>
-<li>丑数 </li>
-<li>和为S的连续正数序列 </li>
-<li>和为S的两个数字 </li>
-<li>左旋转字符串 </li>
-<li>孩子们的游戏(约瑟夫环)</li>
-<li>字符流中第一个不重复地字符 </li>
-<li>剪绳子 </li>
-<li>调整数组顺序使奇数位于偶数前面</li>
-<li>剪绳子(进阶版)</li>
-<li>打印从1到最大的n位数<h4 id="python中常用数据结构模块"><a href="#python中常用数据结构模块" class="headerlink" title="python中常用数据结构模块"></a>python中常用数据结构模块</h4></li>
-</ul>
-<ol>
-<li>队列 <code>queue.Queue()</code> </li>
-</ol>
-<ul>
-<li><code>Queue().qsize()</code>: 返回队列的大小 </li>
-<li><code>Queue().empty()</code>: 如果队列为空返回<code>True</code>，反之返回<code>False</code> </li>
-<li><code>Queue().full()</code>: 如果队列满了，返回<code>True</code>,反之返回<code>False</code> </li>
-<li><code>Queue().get()</code>: 获取队列的第一个值，出队列 </li>
-<li><code>Queue().put()</code>: 写入队列 </li>
-<li>题目: 从上往下打印二叉树 <pre class="line-numbers language-lang-python"><code class="language-lang-python">import queue 
-class Solution:
-  def PrintFromTopToBottom(self , root: TreeNode) -> List[int]:
-      # write code here 
-      res = [] 
-      if not root:
-          return res 
-      q = queue.Queue() 
-      q.put(root) 
-      while not q.empty(): 
-          cur_node = q.get() 
-          res.append(cur_node.val) 
-          if cur_node.left: 
-              q.put(cur_node.left) 
-          if cur_node.right: 
-              q.put(cur_node.right) 
-      return res
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
-<ol>
-<li>双向队列<code>collections.deque()</code> </li>
-</ol>
-<ul>
-<li><code>deque()</code>: 创建 </li>
-<li><code>deque().append()</code>: 向队列中添加元素 </li>
-<li><code>deque().pop()</code>: 抛出最后一个元素 </li>
-<li><code>deque().leftpop()</code>: 抛出第一个元素 </li>
-<li><code>deque().extend()</code>: 添加list项到原<code>deque()</code>中 </li>
-<li><code>deque().extendleft()</code>: 添加list项到原<code>deque()</code>头部 </li>
-<li><p>题目: 滑动窗口的最大值 </p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">from collections import deque 
-class Solution:
-  def maxInWindows(self , num: List[int], size: int) -> List[int]:
-      # write code here 
-      res = [] 
-      dq = deque()
-      if size > len(num) or not size: 
-          return [] 
-
-      for i in range(size): 
-          while len(dq) > 0 and num[dq[-1]] < num[i]: 
-              dq.pop() 
-          dq.append(i) 
-
-      for i in range(size, len(num)): 
-          res.append(num[dq[0]]) 
-          while len(dq) > 0 and dq[0] < i - size + 1: 
-              dq.popleft() 
-          while len(dq) > 0 and num[dq[-1]] < num[i]:
-              dq.pop() 
-          dq.append(i) 
-      res.append(num[dq[0]]) 
-      return res
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
-<ol>
-<li>小根堆<code>heapq</code></li>
-</ol>
-<ul>
-<li><code>heapq.heappush(pq, value)</code> 入堆 </li>
-<li><code>heapq.heapreplace(pq,value)</code> 替换堆中元素 </li>
-<li><code>heapq.pop(pq)</code> 出堆 </li>
-</ul>
-<ol>
-<li><code>collections.defaultdict()</code><br><code>dict</code>的一个子类，可以使创建的字典具有默认值，可以预先指定默认值类型：<pre class="line-numbers language-lang-python"><code class="language-lang-python">import collections 
-mp = collections.defaultdict(list) # 默认值为[]
-mp = collections.defaultdict(int)  # 默认值为0
-mp = collections.defaultdict(lambda:999) # 默认值为999
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-在python中，可哈希的数据类型有：</li>
-</ol>
-<ul>
-<li>数字类型(<code>int</code>、<code>float</code>、<code>bool</code>), 字符串<code>str</code>、元组<code>tuple</code></li>
-</ul>
-<p>不可哈希的数据类型有:</p>
-<ul>
-<li>字典<code>dict</code>、列表<code>list</code>、集合<code>set</code><h4 id="算法题常用解题思路"><a href="#算法题常用解题思路" class="headerlink" title="算法题常用解题思路"></a>算法题常用解题思路</h4><h5 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h5></li>
-<li>什么样的问题可以用递归解决? <ul>
-<li>主问题可以拆分为若干子问题 </li>
-<li>主问题和子问题的解题思路一致</li>
-<li>存在终止条件 </li>
-</ul>
-</li>
-<li>递归问题如何解决？ <ul>
-<li>找到递推公式 </li>
-<li>找到终止条件 </li>
-<li>翻译成代码 </li>
-</ul>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>算法岗八股文</category>
-      </categories>
-      <tags>
-        <tag>数据结构</tag>
       </tags>
   </entry>
   <entry>
@@ -8826,6 +8826,27 @@ P(o \mid c)=\frac{\exp \left(u_o^T v_c\right)}{\sum_{w \in V} \exp \left(u_w^T v
       </tags>
   </entry>
   <entry>
+    <title>非监督学习</title>
+    <url>/2020/09/11/fei-jian-du-xue-xi/</url>
+    <content><![CDATA[<p>这部分总结下传统统计学习的最后一部分内容——非监督学习，非监督学习又称无监督学习，我们前面讲的大部分算法都是需要样本的标签的，通过标签来构造损失函数，进而进行模型学习，但在有的情况下我们并没有数据的标签，这种情况下我们就什么都不能做了么？当然不是，对于无标签数据，我们仍旧可以开展一部分工作，比如：</p>
+<ul>
+<li>概率模型估计 </li>
+<li>数据降维</li>
+<li>数据聚类</li>
+</ul>
+<p>由于概率模型估计算法在前面已经讲过了(<a href="https://xuejy19.github.io/2020/07/30/EM/">EM算法</a>、<a href="https://xuejy19.github.io/2020/07/27/概率密度函数估计/#more">概率密度函数估计</a>)，这里就不再赘述，本文主要简单介绍下无监督学习问题的思想。</p>
+<span id="more"></span>
+<h3 id="无监督学习思想"><a href="#无监督学习思想" class="headerlink" title="无监督学习思想"></a>无监督学习思想</h3><p>无监督学习是从无标注的数据中学习数据的统计规律或者说内在结构的机器学习，主要包括聚类、降维、概率估计，<strong>无监督学习可以用于数据分析或者监督学习预处理</strong>。<br>无监督学习使用无标注数据$U = { x<em>1, x_2, \dots, x_N}$学习或训练，其中$x_i，i = 1,2,\dots,N$, 是样本，由特征向量组成。无监督学习的模型是函数$z = g</em>{\theta}(x)$ , 条件概率分布$P<em>{\theta}(z|x)$，或条件概率分布$P</em>{\theta}(x|z)$。其中$x \in X$是输入，表示样本； $z \in Z$是输出，表示对样本的分析结果，可以是类别、转换、概率；$\theta$是参数。<br>无监督学习是一个困难的任务，因为数据没有标注，也就是没有人为的引导，机器需要自己从数据中找出规律。模型的输入$x$在数据中可以观测，而输出$z$隐藏在数据中。无监督学习通常需要大量的数据，因为对数据隐藏的规律的发现需要足够的观测。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/Unsupervised.jpg" alt="机器学习算法划分"></p>
+<p>后面将会有两片文章分别介绍降维算法和聚类算法。</p>
+]]></content>
+      <categories>
+        <category>统计学习</category>
+      </categories>
+      <tags>
+        <tag>降维，聚类，概率密度估计</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>风光摄影</title>
     <url>/2020/11/27/feng-guang-she-ying/</url>
     <content><![CDATA[<p>这一篇文章就跟随校风光摄影的大佬来了解一下风光摄影的一些知识，该部分按照以下三部分进行组织: </p>
@@ -8948,27 +8969,6 @@ P(o \mid c)=\frac{\exp \left(u_o^T v_c\right)}{\sum_{w \in V} \exp \left(u_w^T v
       </categories>
       <tags>
         <tag>风光摄影</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>非监督学习</title>
-    <url>/2020/09/11/fei-jian-du-xue-xi/</url>
-    <content><![CDATA[<p>这部分总结下传统统计学习的最后一部分内容——非监督学习，非监督学习又称无监督学习，我们前面讲的大部分算法都是需要样本的标签的，通过标签来构造损失函数，进而进行模型学习，但在有的情况下我们并没有数据的标签，这种情况下我们就什么都不能做了么？当然不是，对于无标签数据，我们仍旧可以开展一部分工作，比如：</p>
-<ul>
-<li>概率模型估计 </li>
-<li>数据降维</li>
-<li>数据聚类</li>
-</ul>
-<p>由于概率模型估计算法在前面已经讲过了(<a href="https://xuejy19.github.io/2020/07/30/EM/">EM算法</a>、<a href="https://xuejy19.github.io/2020/07/27/概率密度函数估计/#more">概率密度函数估计</a>)，这里就不再赘述，本文主要简单介绍下无监督学习问题的思想。</p>
-<span id="more"></span>
-<h3 id="无监督学习思想"><a href="#无监督学习思想" class="headerlink" title="无监督学习思想"></a>无监督学习思想</h3><p>无监督学习是从无标注的数据中学习数据的统计规律或者说内在结构的机器学习，主要包括聚类、降维、概率估计，<strong>无监督学习可以用于数据分析或者监督学习预处理</strong>。<br>无监督学习使用无标注数据$U = { x<em>1, x_2, \dots, x_N}$学习或训练，其中$x_i，i = 1,2,\dots,N$, 是样本，由特征向量组成。无监督学习的模型是函数$z = g</em>{\theta}(x)$ , 条件概率分布$P<em>{\theta}(z|x)$，或条件概率分布$P</em>{\theta}(x|z)$。其中$x \in X$是输入，表示样本； $z \in Z$是输出，表示对样本的分析结果，可以是类别、转换、概率；$\theta$是参数。<br>无监督学习是一个困难的任务，因为数据没有标注，也就是没有人为的引导，机器需要自己从数据中找出规律。模型的输入$x$在数据中可以观测，而输出$z$隐藏在数据中。无监督学习通常需要大量的数据，因为对数据隐藏的规律的发现需要足够的观测。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/Unsupervised.jpg" alt="机器学习算法划分"></p>
-<p>后面将会有两片文章分别介绍降维算法和聚类算法。</p>
-]]></content>
-      <categories>
-        <category>统计学习</category>
-      </categories>
-      <tags>
-        <tag>降维，聚类，概率密度估计</tag>
       </tags>
   </entry>
 </search>
