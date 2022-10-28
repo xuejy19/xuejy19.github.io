@@ -346,6 +346,88 @@ P(Y|\theta^{i+1}) \geq P(Y|\theta^i)</script><p><strong>定理2</strong>:设$L(\
       </tags>
   </entry>
   <entry>
+    <title>马尔可夫网络</title>
+    <url>/2020/07/25/markov-network/</url>
+    <content><![CDATA[<p>在这一部分我将介绍另一种常见的概率图模型:马尔可夫网络，或称马尔可夫随机场。接下来分为以下几部分进行组织<span id="more"></span>：</p>
+<ul>
+<li>马尔可夫网络</li>
+<li>独立性假设</li>
+<li>势函数</li>
+</ul>
+<h3 id="马尔可夫网络"><a href="#马尔可夫网络" class="headerlink" title="马尔可夫网络"></a>马尔可夫网络</h3><p>首先给出维基百科上关于马尔可夫网络的定义：</p>
+<blockquote>
+<p>马尔可夫网络是一组有马尔可夫性质随机变量$X$的全联合概率分布模型。马尔可夫网络类似贝叶斯网络用于表示依赖关系。但是，一方面它可以表示贝叶斯网络无法表示的一些关系，如循环依赖；另一方面，它不能表示贝叶斯网络能够表示的某些关系，如推导关系。</p>
+</blockquote>
+<p>马尔可夫网络具有以下特征：</p>
+<ul>
+<li>无向图$H = (V,E)$</li>
+<li>每个顶点$v \in V$表示一个在集合$X$的随机变量，每条边${u,v}\in E$ 表示随机变量$u$和$v$之间的依赖关系</li>
+</ul>
+<h3 id="独立性假设"><a href="#独立性假设" class="headerlink" title="独立性假设"></a>独立性假设</h3><p>马尔可夫网络与贝叶斯网络类似，以图的形式对独立性假设进行编码，首先给出图中激活路径的概念：</p>
+<ul>
+<li>激活路径：一个路径$X_1,X_2,\dots,X_n$是激活的 $\Leftrightarrow$ 没有路径上的变量被观测到  </li>
+</ul>
+<p>有了激活路径概念之后，便可以讨论图中的条件独立关系：</p>
+<ul>
+<li>在图$H$中，节点集$X$与节点集$Y$相对于是节点集$Z$是分离的 $\Leftrightarrow$ $X$与$Y$之间不存在激活路径</li>
+<li>表示为$sep_H(X;Y|Z)$,栗子如下图所示。</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/xuejy19/Images/master/mav1.png" alt="栗子"></p>
+<h3 id="势函数"><a href="#势函数" class="headerlink" title="势函数"></a>势函数</h3><p>在贝叶斯网络中，节点之间的关系通过条件概率进行表征，而在马尔可夫网络中，节点之间的关系通过势函数来表征，势函数定义如下：</p>
+<blockquote>
+<p>一个函数集合$f_k$(也称为因子或者团因子有时也称为特征)，每一个$f_k$的定义域是图$G$的团或子团$k$,每一个$f_k$是从可能的特定联合的指派(到元素$k$)到非负实数的映射。</p>
+</blockquote>
+<p>总结而言，势函数具有以下特征：</p>
+<blockquote>
+<ul>
+<li>非负</li>
+<li>与条件概率不同，其求和不必为1</li>
+</ul>
+</blockquote>
+<h3 id="吉布斯分布"><a href="#吉布斯分布" class="headerlink" title="吉布斯分布"></a>吉布斯分布</h3><p>我们引入该图模型的目的在于：<strong>通过马尔可夫网络来对变量之间的独立性关系进行编码，然后获得对于联合概率分布更加紧凑的表示形式</strong>，而吉布斯分布便是将联合概率与势函数相连接的桥梁。<br>一个概率分布$P$可以分解为图$H$：</p>
+<blockquote>
+<ul>
+<li>$H$可以分为若干子团$D_i$</li>
+<li>在每个子团上相应定义了势函数$\pi_i$</li>
+</ul>
+</blockquote>
+<p>由此便可以写出吉布斯分布形式：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+     P(X_1,X_2,\dots,X_n) = \frac{1}{Z} f(X_1,X_2,\dots,X_n) 
+\end{aligned}</script><p>其中:</p>
+<blockquote>
+<ul>
+<li>$f(X<em>1,X_2,\dots,X_n) = \prod</em>{i=1}^m \pi_i(D_i)$</li>
+<li>$Z = \sum_{X_1,\dots,X_n} f(X_1,\dots,X_n)$</li>
+</ul>
+</blockquote>
+<p>每一个势函数定义了一个映射:$Sub(X) \rightarrow \mathcal{R^+}$ ,一个势函数的定义域相当于是一个集合，而这个集合中的变量彼此之间是直接依赖关系，从这个视角来看，条件概率可以看作是势函数的特例(仅仅表征两个变量之间依赖关系)。</p>
+<p>下面我们讨论下一个势函数(因子)应该定义在一个多大的集合上，首先考虑如果在每条边上均定义一个势函数，那么马尔可夫网络能否表征联合概率分布？答案是并不行，为此我以一个7个节点(均为二值变量)的全连接网络为例，分别讨论两种情况下具有的独立参数的数量：</p>
+<ul>
+<li>联合概率分布：$2^7 - 1 = 127$</li>
+<li>边上势函数：$4*C_7^2 = 84$</li>
+</ul>
+<p>显然对于全连接网络，若给予每个边一个势函数并不足以表征联合概率分布，在前面已经说明一个势函数定义域中的变量应当是两两直接相关，因此势函数的定义域应当是一个团(clique)。<br>$\Rightarrow$ <strong>马尔可夫网络中的局部结构是团</strong></p>
+<h3 id="马尔可夫网络分解"><a href="#马尔可夫网络分解" class="headerlink" title="马尔可夫网络分解"></a>马尔可夫网络分解</h3><p>首先给出$I-Map$的概念:$H$为一个马尔可夫网络，$P$为联合概率分布，若有$I(H) \subseteq I(P)$，则称马尔可夫网络$H$为分布$P$的一个$I-Map$。 </p>
+<p>记$D_i$为马尔可夫网络$H$中的子团，Hammersley-Clifford定理如下：</p>
+<blockquote>
+<p>对于一个无向图$H$和分布$P$,$P$可以被分解成$P(X) = \frac{1}{Z}\prod \pi_i (D_i) \Leftrightarrow$ $H$是$P$的$I-Map$</p>
+</blockquote>
+<p>在实际进行分解时一般都是在最大团上定义势函数</p>
+<h3 id="对数表示"><a href="#对数表示" class="headerlink" title="对数表示"></a>对数表示</h3><p>在马尔可夫网络中，联合分布除了可以利用吉布斯分布来进行表示，也可以采取对数表示的方法，将原始的势函数$\pi_i(D_i)$ 表示成$exp(-\epsilon(D_i))$的形式，其中$\epsilon(D_i) = -log(\pi_i(D_i))$,据此，联合概率分布可以表示成：</p>
+<script type="math/tex; mode=display">
+    P(X_1,X_2,\dots,X_n) = \frac{1}{Z} exp(-\sum_{i=1}^m \epsilon(D_i))</script><p>这种表示方法将连乘变成了连家，计算更加方便，同时有定理证明，若无向图$H$是分布$P$的一个独立映射，那么$\epsilon(D_i) = \omega_i \phi_i(D_i)$,此时$\phi$被称作特征函数，与势函数关系为：</p>
+<script type="math/tex; mode=display">
+    \pi_i(D_i) = exp(\omega_i \phi_i(D_i))</script>]]></content>
+      <categories>
+        <category>统计学习</category>
+      </categories>
+      <tags>
+        <tag>无向图</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>隐马尔可夫模型</title>
     <url>/2020/08/17/hmm/</url>
     <content><![CDATA[<p>在这一部分，我将对隐马尔可夫模型(HMM)做简要介绍,该章节分为以下几个部分进行组织:</p>
@@ -591,88 +673,6 @@ i_t^* = \varPhi_{t+1}(i_{t+1}^*)</script>求得最优路径$I^{\ast} = (i_1^\ast
       </categories>
       <tags>
         <tag>概率模型，HMM</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>马尔可夫网络</title>
-    <url>/2020/07/25/markov-network/</url>
-    <content><![CDATA[<p>在这一部分我将介绍另一种常见的概率图模型:马尔可夫网络，或称马尔可夫随机场。接下来分为以下几部分进行组织<span id="more"></span>：</p>
-<ul>
-<li>马尔可夫网络</li>
-<li>独立性假设</li>
-<li>势函数</li>
-</ul>
-<h3 id="马尔可夫网络"><a href="#马尔可夫网络" class="headerlink" title="马尔可夫网络"></a>马尔可夫网络</h3><p>首先给出维基百科上关于马尔可夫网络的定义：</p>
-<blockquote>
-<p>马尔可夫网络是一组有马尔可夫性质随机变量$X$的全联合概率分布模型。马尔可夫网络类似贝叶斯网络用于表示依赖关系。但是，一方面它可以表示贝叶斯网络无法表示的一些关系，如循环依赖；另一方面，它不能表示贝叶斯网络能够表示的某些关系，如推导关系。</p>
-</blockquote>
-<p>马尔可夫网络具有以下特征：</p>
-<ul>
-<li>无向图$H = (V,E)$</li>
-<li>每个顶点$v \in V$表示一个在集合$X$的随机变量，每条边${u,v}\in E$ 表示随机变量$u$和$v$之间的依赖关系</li>
-</ul>
-<h3 id="独立性假设"><a href="#独立性假设" class="headerlink" title="独立性假设"></a>独立性假设</h3><p>马尔可夫网络与贝叶斯网络类似，以图的形式对独立性假设进行编码，首先给出图中激活路径的概念：</p>
-<ul>
-<li>激活路径：一个路径$X_1,X_2,\dots,X_n$是激活的 $\Leftrightarrow$ 没有路径上的变量被观测到  </li>
-</ul>
-<p>有了激活路径概念之后，便可以讨论图中的条件独立关系：</p>
-<ul>
-<li>在图$H$中，节点集$X$与节点集$Y$相对于是节点集$Z$是分离的 $\Leftrightarrow$ $X$与$Y$之间不存在激活路径</li>
-<li>表示为$sep_H(X;Y|Z)$,栗子如下图所示。</li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/xuejy19/Images/master/mav1.png" alt="栗子"></p>
-<h3 id="势函数"><a href="#势函数" class="headerlink" title="势函数"></a>势函数</h3><p>在贝叶斯网络中，节点之间的关系通过条件概率进行表征，而在马尔可夫网络中，节点之间的关系通过势函数来表征，势函数定义如下：</p>
-<blockquote>
-<p>一个函数集合$f_k$(也称为因子或者团因子有时也称为特征)，每一个$f_k$的定义域是图$G$的团或子团$k$,每一个$f_k$是从可能的特定联合的指派(到元素$k$)到非负实数的映射。</p>
-</blockquote>
-<p>总结而言，势函数具有以下特征：</p>
-<blockquote>
-<ul>
-<li>非负</li>
-<li>与条件概率不同，其求和不必为1</li>
-</ul>
-</blockquote>
-<h3 id="吉布斯分布"><a href="#吉布斯分布" class="headerlink" title="吉布斯分布"></a>吉布斯分布</h3><p>我们引入该图模型的目的在于：<strong>通过马尔可夫网络来对变量之间的独立性关系进行编码，然后获得对于联合概率分布更加紧凑的表示形式</strong>，而吉布斯分布便是将联合概率与势函数相连接的桥梁。<br>一个概率分布$P$可以分解为图$H$：</p>
-<blockquote>
-<ul>
-<li>$H$可以分为若干子团$D_i$</li>
-<li>在每个子团上相应定义了势函数$\pi_i$</li>
-</ul>
-</blockquote>
-<p>由此便可以写出吉布斯分布形式：</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-     P(X_1,X_2,\dots,X_n) = \frac{1}{Z} f(X_1,X_2,\dots,X_n) 
-\end{aligned}</script><p>其中:</p>
-<blockquote>
-<ul>
-<li>$f(X<em>1,X_2,\dots,X_n) = \prod</em>{i=1}^m \pi_i(D_i)$</li>
-<li>$Z = \sum_{X_1,\dots,X_n} f(X_1,\dots,X_n)$</li>
-</ul>
-</blockquote>
-<p>每一个势函数定义了一个映射:$Sub(X) \rightarrow \mathcal{R^+}$ ,一个势函数的定义域相当于是一个集合，而这个集合中的变量彼此之间是直接依赖关系，从这个视角来看，条件概率可以看作是势函数的特例(仅仅表征两个变量之间依赖关系)。</p>
-<p>下面我们讨论下一个势函数(因子)应该定义在一个多大的集合上，首先考虑如果在每条边上均定义一个势函数，那么马尔可夫网络能否表征联合概率分布？答案是并不行，为此我以一个7个节点(均为二值变量)的全连接网络为例，分别讨论两种情况下具有的独立参数的数量：</p>
-<ul>
-<li>联合概率分布：$2^7 - 1 = 127$</li>
-<li>边上势函数：$4*C_7^2 = 84$</li>
-</ul>
-<p>显然对于全连接网络，若给予每个边一个势函数并不足以表征联合概率分布，在前面已经说明一个势函数定义域中的变量应当是两两直接相关，因此势函数的定义域应当是一个团(clique)。<br>$\Rightarrow$ <strong>马尔可夫网络中的局部结构是团</strong></p>
-<h3 id="马尔可夫网络分解"><a href="#马尔可夫网络分解" class="headerlink" title="马尔可夫网络分解"></a>马尔可夫网络分解</h3><p>首先给出$I-Map$的概念:$H$为一个马尔可夫网络，$P$为联合概率分布，若有$I(H) \subseteq I(P)$，则称马尔可夫网络$H$为分布$P$的一个$I-Map$。 </p>
-<p>记$D_i$为马尔可夫网络$H$中的子团，Hammersley-Clifford定理如下：</p>
-<blockquote>
-<p>对于一个无向图$H$和分布$P$,$P$可以被分解成$P(X) = \frac{1}{Z}\prod \pi_i (D_i) \Leftrightarrow$ $H$是$P$的$I-Map$</p>
-</blockquote>
-<p>在实际进行分解时一般都是在最大团上定义势函数</p>
-<h3 id="对数表示"><a href="#对数表示" class="headerlink" title="对数表示"></a>对数表示</h3><p>在马尔可夫网络中，联合分布除了可以利用吉布斯分布来进行表示，也可以采取对数表示的方法，将原始的势函数$\pi_i(D_i)$ 表示成$exp(-\epsilon(D_i))$的形式，其中$\epsilon(D_i) = -log(\pi_i(D_i))$,据此，联合概率分布可以表示成：</p>
-<script type="math/tex; mode=display">
-    P(X_1,X_2,\dots,X_n) = \frac{1}{Z} exp(-\sum_{i=1}^m \epsilon(D_i))</script><p>这种表示方法将连乘变成了连家，计算更加方便，同时有定理证明，若无向图$H$是分布$P$的一个独立映射，那么$\epsilon(D_i) = \omega_i \phi_i(D_i)$,此时$\phi$被称作特征函数，与势函数关系为：</p>
-<script type="math/tex; mode=display">
-    \pi_i(D_i) = exp(\omega_i \phi_i(D_i))</script>]]></content>
-      <categories>
-        <category>统计学习</category>
-      </categories>
-      <tags>
-        <tag>无向图</tag>
       </tags>
   </entry>
   <entry>
@@ -1131,6 +1131,140 @@ i_t^* = \varPhi_{t+1}(i_{t+1}^*)</script>求得最优路径$I^{\ast} = (i_1^\ast
       </tags>
   </entry>
   <entry>
+    <title>conda介绍及常用命令</title>
+    <url>/2022/10/17/conda-jie-shao-ji-chang-yong-ming-ling/</url>
+    <content><![CDATA[<p>随着机器学习、深度学习的爆火，大量的python第三方库也如雨后春笋一般冒了出来，这给开发者带来了极大便利的同时，也使得管理这些库成为了一件复杂度极高的事情，相信很多人都有过为了处理库冲突而抓狂的时刻，为了简化python包管理的工作，Anaconda应运而生。<span id="more"></span></p>
+<h5 id="Anaconda"><a href="#Anaconda" class="headerlink" title="Anaconda"></a>Anaconda</h5><p>Anaconda可以看作是包含python、conda、numpy、notebook等常用包的一个集合，具有如下特点： </p>
+<ul>
+<li>安装过程简单 </li>
+<li>高性能使用python和R语言 </li>
+<li>免费的社区支持</li>
+</ul>
+<p>对于大多数用户来说，下载Anaconda的目的主要有两个: </p>
+<ul>
+<li>高效简单的配置python开发环境(python+一些基础常用包) </li>
+<li><strong>后续通过<code>conda</code>这个神器来进行包管理和虚拟环境管理</strong></li>
+</ul>
+<h5 id="Conda"><a href="#Conda" class="headerlink" title="Conda"></a>Conda</h5><p><code>conda</code>是包及其依赖项和环境的管理工具: </p>
+<ul>
+<li>适用语言: Python, R, Ruby, Lua, Scala, Java, JavaScript, C/C++, FORTRAN </li>
+<li>适用平台: Windows, Macos, Linux </li>
+<li>优点 <ul>
+<li>快速安装、运行和升级包及其依赖项</li>
+<li>在计算机中便捷地创建、保存、加载和切换环境 <blockquote>
+<p>如果你需要的包要求不同版本的Python，你无需切换到不同的环境，因为conda同样是一个环境管理器。仅需要几条命令，你可以创建一个完全独立的环境来运行不同的Python版本，同时继续在你常规的环境中使用你常用的Python版本。——Conda官方网站</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>conda常用命令</strong>: </p>
+<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">conda activate xxxx #开启xxxx环境
+conda deactivate #关闭环境
+​
+conda env list #显示所有的虚拟环境
+conda info --envs #显示所有的虚拟环境
+conda info -e #显示所有已经创建的环境
+​
+conda update -n base conda #update最新版本的conda
+​
+conda create -n xxxx python=3.6 #创建python3.6的xxxx虚拟环境
+​
+conda remove --name xxxx  --all #彻底删除旧环境
+​
+conda remove -n tensorflow --all  #彻底删除旧环境
+​
+#Conda是没有重命名环境的功能, 要实现这个基本需求, 可以通过克隆-删除的过程。
+#切记不要直接mv移动环境的文件夹来重命名, 会导致一系列无法想象的错误的发生!
+conda create --name newname --clone oldname //克隆环境
+conda remove --name oldname --all //彻底删除旧环境
+​
+conda list          #查看已经安装的文件包
+conda list -n xxx   #指定查看xxx虚拟环境下安装的package
+conda update xxx    #更新xxx文件包
+conda uninstall xxx #卸载xxx文件包
+​
+#pip 安装本地包
+pip install   ～/Downloads/a.whl
+#conda 安装本地包
+conda install --use-local  ~/Downloads/a.tar.bz2
+​
+​
+#显示目前conda的数据源有哪些
+conda config --show channels
+​
+#添加数据源：例如, 添加清华anaconda镜像：
+conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
+conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/
+conda config --set show_channel_urls yes
+​
+#删除数据源
+conda config --remove channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
+​
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="conda配置国内镜像源"><a href="#conda配置国内镜像源" class="headerlink" title="conda配置国内镜像源"></a><code>conda</code>配置国内镜像源</h5><ul>
+<li><p>方法1: 用<code>vim</code>打开文件，添加以下镜像源</p>
+<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">  vim ~/.condarc
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>  修改文件内容: </p>
+<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">      #清华源
+  channels:
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge/
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/pytorch/
+  ssl_verify: true
+  #中科大源
+  channels:
+  - https://mirrors.ustc.edu.cn/anaconda/pkgs/main/
+  - https://mirrors.ustc.edu.cn/anaconda/pkgs/free/
+  - https://mirrors.ustc.edu.cn/anaconda/cloud/conda-forge/
+  ssl_verify: true
+  #上交大源
+  channels:
+  - https://mirrors.sjtug.sjtu.edu.cn/anaconda/pkgs/main/
+  - https://mirrors.sjtug.sjtu.edu.cn/anaconda/pkgs/free/
+  - https://mirrors.sjtug.sjtu.edu.cn/anaconda/cloud/conda-forge/
+  ssl_verify: true
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li>方法2: 直接通过终端命令修改 <pre class="line-numbers language-lang-shell"><code class="language-lang-shell">  ​# 中科大镜像源
+  conda config --add channels https://mirrors.ustc.edu.cn/anaconda/pkgs/main/
+  conda config --add channels https://mirrors.ustc.edu.cn/anaconda/pkgs/free/
+  conda config --add channels https://mirrors.ustc.edu.cn/anaconda/cloud/conda-forge/
+  conda config --add channels https://mirrors.ustc.edu.cn/anaconda/cloud/msys2/
+  conda config --add channels https://mirrors.ustc.edu.cn/anaconda/cloud/bioconda/
+  conda config --add channels https://mirrors.ustc.edu.cn/anaconda/cloud/menpo/
+  conda config --add channels https://mirrors.ustc.edu.cn/anaconda/cloud/
+  ​
+  # 阿里镜像源
+  conda config --add channels https://mirrors.aliyun.com/pypi/simple/
+  ​
+  # 豆瓣的python的源
+  ​
+  conda config --add channels http://pypi.douban.com/simple/ 
+  ​
+  # 显示检索路径，每次安装包时会将包源路径显示出来
+  ​
+  conda config --set show_channel_urls yes
+  ​
+  conda config --set always_yes True
+  ​
+  # 显示所有镜像通道路径命令
+  ​
+  conda config --show channels
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>环境配置</category>
+      </categories>
+      <tags>
+        <tag>命令行</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>logistic回归与最大熵模型</title>
     <url>/2020/08/23/logistic-hui-gui-yu-zui-da-shang-mo-xing/</url>
     <content><![CDATA[<p>在学习李航老师《统计学习》条件随机场章节时，对于学习算法感到有些陌生，后来发现在书中第六章“logistic回归与最大熵模型”有过一些介绍，因此本章节便总结一下相关知识，其中logistic回归模型做简要介绍，重点放在最大熵模型的学习算法上，本文按照如下结构组织：</p>
@@ -1325,140 +1459,6 @@ i_t^* = \varPhi_{t+1}(i_{t+1}^*)</script>求得最优路径$I^{\ast} = (i_1^\ast
       </categories>
       <tags>
         <tag>logistic回归, 最大熵模型, 优化学习</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>conda介绍及常用命令</title>
-    <url>/2022/10/17/conda-jie-shao-ji-chang-yong-ming-ling/</url>
-    <content><![CDATA[<p>随着机器学习、深度学习的爆火，大量的python第三方库也如雨后春笋一般冒了出来，这给开发者带来了极大便利的同时，也使得管理这些库成为了一件复杂度极高的事情，相信很多人都有过为了处理库冲突而抓狂的时刻，为了简化python包管理的工作，Anaconda应运而生。<span id="more"></span></p>
-<h5 id="Anaconda"><a href="#Anaconda" class="headerlink" title="Anaconda"></a>Anaconda</h5><p>Anaconda可以看作是包含python、conda、numpy、notebook等常用包的一个集合，具有如下特点： </p>
-<ul>
-<li>安装过程简单 </li>
-<li>高性能使用python和R语言 </li>
-<li>免费的社区支持</li>
-</ul>
-<p>对于大多数用户来说，下载Anaconda的目的主要有两个: </p>
-<ul>
-<li>高效简单的配置python开发环境(python+一些基础常用包) </li>
-<li><strong>后续通过<code>conda</code>这个神器来进行包管理和虚拟环境管理</strong></li>
-</ul>
-<h5 id="Conda"><a href="#Conda" class="headerlink" title="Conda"></a>Conda</h5><p><code>conda</code>是包及其依赖项和环境的管理工具: </p>
-<ul>
-<li>适用语言: Python, R, Ruby, Lua, Scala, Java, JavaScript, C/C++, FORTRAN </li>
-<li>适用平台: Windows, Macos, Linux </li>
-<li>优点 <ul>
-<li>快速安装、运行和升级包及其依赖项</li>
-<li>在计算机中便捷地创建、保存、加载和切换环境 <blockquote>
-<p>如果你需要的包要求不同版本的Python，你无需切换到不同的环境，因为conda同样是一个环境管理器。仅需要几条命令，你可以创建一个完全独立的环境来运行不同的Python版本，同时继续在你常规的环境中使用你常用的Python版本。——Conda官方网站</p>
-</blockquote>
-</li>
-</ul>
-</li>
-</ul>
-<p><strong>conda常用命令</strong>: </p>
-<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">conda activate xxxx #开启xxxx环境
-conda deactivate #关闭环境
-​
-conda env list #显示所有的虚拟环境
-conda info --envs #显示所有的虚拟环境
-conda info -e #显示所有已经创建的环境
-​
-conda update -n base conda #update最新版本的conda
-​
-conda create -n xxxx python=3.6 #创建python3.6的xxxx虚拟环境
-​
-conda remove --name xxxx  --all #彻底删除旧环境
-​
-conda remove -n tensorflow --all  #彻底删除旧环境
-​
-#Conda是没有重命名环境的功能, 要实现这个基本需求, 可以通过克隆-删除的过程。
-#切记不要直接mv移动环境的文件夹来重命名, 会导致一系列无法想象的错误的发生!
-conda create --name newname --clone oldname //克隆环境
-conda remove --name oldname --all //彻底删除旧环境
-​
-conda list          #查看已经安装的文件包
-conda list -n xxx   #指定查看xxx虚拟环境下安装的package
-conda update xxx    #更新xxx文件包
-conda uninstall xxx #卸载xxx文件包
-​
-#pip 安装本地包
-pip install   ～/Downloads/a.whl
-#conda 安装本地包
-conda install --use-local  ~/Downloads/a.tar.bz2
-​
-​
-#显示目前conda的数据源有哪些
-conda config --show channels
-​
-#添加数据源：例如, 添加清华anaconda镜像：
-conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
-conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/
-conda config --set show_channel_urls yes
-​
-#删除数据源
-conda config --remove channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
-​
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h5 id="conda配置国内镜像源"><a href="#conda配置国内镜像源" class="headerlink" title="conda配置国内镜像源"></a><code>conda</code>配置国内镜像源</h5><ul>
-<li><p>方法1: 用<code>vim</code>打开文件，添加以下镜像源</p>
-<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">  vim ~/.condarc
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>  修改文件内容: </p>
-<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">      #清华源
-  channels:
-  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/
-  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
-  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge/
-  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/pytorch/
-  ssl_verify: true
-  #中科大源
-  channels:
-  - https://mirrors.ustc.edu.cn/anaconda/pkgs/main/
-  - https://mirrors.ustc.edu.cn/anaconda/pkgs/free/
-  - https://mirrors.ustc.edu.cn/anaconda/cloud/conda-forge/
-  ssl_verify: true
-  #上交大源
-  channels:
-  - https://mirrors.sjtug.sjtu.edu.cn/anaconda/pkgs/main/
-  - https://mirrors.sjtug.sjtu.edu.cn/anaconda/pkgs/free/
-  - https://mirrors.sjtug.sjtu.edu.cn/anaconda/cloud/conda-forge/
-  ssl_verify: true
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li>方法2: 直接通过终端命令修改 <pre class="line-numbers language-lang-shell"><code class="language-lang-shell">  ​# 中科大镜像源
-  conda config --add channels https://mirrors.ustc.edu.cn/anaconda/pkgs/main/
-  conda config --add channels https://mirrors.ustc.edu.cn/anaconda/pkgs/free/
-  conda config --add channels https://mirrors.ustc.edu.cn/anaconda/cloud/conda-forge/
-  conda config --add channels https://mirrors.ustc.edu.cn/anaconda/cloud/msys2/
-  conda config --add channels https://mirrors.ustc.edu.cn/anaconda/cloud/bioconda/
-  conda config --add channels https://mirrors.ustc.edu.cn/anaconda/cloud/menpo/
-  conda config --add channels https://mirrors.ustc.edu.cn/anaconda/cloud/
-  ​
-  # 阿里镜像源
-  conda config --add channels https://mirrors.aliyun.com/pypi/simple/
-  ​
-  # 豆瓣的python的源
-  ​
-  conda config --add channels http://pypi.douban.com/simple/ 
-  ​
-  # 显示检索路径，每次安装包时会将包源路径显示出来
-  ​
-  conda config --set show_channel_urls yes
-  ​
-  conda config --set always_yes True
-  ​
-  # 显示所有镜像通道路径命令
-  ​
-  conda config --show channels
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>环境配置</category>
-      </categories>
-      <tags>
-        <tag>命令行</tag>
       </tags>
   </entry>
   <entry>
@@ -2689,6 +2689,128 @@ data.time = data.time.apply(lambda x: time.strftime(format, x.tuple))
       </tags>
   </entry>
   <entry>
+    <title>初识Docker</title>
+    <url>/2020/10/28/chu-shi-docker/</url>
+    <content><![CDATA[<p>近期因为在外出差，没咋看论文，为了让时间得到充分利用，自己打算学习一些开发相关的知识，毕竟技多不压身。 这部分就参考<a href="https://docs.docker.com/get-started/">Docker官方文档</a>来进行Docker基本知识的学习。<br>该部分分为以下三个章节进行组织:</p>
+<ul>
+<li>概念与设置 </li>
+<li>构建并运行镜像</li>
+<li>在Docker Hub 上共享镜像 <span id="more"></span>
+<h3 id="概念与设置"><a href="#概念与设置" class="headerlink" title="概念与设置"></a>概念与设置</h3><h4 id="Docker概念"><a href="#Docker概念" class="headerlink" title="Docker概念"></a>Docker概念</h4>Docker是供开发人员和系统管理员 使用容器构建，运行和共享应用程序的平台。使用容器部署应用程序称为容器化。容器不是新的，但用于轻松部署应用程序的容器却是新的。<br>容器化越来越受欢迎，这是因为容器具有如下几点优点: </li>
+<li>灵活：即使最复杂的应用程序也可以容器化。</li>
+<li>轻量级：容器利用并共享主机内核，在系统资源方面比虚拟机更有效。 </li>
+<li>可移植：您可以在本地构建，部署到云并在任何地方运行。</li>
+<li>松散耦合：容器是高度自给自足并封装的，可让您在不破坏其他容器的情况下更换或升级它们。</li>
+<li>可扩展：您可以在数据中心内增加并自动分布容器副本。</li>
+<li>安全：容器将积极的约束和隔离应用于流程，而用户无需进行任何配置。 </li>
+</ul>
+<h4 id="镜像与容器"><a href="#镜像与容器" class="headerlink" title="镜像与容器"></a>镜像与容器</h4><p>从根本上说，一个容器不过是一个<strong>正在运行的进程</strong>，并对其应用了一些附加的封装功能，以使其与主机和其他容器隔离。容器隔离的最重要方面之一是每个容器都与自己的专用文件系统进行交互。该文件系统由<strong>Docker映像</strong>提供。映像包括运行应用程序所需的所有内容-代码或二进制文件，运行时，依赖关系以及所需的任何其他文件系统对象。</p>
+<h4 id="容器和虚拟机"><a href="#容器和虚拟机" class="headerlink" title="容器和虚拟机"></a>容器和虚拟机</h4><p>一个容器本地运行于Linux系统上，并与其他容器共享主机内核。一个容器运行一个离散进程，占用的内存不超过其他任何可执行文件，因此其比较轻量。<br>相比之下，虚拟机（VM）运行一个全面的“来宾”操作系统，通过hypervisor对主机资源进行虚拟访问。一般来说，除了应用程序逻辑所消耗的外，vm会产生很多开销。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/Container.png" alt="容器与虚拟机"></p>
+<h4 id="Docker环境设置"><a href="#Docker环境设置" class="headerlink" title="Docker环境设置"></a>Docker环境设置</h4><p>参考<a href="https://docs.docker.com/get-started/">docker桌面版安装及测试</a>来进行安装，运行:</p>
+<pre class="line-numbers language-lang-bash"><code class="language-lang-bash">docker run hello-world
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>如果返回:</p>
+<pre class="line-numbers language-lang-bash"><code class="language-lang-bash">Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+ 1. The Docker client contacted the Docker daemon.
+ 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+    (amd64)
+ 3. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with:
+ $ docker run -it ubuntu bash
+
+Share images, automate workflows, and more with a free Docker ID:
+ https://hub.docker.com/
+
+For more examples and ideas, visit:
+ https://docs.docker.com/get-started/
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>则说明已经在机器上成功安装docker desktop 并进行了快速测试，成功运行了第一个容器化应用<code>hello-world</code>. </p>
+<h3 id="构建并运行镜像"><a href="#构建并运行镜像" class="headerlink" title="构建并运行镜像"></a>构建并运行镜像</h3><h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><p>通过上面的测试，我们已经设置好了开发环境，接下来我们便可以开发容器化的应用程序，通常，开发流程如下: </p>
+<ul>
+<li>首先创建Docker映像，为应用程序的每个组件创建和测试单独的容器。</li>
+<li>将您的容器和支持基础结构组装成一个完整的应用程序。</li>
+<li>测试，共享和部署完整的容器化应用程序。 </li>
+</ul>
+<p>在本章节中，我们将工作重心放在第一个步骤，创建容器将基于的镜像。请记住，Docker映像捕获了将在其中运行容器化进程的私有文件系统；您需要创建一个图像，其中包含您的应用程序需要运行的内容。</p>
+<h4 id="设置"><a href="#设置" class="headerlink" title="设置"></a>设置</h4><p>首先下载<code>node-bulletin-board</code>项目，这是一个用Node.js编写的简单公告版应用程序,首先通过<code>git</code>下clone该项目:</p>
+<pre class="line-numbers language-lang-bash"><code class="language-lang-bash">git clone https://github.com/dockersamples/node-bulletin-board
+cd node-bulletin-board/bulletin-board-app
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h4 id="使用dockerfile定义一个容器"><a href="#使用dockerfile定义一个容器" class="headerlink" title="使用dockerfile定义一个容器"></a>使用dockerfile定义一个容器</h4><p>在下载整个项目后，使用找到<code>bulletin board</code>应用中的<code>dockerfile</code>文件，<code>dockerfile</code>描述了如何为容器组装私有文件系统，并且还包含一些元数据来描述如何基于该映像运行容器。<br>下面给出该示例项目的<code>dockerfile</code>的注释文件: </p>
+<pre class="line-numbers language-lang-bash"><code class="language-lang-bash"># Use the official image as a parent image.
+FROM node:current-slim
+
+# Set the working directory.
+WORKDIR /usr/src/app
+
+# Copy the file from your host to your current location.
+COPY package.json .
+
+# Run the command inside your image filesystem.
+RUN npm install
+
+# Add metadata to the image to describe which port the container is listening on at runtime.
+EXPOSE 8080
+
+# Run the specified command within the container.
+CMD [ "npm", "start" ]
+
+# Copy the rest of your app's source code from your host to your image filesystem.
+COPY . .
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>下面给出该<code>dockerfile</code>命令逻辑解释: </p>
+<ul>
+<li>通过<code>FROM</code>指定一个基础映像-<code>node:current-slim</code>。这是由<code>node.js</code>公司构建的官方镜像并且已由<code>Docker</code>验证为包含<code>Node.js</code>长期支持解释器和基本依赖项的高质量镜像。</li>
+<li>使用<code>WORKDIR</code>指定所有后续操作都应该从映像文件系统中的<code>/usr/src/app</code>目录（而不是主机的文件系统）执行。</li>
+<li>使用<code>COPY</code>将<code>package.json</code>文件从主机复制到当前目录<code>(.)</code>,在本例子中，该当前目录是<code>/usr/src/app/package.json</code></li>
+<li>使用<code>RUN</code>命令在你的镜像文件系统中运行<code>npm install</code>命令，它将读取<code>package.json</code>确定应用程序的节点依赖项并安装它们。</li>
+<li>使用<code>COPY</code>将应用的剩余资源代码从主机复制到你的镜像文件系统。</li>
+</ul>
+<p>上面的步骤构建了我们的映像文件系统，但同时还包含一些其它命令:</p>
+<ul>
+<li>使用<code>CMD</code>命令来指定了如何基于该映像运行容器，该命令意味着该镜像要支持的容器化进程是<code>npm start</code> </li>
+<li><code>EXPOSURE 8080</code>则是通知<code>Docker</code>容器会实时监听端口<code>8080</code> </li>
+</ul>
+<h4 id="构建并测试镜像"><a href="#构建并测试镜像" class="headerlink" title="构建并测试镜像"></a>构建并测试镜像</h4><p>运行以下命令来构建公告板映像:</p>
+<pre class="line-numbers language-lang-bash"><code class="language-lang-bash">docker build --tag bulletinboard:1.0 .
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>运行成功后会显示： </p>
+<pre class="line-numbers language-lang-bash"><code class="language-lang-bash">Successfully tagged bulletinboard:1.0
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h4 id="将镜像作为容器运行"><a href="#将镜像作为容器运行" class="headerlink" title="将镜像作为容器运行"></a>将镜像作为容器运行</h4><ol>
+<li>运行以下命令以基于新映像启动容器 <pre class="line-numbers language-lang-bash"><code class="language-lang-bash">docker run --publish 8000:8080 --detach --name bb bulletinboard:1.0
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+这里有几个常见的标志: </li>
+</ol>
+<ul>
+<li><code>--publish</code>要求Docker将主机端口8000上传入的流量转发到容器的端口8080。容器具有自己的专用端口集，因此，如果要从网络访问某个端口，则必须以这种方式将流量转发到该端口。否则，作为默认的安全状态，防火墙规则将阻止所有网络流量到达您的容器。 </li>
+<li><code>--detach</code>要求docker在后台运行此程序 </li>
+<li><code>--name</code>指定一个名称，在后续命令中，可以使用该名称引用容器，本命令中指定为<code>bb</code></li>
+</ul>
+<ol>
+<li>在浏览器中访问应用程序<code>localhost:8000</code>,可以看到公告版应用程序已启动并且正在运行，在这一步，您通常会尽一切可能确保容器按预期方式工作。例如，现在是运行单元测试的时候了。</li>
+<li>对公告板容器正常工作感到满意后可以将其删除：<pre class="line-numbers language-lang-bash"><code class="language-lang-bash">docker rm --force bb
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+该<code>--force</code>选项停止一个正在运行中的容器，也可以采用<code>docker stop bb</code>来停止一个容器，这样就不需要使用<code>--force</code>选项来<code>rm</code>容器。</li>
+</ol>
+<h3 id="在Docker-Hub-中分享镜像"><a href="#在Docker-Hub-中分享镜像" class="headerlink" title="在Docker Hub 中分享镜像"></a>在Docker Hub 中分享镜像</h3><h4 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h4><p>开发容器化程序的最后一步是在<a href="https://hub.docker.com/">docker hub</a>之类的注册标上共享镜像，以便可以轻松下载他们，并在任何目标计算机上运行他们。 </p>
+<h4 id="创建一个Docker-hub-存储库"><a href="#创建一个Docker-hub-存储库" class="headerlink" title="创建一个Docker hub 存储库"></a>创建一个Docker hub 存储库</h4><p>在创建完docker id之后，可以创建一个docker镜像仓库</p>
+]]></content>
+      <categories>
+        <category>开发知识</category>
+      </categories>
+      <tags>
+        <tag>容器</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>pytorch学习</title>
     <url>/2020/09/06/chu-shi-pytorch/</url>
     <content><![CDATA[<p>在前面介绍深度学习的理论知识时，相信大家可以感受到，神经网络的实现主要有以下两个难题：</p>
@@ -3266,128 +3388,6 @@ if __name__ == '__main__':
       </categories>
       <tags>
         <tag>pytorch，深度学习框架</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>初识Docker</title>
-    <url>/2020/10/28/chu-shi-docker/</url>
-    <content><![CDATA[<p>近期因为在外出差，没咋看论文，为了让时间得到充分利用，自己打算学习一些开发相关的知识，毕竟技多不压身。 这部分就参考<a href="https://docs.docker.com/get-started/">Docker官方文档</a>来进行Docker基本知识的学习。<br>该部分分为以下三个章节进行组织:</p>
-<ul>
-<li>概念与设置 </li>
-<li>构建并运行镜像</li>
-<li>在Docker Hub 上共享镜像 <span id="more"></span>
-<h3 id="概念与设置"><a href="#概念与设置" class="headerlink" title="概念与设置"></a>概念与设置</h3><h4 id="Docker概念"><a href="#Docker概念" class="headerlink" title="Docker概念"></a>Docker概念</h4>Docker是供开发人员和系统管理员 使用容器构建，运行和共享应用程序的平台。使用容器部署应用程序称为容器化。容器不是新的，但用于轻松部署应用程序的容器却是新的。<br>容器化越来越受欢迎，这是因为容器具有如下几点优点: </li>
-<li>灵活：即使最复杂的应用程序也可以容器化。</li>
-<li>轻量级：容器利用并共享主机内核，在系统资源方面比虚拟机更有效。 </li>
-<li>可移植：您可以在本地构建，部署到云并在任何地方运行。</li>
-<li>松散耦合：容器是高度自给自足并封装的，可让您在不破坏其他容器的情况下更换或升级它们。</li>
-<li>可扩展：您可以在数据中心内增加并自动分布容器副本。</li>
-<li>安全：容器将积极的约束和隔离应用于流程，而用户无需进行任何配置。 </li>
-</ul>
-<h4 id="镜像与容器"><a href="#镜像与容器" class="headerlink" title="镜像与容器"></a>镜像与容器</h4><p>从根本上说，一个容器不过是一个<strong>正在运行的进程</strong>，并对其应用了一些附加的封装功能，以使其与主机和其他容器隔离。容器隔离的最重要方面之一是每个容器都与自己的专用文件系统进行交互。该文件系统由<strong>Docker映像</strong>提供。映像包括运行应用程序所需的所有内容-代码或二进制文件，运行时，依赖关系以及所需的任何其他文件系统对象。</p>
-<h4 id="容器和虚拟机"><a href="#容器和虚拟机" class="headerlink" title="容器和虚拟机"></a>容器和虚拟机</h4><p>一个容器本地运行于Linux系统上，并与其他容器共享主机内核。一个容器运行一个离散进程，占用的内存不超过其他任何可执行文件，因此其比较轻量。<br>相比之下，虚拟机（VM）运行一个全面的“来宾”操作系统，通过hypervisor对主机资源进行虚拟访问。一般来说，除了应用程序逻辑所消耗的外，vm会产生很多开销。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/Container.png" alt="容器与虚拟机"></p>
-<h4 id="Docker环境设置"><a href="#Docker环境设置" class="headerlink" title="Docker环境设置"></a>Docker环境设置</h4><p>参考<a href="https://docs.docker.com/get-started/">docker桌面版安装及测试</a>来进行安装，运行:</p>
-<pre class="line-numbers language-lang-bash"><code class="language-lang-bash">docker run hello-world
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>如果返回:</p>
-<pre class="line-numbers language-lang-bash"><code class="language-lang-bash">Hello from Docker!
-This message shows that your installation appears to be working correctly.
-
-To generate this message, Docker took the following steps:
- 1. The Docker client contacted the Docker daemon.
- 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
-    (amd64)
- 3. The Docker daemon created a new container from that image which runs the
-    executable that produces the output you are currently reading.
- 4. The Docker daemon streamed that output to the Docker client, which sent it
-    to your terminal.
-
-To try something more ambitious, you can run an Ubuntu container with:
- $ docker run -it ubuntu bash
-
-Share images, automate workflows, and more with a free Docker ID:
- https://hub.docker.com/
-
-For more examples and ideas, visit:
- https://docs.docker.com/get-started/
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>则说明已经在机器上成功安装docker desktop 并进行了快速测试，成功运行了第一个容器化应用<code>hello-world</code>. </p>
-<h3 id="构建并运行镜像"><a href="#构建并运行镜像" class="headerlink" title="构建并运行镜像"></a>构建并运行镜像</h3><h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><p>通过上面的测试，我们已经设置好了开发环境，接下来我们便可以开发容器化的应用程序，通常，开发流程如下: </p>
-<ul>
-<li>首先创建Docker映像，为应用程序的每个组件创建和测试单独的容器。</li>
-<li>将您的容器和支持基础结构组装成一个完整的应用程序。</li>
-<li>测试，共享和部署完整的容器化应用程序。 </li>
-</ul>
-<p>在本章节中，我们将工作重心放在第一个步骤，创建容器将基于的镜像。请记住，Docker映像捕获了将在其中运行容器化进程的私有文件系统；您需要创建一个图像，其中包含您的应用程序需要运行的内容。</p>
-<h4 id="设置"><a href="#设置" class="headerlink" title="设置"></a>设置</h4><p>首先下载<code>node-bulletin-board</code>项目，这是一个用Node.js编写的简单公告版应用程序,首先通过<code>git</code>下clone该项目:</p>
-<pre class="line-numbers language-lang-bash"><code class="language-lang-bash">git clone https://github.com/dockersamples/node-bulletin-board
-cd node-bulletin-board/bulletin-board-app
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<h4 id="使用dockerfile定义一个容器"><a href="#使用dockerfile定义一个容器" class="headerlink" title="使用dockerfile定义一个容器"></a>使用dockerfile定义一个容器</h4><p>在下载整个项目后，使用找到<code>bulletin board</code>应用中的<code>dockerfile</code>文件，<code>dockerfile</code>描述了如何为容器组装私有文件系统，并且还包含一些元数据来描述如何基于该映像运行容器。<br>下面给出该示例项目的<code>dockerfile</code>的注释文件: </p>
-<pre class="line-numbers language-lang-bash"><code class="language-lang-bash"># Use the official image as a parent image.
-FROM node:current-slim
-
-# Set the working directory.
-WORKDIR /usr/src/app
-
-# Copy the file from your host to your current location.
-COPY package.json .
-
-# Run the command inside your image filesystem.
-RUN npm install
-
-# Add metadata to the image to describe which port the container is listening on at runtime.
-EXPOSE 8080
-
-# Run the specified command within the container.
-CMD [ "npm", "start" ]
-
-# Copy the rest of your app's source code from your host to your image filesystem.
-COPY . .
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>下面给出该<code>dockerfile</code>命令逻辑解释: </p>
-<ul>
-<li>通过<code>FROM</code>指定一个基础映像-<code>node:current-slim</code>。这是由<code>node.js</code>公司构建的官方镜像并且已由<code>Docker</code>验证为包含<code>Node.js</code>长期支持解释器和基本依赖项的高质量镜像。</li>
-<li>使用<code>WORKDIR</code>指定所有后续操作都应该从映像文件系统中的<code>/usr/src/app</code>目录（而不是主机的文件系统）执行。</li>
-<li>使用<code>COPY</code>将<code>package.json</code>文件从主机复制到当前目录<code>(.)</code>,在本例子中，该当前目录是<code>/usr/src/app/package.json</code></li>
-<li>使用<code>RUN</code>命令在你的镜像文件系统中运行<code>npm install</code>命令，它将读取<code>package.json</code>确定应用程序的节点依赖项并安装它们。</li>
-<li>使用<code>COPY</code>将应用的剩余资源代码从主机复制到你的镜像文件系统。</li>
-</ul>
-<p>上面的步骤构建了我们的映像文件系统，但同时还包含一些其它命令:</p>
-<ul>
-<li>使用<code>CMD</code>命令来指定了如何基于该映像运行容器，该命令意味着该镜像要支持的容器化进程是<code>npm start</code> </li>
-<li><code>EXPOSURE 8080</code>则是通知<code>Docker</code>容器会实时监听端口<code>8080</code> </li>
-</ul>
-<h4 id="构建并测试镜像"><a href="#构建并测试镜像" class="headerlink" title="构建并测试镜像"></a>构建并测试镜像</h4><p>运行以下命令来构建公告板映像:</p>
-<pre class="line-numbers language-lang-bash"><code class="language-lang-bash">docker build --tag bulletinboard:1.0 .
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>运行成功后会显示： </p>
-<pre class="line-numbers language-lang-bash"><code class="language-lang-bash">Successfully tagged bulletinboard:1.0
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h4 id="将镜像作为容器运行"><a href="#将镜像作为容器运行" class="headerlink" title="将镜像作为容器运行"></a>将镜像作为容器运行</h4><ol>
-<li>运行以下命令以基于新映像启动容器 <pre class="line-numbers language-lang-bash"><code class="language-lang-bash">docker run --publish 8000:8080 --detach --name bb bulletinboard:1.0
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-这里有几个常见的标志: </li>
-</ol>
-<ul>
-<li><code>--publish</code>要求Docker将主机端口8000上传入的流量转发到容器的端口8080。容器具有自己的专用端口集，因此，如果要从网络访问某个端口，则必须以这种方式将流量转发到该端口。否则，作为默认的安全状态，防火墙规则将阻止所有网络流量到达您的容器。 </li>
-<li><code>--detach</code>要求docker在后台运行此程序 </li>
-<li><code>--name</code>指定一个名称，在后续命令中，可以使用该名称引用容器，本命令中指定为<code>bb</code></li>
-</ul>
-<ol>
-<li>在浏览器中访问应用程序<code>localhost:8000</code>,可以看到公告版应用程序已启动并且正在运行，在这一步，您通常会尽一切可能确保容器按预期方式工作。例如，现在是运行单元测试的时候了。</li>
-<li>对公告板容器正常工作感到满意后可以将其删除：<pre class="line-numbers language-lang-bash"><code class="language-lang-bash">docker rm --force bb
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-该<code>--force</code>选项停止一个正在运行中的容器，也可以采用<code>docker stop bb</code>来停止一个容器，这样就不需要使用<code>--force</code>选项来<code>rm</code>容器。</li>
-</ol>
-<h3 id="在Docker-Hub-中分享镜像"><a href="#在Docker-Hub-中分享镜像" class="headerlink" title="在Docker Hub 中分享镜像"></a>在Docker Hub 中分享镜像</h3><h4 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h4><p>开发容器化程序的最后一步是在<a href="https://hub.docker.com/">docker hub</a>之类的注册标上共享镜像，以便可以轻松下载他们，并在任何目标计算机上运行他们。 </p>
-<h4 id="创建一个Docker-hub-存储库"><a href="#创建一个Docker-hub-存储库" class="headerlink" title="创建一个Docker hub 存储库"></a>创建一个Docker hub 存储库</h4><p>在创建完docker id之后，可以创建一个docker镜像仓库</p>
-]]></content>
-      <categories>
-        <category>开发知识</category>
-      </categories>
-      <tags>
-        <tag>容器</tag>
       </tags>
   </entry>
   <entry>
@@ -8230,65 +8230,6 @@ P(o \mid c)=\frac{\exp \left(u_o^T v_c\right)}{\sum_{w \in V} \exp \left(u_w^T v
       </tags>
   </entry>
   <entry>
-    <title>论牺牲</title>
-    <url>/2020/11/19/lun-xi-sheng/</url>
-    <content><![CDATA[<p>本篇文章围绕以下问题做个简单讨论:</p>
-<blockquote>
-<p>人应该什么时候拿出牺牲自我的逻辑，什么时候拿出保护自己利益的逻辑？  </p>
-<p>当所处的小团体与包含小团体的大团体利益发生冲突时，此时是否应当牺牲小团体？ </p>
-</blockquote>
-<span id="more"></span>
-<h4 id="关于牺牲本身"><a href="#关于牺牲本身" class="headerlink" title="关于牺牲本身"></a>关于牺牲本身</h4><p>既然要讨论这个问题，我们首先要将问题本身定义清楚，为了使得接下来的讨论更加精确，我首先来更加精确地定义以下<strong>牺牲</strong>，其实我们看到的牺牲大致有两种: </p>
-<ul>
-<li><strong>第一种牺牲</strong>: 对于一个眼光长远的人来说，<strong>短暂的牺牲不过是为了更长远的利益</strong>，因此这种有目的的<strong>牺牲</strong>其实是一种更加隐蔽的<strong>利己</strong>，有时候对自己所谓的牺牲从这个视角来看，会有不一样的收获。</li>
-<li><strong>第二种牺牲</strong>: 这种牺牲是不考虑回报的牺牲，即就牺牲者自己的视角来看，在牺牲行为中，他/她是<strong>为某种东西损失个人利益而不问回报。</strong></li>
-</ul>
-<p>当然，这两种牺牲有时会导致同样的结局，毕竟人的认知是有差异的，但我在定义这两种牺牲，考虑的更多是<strong>动机</strong>，一种是<strong>以退为进</strong>的牺牲，另一种则是<strong>无保留</strong>的牺牲。对于待讨论的问题，我认为问题中所指的牺牲大概是我所定义的第二种牺牲，那么我们<strong>接下来所讨论的牺牲都是指代第二种牺牲。</strong></p>
-<h4 id="牺牲的对象"><a href="#牺牲的对象" class="headerlink" title="牺牲的对象"></a>牺牲的对象</h4><p>既然要讨论牺牲本身，那么我们首先从<strong>牺牲的对象</strong>来开始讨论，以具体的牺牲的行为来解构抽象的概念<strong>牺牲</strong>本身。<br>以笔者目前的认知水平，牺牲的对象大概可以粗分为三类: </p>
-<blockquote>
-<ul>
-<li>具象的个人，比如亲人和爱人 </li>
-<li>个人身处的团体</li>
-<li>某种理想或价值观念 </li>
-</ul>
-</blockquote>
-<p>下面就这三种牺牲的对象来进行分别讨论: </p>
-<ul>
-<li><strong>具象的个人</strong>: 对于亲人与爱人，这种牺牲一般是出于对某种关系的妥协，血浓于水，琴瑟和鸣，我们愿意为了维系或加深这种关系而做出个人利益的让步；对于同事或朋友所做出的牺牲也大致是如此，对于个人高度认可，对于两人关系高度认可。</li>
-<li><strong>个人身处的团体</strong>: 我们既然加入这样一个团体，必然个体与团体之间是有着一致性的，对于兴趣社团，这种一致性表现为个人兴趣可以得到更好发展；对于公司，这种一致性表现在个人以劳动换取酬金，以改善客观生活。当我们决定为团体所做牺牲时，这说明个人对团体的认可程度较高，这时可能牺牲的对象就不只是简单的<strong>团体</strong>，其中或多或少包含着对<strong>团体中个人</strong>的情感。 </li>
-<li><strong>理想或价值观念</strong>: 这种牺牲则是出于对理想与价值观念的高度认同。</li>
-</ul>
-<p>需要注意的是，基本上任何组织或团队都是三者耦合而成，会谈优秀的个人、高质量的团队、团队的价值观，而加入团体的人则是形形色色，大家奔着不同的目的(至少权重不同)加入了这样一个群体。 </p>
-<blockquote>
-<p>那么通过上面具体的讨论，我们会发现所谓牺牲的对象，其实本质上都是一种<strong>认可</strong>，对个人关系的认可，对团体的认可，对理想/价值观的认可，这种<strong>认可</strong>会驱使我们在某些情况下做出牺牲。</p>
-</blockquote>
-<h4 id="回到问题本身"><a href="#回到问题本身" class="headerlink" title="回到问题本身"></a>回到问题本身</h4><blockquote>
-<p>Q1：人什么时候应该拿出自我牺牲的逻辑呢？ </p>
-</blockquote>
-<p>下面从两个角度来进行回答: </p>
-<ul>
-<li>主观角度: 从这个角度来说，当对某个人、某个团体认可程度超过自己心中阈值之时，便可做出牺牲，这样的论断是简单的，这样做人也是舒服的。 </li>
-<li>从主客观结合角度: 当人要做出牺牲，总是担心自己<strong>白白牺牲</strong>: <ul>
-<li>帮助了一个朋友，但他/她是个白眼狼；毫无保留爱了一个人，结果受到欺骗。 </li>
-<li>为团体做出了牺牲，但却并未得到认可，甚至团体中人认为你是想出风头。 </li>
-<li>为某种理想、价值观做出牺牲，但万一这种理想、价值观本身就错误呢?<br><strong>从这个角度来考虑，那么我们的牺牲就不但要考虑作为牺牲的主体，同时也需要考虑牺牲的客体，重新认识牺牲客体对于牺牲行为本身的看法，以使自己不白白牺牲。</strong></li>
-</ul>
-</li>
-</ul>
-<p>就我个人而言，对亲人、爱人的个人牺牲，我更倾向于从主观角度进行思考，而对团体的牺牲，我需要从主客观结合的角度来思考，毕竟一个团体中鱼龙混杂，奔着不同目的的人混在了一个团体之中，此时盲目的主观牺牲就会成为”白白牺牲”。</p>
-<blockquote>
-<p>Q2: 当所处的小团体与包含小团体的大团体利益发生冲突时，此时是否应当牺牲小团体？ </p>
-</blockquote>
-<p>这个问题我认为其实是包含在第一个问题之中的，我们在一个团体中时，首先需要明确自己认可的东西是什么，认可的东西是在小团体里面还是一个所谓的大团体之中，此时千万要警惕站在<strong>别人</strong>的角度考虑这样一个问题。</p>
-]]></content>
-      <categories>
-        <category>闲谈</category>
-      </categories>
-      <tags>
-        <tag>无感而发</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>规则学习</title>
     <url>/2020/08/27/gui-ze-xue-xi/</url>
     <content><![CDATA[<p>首先讲一个有意思的现象，早期的主流人工智能专注于以逻辑为基础来进行形式化和推理，但这样很难定量地对不确定事件进行表达和处理，后来随着机器学习算法的井喷，大家都更加关注于对定量的数据进行处理。但现在，很多人发现在解决某些任务的时候，加入一些行业中的常识知识可能会让任务解决地更好，而现在定性知识与定量数据之间似乎有着一道鸿沟，唯一的联系就是进行算法设计的人可能会依赖于他的领域知识来选择合适的算法并对算法进行调参。基于学习下定性知识如何表达的想法，这部分介绍下周志华老师🍉书的倒数第二章——规则学习，这部分内容安扎以下结构组织:</p>
@@ -8356,6 +8297,65 @@ P(o \mid c)=\frac{\exp \left(u_o^T v_c\right)}{\sum_{w \in V} \exp \left(u_w^T v
       </categories>
       <tags>
         <tag>规则学习，定性关联</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>论牺牲</title>
+    <url>/2020/11/19/lun-xi-sheng/</url>
+    <content><![CDATA[<p>本篇文章围绕以下问题做个简单讨论:</p>
+<blockquote>
+<p>人应该什么时候拿出牺牲自我的逻辑，什么时候拿出保护自己利益的逻辑？  </p>
+<p>当所处的小团体与包含小团体的大团体利益发生冲突时，此时是否应当牺牲小团体？ </p>
+</blockquote>
+<span id="more"></span>
+<h4 id="关于牺牲本身"><a href="#关于牺牲本身" class="headerlink" title="关于牺牲本身"></a>关于牺牲本身</h4><p>既然要讨论这个问题，我们首先要将问题本身定义清楚，为了使得接下来的讨论更加精确，我首先来更加精确地定义以下<strong>牺牲</strong>，其实我们看到的牺牲大致有两种: </p>
+<ul>
+<li><strong>第一种牺牲</strong>: 对于一个眼光长远的人来说，<strong>短暂的牺牲不过是为了更长远的利益</strong>，因此这种有目的的<strong>牺牲</strong>其实是一种更加隐蔽的<strong>利己</strong>，有时候对自己所谓的牺牲从这个视角来看，会有不一样的收获。</li>
+<li><strong>第二种牺牲</strong>: 这种牺牲是不考虑回报的牺牲，即就牺牲者自己的视角来看，在牺牲行为中，他/她是<strong>为某种东西损失个人利益而不问回报。</strong></li>
+</ul>
+<p>当然，这两种牺牲有时会导致同样的结局，毕竟人的认知是有差异的，但我在定义这两种牺牲，考虑的更多是<strong>动机</strong>，一种是<strong>以退为进</strong>的牺牲，另一种则是<strong>无保留</strong>的牺牲。对于待讨论的问题，我认为问题中所指的牺牲大概是我所定义的第二种牺牲，那么我们<strong>接下来所讨论的牺牲都是指代第二种牺牲。</strong></p>
+<h4 id="牺牲的对象"><a href="#牺牲的对象" class="headerlink" title="牺牲的对象"></a>牺牲的对象</h4><p>既然要讨论牺牲本身，那么我们首先从<strong>牺牲的对象</strong>来开始讨论，以具体的牺牲的行为来解构抽象的概念<strong>牺牲</strong>本身。<br>以笔者目前的认知水平，牺牲的对象大概可以粗分为三类: </p>
+<blockquote>
+<ul>
+<li>具象的个人，比如亲人和爱人 </li>
+<li>个人身处的团体</li>
+<li>某种理想或价值观念 </li>
+</ul>
+</blockquote>
+<p>下面就这三种牺牲的对象来进行分别讨论: </p>
+<ul>
+<li><strong>具象的个人</strong>: 对于亲人与爱人，这种牺牲一般是出于对某种关系的妥协，血浓于水，琴瑟和鸣，我们愿意为了维系或加深这种关系而做出个人利益的让步；对于同事或朋友所做出的牺牲也大致是如此，对于个人高度认可，对于两人关系高度认可。</li>
+<li><strong>个人身处的团体</strong>: 我们既然加入这样一个团体，必然个体与团体之间是有着一致性的，对于兴趣社团，这种一致性表现为个人兴趣可以得到更好发展；对于公司，这种一致性表现在个人以劳动换取酬金，以改善客观生活。当我们决定为团体所做牺牲时，这说明个人对团体的认可程度较高，这时可能牺牲的对象就不只是简单的<strong>团体</strong>，其中或多或少包含着对<strong>团体中个人</strong>的情感。 </li>
+<li><strong>理想或价值观念</strong>: 这种牺牲则是出于对理想与价值观念的高度认同。</li>
+</ul>
+<p>需要注意的是，基本上任何组织或团队都是三者耦合而成，会谈优秀的个人、高质量的团队、团队的价值观，而加入团体的人则是形形色色，大家奔着不同的目的(至少权重不同)加入了这样一个群体。 </p>
+<blockquote>
+<p>那么通过上面具体的讨论，我们会发现所谓牺牲的对象，其实本质上都是一种<strong>认可</strong>，对个人关系的认可，对团体的认可，对理想/价值观的认可，这种<strong>认可</strong>会驱使我们在某些情况下做出牺牲。</p>
+</blockquote>
+<h4 id="回到问题本身"><a href="#回到问题本身" class="headerlink" title="回到问题本身"></a>回到问题本身</h4><blockquote>
+<p>Q1：人什么时候应该拿出自我牺牲的逻辑呢？ </p>
+</blockquote>
+<p>下面从两个角度来进行回答: </p>
+<ul>
+<li>主观角度: 从这个角度来说，当对某个人、某个团体认可程度超过自己心中阈值之时，便可做出牺牲，这样的论断是简单的，这样做人也是舒服的。 </li>
+<li>从主客观结合角度: 当人要做出牺牲，总是担心自己<strong>白白牺牲</strong>: <ul>
+<li>帮助了一个朋友，但他/她是个白眼狼；毫无保留爱了一个人，结果受到欺骗。 </li>
+<li>为团体做出了牺牲，但却并未得到认可，甚至团体中人认为你是想出风头。 </li>
+<li>为某种理想、价值观做出牺牲，但万一这种理想、价值观本身就错误呢?<br><strong>从这个角度来考虑，那么我们的牺牲就不但要考虑作为牺牲的主体，同时也需要考虑牺牲的客体，重新认识牺牲客体对于牺牲行为本身的看法，以使自己不白白牺牲。</strong></li>
+</ul>
+</li>
+</ul>
+<p>就我个人而言，对亲人、爱人的个人牺牲，我更倾向于从主观角度进行思考，而对团体的牺牲，我需要从主客观结合的角度来思考，毕竟一个团体中鱼龙混杂，奔着不同目的的人混在了一个团体之中，此时盲目的主观牺牲就会成为”白白牺牲”。</p>
+<blockquote>
+<p>Q2: 当所处的小团体与包含小团体的大团体利益发生冲突时，此时是否应当牺牲小团体？ </p>
+</blockquote>
+<p>这个问题我认为其实是包含在第一个问题之中的，我们在一个团体中时，首先需要明确自己认可的东西是什么，认可的东西是在小团体里面还是一个所谓的大团体之中，此时千万要警惕站在<strong>别人</strong>的角度考虑这样一个问题。</p>
+]]></content>
+      <categories>
+        <category>闲谈</category>
+      </categories>
+      <tags>
+        <tag>无感而发</tag>
       </tags>
   </entry>
   <entry>
@@ -8826,27 +8826,6 @@ P(o \mid c)=\frac{\exp \left(u_o^T v_c\right)}{\sum_{w \in V} \exp \left(u_w^T v
       </tags>
   </entry>
   <entry>
-    <title>非监督学习</title>
-    <url>/2020/09/11/fei-jian-du-xue-xi/</url>
-    <content><![CDATA[<p>这部分总结下传统统计学习的最后一部分内容——非监督学习，非监督学习又称无监督学习，我们前面讲的大部分算法都是需要样本的标签的，通过标签来构造损失函数，进而进行模型学习，但在有的情况下我们并没有数据的标签，这种情况下我们就什么都不能做了么？当然不是，对于无标签数据，我们仍旧可以开展一部分工作，比如：</p>
-<ul>
-<li>概率模型估计 </li>
-<li>数据降维</li>
-<li>数据聚类</li>
-</ul>
-<p>由于概率模型估计算法在前面已经讲过了(<a href="https://xuejy19.github.io/2020/07/30/EM/">EM算法</a>、<a href="https://xuejy19.github.io/2020/07/27/概率密度函数估计/#more">概率密度函数估计</a>)，这里就不再赘述，本文主要简单介绍下无监督学习问题的思想。</p>
-<span id="more"></span>
-<h3 id="无监督学习思想"><a href="#无监督学习思想" class="headerlink" title="无监督学习思想"></a>无监督学习思想</h3><p>无监督学习是从无标注的数据中学习数据的统计规律或者说内在结构的机器学习，主要包括聚类、降维、概率估计，<strong>无监督学习可以用于数据分析或者监督学习预处理</strong>。<br>无监督学习使用无标注数据$U = { x<em>1, x_2, \dots, x_N}$学习或训练，其中$x_i，i = 1,2,\dots,N$, 是样本，由特征向量组成。无监督学习的模型是函数$z = g</em>{\theta}(x)$ , 条件概率分布$P<em>{\theta}(z|x)$，或条件概率分布$P</em>{\theta}(x|z)$。其中$x \in X$是输入，表示样本； $z \in Z$是输出，表示对样本的分析结果，可以是类别、转换、概率；$\theta$是参数。<br>无监督学习是一个困难的任务，因为数据没有标注，也就是没有人为的引导，机器需要自己从数据中找出规律。模型的输入$x$在数据中可以观测，而输出$z$隐藏在数据中。无监督学习通常需要大量的数据，因为对数据隐藏的规律的发现需要足够的观测。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/Unsupervised.jpg" alt="机器学习算法划分"></p>
-<p>后面将会有两片文章分别介绍降维算法和聚类算法。</p>
-]]></content>
-      <categories>
-        <category>统计学习</category>
-      </categories>
-      <tags>
-        <tag>降维，聚类，概率密度估计</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>风光摄影</title>
     <url>/2020/11/27/feng-guang-she-ying/</url>
     <content><![CDATA[<p>这一篇文章就跟随校风光摄影的大佬来了解一下风光摄影的一些知识，该部分按照以下三部分进行组织: </p>
@@ -8969,6 +8948,27 @@ P(o \mid c)=\frac{\exp \left(u_o^T v_c\right)}{\sum_{w \in V} \exp \left(u_w^T v
       </categories>
       <tags>
         <tag>风光摄影</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>非监督学习</title>
+    <url>/2020/09/11/fei-jian-du-xue-xi/</url>
+    <content><![CDATA[<p>这部分总结下传统统计学习的最后一部分内容——非监督学习，非监督学习又称无监督学习，我们前面讲的大部分算法都是需要样本的标签的，通过标签来构造损失函数，进而进行模型学习，但在有的情况下我们并没有数据的标签，这种情况下我们就什么都不能做了么？当然不是，对于无标签数据，我们仍旧可以开展一部分工作，比如：</p>
+<ul>
+<li>概率模型估计 </li>
+<li>数据降维</li>
+<li>数据聚类</li>
+</ul>
+<p>由于概率模型估计算法在前面已经讲过了(<a href="https://xuejy19.github.io/2020/07/30/EM/">EM算法</a>、<a href="https://xuejy19.github.io/2020/07/27/概率密度函数估计/#more">概率密度函数估计</a>)，这里就不再赘述，本文主要简单介绍下无监督学习问题的思想。</p>
+<span id="more"></span>
+<h3 id="无监督学习思想"><a href="#无监督学习思想" class="headerlink" title="无监督学习思想"></a>无监督学习思想</h3><p>无监督学习是从无标注的数据中学习数据的统计规律或者说内在结构的机器学习，主要包括聚类、降维、概率估计，<strong>无监督学习可以用于数据分析或者监督学习预处理</strong>。<br>无监督学习使用无标注数据$U = { x<em>1, x_2, \dots, x_N}$学习或训练，其中$x_i，i = 1,2,\dots,N$, 是样本，由特征向量组成。无监督学习的模型是函数$z = g</em>{\theta}(x)$ , 条件概率分布$P<em>{\theta}(z|x)$，或条件概率分布$P</em>{\theta}(x|z)$。其中$x \in X$是输入，表示样本； $z \in Z$是输出，表示对样本的分析结果，可以是类别、转换、概率；$\theta$是参数。<br>无监督学习是一个困难的任务，因为数据没有标注，也就是没有人为的引导，机器需要自己从数据中找出规律。模型的输入$x$在数据中可以观测，而输出$z$隐藏在数据中。无监督学习通常需要大量的数据，因为对数据隐藏的规律的发现需要足够的观测。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/Unsupervised.jpg" alt="机器学习算法划分"></p>
+<p>后面将会有两片文章分别介绍降维算法和聚类算法。</p>
+]]></content>
+      <categories>
+        <category>统计学习</category>
+      </categories>
+      <tags>
+        <tag>降维，聚类，概率密度估计</tag>
       </tags>
   </entry>
 </search>
