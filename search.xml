@@ -100,6 +100,91 @@ P(e) &= P(x \in \mathcal{R_1},\omega_2) + P(x \in \mathcal{R_2},\omega_1) \\
       </categories>
   </entry>
   <entry>
+    <title>Domain generalization</title>
+    <url>/2022/10/28/domain-generalization/</url>
+    <content><![CDATA[<p>本篇文章是对文章<a href="https://arxiv.org/pdf/2103.03097.pdf">Generalizing to Unseen Domains: A Survey on<br>Domain Generalization</a>的研读介绍，旨在对域泛化(domain generalization)领域研究现状有粗略了解，考虑将该领域的一些研究思想迁移到故障检测/溯源/软测量等任务上去。<span id="more"></span> </p>
+<h3 id="出发点"><a href="#出发点" class="headerlink" title="出发点"></a>出发点</h3><ul>
+<li><p>现有算法面临的挑战<br>传统的机器学习算法的泛化能力依赖于训练域与测试域的独立同分布(i.i.d)假设，而在现实数据中，这样的假设往往无法得到满足。</p>
+</li>
+<li><p>目的<br>如果我们已经拥有了一个/多个域的数据，希望让训练得到的模型在未知域上仍能有良好的泛化能力。 </p>
+</li>
+</ul>
+<h3 id="问题数学描述"><a href="#问题数学描述" class="headerlink" title="问题数学描述"></a>问题数学描述</h3><blockquote>
+<ul>
+<li><p>domain: 记$\mathcal{X}$为非空的输入空间，$\mathcal{Y}$为输出空间，输入输出之间的关系通过联合概率分布$P<em>{XY}$来描述，域则由从该分布中采样得到的样本组成$S = {(x_i,y_i)}</em>{i=1}^n \sim P_{XY}$。</p>
+</li>
+<li><p>domain generalization: 在域泛化任务中，我们有$M$个训练/源域的数据</p>
+<script type="math/tex; mode=display">
+  S_{train} = {S_i|i=1,...,M}, where \quad S^i = \{(x_j^i, y_j^i)\}_{j=1}^{n_i} \quad denotes \quad i_{th} \quad domain</script><p>不同域的数据具有不同的联合概率分布，即$P<em>{XY}^i \neq P</em>{XY}^j $；域泛化的目标是学习到一个<strong>鲁棒且可泛化的预测方程</strong>$h: \mathcal{X} \rightarrow \mathcal{Y}$, 该模型在未知域$S_{test}$上的预测误差要尽可能小: </p>
+<script type="math/tex; mode=display">
+  \min_{h} \mathbb{E}_{(x,y) \in S_{test}} [\ell(h(x),y)]</script></li>
+</ul>
+</blockquote>
+<h3 id="相关研究领域介绍"><a href="#相关研究领域介绍" class="headerlink" title="相关研究领域介绍"></a>相关研究领域介绍</h3><ul>
+<li><strong>多任务学习(Multi-task learning)</strong>: 在多个任务上联合优化模型，目的是为了提高模型在原始任务上的泛化能力，多域学习(multi-domain learning)可以看作多任务学习的一种特例。</li>
+<li><strong>迁移学习(Transfer learning)</strong>: 在源任务/域上训练得到模型，目的在于提高模型在目标任务/域上的性能，迁移学习最广泛的应用就是<strong>预训练模型+微调</strong>的范式，与域泛化的区别在于迁移学习中目标域的数据是可获取的。</li>
+<li><strong>域适应(domain adaptation)</strong>: 该领域可以看作是迁移学习的一个分支，也是需要能够获取目标域的数据。 </li>
+<li><strong>元学习(Meta-learning)</strong>: 学习学习算法，即learning to learn, 元学习是一种通用的学习策略可以用于实现域泛化。 </li>
+<li><strong>终身学习/持续学习</strong>: 随着任务/数据域的不断更新，模型需要不断利用新的知识来更新模型参数。 </li>
+<li><strong>零样本学习(Zero-shot learning)</strong>: 利用已有类别的数据学习模型，对新类别的样本仍能分辨出来。 </li>
+</ul>
+<h3 id="方法分类"><a href="#方法分类" class="headerlink" title="方法分类"></a>方法分类</h3><p><img src="/.io//%E6%96%B9%E6%B3%95%E5%88%86%E7%B1%BB.png" alt></p>
+<p>目前域泛化的方法可以分为三类： </p>
+<ul>
+<li><strong>数据操纵</strong>: 基本思路是提高训练数据的涵盖范围，常用的思路有两个: <ul>
+<li>数据扩充: 数据扩展/随机变换 </li>
+<li>数据生成: 生成更具多样性的样本 </li>
+</ul>
+</li>
+<li><strong>表征学习</strong>: 基本思想是学习到一些稳定的特征，可细分为两个方向: <ul>
+<li>域不变表征学习 </li>
+<li>特征解偶</li>
+</ul>
+</li>
+<li><strong>学习策略</strong>: 探索一般性的学习策略以提升模型泛化能力，常用思路有: <ul>
+<li>集成学习</li>
+<li>元学习 </li>
+<li>梯度操作 </li>
+<li>分布鲁棒优化 </li>
+<li>自监督学习 </li>
+</ul>
+</li>
+</ul>
+<h4 id="数据操纵-data-manipulation"><a href="#数据操纵-data-manipulation" class="headerlink" title="数据操纵(data manipulation)"></a>数据操纵(data manipulation)</h4><p>提高训练数据的多样性，数据增强的有效性在于增强过后的数据未来有可能出现在测试域中，<strong>能否考虑应用一些机理知识来进行数据增强，类似于反事实的概念</strong>。 </p>
+<h5 id="基于数据扩充的域泛化"><a href="#基于数据扩充的域泛化" class="headerlink" title="基于数据扩充的域泛化"></a>基于数据扩充的域泛化</h5><p>常用的数据扩充操作有翻转、旋转、裁剪、添加噪声等</p>
+<ul>
+<li>域随机化: 改变目标大小/位置/光线/随机噪声 </li>
+<li>对抗数据增广: 实现有效数据增广，同标签，沿差异大的方向扩充样本 </li>
+</ul>
+<h5 id="基于数据生成的域泛化"><a href="#基于数据生成的域泛化" class="headerlink" title="基于数据生成的域泛化"></a>基于数据生成的域泛化</h5><p>一般是通过VAE或者GAN来实现数据增强</p>
+<h4 id="表征学习"><a href="#表征学习" class="headerlink" title="表征学习"></a>表征学习</h4><p>将预测方程$h$拆分未$h = f \cdot g$, 表征学习的目标为: </p>
+<script type="math/tex; mode=display">
+\min _{f, g} \mathbb{E}_{\mathbf{x}, y} \ell(f(g(\mathbf{x})), y)+\lambda \ell_{\mathrm{reg}}</script><h5 id="基于域不变性表征学习的域泛化"><a href="#基于域不变性表征学习的域泛化" class="headerlink" title="基于域不变性表征学习的域泛化"></a>基于域不变性表征学习的域泛化</h5><p>理论保证: 如果不同数据域的表征相同，那么说明该表征具有一般性并且可以迁移到其他域，在该表征函数下，源域的数据和目标域的数据更接近了，使得泛化误差上界更紧。</p>
+<ul>
+<li>基于核的方法(Kernel-based methods): 将原始数据映射到高维空间，通过核函数可以在不知道样本高维坐标情况下计算两样本内积，将不同域样本映射到高维空间，分布一致。</li>
+<li>域对抗学习(Domain adversarial learning): 判别器来识别数据属于不同域，生成器用来学习不变表征让判别器分辨不出来。</li>
+<li>显式特征对齐(Explicit feature alignment): 在学习的过程显式让特征对齐 </li>
+<li>不变风险最小化(Invariant risk minimization): </li>
+</ul>
+<h5 id="基于特征解耦的域泛化"><a href="#基于特征解耦的域泛化" class="headerlink" title="基于特征解耦的域泛化"></a>基于特征解耦的域泛化</h5><p>将原始数据投影到特征空间，将特征分为domain-shared feature 和 domain-specific feature, 目标函数一般为如下形式: </p>
+<script type="math/tex; mode=display">
+\min _{g_c, g_s, f} \mathbb{E}_{\mathbf{x}, y} \ell\left(f\left(g_c(\mathbf{x})\right), y\right)+\lambda \ell_{\mathrm{reg}}+\mu \ell_{\mathrm{recon}}\left(\left[g_c(\mathbf{x}), g_s(\mathbf{x})\right], \mathbf{x}\right)</script><ul>
+<li>多成分分析: 用不同的特征提取器来提取数据中的不同成分 </li>
+<li>生成模型: Domain-invariant VAE </li>
+<li>因果启发的方法: </li>
+</ul>
+<h4 id="学习策略"><a href="#学习策略" class="headerlink" title="学习策略"></a>学习策略</h4><h5 id="基于集成学习的域泛化"><a href="#基于集成学习的域泛化" class="headerlink" title="基于集成学习的域泛化"></a>基于集成学习的域泛化</h5><p>每个域都有一个模型，结合输出结果 </p>
+<h5 id="基于元学习的域泛化"><a href="#基于元学习的域泛化" class="headerlink" title="基于元学习的域泛化"></a>基于元学习的域泛化</h5><p>元学习的关键思想是从多个任务中学习一个通用的模型</p>
+<h5 id="基于梯度操作的域泛化"><a href="#基于梯度操作的域泛化" class="headerlink" title="基于梯度操作的域泛化"></a>基于梯度操作的域泛化</h5><p>self-challenging训练算法 </p>
+<h5 id="基于分布鲁棒优化的方法"><a href="#基于分布鲁棒优化的方法" class="headerlink" title="基于分布鲁棒优化的方法"></a>基于分布鲁棒优化的方法</h5><h5 id="基于自监督学习的域泛化"><a href="#基于自监督学习的域泛化" class="headerlink" title="基于自监督学习的域泛化"></a>基于自监督学习的域泛化</h5>]]></content>
+      <categories>
+        <category>论文阅读</category>
+      </categories>
+      <tags>
+        <tag>前沿方向</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>EM</title>
     <url>/2020/07/30/em/</url>
     <content><![CDATA[<p>在前面概率密度函数估计中，若概率模型的变量都是可观测变量，那么给定数据，便可以直接用极大似然估计法或者贝叶斯估计法来直接估计模型参数。但是当模型中含有隐变量时，便不能直接使用这些估计方法，<strong>EM算法就是含有隐变量的概率模型参数的极大似然估计法</strong><span id="more"></span>,本文便围绕EM算法展开，主要包含以下几部分：</p>
@@ -258,6 +343,254 @@ P(Y|\theta^{i+1}) \geq P(Y|\theta^i)</script><p><strong>定理2</strong>:设$L(\
       </categories>
       <tags>
         <tag>EM算法,隐变量,高斯混合模型</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>隐马尔可夫模型</title>
+    <url>/2020/08/17/hmm/</url>
+    <content><![CDATA[<p>在这一部分，我将对隐马尔可夫模型(HMM)做简要介绍,该章节分为以下几个部分进行组织:</p>
+<ul>
+<li>基本概念</li>
+<li>概率计算算法</li>
+<li>学习算法</li>
+<li>预测算法</li>
+</ul>
+<span id="more"></span>
+<h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p>首先给出隐马尔可夫模型的定义：</p>
+<blockquote>
+<p><strong>隐马尔可夫模型</strong>:隐马尔可夫模型是关于时序的概率模型，描述由一个隐藏的马尔可夫链随机生成不可观测的随机状态序列,再由各个状态生成一个观测从而产生观测随机序列的过程。隐藏的马尔可夫链随机生成的状态序列称为状态序列；每个状态生成一个观测，而由此产生的观测的随机序列，称为观测序列，序列的每一个位置又可以看作是一个时刻。</p>
+</blockquote>
+<p>隐马尔可夫模型的形式定义如下:设$Q$是所有可能的状态的集合,$V$是所有可能的观测的集合:</p>
+<script type="math/tex; mode=display">
+Q = (q_1,q_1,\dots,q_N),V = (v_1,v_2,\dots,v_M)</script><p>其中,$N$是可能的状态数，$M$是可能的观测数。$I$是长度为$T$的状态序列,$O$是对应的观测序列:</p>
+<script type="math/tex; mode=display">
+I = (i_1,i_2,\dots,i_T),O = (o_1,o_2,\dots,o_T)</script><p>$A$是状态转移概率矩阵:</p>
+<script type="math/tex; mode=display">
+A = [a_{ij}]_{N \times N}</script><p>其中:</p>
+<script type="math/tex; mode=display">
+a_{ij} = P(i_{t+1} = q_j | i_t = q_i),i=1,\dots,N;j=1,\dots,N</script><p>指代在时刻$t$处于状态$q_i$条件下,在时刻$t+1$转移到$q_j$的概率，$B$是观测概率矩阵:</p>
+<script type="math/tex; mode=display">
+B = [b_j(k)]_{N\times M}</script><p>其中:</p>
+<script type="math/tex; mode=display">
+b_j(k) = P(o_t = v_k|i_t = q_j),\quad k=1,2,\dots,M;\quad,j=1,2,\dots,N</script><p>指代在时刻$t$处于状态$q_j$条件下生成观测$v_k$的概率。$\pi$是初始是初始状态概率向量:</p>
+<script type="math/tex; mode=display">
+\pi = (\pi_i)</script><p>其中:</p>
+<script type="math/tex; mode=display">
+\pi_i = P(i_1 = q_i),\quad i =1,2,\dots,N</script><p>指代初始时刻处于状态$q_i$的概率。隐马尔可夫模型由初始状态概率向量$\pi$,状态转移概率矩阵$A$和观测概率矩阵$B$决定。$\pi$和$A$决定状态序列,$B$决定观测序列。因此，隐马尔可夫模型可以用三元符号表示:</p>
+<script type="math/tex; mode=display">
+\lambda = (\pi,A,B)</script><p>状态转移矩阵$A$与初始状态向量$\pi$确定了隐藏的马尔可夫链，生成不可观测的状态序列。观测概率矩阵$B$确定了如何从状态生成观测，与状态序列综合确定了如何产生观测序列。从定义来看，隐马尔可夫模型做了两个基本假设：</p>
+<ol>
+<li>齐次马尔可夫性假设，即假设隐藏的马尔可夫链在任意时刻$t$的状态只依赖于前一时刻的状态，与其他时刻的状态及观测无关，也与$t$无关：</li>
+</ol>
+<script type="math/tex; mode=display">
+P(i_t| i_{t-1},o_{t-1},\dots,i_1,t_1) = P(i_t|i_{t-1}),\quad t = 1,2,\dots,T</script><ol>
+<li>观测独立性假设,即假设在任意时刻的观测只依赖于该时刻的马尔可夫链的状态，与其他观测及状态无关:</li>
+</ol>
+<script type="math/tex; mode=display">
+P(o_t|i_t,i_{t-1},o_{t-1},\dots,i_1,t_1) = P(o_t|i_t)</script><p>隐马尔可夫模型可用于标注,这时状态对应着标记。标注问题是给定观测的序列预测其对应的标记序列。可以假设标注问题的数据是由隐马尔可夫模型生成的。这样我们可以利用隐马尔可夫模型的学习与预测算法进行标注。</p>
+<h4 id="观测序列的生成过程"><a href="#观测序列的生成过程" class="headerlink" title="观测序列的生成过程"></a>观测序列的生成过程</h4><p>根据隐马尔可夫模型定义,可以将一个长度为$T$的观测序列$O = (o_1,o_2,\dots,o_T)$的生成过程描述如下:</p>
+<blockquote>
+<p>输入： 隐马尔可夫模型$\lambda = (A,B,\pi)$,观测序列长度$T$<br>输出： 观测序列$O = (o_1,o_2,\dots,o_T)$</p>
+<ol>
+<li>按照初始状态分布$\pi$产生状态$i_1$</li>
+<li>令$t=1$</li>
+<li>按照状态$i<em>t$的观测概率分布$b</em>{i_t}(k)$生成$o_t$</li>
+<li>按照状态$i<em>t$的状态转移概率分布${a</em>{i<em>t,i</em>{t+1}}}$产生状态$i_{t+1}$</li>
+<li>令$t = t+1$,如果$t&lt;T$,转步(3),否则，终止</li>
+</ol>
+</blockquote>
+<h4 id="隐马尔可夫模型的3个基本问题"><a href="#隐马尔可夫模型的3个基本问题" class="headerlink" title="隐马尔可夫模型的3个基本问题"></a>隐马尔可夫模型的3个基本问题</h4><p>隐马尔可夫模型有3个基本问题:</p>
+<ul>
+<li>概率计算问题,给定模型$\lambda = (A,B,\pi)$和观测序列$O = (o_1,o_2,\dots,o_T)$,计算在模型$\lambda$下观测序列$O$出现的概率$P(O|\lambda)$</li>
+<li>学习问题，已知观测序列$O = (o_1,o_2,\dots,o_T)$,估计模型$\lambda = (A,B,\pi)$参数，使得在该模型下观测序列概率$P(O|\lambda)$。即用极大似然估计的方法估计参数。</li>
+<li>预测问题，也称为解码问题。已知模型$\lambda = (A,B,\pi)$和观测序列$O = (o_1,o_2,\dots,o_T)$,求对给定观测序列条件概率$P(I|O)$最大的状态序列$I = (i_1,i_2,\dots,i_T)$。即给定观测序列，求最有可能的对应的状态序列。</li>
+</ul>
+<h3 id="概率计算算法"><a href="#概率计算算法" class="headerlink" title="概率计算算法"></a>概率计算算法</h3><h4 id="直接计算法"><a href="#直接计算法" class="headerlink" title="直接计算法"></a>直接计算法</h4><p>首先介绍最直观的直接计算法，给定模型和观测序列后，计算观测序列出现的概率的直接方法便是按照概率公式直接计算。通过列举所有可能的长度为$T$的状态序列，求各个状态序列$I$与观测序列$O$的联合概率$P(I,O|\lambda)$,然后对所有可能的状态序列求和，得到$P(O|\lambda)$。</p>
+<p>状态序列$I = (i_1,i_2,\dots,i_T)$的概率是:</p>
+<script type="math/tex; mode=display">
+P(I|\lambda) = \pi_{i1}a_{i_1 i_2} a_{i_2 i_3} \dots a_{i_{T-1} i_T}</script><p>对固定的状态序列$I = (i_1,i_2,\dots,i_T)$,观测序列$O = (o_1,o_2,\dots,o_T)$的概率是:</p>
+<script type="math/tex; mode=display">
+P(O|I,\lambda) = b_{i_1}(o_1) b_{i_2}(o_2) \dots b_{i_T}(o_T)</script><p>$O$和$I$同时出现的联合概率为:</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+         P(O,I|\lambda) &= P(O|I,\lambda) P(I|\lambda) \\\\
+            &= \pi_{i_1}b_{i_1}(o_1) a_{i_1 i_2} b_{i_2}(o_2) \dots a_{i_{T-1}i_T} b_{i_T}(o_T)
+    \end{aligned}</script><p>然后，对所有可能的状态序列$I$求和，得到观测序列$O$的概率$P(O|\lambda)$，即:</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+         P(O,I|\lambda) &= \sum_{I} P(O|I,\lambda) P(I|\lambda) \\\\
+            &= \sum_{i_1,i_2,\dots,i_T} \pi_{i_1}b_{i_1}(o_1) a_{i_1 i_2} b_{i_2}(o_2) \dots a_{i_{T-1}i_T} b_{i_T}(o_T)
+    \end{aligned}</script><p>这种直接计算的复杂度是$O(TN^T)$,在实际中并不可行。</p>
+<h4 id="前向算法"><a href="#前向算法" class="headerlink" title="前向算法"></a>前向算法</h4><p>首先定义前向概率：</p>
+<blockquote>
+<p>前向概率:给定隐马尔可夫模型$\lambda$,定义到时刻$t$部分观测序列为$o_1,o_2,\dots,o_t$且状态为$q_i$的概率为前向概率，记做：</p>
+<script type="math/tex; mode=display">
+\alpha_t(i) = P(o_1,o_2,\dots,o_t,i_t = q_i|\lambda)</script><p>由此便可以递推求得前向概率$\alpha_t(i)$和观测序列概率$P(O|\lambda)$</p>
+<p><strong>观测序列概率的前向算法</strong><br>输入：隐马尔可夫模型$\lambda$,观测序列$O$<br>输出: 观测序列概率$P(O|\lambda)$</p>
+<ul>
+<li>初值：<script type="math/tex; mode=display">
+\alpha_1(i) = \pi_i b_i(o_1),\quad i = 1,2,\dots, N</script></li>
+<li>递推：对$t=1,2,\dots,T-1$<script type="math/tex; mode=display">
+\alpha_{t+1}(i) = [\sum_{j=1}^N \alpha_t(j) a_{ji}] b_i(o_{t+1}),\quad i= 1,2,\dots,N</script></li>
+<li>终止:<script type="math/tex; mode=display">
+P(O|\lambda) = \sum_{i=1}^N \alpha_T(i)</script></li>
+</ul>
+</blockquote>
+<p>前向算法实际上是基于“状态序列的路径结构”递推计算$P(O|\lambda)$的算法。前向算法高效的关键在于其局部计算前向概率，然后利用路径结构将前向概率递推到全局,得到$P(O|\lambda)$。</p>
+<h4 id="后向算法"><a href="#后向算法" class="headerlink" title="后向算法"></a>后向算法</h4><p>首先给出后向概率的定义:</p>
+<blockquote>
+<p><strong>后向概率</strong>：给定隐马尔可夫模型$\Lambda$,定义在时刻$t$状态为$q<em>i$的条件下，从$t+1$到$T$的部分观测序列为$o</em>{t+1},o_{t+2},\dots,o_T$的概率为后向概率，记做：</p>
+<script type="math/tex; mode=display">
+\beta_t(i) = P(o_{t+1},o_{t+2},\dots,o_T|i_t = q_i,\lambda)</script></blockquote>
+<p>与前向概率计算类似,后向概率的计算也可以采用递推算法:</p>
+<blockquote>
+<p><strong>观测序列概率的后向算法</strong><br>输入：隐马尔可夫模型$\lambda$,观测序列$O$<br>输出：观测序列概率$P(O|\lambda)$</p>
+<ul>
+<li>初始化:<script type="math/tex; mode=display">
+\beta_T(i) = 1,\quad i =1,2,\dots,N</script></li>
+<li>对$t = T-1,T-2,\dots,1$<script type="math/tex; mode=display">
+\beta_t(i) = \sum_{j=1}^N a_{ij} b_j(o_{t+1})\beta_{t+1}(j),
+\quad i=1,2,\dots,N</script></li>
+<li>终止：<script type="math/tex; mode=display">
+P(O|\lambda) = \sum_{i=1}^N \pi_i b_i(o_1)\beta_1(i)</script></li>
+</ul>
+</blockquote>
+<p>利用前向概率与后向概率的定义可以将观测序列概率统一写成:</p>
+<script type="math/tex; mode=display">
+P(O|\lambda) =\sum_{i=1}^N \alpha_t(i) \beta_t(i) =\sum_{i=1}^N \sum_{j=1}^N \alpha_t(i)
+    a_{ij} b_j(o_{t+1}) \beta_{t+1}(j)</script><p>该联合概率公式告诉我们，若我们知道了某一个时刻所有状态下的前向概率，同时知道下一个时刻所有状态下的后向概率，则可以直接计算出观测序列概率。前面介绍的三个计算观测序列概率的公式实际上为我们提供了三种递推思路:</p>
+<ul>
+<li>前向概率递推，即从前向后递推</li>
+<li>后向概率递推，即从后向前递推</li>
+<li>前向后向概率递推，即从两个方向开始递推</li>
+</ul>
+<p>这三种方法的计算复杂度均为$O(TN^2)$级别，对比直接计算的$O(TN^T)$级别，计算复杂度大大降低。</p>
+<h4 id="一些概率与期望值的计算"><a href="#一些概率与期望值的计算" class="headerlink" title="一些概率与期望值的计算"></a>一些概率与期望值的计算</h4><p>利用前向概率和后向概率，可以得到关于单个状态和两个状态概率的计算公式。</p>
+<ol>
+<li>给定模型$\lambda$和观测$O$,在时刻$t$处于状态$q_i$的概率,记：<script type="math/tex; mode=display">
+\gamma_t(i) = P(i_t = q_i|O,\lambda)</script>可以通过前向后向概率计算,由贝叶斯公式可得:<script type="math/tex; mode=display">
+\gamma_t(i) = P(i_t = q_i|O,\lambda) = \frac{P(i_t = q_i,O|\lambda)}{P(O|\lambda)}</script>由此可以得到：<script type="math/tex; mode=display">
+\gamma_t(i) = \frac{\alpha_t(i) \beta_t(i)}{\sum_{j=1}^N \alpha_t(j)\beta_t(j)}</script></li>
+<li>给定模型$\lambda$和观测$O$,在时刻$t$处于状态$q_i$且在时刻$t+1$处于状态$q_j$的概率为：<script type="math/tex; mode=display">
+\xi_t(i,j) = P(i_t = q_i, i_{t+1} = q_j | O,\lambda)</script>由贝叶斯公式可得：<script type="math/tex; mode=display">
+\begin{aligned}
+  \xi_t(i,j)  &= \frac{P(i_t = q_i,i_{t+1} = q_j, O|\lambda)}{P(O|\lambda)} \\\\
+  &= \frac{P(i_t = q_i,i_{t+1} = q_j, O|\lambda)}{\sum_{i=1}^N \sum_{j=1}^N P(i_t = q_i,i_{t+1} = q_j, O|\lambda)}
+\end{aligned}</script>公式中$P(i<em>t = q_i,i</em>{t+1} = q_j, O|\lambda)$计算公式为:<script type="math/tex; mode=display">
+P(i_t = q_i,i_{t+1} = q_j, O|\lambda) = \alpha_t(i) a_{ij} b_j (o_{t+1}) \beta_{t+1}(j)</script></li>
+<li>将$\gamma_t(i)$和$\xi_t(i,j)$对各个时刻$t$求和，可以得到一些期望值：</li>
+</ol>
+<ul>
+<li>在观测$O$下状态$i$出现的期望值：<script type="math/tex; mode=display">
+\sum_{t=1}^T \gamma_t(i)</script></li>
+<li>在观测$O$下由状态$i$转移的期望值:<script type="math/tex; mode=display">
+\sum_{t=1}^{T-1} \gamma_t(i)</script></li>
+<li>在观测$O$下由状态$i$转移到状态$j$的期望值：<script type="math/tex; mode=display">
+\sum_{t=1}^{T-1} \xi_t(i,j)</script></li>
+</ul>
+<h3 id="学习算法"><a href="#学习算法" class="headerlink" title="学习算法"></a>学习算法</h3><p>隐马尔可夫的学习算法可以根据数据类型分为两种：</p>
+<ul>
+<li>训练数据包含观测序列和状态序列, 此时可采用监督学习算法</li>
+<li>训练数据仅有观测序列，此时需采用无监督学习算法</li>
+</ul>
+<h4 id="监督学习方法"><a href="#监督学习方法" class="headerlink" title="监督学习方法"></a>监督学习方法</h4><p>假设已给训练数据包含$s$个长度相同的观测序列和对应的状态序列${ (O_1,I_1),\dots,<br>(O_S,I_S)}$,那么可以直接采用极大似然法来估计马尔可夫参数,具体方法如下:</p>
+<ol>
+<li>转移概率$a<em>{ij}$的估计：设样本中时刻$t$处于状态$i$,而时刻$t+1$处于状态$j$出现<br>的频数为$A</em>{ij}$,那么状态转移概率$a_{ij}$的估计为：<script type="math/tex; mode=display">
+\hat{a}_{ij} = \frac{A_{ij} }{\sum_{j=1}^N A_{ij} }</script>这其实就是一个伯努利分布的最大似然估计问题，计算比较简单。</li>
+<li>观测概率$b<em>j(k)$的估计,设样本中状态为$j$并且观测为$k$的频数是$B</em>{jk}$,那么状态为$j$观测为$k$的估计是：<script type="math/tex; mode=display">
+\hat{b}_j(k) = \frac{B_{jk}}{\sum_{k=1}^M B_{jk}}</script></li>
+<li>初始状态概率$\pi_i$的极大似然估计为$S$个样本中初始状态为$q_i$的频率</li>
+</ol>
+<h3 id="无监督学习方法-BW算法"><a href="#无监督学习方法-BW算法" class="headerlink" title="无监督学习方法-BW算法"></a>无监督学习方法-BW算法</h3><p>假设训练数据只包含$S$个长度为$T$的观测序列${ O_1,O_2,\dots, O_S}$<br>而没有相应的状态序列，学习的目标是学习隐马尔可夫模型的参数。我们将观测序列<br>看做观测数据$O$,状态序列数据看做不可观测的隐数据$I$,那么隐马尔可夫实际上是<br>一个含有隐变量概率模型：</p>
+<script type="math/tex; mode=display">
+P(O|\lambda) = \sum_{I} P(O|I,\lambda)P(I|\lambda)</script><p>这是在EM算法解决框架下，可以按照EM算法步骤进行计算</p>
+<ul>
+<li>确定完全数据的对数似然函数，所有的观测数据写成$O = (o_1,o_2,\dots,o_T)$,<br>所有隐数据写成$I = (i_1,i_2,\dots,i_T)$。完全数据的对数似然函数是<br>$log P(O,I|\lambda)$</li>
+<li>EM算法的E步:求$Q$函数$Q(\lambda,\bar{\lambda})$<script type="math/tex; mode=display">
+\begin{aligned}
+      Q(\lambda,\bar{\lambda}) &= E_I[logP(O,I|\lambda)P(O,I|\bar{\lambda})] \\\\
+      &= \sum_I log P(O,I|\lambda) P(I|O,\bar{\lambda}) \\\\
+      &= \sum_I log P(O,I|\lambda) \frac{P(I,O|\bar{\lambda})}{P(O|\bar{\lambda})}
+\end{aligned}</script>又因为$P(O|\bar{\lambda})$与$\lambda$无关，而在接下来M步我们要做的是找到合适的<br>$\lambda$极大化$Q$函数，因此可以考虑将该项略去，将$Q$函数写做:<script type="math/tex; mode=display">
+Q(\lambda,\bar{\lambda}) = \sum_I log P(O,I|\lambda) P(I,O|\bar{\lambda})</script>其中,$\bar{\lambda}$是隐马尔可夫模型的当前参数估计值,$\lambda$是要极大化的隐马尔<br>可夫模型参数。<script type="math/tex; mode=display">
+P(O,I|\lambda) = \pi_{i_1} b_{i_1}(o_1) a_{i_1,i_2} b_{i_2}(o_2)
+  \dots a_{i_{T-1}i_T} b_{i_T}(o_T)</script>于是$Q$函数可以写做:<script type="math/tex; mode=display">
+\begin{aligned}
+      Q(\lambda,\bar{\lambda}) &= \sum_I log \pi_{i_1} P(O,I|\bar{\lambda}) + \sum_I (\sum_{t=1}^{T-1} log a_{i_t i_{t+1}})
+      P(O,I|\bar{\lambda})\\ &+ \sum_{I}(\sum_{t=1}^T log b_{i_t}(o_t))P(O,I|\bar{\lambda})
+  \end{aligned}</script></li>
+<li>EM算法M步：极大化$Q$函数$Q(\lambda,\bar{\lambda})$求模型参数$A,B,\pi$<br>由最终$Q$函数的写法可以看出，要极大化参数单独出现在三项中，因此只需对各项<br>分别极大化</li>
+</ul>
+<ol>
+<li>求$\pi_{i_1}$估计值，第一项可以重写为：<script type="math/tex; mode=display">
+\sum_I log \pi_{i_1} P(O,I|\bar{\lambda}) = \sum_{i=1}^N log \pi_{i} P(O,i_1 = i|\bar{\lambda})</script>同时需要注意到关于$\pi<em>i$的天然约束$\sum</em>{i=1}^N \pi_i = 1$,该优化问题可以通过<br>Lagrange乘子法进行求解，最终求解值为:<script type="math/tex; mode=display">
+\pi_i = \frac{P(O,i_1 = i|\bar{\lambda})}{P(O|\bar{\lambda})}
+ = \gamma_1(i)</script></li>
+<li>求$a_{ij}$估计值，第二项可以重写为：<script type="math/tex; mode=display">
+\sum_I (\sum_{t=1}^{T-1} log a_{i_t i_{t+1}})P(O,I|\bar{\lambda}) = 
+ \sum_{i=1}^N \sum_{j=1}^N \sum_{t=1}^{T-1} log a_{i j} P(O,i_t = i,i_{t+1} = j|\bar{\lambda})</script>注意存在约束条件$\sum<em>{j=1}^N a</em>{ij} = 1$,应用Lagrange乘子法可得:<script type="math/tex; mode=display">
+a_{ij} = \frac{\sum_{t=1}^{T-1} P(O,i_t = i,i_{t+1} = j|\bar{\lambda})}{\sum_{t=1}^{T-1} P(O,i_t = i|\bar{\lambda})}
+  = \frac{\sum_{t=1}^{T-1} \xi_t(i,j)}{\sum_{t=1}^{T-1} \gamma_t(i)}</script></li>
+<li>求$b_j(k)$的估计值，首先将第三项重写为:<script type="math/tex; mode=display">
+\sum_{I}(\sum_{t=1}^T log b_{i_t}(o_t))P(O,I|\bar{\lambda}) = 
+ \sum_{j=1}^N \sum_{t=1}^{T} log b_j(o_t) P(O,i_t = j|\bar{\lambda})</script>约束条件是$\sum_{k=1}^M b_j(k) = 1$。只有在$o_t = v_k$时,$b_j(o_t)$对$b_j(k)$的<br>偏导数才不为0,以$I(o_t = v_k)$表示,求得:<script type="math/tex; mode=display">
+b_j(k) = \frac{\sum_{t=1}^T P(O,i_t =j|\bar{\lambda})I(o_t = v_k)}{\sum_{t=1}^T P(O,i_t = j|\bar{\lambda})}
+ = \frac{\sum_{t=1,o_t = v_k}^T \gamma_t(j)}{\sum_{t=1}^T \gamma_t(j)}</script><blockquote>
+<p>Baum-Welch算法：<br>输入：观测数据$O = (o_1,o_2,\dots,o_T)$<br>输出：隐马尔可夫模型参数</p>
+<ul>
+<li>初始化:对$n=0$,选取$a_{ij}^{(0)}, b_j(k)^{(0)},\pi_i^{(0)}$，得到模型<br>$\lambda^{(0)} = (A^{(0)},B^{(0)},\pi^{(0)})$</li>
+<li>根据上面给出的公式进行递推</li>
+<li>重复E步和M步。直到算法收敛</li>
+</ul>
+</blockquote>
+</li>
+</ol>
+<h3 id="预测算法"><a href="#预测算法" class="headerlink" title="预测算法"></a>预测算法</h3><p>下面介绍两种隐马尔可夫模型的预测算法：近似算法与维特比算法。</p>
+<h4 id="近似算法"><a href="#近似算法" class="headerlink" title="近似算法"></a>近似算法</h4><p>近似算法的想法是，在每个时刻$t$选择在该时刻最有可能出现的状态$i_t^*$,从而<br>得到一个状态序列$I^\ast = (i_1^\ast,i_2^\ast,\dots,i_T^\ast)$,将该序列作为预测的结果。<br>给定隐马尔可夫模型$\lambda$和观测序列$O$,在时刻$t$处于状态$q_i$的概率<br>$\gamma_t(i)$是：</p>
+<script type="math/tex; mode=display">
+\gamma_t(i) = \frac{\alpha_t(i)\beta_t(i)}{P(O|\lambda)} = 
+ \frac{\alpha_t(i)\beta_t(i)}{\sum_{j=1}^N \alpha_t(j)\beta_t(j)}</script><p>在每一时刻$t$最有可能的状态$i_t^*$是:</p>
+<script type="math/tex; mode=display">
+i_t^* = argmax_{1 \leq i \leq N} [\gamma_t(i)],\quad t = 1,2,\dots,T</script><p>进而得到状态序列</p>
+<script type="math/tex; mode=display">
+I^* = (i_1^*,i_2^*,\dots,i_T^*)</script><p>近似算法优点是计算简单，其缺点是不能够保证预测的序列整体是最有可能的状态序列，这是因为预测的状态序列可能有实际不发生的部分。</p>
+<h4 id="维特比算法"><a href="#维特比算法" class="headerlink" title="维特比算法"></a>维特比算法</h4><p>维特比算法实际上是用动态规划来解隐马尔可夫模型的预测问题，即用动态规划来求概率最大路径(最优路径)。这时一条路径对应着一个最优序列。<br>首先导入两个变量$\delta,\varPhi$,定义在时刻$t$状态为$i$的所有单个路径$(i_1,i_2,\dots,i_t)$中概率最大值为:</p>
+<script type="math/tex; mode=display">
+    \delta_t(i) = \max_{i_1,i_2,\dots,i_{t-1}} P(i_t = i,i_{t-1},\dots,i_1,o_t,\dots,o_1|\lambda)</script><p>由定义可知变量$\delta$的递推公式：</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+     \delta_{t+1}(i) &= \max_{i_1,i_2,\dots,i_{t}} P(i_{t+1} = i,i_{t},\dots,i_1,o_{t+1},\dots,o_1|\lambda) \\
+    &= max_{1 \leq j \leq N} [\delta_t(j) a_{ji}]b_i(o_{t+1})
+    \end{aligned}</script><p>定义在时刻$t$状态为$i$的所有单个路径$(i<em>1,i_2,\dots,i</em>{t-1},i)$中概率最大的路径的第<br>$t-1$个结点为：</p>
+<script type="math/tex; mode=display">
+    \varPhi_t(i) = argmax_{1 \leq j \leq N}[\delta_{t-1}(j) a_{ji}],\quad i=1,\dots,N</script><p>下面给出维特比算法的流程:</p>
+<blockquote>
+<p><strong>维特比算法：</strong></p>
+<ul>
+<li>输入： 模型$\lambda = (A,B,\pi)$和观测$O = (o_1,o_2,\dots,o_T)$</li>
+<li>输出： 最优路径$I^\ast -= (i_1^\ast,i_2^\ast,\dots,i_T^\ast)$</li>
+</ul>
+<ol>
+<li>初始化<script type="math/tex; mode=display">
+\delta_1(i) = \pi_i b_i(o_1),\varPhi_1(i) = 0</script></li>
+<li>递推：对$t = 2,3,\dots,T$<script type="math/tex; mode=display">
+\begin{aligned}
+\delta_{t+1}(i) &= \max_{1 \leq j \leq N} [\delta_t(j) a_{ji}]b_i(o_{t+1}) \\
+\varPhi_t(i) &= argmax_{1 \leq j \leq N}[\delta_{t-1}(j) a_{ji}]
+\end{aligned}</script></li>
+<li>终止<script type="math/tex; mode=display">
+P^* = \max_{1 \leq i \leq N} \delta_T(i), i_T^* = argmax_{1 \leq i \leq N}
+[\delta_T(i)]</script></li>
+<li>最优路径回溯。对$t = T-1,T-2,\dots,1$<script type="math/tex; mode=display">
+i_t^* = \varPhi_{t+1}(i_{t+1}^*)</script>求得最优路径$I^{\ast} = (i_1^\ast,i_2^\ast,\dots,i_T^\ast)$</li>
+</ol>
+</blockquote>
+]]></content>
+      <categories>
+        <category>统计学习</category>
+      </categories>
+      <tags>
+        <tag>概率模型，HMM</tag>
       </tags>
   </entry>
   <entry>
@@ -521,364 +854,6 @@ P(Y|\theta^{i+1}) \geq P(Y|\theta^i)</script><p><strong>定理2</strong>:设$L(\
       </tags>
   </entry>
   <entry>
-    <title>隐马尔可夫模型</title>
-    <url>/2020/08/17/hmm/</url>
-    <content><![CDATA[<p>在这一部分，我将对隐马尔可夫模型(HMM)做简要介绍,该章节分为以下几个部分进行组织:</p>
-<ul>
-<li>基本概念</li>
-<li>概率计算算法</li>
-<li>学习算法</li>
-<li>预测算法</li>
-</ul>
-<span id="more"></span>
-<h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p>首先给出隐马尔可夫模型的定义：</p>
-<blockquote>
-<p><strong>隐马尔可夫模型</strong>:隐马尔可夫模型是关于时序的概率模型，描述由一个隐藏的马尔可夫链随机生成不可观测的随机状态序列,再由各个状态生成一个观测从而产生观测随机序列的过程。隐藏的马尔可夫链随机生成的状态序列称为状态序列；每个状态生成一个观测，而由此产生的观测的随机序列，称为观测序列，序列的每一个位置又可以看作是一个时刻。</p>
-</blockquote>
-<p>隐马尔可夫模型的形式定义如下:设$Q$是所有可能的状态的集合,$V$是所有可能的观测的集合:</p>
-<script type="math/tex; mode=display">
-Q = (q_1,q_1,\dots,q_N),V = (v_1,v_2,\dots,v_M)</script><p>其中,$N$是可能的状态数，$M$是可能的观测数。$I$是长度为$T$的状态序列,$O$是对应的观测序列:</p>
-<script type="math/tex; mode=display">
-I = (i_1,i_2,\dots,i_T),O = (o_1,o_2,\dots,o_T)</script><p>$A$是状态转移概率矩阵:</p>
-<script type="math/tex; mode=display">
-A = [a_{ij}]_{N \times N}</script><p>其中:</p>
-<script type="math/tex; mode=display">
-a_{ij} = P(i_{t+1} = q_j | i_t = q_i),i=1,\dots,N;j=1,\dots,N</script><p>指代在时刻$t$处于状态$q_i$条件下,在时刻$t+1$转移到$q_j$的概率，$B$是观测概率矩阵:</p>
-<script type="math/tex; mode=display">
-B = [b_j(k)]_{N\times M}</script><p>其中:</p>
-<script type="math/tex; mode=display">
-b_j(k) = P(o_t = v_k|i_t = q_j),\quad k=1,2,\dots,M;\quad,j=1,2,\dots,N</script><p>指代在时刻$t$处于状态$q_j$条件下生成观测$v_k$的概率。$\pi$是初始是初始状态概率向量:</p>
-<script type="math/tex; mode=display">
-\pi = (\pi_i)</script><p>其中:</p>
-<script type="math/tex; mode=display">
-\pi_i = P(i_1 = q_i),\quad i =1,2,\dots,N</script><p>指代初始时刻处于状态$q_i$的概率。隐马尔可夫模型由初始状态概率向量$\pi$,状态转移概率矩阵$A$和观测概率矩阵$B$决定。$\pi$和$A$决定状态序列,$B$决定观测序列。因此，隐马尔可夫模型可以用三元符号表示:</p>
-<script type="math/tex; mode=display">
-\lambda = (\pi,A,B)</script><p>状态转移矩阵$A$与初始状态向量$\pi$确定了隐藏的马尔可夫链，生成不可观测的状态序列。观测概率矩阵$B$确定了如何从状态生成观测，与状态序列综合确定了如何产生观测序列。从定义来看，隐马尔可夫模型做了两个基本假设：</p>
-<ol>
-<li>齐次马尔可夫性假设，即假设隐藏的马尔可夫链在任意时刻$t$的状态只依赖于前一时刻的状态，与其他时刻的状态及观测无关，也与$t$无关：</li>
-</ol>
-<script type="math/tex; mode=display">
-P(i_t| i_{t-1},o_{t-1},\dots,i_1,t_1) = P(i_t|i_{t-1}),\quad t = 1,2,\dots,T</script><ol>
-<li>观测独立性假设,即假设在任意时刻的观测只依赖于该时刻的马尔可夫链的状态，与其他观测及状态无关:</li>
-</ol>
-<script type="math/tex; mode=display">
-P(o_t|i_t,i_{t-1},o_{t-1},\dots,i_1,t_1) = P(o_t|i_t)</script><p>隐马尔可夫模型可用于标注,这时状态对应着标记。标注问题是给定观测的序列预测其对应的标记序列。可以假设标注问题的数据是由隐马尔可夫模型生成的。这样我们可以利用隐马尔可夫模型的学习与预测算法进行标注。</p>
-<h4 id="观测序列的生成过程"><a href="#观测序列的生成过程" class="headerlink" title="观测序列的生成过程"></a>观测序列的生成过程</h4><p>根据隐马尔可夫模型定义,可以将一个长度为$T$的观测序列$O = (o_1,o_2,\dots,o_T)$的生成过程描述如下:</p>
-<blockquote>
-<p>输入： 隐马尔可夫模型$\lambda = (A,B,\pi)$,观测序列长度$T$<br>输出： 观测序列$O = (o_1,o_2,\dots,o_T)$</p>
-<ol>
-<li>按照初始状态分布$\pi$产生状态$i_1$</li>
-<li>令$t=1$</li>
-<li>按照状态$i<em>t$的观测概率分布$b</em>{i_t}(k)$生成$o_t$</li>
-<li>按照状态$i<em>t$的状态转移概率分布${a</em>{i<em>t,i</em>{t+1}}}$产生状态$i_{t+1}$</li>
-<li>令$t = t+1$,如果$t&lt;T$,转步(3),否则，终止</li>
-</ol>
-</blockquote>
-<h4 id="隐马尔可夫模型的3个基本问题"><a href="#隐马尔可夫模型的3个基本问题" class="headerlink" title="隐马尔可夫模型的3个基本问题"></a>隐马尔可夫模型的3个基本问题</h4><p>隐马尔可夫模型有3个基本问题:</p>
-<ul>
-<li>概率计算问题,给定模型$\lambda = (A,B,\pi)$和观测序列$O = (o_1,o_2,\dots,o_T)$,计算在模型$\lambda$下观测序列$O$出现的概率$P(O|\lambda)$</li>
-<li>学习问题，已知观测序列$O = (o_1,o_2,\dots,o_T)$,估计模型$\lambda = (A,B,\pi)$参数，使得在该模型下观测序列概率$P(O|\lambda)$。即用极大似然估计的方法估计参数。</li>
-<li>预测问题，也称为解码问题。已知模型$\lambda = (A,B,\pi)$和观测序列$O = (o_1,o_2,\dots,o_T)$,求对给定观测序列条件概率$P(I|O)$最大的状态序列$I = (i_1,i_2,\dots,i_T)$。即给定观测序列，求最有可能的对应的状态序列。</li>
-</ul>
-<h3 id="概率计算算法"><a href="#概率计算算法" class="headerlink" title="概率计算算法"></a>概率计算算法</h3><h4 id="直接计算法"><a href="#直接计算法" class="headerlink" title="直接计算法"></a>直接计算法</h4><p>首先介绍最直观的直接计算法，给定模型和观测序列后，计算观测序列出现的概率的直接方法便是按照概率公式直接计算。通过列举所有可能的长度为$T$的状态序列，求各个状态序列$I$与观测序列$O$的联合概率$P(I,O|\lambda)$,然后对所有可能的状态序列求和，得到$P(O|\lambda)$。</p>
-<p>状态序列$I = (i_1,i_2,\dots,i_T)$的概率是:</p>
-<script type="math/tex; mode=display">
-P(I|\lambda) = \pi_{i1}a_{i_1 i_2} a_{i_2 i_3} \dots a_{i_{T-1} i_T}</script><p>对固定的状态序列$I = (i_1,i_2,\dots,i_T)$,观测序列$O = (o_1,o_2,\dots,o_T)$的概率是:</p>
-<script type="math/tex; mode=display">
-P(O|I,\lambda) = b_{i_1}(o_1) b_{i_2}(o_2) \dots b_{i_T}(o_T)</script><p>$O$和$I$同时出现的联合概率为:</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-         P(O,I|\lambda) &= P(O|I,\lambda) P(I|\lambda) \\\\
-            &= \pi_{i_1}b_{i_1}(o_1) a_{i_1 i_2} b_{i_2}(o_2) \dots a_{i_{T-1}i_T} b_{i_T}(o_T)
-    \end{aligned}</script><p>然后，对所有可能的状态序列$I$求和，得到观测序列$O$的概率$P(O|\lambda)$，即:</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-         P(O,I|\lambda) &= \sum_{I} P(O|I,\lambda) P(I|\lambda) \\\\
-            &= \sum_{i_1,i_2,\dots,i_T} \pi_{i_1}b_{i_1}(o_1) a_{i_1 i_2} b_{i_2}(o_2) \dots a_{i_{T-1}i_T} b_{i_T}(o_T)
-    \end{aligned}</script><p>这种直接计算的复杂度是$O(TN^T)$,在实际中并不可行。</p>
-<h4 id="前向算法"><a href="#前向算法" class="headerlink" title="前向算法"></a>前向算法</h4><p>首先定义前向概率：</p>
-<blockquote>
-<p>前向概率:给定隐马尔可夫模型$\lambda$,定义到时刻$t$部分观测序列为$o_1,o_2,\dots,o_t$且状态为$q_i$的概率为前向概率，记做：</p>
-<script type="math/tex; mode=display">
-\alpha_t(i) = P(o_1,o_2,\dots,o_t,i_t = q_i|\lambda)</script><p>由此便可以递推求得前向概率$\alpha_t(i)$和观测序列概率$P(O|\lambda)$</p>
-<p><strong>观测序列概率的前向算法</strong><br>输入：隐马尔可夫模型$\lambda$,观测序列$O$<br>输出: 观测序列概率$P(O|\lambda)$</p>
-<ul>
-<li>初值：<script type="math/tex; mode=display">
-\alpha_1(i) = \pi_i b_i(o_1),\quad i = 1,2,\dots, N</script></li>
-<li>递推：对$t=1,2,\dots,T-1$<script type="math/tex; mode=display">
-\alpha_{t+1}(i) = [\sum_{j=1}^N \alpha_t(j) a_{ji}] b_i(o_{t+1}),\quad i= 1,2,\dots,N</script></li>
-<li>终止:<script type="math/tex; mode=display">
-P(O|\lambda) = \sum_{i=1}^N \alpha_T(i)</script></li>
-</ul>
-</blockquote>
-<p>前向算法实际上是基于“状态序列的路径结构”递推计算$P(O|\lambda)$的算法。前向算法高效的关键在于其局部计算前向概率，然后利用路径结构将前向概率递推到全局,得到$P(O|\lambda)$。</p>
-<h4 id="后向算法"><a href="#后向算法" class="headerlink" title="后向算法"></a>后向算法</h4><p>首先给出后向概率的定义:</p>
-<blockquote>
-<p><strong>后向概率</strong>：给定隐马尔可夫模型$\Lambda$,定义在时刻$t$状态为$q<em>i$的条件下，从$t+1$到$T$的部分观测序列为$o</em>{t+1},o_{t+2},\dots,o_T$的概率为后向概率，记做：</p>
-<script type="math/tex; mode=display">
-\beta_t(i) = P(o_{t+1},o_{t+2},\dots,o_T|i_t = q_i,\lambda)</script></blockquote>
-<p>与前向概率计算类似,后向概率的计算也可以采用递推算法:</p>
-<blockquote>
-<p><strong>观测序列概率的后向算法</strong><br>输入：隐马尔可夫模型$\lambda$,观测序列$O$<br>输出：观测序列概率$P(O|\lambda)$</p>
-<ul>
-<li>初始化:<script type="math/tex; mode=display">
-\beta_T(i) = 1,\quad i =1,2,\dots,N</script></li>
-<li>对$t = T-1,T-2,\dots,1$<script type="math/tex; mode=display">
-\beta_t(i) = \sum_{j=1}^N a_{ij} b_j(o_{t+1})\beta_{t+1}(j),
-\quad i=1,2,\dots,N</script></li>
-<li>终止：<script type="math/tex; mode=display">
-P(O|\lambda) = \sum_{i=1}^N \pi_i b_i(o_1)\beta_1(i)</script></li>
-</ul>
-</blockquote>
-<p>利用前向概率与后向概率的定义可以将观测序列概率统一写成:</p>
-<script type="math/tex; mode=display">
-P(O|\lambda) =\sum_{i=1}^N \alpha_t(i) \beta_t(i) =\sum_{i=1}^N \sum_{j=1}^N \alpha_t(i)
-    a_{ij} b_j(o_{t+1}) \beta_{t+1}(j)</script><p>该联合概率公式告诉我们，若我们知道了某一个时刻所有状态下的前向概率，同时知道下一个时刻所有状态下的后向概率，则可以直接计算出观测序列概率。前面介绍的三个计算观测序列概率的公式实际上为我们提供了三种递推思路:</p>
-<ul>
-<li>前向概率递推，即从前向后递推</li>
-<li>后向概率递推，即从后向前递推</li>
-<li>前向后向概率递推，即从两个方向开始递推</li>
-</ul>
-<p>这三种方法的计算复杂度均为$O(TN^2)$级别，对比直接计算的$O(TN^T)$级别，计算复杂度大大降低。</p>
-<h4 id="一些概率与期望值的计算"><a href="#一些概率与期望值的计算" class="headerlink" title="一些概率与期望值的计算"></a>一些概率与期望值的计算</h4><p>利用前向概率和后向概率，可以得到关于单个状态和两个状态概率的计算公式。</p>
-<ol>
-<li>给定模型$\lambda$和观测$O$,在时刻$t$处于状态$q_i$的概率,记：<script type="math/tex; mode=display">
-\gamma_t(i) = P(i_t = q_i|O,\lambda)</script>可以通过前向后向概率计算,由贝叶斯公式可得:<script type="math/tex; mode=display">
-\gamma_t(i) = P(i_t = q_i|O,\lambda) = \frac{P(i_t = q_i,O|\lambda)}{P(O|\lambda)}</script>由此可以得到：<script type="math/tex; mode=display">
-\gamma_t(i) = \frac{\alpha_t(i) \beta_t(i)}{\sum_{j=1}^N \alpha_t(j)\beta_t(j)}</script></li>
-<li>给定模型$\lambda$和观测$O$,在时刻$t$处于状态$q_i$且在时刻$t+1$处于状态$q_j$的概率为：<script type="math/tex; mode=display">
-\xi_t(i,j) = P(i_t = q_i, i_{t+1} = q_j | O,\lambda)</script>由贝叶斯公式可得：<script type="math/tex; mode=display">
-\begin{aligned}
-  \xi_t(i,j)  &= \frac{P(i_t = q_i,i_{t+1} = q_j, O|\lambda)}{P(O|\lambda)} \\\\
-  &= \frac{P(i_t = q_i,i_{t+1} = q_j, O|\lambda)}{\sum_{i=1}^N \sum_{j=1}^N P(i_t = q_i,i_{t+1} = q_j, O|\lambda)}
-\end{aligned}</script>公式中$P(i<em>t = q_i,i</em>{t+1} = q_j, O|\lambda)$计算公式为:<script type="math/tex; mode=display">
-P(i_t = q_i,i_{t+1} = q_j, O|\lambda) = \alpha_t(i) a_{ij} b_j (o_{t+1}) \beta_{t+1}(j)</script></li>
-<li>将$\gamma_t(i)$和$\xi_t(i,j)$对各个时刻$t$求和，可以得到一些期望值：</li>
-</ol>
-<ul>
-<li>在观测$O$下状态$i$出现的期望值：<script type="math/tex; mode=display">
-\sum_{t=1}^T \gamma_t(i)</script></li>
-<li>在观测$O$下由状态$i$转移的期望值:<script type="math/tex; mode=display">
-\sum_{t=1}^{T-1} \gamma_t(i)</script></li>
-<li>在观测$O$下由状态$i$转移到状态$j$的期望值：<script type="math/tex; mode=display">
-\sum_{t=1}^{T-1} \xi_t(i,j)</script></li>
-</ul>
-<h3 id="学习算法"><a href="#学习算法" class="headerlink" title="学习算法"></a>学习算法</h3><p>隐马尔可夫的学习算法可以根据数据类型分为两种：</p>
-<ul>
-<li>训练数据包含观测序列和状态序列, 此时可采用监督学习算法</li>
-<li>训练数据仅有观测序列，此时需采用无监督学习算法</li>
-</ul>
-<h4 id="监督学习方法"><a href="#监督学习方法" class="headerlink" title="监督学习方法"></a>监督学习方法</h4><p>假设已给训练数据包含$s$个长度相同的观测序列和对应的状态序列${ (O_1,I_1),\dots,<br>(O_S,I_S)}$,那么可以直接采用极大似然法来估计马尔可夫参数,具体方法如下:</p>
-<ol>
-<li>转移概率$a<em>{ij}$的估计：设样本中时刻$t$处于状态$i$,而时刻$t+1$处于状态$j$出现<br>的频数为$A</em>{ij}$,那么状态转移概率$a_{ij}$的估计为：<script type="math/tex; mode=display">
-\hat{a}_{ij} = \frac{A_{ij} }{\sum_{j=1}^N A_{ij} }</script>这其实就是一个伯努利分布的最大似然估计问题，计算比较简单。</li>
-<li>观测概率$b<em>j(k)$的估计,设样本中状态为$j$并且观测为$k$的频数是$B</em>{jk}$,那么状态为$j$观测为$k$的估计是：<script type="math/tex; mode=display">
-\hat{b}_j(k) = \frac{B_{jk}}{\sum_{k=1}^M B_{jk}}</script></li>
-<li>初始状态概率$\pi_i$的极大似然估计为$S$个样本中初始状态为$q_i$的频率</li>
-</ol>
-<h3 id="无监督学习方法-BW算法"><a href="#无监督学习方法-BW算法" class="headerlink" title="无监督学习方法-BW算法"></a>无监督学习方法-BW算法</h3><p>假设训练数据只包含$S$个长度为$T$的观测序列${ O_1,O_2,\dots, O_S}$<br>而没有相应的状态序列，学习的目标是学习隐马尔可夫模型的参数。我们将观测序列<br>看做观测数据$O$,状态序列数据看做不可观测的隐数据$I$,那么隐马尔可夫实际上是<br>一个含有隐变量概率模型：</p>
-<script type="math/tex; mode=display">
-P(O|\lambda) = \sum_{I} P(O|I,\lambda)P(I|\lambda)</script><p>这是在EM算法解决框架下，可以按照EM算法步骤进行计算</p>
-<ul>
-<li>确定完全数据的对数似然函数，所有的观测数据写成$O = (o_1,o_2,\dots,o_T)$,<br>所有隐数据写成$I = (i_1,i_2,\dots,i_T)$。完全数据的对数似然函数是<br>$log P(O,I|\lambda)$</li>
-<li>EM算法的E步:求$Q$函数$Q(\lambda,\bar{\lambda})$<script type="math/tex; mode=display">
-\begin{aligned}
-      Q(\lambda,\bar{\lambda}) &= E_I[logP(O,I|\lambda)P(O,I|\bar{\lambda})] \\\\
-      &= \sum_I log P(O,I|\lambda) P(I|O,\bar{\lambda}) \\\\
-      &= \sum_I log P(O,I|\lambda) \frac{P(I,O|\bar{\lambda})}{P(O|\bar{\lambda})}
-\end{aligned}</script>又因为$P(O|\bar{\lambda})$与$\lambda$无关，而在接下来M步我们要做的是找到合适的<br>$\lambda$极大化$Q$函数，因此可以考虑将该项略去，将$Q$函数写做:<script type="math/tex; mode=display">
-Q(\lambda,\bar{\lambda}) = \sum_I log P(O,I|\lambda) P(I,O|\bar{\lambda})</script>其中,$\bar{\lambda}$是隐马尔可夫模型的当前参数估计值,$\lambda$是要极大化的隐马尔<br>可夫模型参数。<script type="math/tex; mode=display">
-P(O,I|\lambda) = \pi_{i_1} b_{i_1}(o_1) a_{i_1,i_2} b_{i_2}(o_2)
-  \dots a_{i_{T-1}i_T} b_{i_T}(o_T)</script>于是$Q$函数可以写做:<script type="math/tex; mode=display">
-\begin{aligned}
-      Q(\lambda,\bar{\lambda}) &= \sum_I log \pi_{i_1} P(O,I|\bar{\lambda}) + \sum_I (\sum_{t=1}^{T-1} log a_{i_t i_{t+1}})
-      P(O,I|\bar{\lambda})\\ &+ \sum_{I}(\sum_{t=1}^T log b_{i_t}(o_t))P(O,I|\bar{\lambda})
-  \end{aligned}</script></li>
-<li>EM算法M步：极大化$Q$函数$Q(\lambda,\bar{\lambda})$求模型参数$A,B,\pi$<br>由最终$Q$函数的写法可以看出，要极大化参数单独出现在三项中，因此只需对各项<br>分别极大化</li>
-</ul>
-<ol>
-<li>求$\pi_{i_1}$估计值，第一项可以重写为：<script type="math/tex; mode=display">
-\sum_I log \pi_{i_1} P(O,I|\bar{\lambda}) = \sum_{i=1}^N log \pi_{i} P(O,i_1 = i|\bar{\lambda})</script>同时需要注意到关于$\pi<em>i$的天然约束$\sum</em>{i=1}^N \pi_i = 1$,该优化问题可以通过<br>Lagrange乘子法进行求解，最终求解值为:<script type="math/tex; mode=display">
-\pi_i = \frac{P(O,i_1 = i|\bar{\lambda})}{P(O|\bar{\lambda})}
- = \gamma_1(i)</script></li>
-<li>求$a_{ij}$估计值，第二项可以重写为：<script type="math/tex; mode=display">
-\sum_I (\sum_{t=1}^{T-1} log a_{i_t i_{t+1}})P(O,I|\bar{\lambda}) = 
- \sum_{i=1}^N \sum_{j=1}^N \sum_{t=1}^{T-1} log a_{i j} P(O,i_t = i,i_{t+1} = j|\bar{\lambda})</script>注意存在约束条件$\sum<em>{j=1}^N a</em>{ij} = 1$,应用Lagrange乘子法可得:<script type="math/tex; mode=display">
-a_{ij} = \frac{\sum_{t=1}^{T-1} P(O,i_t = i,i_{t+1} = j|\bar{\lambda})}{\sum_{t=1}^{T-1} P(O,i_t = i|\bar{\lambda})}
-  = \frac{\sum_{t=1}^{T-1} \xi_t(i,j)}{\sum_{t=1}^{T-1} \gamma_t(i)}</script></li>
-<li>求$b_j(k)$的估计值，首先将第三项重写为:<script type="math/tex; mode=display">
-\sum_{I}(\sum_{t=1}^T log b_{i_t}(o_t))P(O,I|\bar{\lambda}) = 
- \sum_{j=1}^N \sum_{t=1}^{T} log b_j(o_t) P(O,i_t = j|\bar{\lambda})</script>约束条件是$\sum_{k=1}^M b_j(k) = 1$。只有在$o_t = v_k$时,$b_j(o_t)$对$b_j(k)$的<br>偏导数才不为0,以$I(o_t = v_k)$表示,求得:<script type="math/tex; mode=display">
-b_j(k) = \frac{\sum_{t=1}^T P(O,i_t =j|\bar{\lambda})I(o_t = v_k)}{\sum_{t=1}^T P(O,i_t = j|\bar{\lambda})}
- = \frac{\sum_{t=1,o_t = v_k}^T \gamma_t(j)}{\sum_{t=1}^T \gamma_t(j)}</script><blockquote>
-<p>Baum-Welch算法：<br>输入：观测数据$O = (o_1,o_2,\dots,o_T)$<br>输出：隐马尔可夫模型参数</p>
-<ul>
-<li>初始化:对$n=0$,选取$a_{ij}^{(0)}, b_j(k)^{(0)},\pi_i^{(0)}$，得到模型<br>$\lambda^{(0)} = (A^{(0)},B^{(0)},\pi^{(0)})$</li>
-<li>根据上面给出的公式进行递推</li>
-<li>重复E步和M步。直到算法收敛</li>
-</ul>
-</blockquote>
-</li>
-</ol>
-<h3 id="预测算法"><a href="#预测算法" class="headerlink" title="预测算法"></a>预测算法</h3><p>下面介绍两种隐马尔可夫模型的预测算法：近似算法与维特比算法。</p>
-<h4 id="近似算法"><a href="#近似算法" class="headerlink" title="近似算法"></a>近似算法</h4><p>近似算法的想法是，在每个时刻$t$选择在该时刻最有可能出现的状态$i_t^*$,从而<br>得到一个状态序列$I^\ast = (i_1^\ast,i_2^\ast,\dots,i_T^\ast)$,将该序列作为预测的结果。<br>给定隐马尔可夫模型$\lambda$和观测序列$O$,在时刻$t$处于状态$q_i$的概率<br>$\gamma_t(i)$是：</p>
-<script type="math/tex; mode=display">
-\gamma_t(i) = \frac{\alpha_t(i)\beta_t(i)}{P(O|\lambda)} = 
- \frac{\alpha_t(i)\beta_t(i)}{\sum_{j=1}^N \alpha_t(j)\beta_t(j)}</script><p>在每一时刻$t$最有可能的状态$i_t^*$是:</p>
-<script type="math/tex; mode=display">
-i_t^* = argmax_{1 \leq i \leq N} [\gamma_t(i)],\quad t = 1,2,\dots,T</script><p>进而得到状态序列</p>
-<script type="math/tex; mode=display">
-I^* = (i_1^*,i_2^*,\dots,i_T^*)</script><p>近似算法优点是计算简单，其缺点是不能够保证预测的序列整体是最有可能的状态序列，这是因为预测的状态序列可能有实际不发生的部分。</p>
-<h4 id="维特比算法"><a href="#维特比算法" class="headerlink" title="维特比算法"></a>维特比算法</h4><p>维特比算法实际上是用动态规划来解隐马尔可夫模型的预测问题，即用动态规划来求概率最大路径(最优路径)。这时一条路径对应着一个最优序列。<br>首先导入两个变量$\delta,\varPhi$,定义在时刻$t$状态为$i$的所有单个路径$(i_1,i_2,\dots,i_t)$中概率最大值为:</p>
-<script type="math/tex; mode=display">
-    \delta_t(i) = \max_{i_1,i_2,\dots,i_{t-1}} P(i_t = i,i_{t-1},\dots,i_1,o_t,\dots,o_1|\lambda)</script><p>由定义可知变量$\delta$的递推公式：</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-     \delta_{t+1}(i) &= \max_{i_1,i_2,\dots,i_{t}} P(i_{t+1} = i,i_{t},\dots,i_1,o_{t+1},\dots,o_1|\lambda) \\
-    &= max_{1 \leq j \leq N} [\delta_t(j) a_{ji}]b_i(o_{t+1})
-    \end{aligned}</script><p>定义在时刻$t$状态为$i$的所有单个路径$(i<em>1,i_2,\dots,i</em>{t-1},i)$中概率最大的路径的第<br>$t-1$个结点为：</p>
-<script type="math/tex; mode=display">
-    \varPhi_t(i) = argmax_{1 \leq j \leq N}[\delta_{t-1}(j) a_{ji}],\quad i=1,\dots,N</script><p>下面给出维特比算法的流程:</p>
-<blockquote>
-<p><strong>维特比算法：</strong></p>
-<ul>
-<li>输入： 模型$\lambda = (A,B,\pi)$和观测$O = (o_1,o_2,\dots,o_T)$</li>
-<li>输出： 最优路径$I^\ast -= (i_1^\ast,i_2^\ast,\dots,i_T^\ast)$</li>
-</ul>
-<ol>
-<li>初始化<script type="math/tex; mode=display">
-\delta_1(i) = \pi_i b_i(o_1),\varPhi_1(i) = 0</script></li>
-<li>递推：对$t = 2,3,\dots,T$<script type="math/tex; mode=display">
-\begin{aligned}
-\delta_{t+1}(i) &= \max_{1 \leq j \leq N} [\delta_t(j) a_{ji}]b_i(o_{t+1}) \\
-\varPhi_t(i) &= argmax_{1 \leq j \leq N}[\delta_{t-1}(j) a_{ji}]
-\end{aligned}</script></li>
-<li>终止<script type="math/tex; mode=display">
-P^* = \max_{1 \leq i \leq N} \delta_T(i), i_T^* = argmax_{1 \leq i \leq N}
-[\delta_T(i)]</script></li>
-<li>最优路径回溯。对$t = T-1,T-2,\dots,1$<script type="math/tex; mode=display">
-i_t^* = \varPhi_{t+1}(i_{t+1}^*)</script>求得最优路径$I^{\ast} = (i_1^\ast,i_2^\ast,\dots,i_T^\ast)$</li>
-</ol>
-</blockquote>
-]]></content>
-      <categories>
-        <category>统计学习</category>
-      </categories>
-      <tags>
-        <tag>概率模型，HMM</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>贝叶斯网络</title>
-    <url>/2020/07/24/bayes-network/</url>
-    <content><![CDATA[<p>在该部分对贝叶斯网络进行介绍，按照递进关系总结以下知识点：<span id="more"></span></p>
-<ul>
-<li>条件独立性</li>
-<li>条件参数化</li>
-<li>朴素贝叶斯模型</li>
-<li><strong>贝叶斯网络</strong></li>
-</ul>
-<hr>
-<h3 id="问题来源"><a href="#问题来源" class="headerlink" title="问题来源"></a>问题来源</h3><p>首先探讨下为什么我们需要利用变量之间的条件独立性性质，假设我们要描述的对象为$n$个二值变量：$X_1,\dots,X_n$,这些变量的联合分布为$P$,那么我们需要$\bf{2^n - 1}$个参数来描述联合分布$P$，所需参数量是$O(2^n)$级别，我们便考虑能否利用变量之间的某种性质使得$P$可以用更少的参数来描述，由此便引出了变量之间的独立性性质。</p>
-<h3 id="独立性"><a href="#独立性" class="headerlink" title="独立性"></a>独立性</h3><p>下面给出一些独立性等价的定义:</p>
-<blockquote>
-<ul>
-<li>若$P(X = x|Y = y) = P(X=x)$对于任意的$x,y$均成立 $\Rightarrow$ 变量$X$与$Y$相互独立 </li>
-<li>若$P(X,Y) = P(X|Y)P(Y) = P(X)P(Y)$ $\Rightarrow$ 变量$X$与$Y$相互独立 </li>
-</ul>
-</blockquote>
-<p>若问题来源中的$n$个变量相互独立，则联合分布:</p>
-<script type="math/tex; mode=display">
-    P(X_1,X_2,\dots,X_n) = P(X_1) P(X_2) \dots P(X_n)</script><p>此时仅需$O(n)$个变量来对联合分布进行描述，参数花销大大减少，但在实际中，独立性是一个非常强的假设，往往不能够得到满足，由此便引出了条件独立性性质。</p>
-<h3 id="条件独立性"><a href="#条件独立性" class="headerlink" title="条件独立性"></a>条件独立性</h3><blockquote>
-<p>定义： 两个变量$X$和$Y$关于变量$Z$是条件独立的 $\Leftrightarrow$ 对于$\forall x,y,z$,$P(X = x|Y = y, Z = z) = P(X = x|Z = z)$ $\Leftrightarrow$ $P(X = x,Y = y|Z = z) = P(X = x|Z = z) \cdot P(Y=y|Z= z)$</p>
-</blockquote>
-<p>这里需要特别说明的是条件独立性并不能推出独立性，独立性也并不能推出条件独立性，下面给出两个反例：</p>
-<ul>
-<li>独立性 $\nRightarrow$ 条件独立性: 有两枚正反概率均为$50\%$的硬币,设事件A为第一枚硬币为正面，事件B为第二枚硬币为正面，事件C为两枚硬币同面，若不考虑事件C，事件A与事件B显然独立;但若事件C已经发生，则此时A与B便不再独立，即A与B关于C不条件独立。</li>
-<li>条件独立性 $\nRightarrow$ 独立性: 有两枚硬币，一枚正面概率为$90\%$,另一枚反面概率为$90\%$,随机拿出一枚抛掷硬币两次, 事件A表示第一次为正面，事件B表示第二次为正面，事件C表示选择的是第一枚硬币，则抛开事件C，事件A与事件B并不独立($0.5 = P(B) \neq P(B|A) = 0.9802$),但若事件C发生，则相当于进行了两次独立重复实验，此时事件A与事件B独立。</li>
-</ul>
-<p>条件独立性符号表示：</p>
-<ul>
-<li>$Ind(X;Y|Z)$ or $(X \perp Y|Z)$</li>
-</ul>
-<h3 id="条件参数化"><a href="#条件参数化" class="headerlink" title="条件参数化"></a>条件参数化</h3><p>在了解了变量条件独立性后，下面以一个例子分析如何利用变量之间的条件独立性性质来减少描述联合分布所需的参数。</p>
-<div align="center">
-
-![栗子](https://raw.githubusercontent.com/xuejy19/Images/master/Ind.png)
-</div>
-
-<p>图中大写字母均代表随机变量，含义如下：</p>
-<ul>
-<li>$D:$课程难度，$Val(D) = {d^0, d^1}$</li>
-<li>$I:$智力，$Val(I) = {i^0,i^1}$</li>
-<li>$S:$SAT分数，$Val(S) = {s^0,s^1}$</li>
-<li>$G:$课程成绩，$Val(G) = {g^0,g^1, g^2}$</li>
-<li>$L:$推荐信，$Val(L) = {l^0,l^1}$</li>
-</ul>
-<p>假设$G$和$S$关于$I$条件独立，下面我们分析两种情况的条件参数化</p>
-<p>首先以$I$和$S$两个变量为例，我们既可以通过联合分布$P(I,S)$来进行描述，也可以通过$P(I)$和$P(S|I)$进行描述，两种描述均是三个独立参数，如下图所示。<br><img src="https://raw.githubusercontent.com/xuejy19/Images/master/eg2.png" alt></p>
-<p>接下来分析$I、D、G$三个变量的条件参数化，其中$I$与$D$相互独立，下面分析两种表示方法所需的参数个数：</p>
-<ul>
-<li>联合分布: $P(I,D,G)$,所需参数个数为$2 \times 2 \times 3 - 1=11$</li>
-<li>利用独立性条件: $P(I,D,G) = P(I)P(D)P(G|I,D)$,所需独立参数为$1+1+2\times 2 \times (3-1) =10 $<br>$\Rightarrow$ <strong>利用独立性可以减少表示联合分布所需的参数个数</strong></li>
-</ul>
-<h3 id="朴素贝叶斯模型"><a href="#朴素贝叶斯模型" class="headerlink" title="朴素贝叶斯模型"></a>朴素贝叶斯模型</h3><p>在这一部分对朴素贝叶斯模型做简要介绍，首先我们有两组变量：</p>
-<ul>
-<li>$C$:类别变量，$C = {c_1,\dots, c_k}$</li>
-<li>观测变量：$X_1,X_2,\dots, X_d$</li>
-</ul>
-<p>在朴素贝叶斯模型中，我们的目标便是利用观测变量来对类别进行预测/推理。所有这些变量其实可以看做一个联合概率分布$P(C,X_1,\dots,X_d)$,然而该概率分布很难计算，所需的参数量是指数级别，因此在朴素贝叶斯模型中有一个很强的假设：</p>
-<blockquote>
-<p>观测变量彼此之间关于类别变量$C$是相互独立的，据此联合概率分布便很容易计算：</p>
-<script type="math/tex; mode=display">P(C,X_1,\dots,X_d) = P(X_1,\dots,X_d|C) P(C) = P(X_1|C)\dots P(X_d|C) P(C)</script></blockquote>
-<p>这是一个很强的假设，在真实世界中往往不能满足，同时因为没有充分利用变量之间的相关性性质，也造成了计算上的浪费。</p>
-<h3 id="贝叶斯网络"><a href="#贝叶斯网络" class="headerlink" title="贝叶斯网络"></a>贝叶斯网络</h3><blockquote>
-<p>贝叶斯网路定义：贝叶斯网络，又称信念网络，是一种概率图模型，记做$(G,P)$,借由有向无环图表示一组随机变量及它们之间的条件概率分布。</p>
-</blockquote>
-<p>贝叶斯网络是一种以有向无环图方式对独立性假设进行编码的手段，在贝叶斯网络中，任意变量与它的非后代变量对于其父节点变量是条件独立的：</p>
-<script type="math/tex; mode=display">
-    (X_i \perp Nondesc(X_i)|Pa(X_i))</script><p><strong>独立性映射(I-Maps):</strong> 记$P$为一组变量$\mathbf{X}$的联合概率分布，$I(P)$为表征$P$中独立性的集合</p>
-<blockquote>
-<p>定义：$G$为贝叶斯网路，若$I(G) \subset I(P)$,则称$G$为$P$的一个独立映射</p>
-<p>分解定理：若$G$是$P$的独立映射 $\Leftrightarrow$ $P(X<em>1,\dots,X_d) = \prod \limits</em>{i=1}^d P(X_i|Pa(X_i))$,通过该分解定理可以将全局的概率分布用局部的条件概率来表示</p>
-</blockquote>
-<p>下面分析下与联合概率分布相比，贝叶斯网络所需参数,以$n$个二值变量为例：</p>
-<ul>
-<li>联合概率分布：$2^n$</li>
-<li>贝叶斯网络(限制各个节点入度为$k$):$n2^k$</li>
-</ul>
-<h3 id="d-Separation-有向分离"><a href="#d-Separation-有向分离" class="headerlink" title="d-Separation(有向分离)"></a>d-Separation(有向分离)</h3><p>在前面我们已经讨论了贝叶斯网络$G$编码了局部独立性假设，现在我们希望能够了解$G$是否还编码了其他独立性假设，因此我们需要一个方法来挖掘出$G$中所有的独立性假设<br>$\Rightarrow$ <strong>d-Separation</strong><br>下面分别讨论不分离两种情况：</p>
-<ul>
-<li>不分离<ul>
-<li>两个节点直接相连：此时不存在一个节点使得这两个节点关于该节点条件独立<br>$e.g. X \rightarrow Y$</li>
-<li>两个节点间接相连：head2tail,head2head,tail2tail</li>
-<li>一般情况：对于图$G$中的路径$X_1 \leftrightarrow \dots \leftrightarrow X_n$关于节点集合$E$是激活的如果<ul>
-<li>对于每个V状结构$X<em>{i-1} \rightarrow X_i \leftarrow X</em>{i+1},X_i$或者其后代<br>在集合$E$中</li>
-<li>路径上的点不在集合$E$中</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>分离：在贝叶斯网络$G$中，$X$和$Y$在给定$Z$条件下是d分离的$d-sep_G(X;Y|Z)$,如果<strong>不存在</strong>从集合$X$到$Y$的激活路径</li>
-</ul>
-<p>由此可以通过d分离来找到贝叶斯网络中所有独立性关系：</p>
-<script type="math/tex; mode=display">
-    I(G) = \{ (\mathbf{X \perp Y |Z}): d-sep_G(\mathbf{X;Y|Z})\}</script><p>简单总结而言，如果两个节点之间的路径被阻隔，则需要满足以下两个条件其一：</p>
-<ul>
-<li>若存在V形结构，则冲撞点及其后代不能出现在条件集中</li>
-<li>有路径中的点(非碰撞点)出现在条件集合中</li>
-</ul>
-<h3 id="Forward-VS-Backward"><a href="#Forward-VS-Backward" class="headerlink" title="Forward VS Backward"></a>Forward VS Backward</h3><p>直观上感觉，贝叶斯网络的反向过程(给出结果，推理原因)要比前向过程困难不少，这是因为子节点会激活其父母之间的路径，而这种相关性会进一步向上传播。<br><strong>最小独立映射</strong>：对于一个图$G$和一个分布$P$，我们在图中哪怕仅仅去掉一个边都会导致$G$不再是$P$的一个独立映射，则称$G$是最小独立映射。<br><strong>最佳映射</strong>：对于一个图$G$和一个分布$P$，若有$I(P) = I(G)$，则称图$G$是$P$的一个最佳映射</p>
-]]></content>
-      <categories>
-        <category>统计学习</category>
-      </categories>
-      <tags>
-        <tag>概率图模型，有向图</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>SVM补充</title>
     <url>/2020/10/05/svm-bu-chong/</url>
     <content><![CDATA[<p>之前章节关于<a href="https://soundofwind.top/2020/08/12/svm/">支持向量机</a>的介绍已经比较详细了，最近发现有一些部分细节理解差一些意思，同时少了一部分内容，今天就在这里补充下，该部分章节按照以下结构组织:</p>
@@ -1021,6 +996,116 @@ i_t^* = \varPhi_{t+1}(i_{t+1}^*)</script>求得最优路径$I^{\ast} = (i_1^\ast
       </categories>
       <tags>
         <tag>SVM,补充</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>贝叶斯网络</title>
+    <url>/2020/07/24/bayes-network/</url>
+    <content><![CDATA[<p>在该部分对贝叶斯网络进行介绍，按照递进关系总结以下知识点：<span id="more"></span></p>
+<ul>
+<li>条件独立性</li>
+<li>条件参数化</li>
+<li>朴素贝叶斯模型</li>
+<li><strong>贝叶斯网络</strong></li>
+</ul>
+<hr>
+<h3 id="问题来源"><a href="#问题来源" class="headerlink" title="问题来源"></a>问题来源</h3><p>首先探讨下为什么我们需要利用变量之间的条件独立性性质，假设我们要描述的对象为$n$个二值变量：$X_1,\dots,X_n$,这些变量的联合分布为$P$,那么我们需要$\bf{2^n - 1}$个参数来描述联合分布$P$，所需参数量是$O(2^n)$级别，我们便考虑能否利用变量之间的某种性质使得$P$可以用更少的参数来描述，由此便引出了变量之间的独立性性质。</p>
+<h3 id="独立性"><a href="#独立性" class="headerlink" title="独立性"></a>独立性</h3><p>下面给出一些独立性等价的定义:</p>
+<blockquote>
+<ul>
+<li>若$P(X = x|Y = y) = P(X=x)$对于任意的$x,y$均成立 $\Rightarrow$ 变量$X$与$Y$相互独立 </li>
+<li>若$P(X,Y) = P(X|Y)P(Y) = P(X)P(Y)$ $\Rightarrow$ 变量$X$与$Y$相互独立 </li>
+</ul>
+</blockquote>
+<p>若问题来源中的$n$个变量相互独立，则联合分布:</p>
+<script type="math/tex; mode=display">
+    P(X_1,X_2,\dots,X_n) = P(X_1) P(X_2) \dots P(X_n)</script><p>此时仅需$O(n)$个变量来对联合分布进行描述，参数花销大大减少，但在实际中，独立性是一个非常强的假设，往往不能够得到满足，由此便引出了条件独立性性质。</p>
+<h3 id="条件独立性"><a href="#条件独立性" class="headerlink" title="条件独立性"></a>条件独立性</h3><blockquote>
+<p>定义： 两个变量$X$和$Y$关于变量$Z$是条件独立的 $\Leftrightarrow$ 对于$\forall x,y,z$,$P(X = x|Y = y, Z = z) = P(X = x|Z = z)$ $\Leftrightarrow$ $P(X = x,Y = y|Z = z) = P(X = x|Z = z) \cdot P(Y=y|Z= z)$</p>
+</blockquote>
+<p>这里需要特别说明的是条件独立性并不能推出独立性，独立性也并不能推出条件独立性，下面给出两个反例：</p>
+<ul>
+<li>独立性 $\nRightarrow$ 条件独立性: 有两枚正反概率均为$50\%$的硬币,设事件A为第一枚硬币为正面，事件B为第二枚硬币为正面，事件C为两枚硬币同面，若不考虑事件C，事件A与事件B显然独立;但若事件C已经发生，则此时A与B便不再独立，即A与B关于C不条件独立。</li>
+<li>条件独立性 $\nRightarrow$ 独立性: 有两枚硬币，一枚正面概率为$90\%$,另一枚反面概率为$90\%$,随机拿出一枚抛掷硬币两次, 事件A表示第一次为正面，事件B表示第二次为正面，事件C表示选择的是第一枚硬币，则抛开事件C，事件A与事件B并不独立($0.5 = P(B) \neq P(B|A) = 0.9802$),但若事件C发生，则相当于进行了两次独立重复实验，此时事件A与事件B独立。</li>
+</ul>
+<p>条件独立性符号表示：</p>
+<ul>
+<li>$Ind(X;Y|Z)$ or $(X \perp Y|Z)$</li>
+</ul>
+<h3 id="条件参数化"><a href="#条件参数化" class="headerlink" title="条件参数化"></a>条件参数化</h3><p>在了解了变量条件独立性后，下面以一个例子分析如何利用变量之间的条件独立性性质来减少描述联合分布所需的参数。</p>
+<div align="center">
+
+![栗子](https://raw.githubusercontent.com/xuejy19/Images/master/Ind.png)
+</div>
+
+<p>图中大写字母均代表随机变量，含义如下：</p>
+<ul>
+<li>$D:$课程难度，$Val(D) = {d^0, d^1}$</li>
+<li>$I:$智力，$Val(I) = {i^0,i^1}$</li>
+<li>$S:$SAT分数，$Val(S) = {s^0,s^1}$</li>
+<li>$G:$课程成绩，$Val(G) = {g^0,g^1, g^2}$</li>
+<li>$L:$推荐信，$Val(L) = {l^0,l^1}$</li>
+</ul>
+<p>假设$G$和$S$关于$I$条件独立，下面我们分析两种情况的条件参数化</p>
+<p>首先以$I$和$S$两个变量为例，我们既可以通过联合分布$P(I,S)$来进行描述，也可以通过$P(I)$和$P(S|I)$进行描述，两种描述均是三个独立参数，如下图所示。<br><img src="https://raw.githubusercontent.com/xuejy19/Images/master/eg2.png" alt></p>
+<p>接下来分析$I、D、G$三个变量的条件参数化，其中$I$与$D$相互独立，下面分析两种表示方法所需的参数个数：</p>
+<ul>
+<li>联合分布: $P(I,D,G)$,所需参数个数为$2 \times 2 \times 3 - 1=11$</li>
+<li>利用独立性条件: $P(I,D,G) = P(I)P(D)P(G|I,D)$,所需独立参数为$1+1+2\times 2 \times (3-1) =10 $<br>$\Rightarrow$ <strong>利用独立性可以减少表示联合分布所需的参数个数</strong></li>
+</ul>
+<h3 id="朴素贝叶斯模型"><a href="#朴素贝叶斯模型" class="headerlink" title="朴素贝叶斯模型"></a>朴素贝叶斯模型</h3><p>在这一部分对朴素贝叶斯模型做简要介绍，首先我们有两组变量：</p>
+<ul>
+<li>$C$:类别变量，$C = {c_1,\dots, c_k}$</li>
+<li>观测变量：$X_1,X_2,\dots, X_d$</li>
+</ul>
+<p>在朴素贝叶斯模型中，我们的目标便是利用观测变量来对类别进行预测/推理。所有这些变量其实可以看做一个联合概率分布$P(C,X_1,\dots,X_d)$,然而该概率分布很难计算，所需的参数量是指数级别，因此在朴素贝叶斯模型中有一个很强的假设：</p>
+<blockquote>
+<p>观测变量彼此之间关于类别变量$C$是相互独立的，据此联合概率分布便很容易计算：</p>
+<script type="math/tex; mode=display">P(C,X_1,\dots,X_d) = P(X_1,\dots,X_d|C) P(C) = P(X_1|C)\dots P(X_d|C) P(C)</script></blockquote>
+<p>这是一个很强的假设，在真实世界中往往不能满足，同时因为没有充分利用变量之间的相关性性质，也造成了计算上的浪费。</p>
+<h3 id="贝叶斯网络"><a href="#贝叶斯网络" class="headerlink" title="贝叶斯网络"></a>贝叶斯网络</h3><blockquote>
+<p>贝叶斯网路定义：贝叶斯网络，又称信念网络，是一种概率图模型，记做$(G,P)$,借由有向无环图表示一组随机变量及它们之间的条件概率分布。</p>
+</blockquote>
+<p>贝叶斯网络是一种以有向无环图方式对独立性假设进行编码的手段，在贝叶斯网络中，任意变量与它的非后代变量对于其父节点变量是条件独立的：</p>
+<script type="math/tex; mode=display">
+    (X_i \perp Nondesc(X_i)|Pa(X_i))</script><p><strong>独立性映射(I-Maps):</strong> 记$P$为一组变量$\mathbf{X}$的联合概率分布，$I(P)$为表征$P$中独立性的集合</p>
+<blockquote>
+<p>定义：$G$为贝叶斯网路，若$I(G) \subset I(P)$,则称$G$为$P$的一个独立映射</p>
+<p>分解定理：若$G$是$P$的独立映射 $\Leftrightarrow$ $P(X<em>1,\dots,X_d) = \prod \limits</em>{i=1}^d P(X_i|Pa(X_i))$,通过该分解定理可以将全局的概率分布用局部的条件概率来表示</p>
+</blockquote>
+<p>下面分析下与联合概率分布相比，贝叶斯网络所需参数,以$n$个二值变量为例：</p>
+<ul>
+<li>联合概率分布：$2^n$</li>
+<li>贝叶斯网络(限制各个节点入度为$k$):$n2^k$</li>
+</ul>
+<h3 id="d-Separation-有向分离"><a href="#d-Separation-有向分离" class="headerlink" title="d-Separation(有向分离)"></a>d-Separation(有向分离)</h3><p>在前面我们已经讨论了贝叶斯网络$G$编码了局部独立性假设，现在我们希望能够了解$G$是否还编码了其他独立性假设，因此我们需要一个方法来挖掘出$G$中所有的独立性假设<br>$\Rightarrow$ <strong>d-Separation</strong><br>下面分别讨论不分离两种情况：</p>
+<ul>
+<li>不分离<ul>
+<li>两个节点直接相连：此时不存在一个节点使得这两个节点关于该节点条件独立<br>$e.g. X \rightarrow Y$</li>
+<li>两个节点间接相连：head2tail,head2head,tail2tail</li>
+<li>一般情况：对于图$G$中的路径$X_1 \leftrightarrow \dots \leftrightarrow X_n$关于节点集合$E$是激活的如果<ul>
+<li>对于每个V状结构$X<em>{i-1} \rightarrow X_i \leftarrow X</em>{i+1},X_i$或者其后代<br>在集合$E$中</li>
+<li>路径上的点不在集合$E$中</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>分离：在贝叶斯网络$G$中，$X$和$Y$在给定$Z$条件下是d分离的$d-sep_G(X;Y|Z)$,如果<strong>不存在</strong>从集合$X$到$Y$的激活路径</li>
+</ul>
+<p>由此可以通过d分离来找到贝叶斯网络中所有独立性关系：</p>
+<script type="math/tex; mode=display">
+    I(G) = \{ (\mathbf{X \perp Y |Z}): d-sep_G(\mathbf{X;Y|Z})\}</script><p>简单总结而言，如果两个节点之间的路径被阻隔，则需要满足以下两个条件其一：</p>
+<ul>
+<li>若存在V形结构，则冲撞点及其后代不能出现在条件集中</li>
+<li>有路径中的点(非碰撞点)出现在条件集合中</li>
+</ul>
+<h3 id="Forward-VS-Backward"><a href="#Forward-VS-Backward" class="headerlink" title="Forward VS Backward"></a>Forward VS Backward</h3><p>直观上感觉，贝叶斯网络的反向过程(给出结果，推理原因)要比前向过程困难不少，这是因为子节点会激活其父母之间的路径，而这种相关性会进一步向上传播。<br><strong>最小独立映射</strong>：对于一个图$G$和一个分布$P$，我们在图中哪怕仅仅去掉一个边都会导致$G$不再是$P$的一个独立映射，则称$G$是最小独立映射。<br><strong>最佳映射</strong>：对于一个图$G$和一个分布$P$，若有$I(P) = I(G)$，则称图$G$是$P$的一个最佳映射</p>
+]]></content>
+      <categories>
+        <category>统计学习</category>
+      </categories>
+      <tags>
+        <tag>概率图模型，有向图</tag>
       </tags>
   </entry>
   <entry>
@@ -2343,6 +2428,110 @@ data.time = data.time.apply(lambda x: time.strftime(format, x.tuple))
       </tags>
   </entry>
   <entry>
+    <title>再谈极大似然估计求解</title>
+    <url>/2020/08/24/zai-tan-ji-da-si-ran-gu-ji-qiu-jie/</url>
+    <content><![CDATA[<p>首先我们思考这样一个问题：</p>
+<blockquote>
+<p>当我们用最大似然估计进行概率模型参数估计时，为什么基本都是直接求导，一阶导数等于0的点就是我们待求的最优估计?</p>
+</blockquote>
+<p>问到这个地方的时候，可能有一部分人就不知该如何回答了，因为一阶导数为0显然不是函数最大值点的充要条件，但我相信肯定有的答案是:</p>
+<blockquote>
+<p>因为碰到的对数似然函数是一个凹函数形式，这样一阶导数为0的点就与函数最大值点互为充要条件了</p>
+</blockquote>
+<p>这个答案是正确的，但是不够严谨，我相信基本没人会在应用最大似然进行参数估计时首先进行对数似然函数的凸性判定，这篇文章主要就是想通过严谨的数学推导来说明一类概率密度函数的对数似然函数是凹函数，可以直接利用求导等于0这种简单直接的方法寻找最优估计，而若碰到不属于这一类的概率密度函数，则在使用最大似然估计时还是先判断对数似然函数凹凸性为妙，本篇文章按照以下结构组织:</p>
+<ul>
+<li>指数分布族</li>
+<li>指数族函数举例</li>
+<li>对数似然函数凹凸性证明</li>
+<li>总结<span id="more"></span>
+<h3 id="指数分布族"><a href="#指数分布族" class="headerlink" title="指数分布族"></a>指数分布族</h3>首先给出指数分布族的定义：<blockquote>
+<p>指数分布族是一类概率分布的总称，这类分布的概率密度函数具有这样的形式：</p>
+<script type="math/tex; mode=display">
+  p_\theta(x) = h(x) \exp(\theta^T \phi(x) - A(\theta))</script><p>式中，$x$是密度函数自变量，$x \in \mathcal{X}$;$\phi(x)$是充分统计量，可以看做是原始变量的一个映射:</p>
+<script type="math/tex; mode=display">
+  \phi: \mathcal{X} \rightarrow R^d</script><p>$\theta$是模型参数向量，与充分统计量维度相同，$h(x)$是一个只与$x$有关的统计量，$A(\theta)$为配分函数，通过该函数来保证$p_\theta(x)$满足概率密度函数的定义：</p>
+<script type="math/tex; mode=display">
+   \int_{\mathcal{X}} p_{\theta}(x) dx = 1</script><p>由此约束条件，我们可以得到$A(\theta)$的解析表达式：</p>
+<script type="math/tex; mode=display">
+  A(\theta) = \log (\int h(x) \exp(\theta^T \phi(x))dx )</script></blockquote>
+</li>
+</ul>
+<h3 id="指数分布族函数举例"><a href="#指数分布族函数举例" class="headerlink" title="指数分布族函数举例"></a>指数分布族函数举例</h3><p>首先给出结论，按照笔者调研，属于指数分布族的分布有：</p>
+<ul>
+<li>正态分布$N(\mu,\sigma^2)$</li>
+<li>伯努利分布(两点分布)$B(1,\pi)$</li>
+<li>二项分布$B(n,\pi)$</li>
+<li>泊松分布$P(\lambda)$</li>
+<li>伽马分布$G(\mu,v)$</li>
+<li>……. </li>
+</ul>
+<p>下面就将其中几个分布化成指数分布族的标准形式</p>
+<h4 id="伯努利分布"><a href="#伯努利分布" class="headerlink" title="伯努利分布"></a>伯努利分布</h4><p>对于伯努利分布，我们有$\mathcal{X} = { 0,1 }$,模型参数为$P(x = 1) = \pi,P(x = -1) = 1 - \pi$,因此我们有:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        P(X = x)  = \pi^x (1 - \pi)^{1-x} &= \exp(x \log \pi + (1-x) \log(1-\pi) )  \\
+        &= \exp(x \log \frac{\pi}{1-\pi} + \log (1-\pi)) 
+    \end{aligned}</script><p>因此令$\theta = \log \frac{\pi}{1 - \pi}$, 则$P(X = x)$可以写做:</p>
+<script type="math/tex; mode=display">
+    P(X = x) = \exp(x\theta - \log(1 + e^\theta))</script><p>因此对于伯努利分布$h(x) = 1,\phi(x) = x, \theta = log \frac{\pi}{1-\pi}, A(\theta) = log(1 + e^\theta)$ </p>
+<h4 id="泊松分布"><a href="#泊松分布" class="headerlink" title="泊松分布"></a>泊松分布</h4><p>首先给出泊松分布的形式:</p>
+<script type="math/tex; mode=display">
+    P_\lambda(X = x) = \frac{\lambda^x}{x!} e^{- \lambda}</script><p>下面将其转化成指数分布族标准形式:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        P_\lambda(X = x) &= \frac{\lambda^x}{x!} e^{- \lambda} \\
+        &= \frac{1}{x!} e^{x\log \lambda - \lambda}
+    \end{aligned}</script><p>因此，对于泊松分布，$h(x) = \frac{1}{x!}, \theta = \log \lambda,\phi(x) = x,A(\theta) = e^\theta$   </p>
+<h4 id="高斯分布"><a href="#高斯分布" class="headerlink" title="高斯分布"></a>高斯分布</h4><p>高斯分布的概率密度函数形式如下:</p>
+<script type="math/tex; mode=display">
+    p_{\mu,\sigma}(x) = \frac{1}{\sqrt{2 \pi} \sigma} \exp(- \frac{(x-\mu)^2}{2\sigma^2})</script><p>下面将其转化成指数分布族标准形式: </p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+         p_{\mu,\sigma}(x) &= \frac{1}{\sqrt{2 \pi} \sigma} \exp(- \frac{(x-\mu)^2}{2\sigma^2})  \\
+         &= \frac{1}{\sqrt{2 \pi} \sigma} \exp(\frac{-x^2}{2 \sigma^2} + \frac{x \mu}{\sigma^2} - \frac{\mu^2}{2\sigma^2}) \\
+         &= \frac{1}{\sqrt{2 \pi} } \exp(\frac{-x^2}{2 \sigma^2} + \frac{x \mu}{\sigma^2} - \frac{\mu^2}{2\sigma^2} + \log \sigma)
+    \end{aligned}</script><p>因此，对于高斯分布:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        h(x) &= \frac{1}{\sqrt{2 \pi} \sigma}  \\
+        \phi(x) &= [\frac{x^2}{2}, x]^T \\
+        \theta &= [-\frac{1}{\sigma^2}, \frac{\mu}{\sigma^2}]^T \\
+        A(\theta) &= -\frac{1}{2} (log \theta^{(1)} + \theta^{(2)})
+    \end{aligned}</script><h3 id="对数似然函数凹凸性证明"><a href="#对数似然函数凹凸性证明" class="headerlink" title="对数似然函数凹凸性证明"></a>对数似然函数凹凸性证明</h3><p>我们关心的是最终对数似然函数的凹凸性，因为最终的对数似然函数是各个样本的概率密度函数取对数后累加的形式，由保凸运算可知，若单个对数概率密度函数的凹凸性可以确定，那么最终对数似然函数的凹凸性也就确定了。对于指数族分布，单个样本的概率密度函数取对数如下:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        \log p_{\theta}(x) &= \log h(x) \exp(\theta^T \phi(x) - A(\theta)) \\
+        &= \log h(x) + \theta^T \phi(x) + \log(-A(\theta))
+    \end{aligned}</script><p>第一项与$\theta$无关，第二项为$\theta$的线性组合，不影响函数的凹凸性，所以整个函数的凹凸性是由第三项来确定，对于外层函数是对数函数的对数函数$\log f(x)$而言:</p>
+<script type="math/tex; mode=display">
+    (\log f(x))^{''} = \frac{f(x) f^{''}(x) - f^{'}(x)^2}{f(x)^2}</script><p>由对数函数性质有$f(x) &gt; 0$,因此，若$f(x)$是凹函数,即$f^{‘’}(x) \leq 0$,则可推出$(\log f(x))^{‘’} \leq 0$,即$\log f(x)$为凹函数，若$f(x)$为凸函数则不能有直接的结论，因此我们的重点放在讨论$A(\theta)$的凹凸性上。</p>
+<p>下面证明$A(\theta)$为凸函数,从定义出发证明，记$\theta_{\lambda} = \lambda \theta_1 + (1 - \lambda) \theta_2$,其中$\theta_1,\theta_2 \in dom f, \lambda \in [0,1]$,由Hölder不等式，可知:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        A(\theta_\lambda) &= \log (\int h(x) \exp(\theta_{\lambda}^T \phi(x))dx ) \\ 
+        &= \log (\int \exp(\theta_{\lambda}^T \phi(x))d\mu(x)\\
+        &= \log (\int \exp[ (\lambda \theta_1 \phi(x) + (1-\lambda)\theta_2)\phi(x)]d\mu(x) ) \\
+        &= \log (\int \exp(\theta_1 \phi(x)^{\lambda}) \exp (\theta_2 \phi(x))^{1-\lambda} d \mu(x)) \\
+        &\leq \log (\int \exp(\theta_1 \phi(x))^{\frac{\lambda}{\lambda}} d\mu(x) )^\lambda (\int \exp(\theta_2 \phi(x))^{\frac{1-\lambda}{1- \lambda}}d\mu(x))^{1-\lambda}  (Hölder不等式) \\
+        &= \lambda \log (\int \exp(\theta_1 \phi(x)) d\mu(x) ) + (1-\lambda)
+        \log (\int \exp(\theta_2 \phi(x)) d\mu(x) ) \\
+        &= \lambda A(\theta_1) + (1-\lambda) A(\theta_2)
+    \end{aligned}</script><p>从凸函数定义可知,$A(\theta)$为凸函数，至此我们便得到了对数似然函数的凹凸性:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        &A(\theta) 凸 \rightarrow -A(\theta) 凹 \rightarrow \log(-A(\theta)) 凹 \\
+        & log(p_\theta(x)) 凹  \rightarrow 对数似然函数 凹
+    \end{aligned}</script><h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>从前面列出的指数分布族所包含的分布来看，我们日常所碰到的绝大多数概率分布都属于指数族分布，是可以直接通过求导等于0这种方法来得到参数估计，而对于不属于指数分布族的分布，则是有必要对对数似然函数进行分析，而不能直接通过求导来解最优参数估计值。</p>
+<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p>本文内容主要参考以下链接：<br>[1] <a href="https://www.zhihu.com/question/263423642/answer/269353169">为什么极大似然估计求导为 0 就是要求的值呢？</a><br>[2] <a href="https://web.stanford.edu/class/stats311/Lectures/lec-07.pdf">指数分布族函数</a></p>
+]]></content>
+      <categories>
+        <category>统计学习</category>
+      </categories>
+      <tags>
+        <tag>统计学习，凸优化</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>决策树模型</title>
     <url>/2020/08/30/jue-ce-shu-mo-xing/</url>
     <content><![CDATA[<p>这一部分介绍下决策树算法，决策树是一种基本的分类与回归表示方法，决策树模型呈树形结构，在分类问题中，可以表示为基于特征对实例进行分类的过程。决策树可以认为是”if-then”规则的集合，也可以认为是定义在特征空间与类空间上的概率分分布。本文按照以下四部分进行组织:</p>
@@ -2497,232 +2686,6 @@ data.time = data.time.apply(lambda x: time.strftime(format, x.tuple))
       </categories>
       <tags>
         <tag>树模型,categorical变量</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>再谈极大似然估计求解</title>
-    <url>/2020/08/24/zai-tan-ji-da-si-ran-gu-ji-qiu-jie/</url>
-    <content><![CDATA[<p>首先我们思考这样一个问题：</p>
-<blockquote>
-<p>当我们用最大似然估计进行概率模型参数估计时，为什么基本都是直接求导，一阶导数等于0的点就是我们待求的最优估计?</p>
-</blockquote>
-<p>问到这个地方的时候，可能有一部分人就不知该如何回答了，因为一阶导数为0显然不是函数最大值点的充要条件，但我相信肯定有的答案是:</p>
-<blockquote>
-<p>因为碰到的对数似然函数是一个凹函数形式，这样一阶导数为0的点就与函数最大值点互为充要条件了</p>
-</blockquote>
-<p>这个答案是正确的，但是不够严谨，我相信基本没人会在应用最大似然进行参数估计时首先进行对数似然函数的凸性判定，这篇文章主要就是想通过严谨的数学推导来说明一类概率密度函数的对数似然函数是凹函数，可以直接利用求导等于0这种简单直接的方法寻找最优估计，而若碰到不属于这一类的概率密度函数，则在使用最大似然估计时还是先判断对数似然函数凹凸性为妙，本篇文章按照以下结构组织:</p>
-<ul>
-<li>指数分布族</li>
-<li>指数族函数举例</li>
-<li>对数似然函数凹凸性证明</li>
-<li>总结<span id="more"></span>
-<h3 id="指数分布族"><a href="#指数分布族" class="headerlink" title="指数分布族"></a>指数分布族</h3>首先给出指数分布族的定义：<blockquote>
-<p>指数分布族是一类概率分布的总称，这类分布的概率密度函数具有这样的形式：</p>
-<script type="math/tex; mode=display">
-  p_\theta(x) = h(x) \exp(\theta^T \phi(x) - A(\theta))</script><p>式中，$x$是密度函数自变量，$x \in \mathcal{X}$;$\phi(x)$是充分统计量，可以看做是原始变量的一个映射:</p>
-<script type="math/tex; mode=display">
-  \phi: \mathcal{X} \rightarrow R^d</script><p>$\theta$是模型参数向量，与充分统计量维度相同，$h(x)$是一个只与$x$有关的统计量，$A(\theta)$为配分函数，通过该函数来保证$p_\theta(x)$满足概率密度函数的定义：</p>
-<script type="math/tex; mode=display">
-   \int_{\mathcal{X}} p_{\theta}(x) dx = 1</script><p>由此约束条件，我们可以得到$A(\theta)$的解析表达式：</p>
-<script type="math/tex; mode=display">
-  A(\theta) = \log (\int h(x) \exp(\theta^T \phi(x))dx )</script></blockquote>
-</li>
-</ul>
-<h3 id="指数分布族函数举例"><a href="#指数分布族函数举例" class="headerlink" title="指数分布族函数举例"></a>指数分布族函数举例</h3><p>首先给出结论，按照笔者调研，属于指数分布族的分布有：</p>
-<ul>
-<li>正态分布$N(\mu,\sigma^2)$</li>
-<li>伯努利分布(两点分布)$B(1,\pi)$</li>
-<li>二项分布$B(n,\pi)$</li>
-<li>泊松分布$P(\lambda)$</li>
-<li>伽马分布$G(\mu,v)$</li>
-<li>……. </li>
-</ul>
-<p>下面就将其中几个分布化成指数分布族的标准形式</p>
-<h4 id="伯努利分布"><a href="#伯努利分布" class="headerlink" title="伯努利分布"></a>伯努利分布</h4><p>对于伯努利分布，我们有$\mathcal{X} = { 0,1 }$,模型参数为$P(x = 1) = \pi,P(x = -1) = 1 - \pi$,因此我们有:</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        P(X = x)  = \pi^x (1 - \pi)^{1-x} &= \exp(x \log \pi + (1-x) \log(1-\pi) )  \\
-        &= \exp(x \log \frac{\pi}{1-\pi} + \log (1-\pi)) 
-    \end{aligned}</script><p>因此令$\theta = \log \frac{\pi}{1 - \pi}$, 则$P(X = x)$可以写做:</p>
-<script type="math/tex; mode=display">
-    P(X = x) = \exp(x\theta - \log(1 + e^\theta))</script><p>因此对于伯努利分布$h(x) = 1,\phi(x) = x, \theta = log \frac{\pi}{1-\pi}, A(\theta) = log(1 + e^\theta)$ </p>
-<h4 id="泊松分布"><a href="#泊松分布" class="headerlink" title="泊松分布"></a>泊松分布</h4><p>首先给出泊松分布的形式:</p>
-<script type="math/tex; mode=display">
-    P_\lambda(X = x) = \frac{\lambda^x}{x!} e^{- \lambda}</script><p>下面将其转化成指数分布族标准形式:</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        P_\lambda(X = x) &= \frac{\lambda^x}{x!} e^{- \lambda} \\
-        &= \frac{1}{x!} e^{x\log \lambda - \lambda}
-    \end{aligned}</script><p>因此，对于泊松分布，$h(x) = \frac{1}{x!}, \theta = \log \lambda,\phi(x) = x,A(\theta) = e^\theta$   </p>
-<h4 id="高斯分布"><a href="#高斯分布" class="headerlink" title="高斯分布"></a>高斯分布</h4><p>高斯分布的概率密度函数形式如下:</p>
-<script type="math/tex; mode=display">
-    p_{\mu,\sigma}(x) = \frac{1}{\sqrt{2 \pi} \sigma} \exp(- \frac{(x-\mu)^2}{2\sigma^2})</script><p>下面将其转化成指数分布族标准形式: </p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-         p_{\mu,\sigma}(x) &= \frac{1}{\sqrt{2 \pi} \sigma} \exp(- \frac{(x-\mu)^2}{2\sigma^2})  \\
-         &= \frac{1}{\sqrt{2 \pi} \sigma} \exp(\frac{-x^2}{2 \sigma^2} + \frac{x \mu}{\sigma^2} - \frac{\mu^2}{2\sigma^2}) \\
-         &= \frac{1}{\sqrt{2 \pi} } \exp(\frac{-x^2}{2 \sigma^2} + \frac{x \mu}{\sigma^2} - \frac{\mu^2}{2\sigma^2} + \log \sigma)
-    \end{aligned}</script><p>因此，对于高斯分布:</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        h(x) &= \frac{1}{\sqrt{2 \pi} \sigma}  \\
-        \phi(x) &= [\frac{x^2}{2}, x]^T \\
-        \theta &= [-\frac{1}{\sigma^2}, \frac{\mu}{\sigma^2}]^T \\
-        A(\theta) &= -\frac{1}{2} (log \theta^{(1)} + \theta^{(2)})
-    \end{aligned}</script><h3 id="对数似然函数凹凸性证明"><a href="#对数似然函数凹凸性证明" class="headerlink" title="对数似然函数凹凸性证明"></a>对数似然函数凹凸性证明</h3><p>我们关心的是最终对数似然函数的凹凸性，因为最终的对数似然函数是各个样本的概率密度函数取对数后累加的形式，由保凸运算可知，若单个对数概率密度函数的凹凸性可以确定，那么最终对数似然函数的凹凸性也就确定了。对于指数族分布，单个样本的概率密度函数取对数如下:</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        \log p_{\theta}(x) &= \log h(x) \exp(\theta^T \phi(x) - A(\theta)) \\
-        &= \log h(x) + \theta^T \phi(x) + \log(-A(\theta))
-    \end{aligned}</script><p>第一项与$\theta$无关，第二项为$\theta$的线性组合，不影响函数的凹凸性，所以整个函数的凹凸性是由第三项来确定，对于外层函数是对数函数的对数函数$\log f(x)$而言:</p>
-<script type="math/tex; mode=display">
-    (\log f(x))^{''} = \frac{f(x) f^{''}(x) - f^{'}(x)^2}{f(x)^2}</script><p>由对数函数性质有$f(x) &gt; 0$,因此，若$f(x)$是凹函数,即$f^{‘’}(x) \leq 0$,则可推出$(\log f(x))^{‘’} \leq 0$,即$\log f(x)$为凹函数，若$f(x)$为凸函数则不能有直接的结论，因此我们的重点放在讨论$A(\theta)$的凹凸性上。</p>
-<p>下面证明$A(\theta)$为凸函数,从定义出发证明，记$\theta_{\lambda} = \lambda \theta_1 + (1 - \lambda) \theta_2$,其中$\theta_1,\theta_2 \in dom f, \lambda \in [0,1]$,由Hölder不等式，可知:</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        A(\theta_\lambda) &= \log (\int h(x) \exp(\theta_{\lambda}^T \phi(x))dx ) \\ 
-        &= \log (\int \exp(\theta_{\lambda}^T \phi(x))d\mu(x)\\
-        &= \log (\int \exp[ (\lambda \theta_1 \phi(x) + (1-\lambda)\theta_2)\phi(x)]d\mu(x) ) \\
-        &= \log (\int \exp(\theta_1 \phi(x)^{\lambda}) \exp (\theta_2 \phi(x))^{1-\lambda} d \mu(x)) \\
-        &\leq \log (\int \exp(\theta_1 \phi(x))^{\frac{\lambda}{\lambda}} d\mu(x) )^\lambda (\int \exp(\theta_2 \phi(x))^{\frac{1-\lambda}{1- \lambda}}d\mu(x))^{1-\lambda}  (Hölder不等式) \\
-        &= \lambda \log (\int \exp(\theta_1 \phi(x)) d\mu(x) ) + (1-\lambda)
-        \log (\int \exp(\theta_2 \phi(x)) d\mu(x) ) \\
-        &= \lambda A(\theta_1) + (1-\lambda) A(\theta_2)
-    \end{aligned}</script><p>从凸函数定义可知,$A(\theta)$为凸函数，至此我们便得到了对数似然函数的凹凸性:</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        &A(\theta) 凸 \rightarrow -A(\theta) 凹 \rightarrow \log(-A(\theta)) 凹 \\
-        & log(p_\theta(x)) 凹  \rightarrow 对数似然函数 凹
-    \end{aligned}</script><h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>从前面列出的指数分布族所包含的分布来看，我们日常所碰到的绝大多数概率分布都属于指数族分布，是可以直接通过求导等于0这种方法来得到参数估计，而对于不属于指数分布族的分布，则是有必要对对数似然函数进行分析，而不能直接通过求导来解最优参数估计值。</p>
-<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p>本文内容主要参考以下链接：<br>[1] <a href="https://www.zhihu.com/question/263423642/answer/269353169">为什么极大似然估计求导为 0 就是要求的值呢？</a><br>[2] <a href="https://web.stanford.edu/class/stats311/Lectures/lec-07.pdf">指数分布族函数</a></p>
-]]></content>
-      <categories>
-        <category>统计学习</category>
-      </categories>
-      <tags>
-        <tag>统计学习，凸优化</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>初识Docker</title>
-    <url>/2020/10/28/chu-shi-docker/</url>
-    <content><![CDATA[<p>近期因为在外出差，没咋看论文，为了让时间得到充分利用，自己打算学习一些开发相关的知识，毕竟技多不压身。 这部分就参考<a href="https://docs.docker.com/get-started/">Docker官方文档</a>来进行Docker基本知识的学习。<br>该部分分为以下三个章节进行组织:</p>
-<ul>
-<li>概念与设置 </li>
-<li>构建并运行镜像</li>
-<li>在Docker Hub 上共享镜像 <span id="more"></span>
-<h3 id="概念与设置"><a href="#概念与设置" class="headerlink" title="概念与设置"></a>概念与设置</h3><h4 id="Docker概念"><a href="#Docker概念" class="headerlink" title="Docker概念"></a>Docker概念</h4>Docker是供开发人员和系统管理员 使用容器构建，运行和共享应用程序的平台。使用容器部署应用程序称为容器化。容器不是新的，但用于轻松部署应用程序的容器却是新的。<br>容器化越来越受欢迎，这是因为容器具有如下几点优点: </li>
-<li>灵活：即使最复杂的应用程序也可以容器化。</li>
-<li>轻量级：容器利用并共享主机内核，在系统资源方面比虚拟机更有效。 </li>
-<li>可移植：您可以在本地构建，部署到云并在任何地方运行。</li>
-<li>松散耦合：容器是高度自给自足并封装的，可让您在不破坏其他容器的情况下更换或升级它们。</li>
-<li>可扩展：您可以在数据中心内增加并自动分布容器副本。</li>
-<li>安全：容器将积极的约束和隔离应用于流程，而用户无需进行任何配置。 </li>
-</ul>
-<h4 id="镜像与容器"><a href="#镜像与容器" class="headerlink" title="镜像与容器"></a>镜像与容器</h4><p>从根本上说，一个容器不过是一个<strong>正在运行的进程</strong>，并对其应用了一些附加的封装功能，以使其与主机和其他容器隔离。容器隔离的最重要方面之一是每个容器都与自己的专用文件系统进行交互。该文件系统由<strong>Docker映像</strong>提供。映像包括运行应用程序所需的所有内容-代码或二进制文件，运行时，依赖关系以及所需的任何其他文件系统对象。</p>
-<h4 id="容器和虚拟机"><a href="#容器和虚拟机" class="headerlink" title="容器和虚拟机"></a>容器和虚拟机</h4><p>一个容器本地运行于Linux系统上，并与其他容器共享主机内核。一个容器运行一个离散进程，占用的内存不超过其他任何可执行文件，因此其比较轻量。<br>相比之下，虚拟机（VM）运行一个全面的“来宾”操作系统，通过hypervisor对主机资源进行虚拟访问。一般来说，除了应用程序逻辑所消耗的外，vm会产生很多开销。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/Container.png" alt="容器与虚拟机"></p>
-<h4 id="Docker环境设置"><a href="#Docker环境设置" class="headerlink" title="Docker环境设置"></a>Docker环境设置</h4><p>参考<a href="https://docs.docker.com/get-started/">docker桌面版安装及测试</a>来进行安装，运行:</p>
-<pre class="line-numbers language-lang-bash"><code class="language-lang-bash">docker run hello-world
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>如果返回:</p>
-<pre class="line-numbers language-lang-bash"><code class="language-lang-bash">Hello from Docker!
-This message shows that your installation appears to be working correctly.
-
-To generate this message, Docker took the following steps:
- 1. The Docker client contacted the Docker daemon.
- 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
-    (amd64)
- 3. The Docker daemon created a new container from that image which runs the
-    executable that produces the output you are currently reading.
- 4. The Docker daemon streamed that output to the Docker client, which sent it
-    to your terminal.
-
-To try something more ambitious, you can run an Ubuntu container with:
- $ docker run -it ubuntu bash
-
-Share images, automate workflows, and more with a free Docker ID:
- https://hub.docker.com/
-
-For more examples and ideas, visit:
- https://docs.docker.com/get-started/
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>则说明已经在机器上成功安装docker desktop 并进行了快速测试，成功运行了第一个容器化应用<code>hello-world</code>. </p>
-<h3 id="构建并运行镜像"><a href="#构建并运行镜像" class="headerlink" title="构建并运行镜像"></a>构建并运行镜像</h3><h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><p>通过上面的测试，我们已经设置好了开发环境，接下来我们便可以开发容器化的应用程序，通常，开发流程如下: </p>
-<ul>
-<li>首先创建Docker映像，为应用程序的每个组件创建和测试单独的容器。</li>
-<li>将您的容器和支持基础结构组装成一个完整的应用程序。</li>
-<li>测试，共享和部署完整的容器化应用程序。 </li>
-</ul>
-<p>在本章节中，我们将工作重心放在第一个步骤，创建容器将基于的镜像。请记住，Docker映像捕获了将在其中运行容器化进程的私有文件系统；您需要创建一个图像，其中包含您的应用程序需要运行的内容。</p>
-<h4 id="设置"><a href="#设置" class="headerlink" title="设置"></a>设置</h4><p>首先下载<code>node-bulletin-board</code>项目，这是一个用Node.js编写的简单公告版应用程序,首先通过<code>git</code>下clone该项目:</p>
-<pre class="line-numbers language-lang-bash"><code class="language-lang-bash">git clone https://github.com/dockersamples/node-bulletin-board
-cd node-bulletin-board/bulletin-board-app
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<h4 id="使用dockerfile定义一个容器"><a href="#使用dockerfile定义一个容器" class="headerlink" title="使用dockerfile定义一个容器"></a>使用dockerfile定义一个容器</h4><p>在下载整个项目后，使用找到<code>bulletin board</code>应用中的<code>dockerfile</code>文件，<code>dockerfile</code>描述了如何为容器组装私有文件系统，并且还包含一些元数据来描述如何基于该映像运行容器。<br>下面给出该示例项目的<code>dockerfile</code>的注释文件: </p>
-<pre class="line-numbers language-lang-bash"><code class="language-lang-bash"># Use the official image as a parent image.
-FROM node:current-slim
-
-# Set the working directory.
-WORKDIR /usr/src/app
-
-# Copy the file from your host to your current location.
-COPY package.json .
-
-# Run the command inside your image filesystem.
-RUN npm install
-
-# Add metadata to the image to describe which port the container is listening on at runtime.
-EXPOSE 8080
-
-# Run the specified command within the container.
-CMD [ "npm", "start" ]
-
-# Copy the rest of your app's source code from your host to your image filesystem.
-COPY . .
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>下面给出该<code>dockerfile</code>命令逻辑解释: </p>
-<ul>
-<li>通过<code>FROM</code>指定一个基础映像-<code>node:current-slim</code>。这是由<code>node.js</code>公司构建的官方镜像并且已由<code>Docker</code>验证为包含<code>Node.js</code>长期支持解释器和基本依赖项的高质量镜像。</li>
-<li>使用<code>WORKDIR</code>指定所有后续操作都应该从映像文件系统中的<code>/usr/src/app</code>目录（而不是主机的文件系统）执行。</li>
-<li>使用<code>COPY</code>将<code>package.json</code>文件从主机复制到当前目录<code>(.)</code>,在本例子中，该当前目录是<code>/usr/src/app/package.json</code></li>
-<li>使用<code>RUN</code>命令在你的镜像文件系统中运行<code>npm install</code>命令，它将读取<code>package.json</code>确定应用程序的节点依赖项并安装它们。</li>
-<li>使用<code>COPY</code>将应用的剩余资源代码从主机复制到你的镜像文件系统。</li>
-</ul>
-<p>上面的步骤构建了我们的映像文件系统，但同时还包含一些其它命令:</p>
-<ul>
-<li>使用<code>CMD</code>命令来指定了如何基于该映像运行容器，该命令意味着该镜像要支持的容器化进程是<code>npm start</code> </li>
-<li><code>EXPOSURE 8080</code>则是通知<code>Docker</code>容器会实时监听端口<code>8080</code> </li>
-</ul>
-<h4 id="构建并测试镜像"><a href="#构建并测试镜像" class="headerlink" title="构建并测试镜像"></a>构建并测试镜像</h4><p>运行以下命令来构建公告板映像:</p>
-<pre class="line-numbers language-lang-bash"><code class="language-lang-bash">docker build --tag bulletinboard:1.0 .
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>运行成功后会显示： </p>
-<pre class="line-numbers language-lang-bash"><code class="language-lang-bash">Successfully tagged bulletinboard:1.0
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h4 id="将镜像作为容器运行"><a href="#将镜像作为容器运行" class="headerlink" title="将镜像作为容器运行"></a>将镜像作为容器运行</h4><ol>
-<li>运行以下命令以基于新映像启动容器 <pre class="line-numbers language-lang-bash"><code class="language-lang-bash">docker run --publish 8000:8080 --detach --name bb bulletinboard:1.0
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-这里有几个常见的标志: </li>
-</ol>
-<ul>
-<li><code>--publish</code>要求Docker将主机端口8000上传入的流量转发到容器的端口8080。容器具有自己的专用端口集，因此，如果要从网络访问某个端口，则必须以这种方式将流量转发到该端口。否则，作为默认的安全状态，防火墙规则将阻止所有网络流量到达您的容器。 </li>
-<li><code>--detach</code>要求docker在后台运行此程序 </li>
-<li><code>--name</code>指定一个名称，在后续命令中，可以使用该名称引用容器，本命令中指定为<code>bb</code></li>
-</ul>
-<ol>
-<li>在浏览器中访问应用程序<code>localhost:8000</code>,可以看到公告版应用程序已启动并且正在运行，在这一步，您通常会尽一切可能确保容器按预期方式工作。例如，现在是运行单元测试的时候了。</li>
-<li>对公告板容器正常工作感到满意后可以将其删除：<pre class="line-numbers language-lang-bash"><code class="language-lang-bash">docker rm --force bb
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-该<code>--force</code>选项停止一个正在运行中的容器，也可以采用<code>docker stop bb</code>来停止一个容器，这样就不需要使用<code>--force</code>选项来<code>rm</code>容器。</li>
-</ol>
-<h3 id="在Docker-Hub-中分享镜像"><a href="#在Docker-Hub-中分享镜像" class="headerlink" title="在Docker Hub 中分享镜像"></a>在Docker Hub 中分享镜像</h3><h4 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h4><p>开发容器化程序的最后一步是在<a href="https://hub.docker.com/">docker hub</a>之类的注册标上共享镜像，以便可以轻松下载他们，并在任何目标计算机上运行他们。 </p>
-<h4 id="创建一个Docker-hub-存储库"><a href="#创建一个Docker-hub-存储库" class="headerlink" title="创建一个Docker hub 存储库"></a>创建一个Docker hub 存储库</h4><p>在创建完docker id之后，可以创建一个docker镜像仓库</p>
-]]></content>
-      <categories>
-        <category>开发知识</category>
-      </categories>
-      <tags>
-        <tag>容器</tag>
       </tags>
   </entry>
   <entry>
@@ -3306,6 +3269,128 @@ if __name__ == '__main__':
       </tags>
   </entry>
   <entry>
+    <title>初识Docker</title>
+    <url>/2020/10/28/chu-shi-docker/</url>
+    <content><![CDATA[<p>近期因为在外出差，没咋看论文，为了让时间得到充分利用，自己打算学习一些开发相关的知识，毕竟技多不压身。 这部分就参考<a href="https://docs.docker.com/get-started/">Docker官方文档</a>来进行Docker基本知识的学习。<br>该部分分为以下三个章节进行组织:</p>
+<ul>
+<li>概念与设置 </li>
+<li>构建并运行镜像</li>
+<li>在Docker Hub 上共享镜像 <span id="more"></span>
+<h3 id="概念与设置"><a href="#概念与设置" class="headerlink" title="概念与设置"></a>概念与设置</h3><h4 id="Docker概念"><a href="#Docker概念" class="headerlink" title="Docker概念"></a>Docker概念</h4>Docker是供开发人员和系统管理员 使用容器构建，运行和共享应用程序的平台。使用容器部署应用程序称为容器化。容器不是新的，但用于轻松部署应用程序的容器却是新的。<br>容器化越来越受欢迎，这是因为容器具有如下几点优点: </li>
+<li>灵活：即使最复杂的应用程序也可以容器化。</li>
+<li>轻量级：容器利用并共享主机内核，在系统资源方面比虚拟机更有效。 </li>
+<li>可移植：您可以在本地构建，部署到云并在任何地方运行。</li>
+<li>松散耦合：容器是高度自给自足并封装的，可让您在不破坏其他容器的情况下更换或升级它们。</li>
+<li>可扩展：您可以在数据中心内增加并自动分布容器副本。</li>
+<li>安全：容器将积极的约束和隔离应用于流程，而用户无需进行任何配置。 </li>
+</ul>
+<h4 id="镜像与容器"><a href="#镜像与容器" class="headerlink" title="镜像与容器"></a>镜像与容器</h4><p>从根本上说，一个容器不过是一个<strong>正在运行的进程</strong>，并对其应用了一些附加的封装功能，以使其与主机和其他容器隔离。容器隔离的最重要方面之一是每个容器都与自己的专用文件系统进行交互。该文件系统由<strong>Docker映像</strong>提供。映像包括运行应用程序所需的所有内容-代码或二进制文件，运行时，依赖关系以及所需的任何其他文件系统对象。</p>
+<h4 id="容器和虚拟机"><a href="#容器和虚拟机" class="headerlink" title="容器和虚拟机"></a>容器和虚拟机</h4><p>一个容器本地运行于Linux系统上，并与其他容器共享主机内核。一个容器运行一个离散进程，占用的内存不超过其他任何可执行文件，因此其比较轻量。<br>相比之下，虚拟机（VM）运行一个全面的“来宾”操作系统，通过hypervisor对主机资源进行虚拟访问。一般来说，除了应用程序逻辑所消耗的外，vm会产生很多开销。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/Container.png" alt="容器与虚拟机"></p>
+<h4 id="Docker环境设置"><a href="#Docker环境设置" class="headerlink" title="Docker环境设置"></a>Docker环境设置</h4><p>参考<a href="https://docs.docker.com/get-started/">docker桌面版安装及测试</a>来进行安装，运行:</p>
+<pre class="line-numbers language-lang-bash"><code class="language-lang-bash">docker run hello-world
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>如果返回:</p>
+<pre class="line-numbers language-lang-bash"><code class="language-lang-bash">Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+ 1. The Docker client contacted the Docker daemon.
+ 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+    (amd64)
+ 3. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with:
+ $ docker run -it ubuntu bash
+
+Share images, automate workflows, and more with a free Docker ID:
+ https://hub.docker.com/
+
+For more examples and ideas, visit:
+ https://docs.docker.com/get-started/
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>则说明已经在机器上成功安装docker desktop 并进行了快速测试，成功运行了第一个容器化应用<code>hello-world</code>. </p>
+<h3 id="构建并运行镜像"><a href="#构建并运行镜像" class="headerlink" title="构建并运行镜像"></a>构建并运行镜像</h3><h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><p>通过上面的测试，我们已经设置好了开发环境，接下来我们便可以开发容器化的应用程序，通常，开发流程如下: </p>
+<ul>
+<li>首先创建Docker映像，为应用程序的每个组件创建和测试单独的容器。</li>
+<li>将您的容器和支持基础结构组装成一个完整的应用程序。</li>
+<li>测试，共享和部署完整的容器化应用程序。 </li>
+</ul>
+<p>在本章节中，我们将工作重心放在第一个步骤，创建容器将基于的镜像。请记住，Docker映像捕获了将在其中运行容器化进程的私有文件系统；您需要创建一个图像，其中包含您的应用程序需要运行的内容。</p>
+<h4 id="设置"><a href="#设置" class="headerlink" title="设置"></a>设置</h4><p>首先下载<code>node-bulletin-board</code>项目，这是一个用Node.js编写的简单公告版应用程序,首先通过<code>git</code>下clone该项目:</p>
+<pre class="line-numbers language-lang-bash"><code class="language-lang-bash">git clone https://github.com/dockersamples/node-bulletin-board
+cd node-bulletin-board/bulletin-board-app
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h4 id="使用dockerfile定义一个容器"><a href="#使用dockerfile定义一个容器" class="headerlink" title="使用dockerfile定义一个容器"></a>使用dockerfile定义一个容器</h4><p>在下载整个项目后，使用找到<code>bulletin board</code>应用中的<code>dockerfile</code>文件，<code>dockerfile</code>描述了如何为容器组装私有文件系统，并且还包含一些元数据来描述如何基于该映像运行容器。<br>下面给出该示例项目的<code>dockerfile</code>的注释文件: </p>
+<pre class="line-numbers language-lang-bash"><code class="language-lang-bash"># Use the official image as a parent image.
+FROM node:current-slim
+
+# Set the working directory.
+WORKDIR /usr/src/app
+
+# Copy the file from your host to your current location.
+COPY package.json .
+
+# Run the command inside your image filesystem.
+RUN npm install
+
+# Add metadata to the image to describe which port the container is listening on at runtime.
+EXPOSE 8080
+
+# Run the specified command within the container.
+CMD [ "npm", "start" ]
+
+# Copy the rest of your app's source code from your host to your image filesystem.
+COPY . .
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>下面给出该<code>dockerfile</code>命令逻辑解释: </p>
+<ul>
+<li>通过<code>FROM</code>指定一个基础映像-<code>node:current-slim</code>。这是由<code>node.js</code>公司构建的官方镜像并且已由<code>Docker</code>验证为包含<code>Node.js</code>长期支持解释器和基本依赖项的高质量镜像。</li>
+<li>使用<code>WORKDIR</code>指定所有后续操作都应该从映像文件系统中的<code>/usr/src/app</code>目录（而不是主机的文件系统）执行。</li>
+<li>使用<code>COPY</code>将<code>package.json</code>文件从主机复制到当前目录<code>(.)</code>,在本例子中，该当前目录是<code>/usr/src/app/package.json</code></li>
+<li>使用<code>RUN</code>命令在你的镜像文件系统中运行<code>npm install</code>命令，它将读取<code>package.json</code>确定应用程序的节点依赖项并安装它们。</li>
+<li>使用<code>COPY</code>将应用的剩余资源代码从主机复制到你的镜像文件系统。</li>
+</ul>
+<p>上面的步骤构建了我们的映像文件系统，但同时还包含一些其它命令:</p>
+<ul>
+<li>使用<code>CMD</code>命令来指定了如何基于该映像运行容器，该命令意味着该镜像要支持的容器化进程是<code>npm start</code> </li>
+<li><code>EXPOSURE 8080</code>则是通知<code>Docker</code>容器会实时监听端口<code>8080</code> </li>
+</ul>
+<h4 id="构建并测试镜像"><a href="#构建并测试镜像" class="headerlink" title="构建并测试镜像"></a>构建并测试镜像</h4><p>运行以下命令来构建公告板映像:</p>
+<pre class="line-numbers language-lang-bash"><code class="language-lang-bash">docker build --tag bulletinboard:1.0 .
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>运行成功后会显示： </p>
+<pre class="line-numbers language-lang-bash"><code class="language-lang-bash">Successfully tagged bulletinboard:1.0
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h4 id="将镜像作为容器运行"><a href="#将镜像作为容器运行" class="headerlink" title="将镜像作为容器运行"></a>将镜像作为容器运行</h4><ol>
+<li>运行以下命令以基于新映像启动容器 <pre class="line-numbers language-lang-bash"><code class="language-lang-bash">docker run --publish 8000:8080 --detach --name bb bulletinboard:1.0
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+这里有几个常见的标志: </li>
+</ol>
+<ul>
+<li><code>--publish</code>要求Docker将主机端口8000上传入的流量转发到容器的端口8080。容器具有自己的专用端口集，因此，如果要从网络访问某个端口，则必须以这种方式将流量转发到该端口。否则，作为默认的安全状态，防火墙规则将阻止所有网络流量到达您的容器。 </li>
+<li><code>--detach</code>要求docker在后台运行此程序 </li>
+<li><code>--name</code>指定一个名称，在后续命令中，可以使用该名称引用容器，本命令中指定为<code>bb</code></li>
+</ul>
+<ol>
+<li>在浏览器中访问应用程序<code>localhost:8000</code>,可以看到公告版应用程序已启动并且正在运行，在这一步，您通常会尽一切可能确保容器按预期方式工作。例如，现在是运行单元测试的时候了。</li>
+<li>对公告板容器正常工作感到满意后可以将其删除：<pre class="line-numbers language-lang-bash"><code class="language-lang-bash">docker rm --force bb
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+该<code>--force</code>选项停止一个正在运行中的容器，也可以采用<code>docker stop bb</code>来停止一个容器，这样就不需要使用<code>--force</code>选项来<code>rm</code>容器。</li>
+</ol>
+<h3 id="在Docker-Hub-中分享镜像"><a href="#在Docker-Hub-中分享镜像" class="headerlink" title="在Docker Hub 中分享镜像"></a>在Docker Hub 中分享镜像</h3><h4 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h4><p>开发容器化程序的最后一步是在<a href="https://hub.docker.com/">docker hub</a>之类的注册标上共享镜像，以便可以轻松下载他们，并在任何目标计算机上运行他们。 </p>
+<h4 id="创建一个Docker-hub-存储库"><a href="#创建一个Docker-hub-存储库" class="headerlink" title="创建一个Docker hub 存储库"></a>创建一个Docker hub 存储库</h4><p>在创建完docker id之后，可以创建一个docker镜像仓库</p>
+]]></content>
+      <categories>
+        <category>开发知识</category>
+      </categories>
+      <tags>
+        <tag>容器</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>司马相如与卓文君</title>
     <url>/2020/09/20/si-ma-xiang-ru-yu-zhuo-wen-jun/</url>
     <content><![CDATA[<p>是夜，余观《王立群读史记》毕，感于司马相如与卓文君之逸事，为此文，记<strong>后世文学之演绎</strong>。</p>
@@ -3324,7 +3409,7 @@ if __name__ == '__main__':
   <entry>
     <title>安全外壳协议-ssh</title>
     <url>/2022/10/24/an-quan-wai-ke-xie-yi-ssh/</url>
-    <content><![CDATA[<h4 id="简介-from-wiki"><a href="#简介-from-wiki" class="headerlink" title="简介(from wiki)"></a>简介(from wiki)</h4><p>安全外壳协议(Secure Shell Protocol,简称ssh)是一种加密的网络传输协议，可在不安全的网络中为网络服务提供安全的传输环境。SSH通过在网络中创建安全隧道来实现SSH客户端与服务器之间的连接;SSH最常见的用途是远程登录系统，人们通常利用SSH来传输命令行界面和远程执行命令。 </p>
+    <content><![CDATA[<h4 id="简介-from-wiki"><a href="#简介-from-wiki" class="headerlink" title="简介(from wiki)"></a>简介(from wiki)</h4><p>安全外壳协议(Secure Shell Protocol,简称ssh)是一种加密的网络传输协议，可在不安全的网络中为网络服务提供安全的传输环境。SSH通过在网络中创建安全隧道来实现SSH客户端与服务器之间的连接;SSH最常见的用途是远程登录系统，人们通常利用SSH来传输命令行界面和远程执行命令。<br><span id="more"></span></p>
 <h4 id="相关文件"><a href="#相关文件" class="headerlink" title="相关文件"></a>相关文件</h4><p>SSH服务会在系统的用户目录下生成一个<code>.ssh</code>文件夹，文件夹下一般会有如下文件: </p>
 <ul>
 <li><code>config</code>: 配置文件，可以为远程主机配置host、登录端口、默认登录用户等，方便用户使用； </li>
@@ -3488,165 +3573,6 @@ if __name__ == '__main__':
       </categories>
       <tags>
         <tag>心智成熟，心理学</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>强化学习</title>
-    <url>/2020/10/06/qiang-hua-xue-xi/</url>
-    <content><![CDATA[<p>这部分将根据周志华老师的西瓜书对强化学习部分做一个简单介绍，该部分按照以下章节进行组织:</p>
-<ul>
-<li>思想介绍——任务与奖赏 </li>
-<li>K-摇臂赌博机 </li>
-<li>有模型学习 </li>
-<li>免模型学习 </li>
-<li>值函数近似 </li>
-<li>模仿学习 <span id="more"></span>
-</li>
-</ul>
-<h3 id="思想介绍-任务与奖赏"><a href="#思想介绍-任务与奖赏" class="headerlink" title="思想介绍-任务与奖赏"></a>思想介绍-任务与奖赏</h3><p><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/reinforce.png" alt="强化学习"><br>考虑这样病人看病的场景，假设我们是看病的医生，在我们与病人的交互过程中，大概是这么一个交互顺序:</p>
-<ul>
-<li>病人本身有一个状态，记做$S$，表示病人目前的身体状况。</li>
-<li>在看病的过程中，我认为病人处于某个状态$S’$，然后对病人施加了一个动作A，比如给病人吃了一些药，或者打了针。</li>
-<li>在病人接受了治疗之后，其本身状态发生了一个变化，该状态的转移我们用概率矩$P$来表示，表示病人状态发生了一个变化，比如痊愈了或者病情更加严重了。 </li>
-<li>在病人的状态发生了变化之后，会给作为医生的我们一个反馈，记做$R$,如果病人痊愈了，那我们得到的反馈可能会是一面锦旗和很多钱，如果病情更加严重了，我们得到的反馈可能就是埋怨。 </li>
-</ul>
-<p>上面我所描述的场景其实就构成了一轮强化学习的过程，强化学习任务常用马尔可夫决策过程来描述，这意味着环境下一时刻的状态仅仅与当前时刻状态有关而与之前状态无关:</p>
-<script type="math/tex; mode=display">
-    P(s_{t+1}| s_t,\dots, s_1) = P(s_{t+1}|s_{t})</script><p>综合起来，强化学习对应了四元组$E = <S,A,P,R>$,其中:</S,A,P,R></p>
-<script type="math/tex; mode=display">
-    P: X \times A \times X \rightarrow \mathbb{R}</script><p>而:</p>
-<script type="math/tex; mode=display">
-    R: X \times A \times X \rightarrow \mathbb{R}</script><p>指定了奖赏，在有的应用中，状态可能仅与状态转移有关，即$R: X \times X \rightarrow \mathbb{R}$, 下面给出一个种瓜的马尔可夫决策过程的栗子。<br><img src="https://github.com/xuejy19/xuejy19.github.io/blob/source/Img/Markov_decision.png" alt="马尔可夫决策过程"><br>在该过程中只有四个状态:健康、缺水、溢水和凋亡和两个动作:浇水和不浇水。在每一步转移后，若状态是保持瓜苗健康则获得奖励1，瓜苗缺水或者溢水奖赏为-1，这时通过浇水或者不浇水可以让瓜苗恢复健康状态，当瓜苗凋零时奖赏是最小值-100且无法恢复。图中箭头表示状态转移，$a、p、r$分别表示导致状态转移的动作、转移概率以及返回的奖赏。容易看出，最优策略是在“健康”和“缺少”状态下选择浇水，而在“溢水”状态下选择不浇水。</p>
-<p>需要注意区分“机器”和“环境”的界限，在下棋中，棋盘是环境与对手；在机器人控制中，环境是机器人的躯体与物理世界。总之，在环境中状态的转移以及奖赏的返回是不受机器控制的，机器只能通过选择要执行的动作来影响环境，也只能通过观察转移后的状态和返回的奖赏来感知世界。</p>
-<p>机器要做的是学习到一个策略$\pi$，根据这个策略，在状态$x$下就能得知想要执行的动作$a = \pi(x)$, 例如看到瓜苗状态为缺水时，能返回动作“浇水”。策略有两种表示:</p>
-<ul>
-<li>一种是将策略表示为函数$\pi: X \rightarrow A$,确定性策略通常用这种表示。 </li>
-<li>一种是概率表示$\pi: X \times A \rightarrow R$ ,随机性概率通常用这种表示，$\pi(x,a)$为状态$x$下选择动作$a$的概率，这里必须有$\sum_a \pi(x,a) = 1$</li>
-</ul>
-<p>策略的优劣取决于长期执行这一策略后得到的累计奖赏，例如某个策略使得瓜苗枯死，那么它的累积奖赏会很小，另一个策略种出了好瓜，它的累积奖赏会很大。在强化学习中，学习的目的就是要找到能使长期累积奖赏最大化的策略。长期累积奖赏有多种计算方式，常用的有两种:</p>
-<ul>
-<li>T步累积奖赏$E[\frac{1}{T} \sum_{t=1}^T r_t]$</li>
-<li>$\gamma$折扣累积奖赏: $E[\sum<em>{t=0}^\infty] \gamma^t r</em>{t+1}$, 其中$\gamma$表示贴现系数。 </li>
-</ul>
-<p>最后讨论下强化学习与监督学习的关系:</p>
-<ul>
-<li>强化学习中的“状态”对应于监督学习中的“示例”。</li>
-<li>强化学习中的“动作”对应于监督学习中的“标记” </li>
-<li>强化学习中的“策略”实际上就相当于监督学习中的“分类器”或“回归性” </li>
-</ul>
-<p>但是在强化学习中，并没有监督学习中的有标记样本，换言之，没有人直接告诉机器在什么状态下应该做什么动作，只有等到最终结果揭晓，才能通过“反思”之前的动作是否正确来进行学习，因此，强化学习在某种意义上可以看作具有“延迟标记信息”的监督学习问题。 </p>
-<h3 id="K-摇臂赌博机"><a href="#K-摇臂赌博机" class="headerlink" title="K 摇臂赌博机"></a>K 摇臂赌博机</h3><h4 id="概念介绍"><a href="#概念介绍" class="headerlink" title="概念介绍"></a>概念介绍</h4><p>与一般监督学习不同，强化学习最终奖赏需要在多步动作后才能够观察到，这里我们首先考虑最简单的情形:最大化单步奖赏。<br>欲最大化单步奖赏需要考虑两个方面:一是需要知道每个动作带来的奖赏，二是要执行奖赏最大的动作。若每个动作对应的奖赏是确定值，那么尝试一遍所有动作便可以找到奖赏最大的动作。但更一般的情形是，一个动作的奖赏值是来自一个概率分布，仅通过一次尝试并不能确切地获得平均奖赏值。<br>实际上，单步强化学习任务对应了一个理论模型-“K-摇臂赌博机”，K摇臂赌博机有K个摇臂，赌徒在投入硬币后可选择按下其中一个摇臂，每个摇臂以一定的概率吐出硬币，但这个概率赌徒并不知道，赌徒的目标是通过一定的策略最大化自己的奖赏，即获得最多的硬币。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/K-armed.jpeg" alt="K摇臂赌博机"><br>若仅为获知每个摇臂的期望奖赏，则可以采用“仅搜索法”:将所有尝试机会平均分配给每个摇臂，最后以每个摇臂各自平均的吐币概率作为其奖赏期望的近似估计。若仅为执行奖赏最大的动作，则可采用“仅利用”法: 按下目前最优的摇臂。显然，“仅探索”法能够很好地估计每个摇臂的奖赏，却会失去很多选择最优摇臂的机会；仅利用法则相反，它没有很好地估计摇臂期望奖赏，很可能经常选不到最优摇臂。因此，这两种方法都难以使得最终累积奖赏最大化。<br>事实上，“探索”和“利用”这两者是矛盾的，因为尝试次数有限，加强了一方则自然就会削弱另一方，这就是强化学习所面临的“探索-利用”窘境。显然，如欲累积奖赏最大，则必须在探索与利用之间达成较好的折衷。</p>
-<h4 id="epsilon-贪心"><a href="#epsilon-贪心" class="headerlink" title="$\epsilon-$贪心"></a>$\epsilon-$贪心</h4><p>$\epsilon-$贪心基于一个概率$\epsilon$来对探索和利用进行折中: 每次尝试时，以$\epsilon$概率进行探索，即以均匀概率随机选取一个摇臂；以$1- \epsilon$概率进行利用，即选择当前平均奖赏最高的摇臂。<br>令$Q(k)$记录摇臂$k$的平均奖赏，若摇臂$k$被尝试了$n$次，得到的奖赏为$v_1,v_2,\dots, v_n$,则平均奖赏为:</p>
-<script type="math/tex; mode=display">
-    Q(k) = \frac{1}{n} \sum_{i=1}^n v_i</script><p>更高效的方法是进行增量式计算，即每一次尝试后就立刻更新$Q(k)$，不妨用下标来表示尝试的次数，初始时$Q<em>0(k) = 0$。对于任意的$n \geq 1$,若第$n-1$次尝试后的平均奖赏为$Q</em>{n-1}(k)$,则在经过第$n$次尝试获得奖赏$v_n$后，平均奖赏应更新为:</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        Q_n(k) &= \frac{1}{n} ((n-1) \times Q_{n-1}(k) + v_n) \\
-               &= Q_{n-1}(k) + \frac{1}{n} (v_n - Q_{n-1}(k))        
-    \end{aligned}</script><p>若摇臂奖赏的不确定性较大， 例如概率分布较宽时，则需要更多的探索，此时需要较大的$\epsilon$值；若摇臂的不确定性较小，例如概率分布较集中时，此时只需要少量的探索即可，将$\epsilon$设置值较小即可。随着尝试次数的增多，在一段时间后，摇臂的奖赏都能够较好地近似出来，不再需要探索，这种情况下可以让$\epsilon$随着尝试次数的增加而逐步减小，例如取$\epsilon = \frac{1}{\sqrt{t}}$ </p>
-<h4 id="Softmax"><a href="#Softmax" class="headerlink" title="Softmax"></a>Softmax</h4><p>Softmax 算法中摇臂概率的分配是基于Boltzmann分布:</p>
-<script type="math/tex; mode=display">
-    P(k) = \frac{e^{\frac{Q(k)}{\tau}}}{\sum_{i=1}^K e^{\frac{Q(k)}{\tau}}}</script><p>其中$q(i)$记录当前摇臂的平均奖赏，$\tau &gt;0$称为温度，$\tau$越小则平均奖赏高的摇臂被选取的概率越高，$\tau$趋于0时Softmax将趋于“仅利用”，$\tau$趋于无穷大时Softmax将趋于“仅搜索”。 </p>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>前面通过K摇臂赌博机给出了单步强化学习的概念，同时介绍了单步强化学习实现的两种算法:$\epsilon$-贪心算法和Softmax算法，这两种算法并无绝对优劣差距，在进行应用中需要具体问题具体分析。<br>对于离散状态空间、离散动作空间上的多步强化学习任务，一种直接的办法是将每个状态上动作的选择看作是一个K摇臂赌博机问题，用强化学习任务的累积奖赏来代替K摇臂赌博机算法中的奖赏函数，即可将赌博机算法应用于每个状态: 对每个状态分别记录各动作的尝试次数、当前平均累积奖赏等信息，基于赌博机算法选择想要尝试的动作。<strong>然而这样做有很多局限，因为它没有考虑强化学习任务马尔可夫决策过程的结构。</strong> </p>
-<h3 id="有模型学习"><a href="#有模型学习" class="headerlink" title="有模型学习"></a>有模型学习</h3><p>考虑一个多步强化学习任务，我们假设任务对应的马尔可夫决策过程四元组$E  =<X, a,p,r>$均为已知，这样的情形称为<strong>模型已知</strong>,即机器已经对环境进行了建模。在已知模型的环境中学习称为“有模型学习”。此时，对于任意状态$x,x’$和动作$a$，在$x$状态下执行动作$a$转移到状态$x’$的概率$P<em>{x \rightarrow x’}^a$ 是已知的，该转移所带来的奖赏$R</em>{x \rightarrow x’}^a$也是已知的。为便于讨论，不妨假设状态空间和动作空间均有限。 </X,></p>
-<h4 id="策略评估"><a href="#策略评估" class="headerlink" title="策略评估"></a>策略评估</h4><p>在模型已知时，对任意策略能估计出该策略带来的期望累积奖赏，令函数$V^\pi(x)$表示从状态$x$出发，使用策略$\pi$所带来的累积奖赏。函数$Q^{\pi}(x,a)$ 表示从状态$x$出发，执行动作$a$后再使用策略$\pi$所带来的累积奖赏，这里:</p>
-<ul>
-<li>$V(\cdot)$ 称为“状态值”函数，表示指定“状态”上的累积奖赏</li>
-<li>$Q(\cdot)$ 称为“状态-动作值”函数，表示指定“状态-动作”上的累积奖赏。 </li>
-</ul>
-<p>由累积奖赏的定义，有状态值函数: </p>
-<script type="math/tex; mode=display">
-\left\{\begin{array}{l}
-V_{T}^{\pi}(x)=\mathbb{E}_{\pi}\left[\frac{1}{T} \sum_{t=1}^{T} r_{t} \mid x_{0}=x\right], \quad T \text { 步累积奖赏 } \\
-V_{\gamma}^{\pi}(x)=\mathbb{E}_{\pi}\left[\sum_{t=0}^{+\infty} \gamma^{t} r_{t+1} \mid x_{0}=x\right], \quad \gamma \text { 折扣累积奖赏. }
-\end{array}\right.</script><p>令$x_0$表示起始状态，$a_0$表示起始状态上采取的第一个动作；对于$T$步累积奖赏，用下标$t$表示后续执行的步数，我们有状态动作值函数: </p>
-<script type="math/tex; mode=display">
-\left\{\begin{array}{l}
-Q_{T}^{\pi}(x,a)=\mathbb{E}_{\pi}\left[\frac{1}{T} \sum_{t=1}^{T} r_{t} \mid x_{0}=x, a_0 = a\right], \quad T \text { 步累积奖赏 } \\
-Q_{\gamma}^{\pi}(x,a)=\mathbb{E}_{\pi}\left[\sum_{t=0}^{+\infty} \gamma^{t} r_{t+1} \mid x_{0}=x, a_0 = a\right], \quad \gamma \text { 折扣累积奖赏. }
-\end{array}\right.</script><p>根据马尔可夫决策过程的马尔可夫性，值函数可以有更加简单的递推形式，对于$T$步累积奖赏有:</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        V_T^\pi (x) &= E_{\pi} [\frac{1}{T} \sum_{t=1}^T r_t| x =x_0] \\
-        &= E_{\pi} [\frac{1}{T} r_1 + \frac{T-1}{T} \frac{1}{T-1} \sum_{t=2}^T r_t | x_0 = x] \\ 
-        &= \sum_{a \in A} \pi(x,a) \sum_{x' \in X}  P_{x \rightarrow x'}^a (\frac{1}{T} R_{x \rightarrow x'}^a  + \frac{T-1}{T} E_{\pi} [\frac{1}{T-1} \sum_{t=1}^{T-1} r_t|x_0 = x'])  \\
-        &= \sum_{a \in x} \pi(x,a) \sum_{x' \in X}  P_{x \rightarrow x'} (\frac{1}{T} R_{x \rightarrow x'}^a + \frac{T-1}{T} V_{T-1}^\pi (x')) 
-    \end{aligned}</script><p>类似的，对于$\gamma$折扣累积奖赏有: </p>
-<script type="math/tex; mode=display">
-V_{\gamma}^{\pi}(x)=\sum_{a \in A} \pi(x, a) \sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(R_{x \rightarrow x^{\prime}}^{a}+\gamma V_{\gamma}^{\pi}\left(x^{\prime}\right)\right)</script><p>值函数的递推方程也被称作<strong>Bellman方程</strong>。<br>用这种递归等式来计算值函数，实际上就是一种动态规划算法。换言之，从值函数的初始值$V_0(\pi)$出发，通过每一次迭代能够计算出每个状态的单步奖赏$V_1^\pi$,进而从单步奖赏出发，通过一次迭代计算出两步累积奖赏$V_2^\pi$,对于$T$步累积奖赏，只需要迭代$T$轮就能精确地求解出值函数。<br>可以总结基于$T$步累积奖赏的策略评估办法:</p>
-<blockquote>
-<p><strong>输入:</strong> MDP四元组$E = <X,A,P,R>$; 被评估的策略$\pi$; 累积奖赏参数$T$<br><strong>算法流程:</strong> </X,A,P,R></p>
-<ul>
-<li>初始化$V(x) = 0$</li>
-<li>递推计算$V_1^\pi, V_2^\pi, \dots, V_t^\pi, \dots$ </li>
-<li>递推直到$V_t^\pi = V_T^\pi$</li>
-</ul>
-<p><strong>输出:</strong> 状态值函数$V$ </p>
-</blockquote>
-<p>对于$\gamma$折扣累积奖赏算法，与普通$T$步累积累积奖赏递推类似，同时考虑到当$t$很大时，$\gamma^t$ 会趋于0，因此算法计算终止常通过阈值来进行确定:</p>
-<script type="math/tex; mode=display">
-    \max_{x \in X} |V(x) - V'(x)| < 0</script><p>有了状态值函数，就能直接计算出状态-动作值函数:</p>
-<script type="math/tex; mode=display">
-\left\{\begin{array}{l}
-Q_{T}^{\pi}(x, a)=\sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(\frac{1}{T} R_{x \rightarrow x^{\prime}}^{a}+\frac{T-1}{T} V_{T-1}^{\pi}\left(x^{\prime}\right)\right) \\
-Q_{\gamma}^{\pi}(x, a)=\sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(R_{x \rightarrow x^{\prime}}^{a}+\gamma V_{\gamma}^{\pi}\left(x^{\prime}\right)\right)
-\end{array}\right.</script><h4 id="策略改进"><a href="#策略改进" class="headerlink" title="策略改进"></a>策略改进</h4><p>对某个策略的累积奖赏进行评估后，若发现某个策略并非最优策略，则自然期望改变策略以使累积奖赏最大：</p>
-<script type="math/tex; mode=display">
-    \pi^\ast = \argmax_{\pi} \sum_{x \in X} V^{\pi}(x)</script><p>一个强化学习任务可能有多个最优策略，最优策略所对应的值函数$V^\ast$称为最优值函数，即:</p>
-<script type="math/tex; mode=display">
-    \forall x \in X: V^{\ast} (x) = V^{\pi^\ast} (x)</script><p>注意，当策略空间无约束时$V^\ast$才是最优策略所对应的值函数，对于离散状态空间与离散动作空间，策略空间是状态上所有动作的组合，共有$|A|^|X|$种不同的策略，若策略空间有约束，则违背约束的策略是“不合法”的，即便其值函数所取得的累积奖赏最大，也不能作为最优值函数。<br>对于前面值函数的递推方程<strong>Bellman</strong>方程稍加改动便可得到最优值函数的递推公式: </p>
-<script type="math/tex; mode=display">
-\left\{\begin{array}{l}
-V_{T}^{*}(x)=\max _{a \in A} \sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(\frac{1}{T} R_{x \rightarrow x^{\prime}}^{a}+\frac{T-1}{T} V_{T-1}^{*}\left(x^{\prime}\right)\right) \\
-V_{\gamma}^{*}(x)=\max _{a \in A} \sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(R_{x \rightarrow x^{\prime}}^{a}+\gamma V_{\gamma}^{*}\left(x^{\prime}\right)\right)
-\end{array}\right.</script><p>换言之:</p>
-<script type="math/tex; mode=display">
-    V^{*}(x)=\max _{a \in A} Q^{\pi^{*}}(x, a)</script><p>将该式代入状态-动作值函数刻度可得最优状态-动作值函数: </p>
-<script type="math/tex; mode=display">
-\left\{\begin{array}{l}
-Q_{T}^{*}(x, a)=\sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(\frac{1}{T} R_{x \rightarrow x^{\prime}}^{a}+\frac{T-1}{T} \max _{a^{\prime} \in A} Q_{T-1}^{*}\left(x^{\prime}, a^{\prime}\right)\right) \\
-Q_{\gamma}^{*}(x, a)=\sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(R_{x \rightarrow x^{\prime}}^{a}+\gamma \max _{a^{\prime} \in A} Q_{\gamma}^{*}\left(x^{\prime}, a^{\prime}\right)\right)
-\end{array}\right.</script><p>上述关于最优值函数的等式，称为最优Bellman等式，其唯一解是最优值函数。<br>最优Bellman等式揭示了非最优策略的改进方式: 将策略选择的动作改编为当前最优的动作。显然，这样的改变能使策略更好，不妨记动作改变后对应的策略为$\pi’$,改变动作的条件为$Q^\pi (x, \pi^i(x)) \geq V^\pi(x)$, 以$\gamma$折扣累积奖赏为例，由式可计算递推不等式: </p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        V^{\pi}(x) &\leq Q^{\pi}(x, \pi'(x)) \\ 
-                   &= \sum_{x' \in X} P_{x \rightarrow x'}^{\pi'(x)} (R_{x \rightarrow x'}^{\pi'(x)} + \gamma V^\pi(x')) \\ 
-                   &\leq \sum_{x' \in X} P_{x \rightarrow x'}^{\pi'(x)} (R_{x \rightarrow x'}^{\pi'(x)} + \gamma Q^{\pi}(x', \pi'(x'))) \\
-                   &= .... \\
-                   &= V^{\pi'}(x)
-    \end{aligned}</script><p>值函数每一次对于策略的改进都是递增的，因此对于当前的策略$\pi$，可以放心地将其改进为:</p>
-<script type="math/tex; mode=display">
-    \pi'(x) = \argmax_{a \in A} Q^{\pi}(x, a)</script><p>直到$\pi’$与$\pi$一致、不再发生变化，此时就满足了最优Bellman等式，即找到了最优策略。</p>
-<h4 id="策略迭代与值迭代"><a href="#策略迭代与值迭代" class="headerlink" title="策略迭代与值迭代"></a>策略迭代与值迭代</h4><p>在前面介绍了两部分内容:</p>
-<ul>
-<li>如何评估一个策略的值函数 </li>
-<li>在策略评估后如何改进以获得最优策略 </li>
-</ul>
-<p>将这两者结合起来即可得到求解最优解的方法: </p>
-<blockquote>
-<p>从一个初始策略(通常是随机策略)出发，先进性策略评估，然后改进策略，评估改进的策略，再进一步改进策略，……不断迭代进行策略评估和改进直到策略不再改变为止，这样的做法称为“策略迭代”.</p>
-</blockquote>
-<p>下面给出基于$T$步累积奖赏的策略迭代算法:<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E7%AD%96%E7%95%A5%E8%BF%AD%E4%BB%A3.png" alt="策略迭代算法"></p>
-<p>策略迭代算法在每次改进策略后都需要进行策略评估，这通常比较耗时。但是实际上策略改进与值函数的改进是一致的，因此可讲策略改进视为值函数的改善:</p>
-<script type="math/tex; mode=display">
-\left\{\begin{array}{l}
-V_{T}(x)=\max _{a \in A} \sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(\frac{1}{T} R_{x \rightarrow x^{\prime}}^{a}+\frac{T-1}{T} V_{T-1}\left(x^{\prime}\right)\right) \\
-V_{\gamma}(x)=\max _{a \in A} \sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(R_{x \rightarrow x^{\prime}}^{a}+\gamma V_{\gamma}\left(x^{\prime}\right)\right)
-\end{array}\right.</script><p>于是可以得到值迭代算法:<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E5%80%BC%E8%BF%AD%E4%BB%A3.png" alt="值迭代算法"> </p>
-<p>在模型已知时，强化学习任务能归结为基于动态规划的寻优问题。与监督学习不同，这里并未涉及泛化能力，仅仅是为每一个状态寻找的一个最佳动作。</p>
-<h3 id="免模型学习"><a href="#免模型学习" class="headerlink" title="免模型学习"></a>免模型学习</h3><p>在现实的强化学习任务中，环境的转移概率、奖赏函数往往很难得知，甚至很难直到环境中有几个状态，若学习算法不依赖于环境建模，则称为<strong>“免模型学习”</strong>。 </p>
-<h4 id="蒙特卡罗强化学习"><a href="#蒙特卡罗强化学习" class="headerlink" title="蒙特卡罗强化学习"></a>蒙特卡罗强化学习</h4><p>在免模型情况下，策略迭代算法首先碰到的问题便是策略无法评估，这是由于模型未知而导致无法做全概率展开。此时，只能通过在环境中执行选择的动作，来观察转移的状态和得到的奖赏。受K摇臂赌博机的启发，一种直接的策略评估方法是“多次采样”，然后求取平均累积奖赏作为期望累积奖赏的近似，这称为蒙特卡罗强化学习方法，由于采样必须为有限次数，因此该方法更适合于使用$T$步累积奖赏的强化学习任务。 </p>
-<p>另一方面，策略迭代算法估计的是值函数，而在进行策略选择时依赖的是状态-动作值函数$Q$，当模型已知时，从$V$到$Q$有很简单的转化方法，而当模型未知时，这也会出现困难。于是我们将估计对象从$V$转变为$Q$,即估计每一对“状态-动作”的值函数。 </p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        az^{-1} u(k) &= au(k-1) \\
-        a z^{-1} u(k)^2 &= au(k-1) u(k)
-    \end{aligned}</script>]]></content>
-      <categories>
-        <category>统计学习</category>
-      </categories>
-      <tags>
-        <tag>强化学习</tag>
       </tags>
   </entry>
   <entry>
@@ -3904,6 +3830,273 @@ kill -KILL 123456 #强制杀死进程
       </categories>
       <tags>
         <tag>命令行</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>强化学习</title>
+    <url>/2020/10/06/qiang-hua-xue-xi/</url>
+    <content><![CDATA[<p>这部分将根据周志华老师的西瓜书对强化学习部分做一个简单介绍，该部分按照以下章节进行组织:</p>
+<ul>
+<li>思想介绍——任务与奖赏 </li>
+<li>K-摇臂赌博机 </li>
+<li>有模型学习 </li>
+<li>免模型学习 </li>
+<li>值函数近似 </li>
+<li>模仿学习 <span id="more"></span>
+</li>
+</ul>
+<h3 id="思想介绍-任务与奖赏"><a href="#思想介绍-任务与奖赏" class="headerlink" title="思想介绍-任务与奖赏"></a>思想介绍-任务与奖赏</h3><p><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/reinforce.png" alt="强化学习"><br>考虑这样病人看病的场景，假设我们是看病的医生，在我们与病人的交互过程中，大概是这么一个交互顺序:</p>
+<ul>
+<li>病人本身有一个状态，记做$S$，表示病人目前的身体状况。</li>
+<li>在看病的过程中，我认为病人处于某个状态$S’$，然后对病人施加了一个动作A，比如给病人吃了一些药，或者打了针。</li>
+<li>在病人接受了治疗之后，其本身状态发生了一个变化，该状态的转移我们用概率矩$P$来表示，表示病人状态发生了一个变化，比如痊愈了或者病情更加严重了。 </li>
+<li>在病人的状态发生了变化之后，会给作为医生的我们一个反馈，记做$R$,如果病人痊愈了，那我们得到的反馈可能会是一面锦旗和很多钱，如果病情更加严重了，我们得到的反馈可能就是埋怨。 </li>
+</ul>
+<p>上面我所描述的场景其实就构成了一轮强化学习的过程，强化学习任务常用马尔可夫决策过程来描述，这意味着环境下一时刻的状态仅仅与当前时刻状态有关而与之前状态无关:</p>
+<script type="math/tex; mode=display">
+    P(s_{t+1}| s_t,\dots, s_1) = P(s_{t+1}|s_{t})</script><p>综合起来，强化学习对应了四元组$E = <S,A,P,R>$,其中:</S,A,P,R></p>
+<script type="math/tex; mode=display">
+    P: X \times A \times X \rightarrow \mathbb{R}</script><p>而:</p>
+<script type="math/tex; mode=display">
+    R: X \times A \times X \rightarrow \mathbb{R}</script><p>指定了奖赏，在有的应用中，状态可能仅与状态转移有关，即$R: X \times X \rightarrow \mathbb{R}$, 下面给出一个种瓜的马尔可夫决策过程的栗子。<br><img src="https://github.com/xuejy19/xuejy19.github.io/blob/source/Img/Markov_decision.png" alt="马尔可夫决策过程"><br>在该过程中只有四个状态:健康、缺水、溢水和凋亡和两个动作:浇水和不浇水。在每一步转移后，若状态是保持瓜苗健康则获得奖励1，瓜苗缺水或者溢水奖赏为-1，这时通过浇水或者不浇水可以让瓜苗恢复健康状态，当瓜苗凋零时奖赏是最小值-100且无法恢复。图中箭头表示状态转移，$a、p、r$分别表示导致状态转移的动作、转移概率以及返回的奖赏。容易看出，最优策略是在“健康”和“缺少”状态下选择浇水，而在“溢水”状态下选择不浇水。</p>
+<p>需要注意区分“机器”和“环境”的界限，在下棋中，棋盘是环境与对手；在机器人控制中，环境是机器人的躯体与物理世界。总之，在环境中状态的转移以及奖赏的返回是不受机器控制的，机器只能通过选择要执行的动作来影响环境，也只能通过观察转移后的状态和返回的奖赏来感知世界。</p>
+<p>机器要做的是学习到一个策略$\pi$，根据这个策略，在状态$x$下就能得知想要执行的动作$a = \pi(x)$, 例如看到瓜苗状态为缺水时，能返回动作“浇水”。策略有两种表示:</p>
+<ul>
+<li>一种是将策略表示为函数$\pi: X \rightarrow A$,确定性策略通常用这种表示。 </li>
+<li>一种是概率表示$\pi: X \times A \rightarrow R$ ,随机性概率通常用这种表示，$\pi(x,a)$为状态$x$下选择动作$a$的概率，这里必须有$\sum_a \pi(x,a) = 1$</li>
+</ul>
+<p>策略的优劣取决于长期执行这一策略后得到的累计奖赏，例如某个策略使得瓜苗枯死，那么它的累积奖赏会很小，另一个策略种出了好瓜，它的累积奖赏会很大。在强化学习中，学习的目的就是要找到能使长期累积奖赏最大化的策略。长期累积奖赏有多种计算方式，常用的有两种:</p>
+<ul>
+<li>T步累积奖赏$E[\frac{1}{T} \sum_{t=1}^T r_t]$</li>
+<li>$\gamma$折扣累积奖赏: $E[\sum<em>{t=0}^\infty] \gamma^t r</em>{t+1}$, 其中$\gamma$表示贴现系数。 </li>
+</ul>
+<p>最后讨论下强化学习与监督学习的关系:</p>
+<ul>
+<li>强化学习中的“状态”对应于监督学习中的“示例”。</li>
+<li>强化学习中的“动作”对应于监督学习中的“标记” </li>
+<li>强化学习中的“策略”实际上就相当于监督学习中的“分类器”或“回归性” </li>
+</ul>
+<p>但是在强化学习中，并没有监督学习中的有标记样本，换言之，没有人直接告诉机器在什么状态下应该做什么动作，只有等到最终结果揭晓，才能通过“反思”之前的动作是否正确来进行学习，因此，强化学习在某种意义上可以看作具有“延迟标记信息”的监督学习问题。 </p>
+<h3 id="K-摇臂赌博机"><a href="#K-摇臂赌博机" class="headerlink" title="K 摇臂赌博机"></a>K 摇臂赌博机</h3><h4 id="概念介绍"><a href="#概念介绍" class="headerlink" title="概念介绍"></a>概念介绍</h4><p>与一般监督学习不同，强化学习最终奖赏需要在多步动作后才能够观察到，这里我们首先考虑最简单的情形:最大化单步奖赏。<br>欲最大化单步奖赏需要考虑两个方面:一是需要知道每个动作带来的奖赏，二是要执行奖赏最大的动作。若每个动作对应的奖赏是确定值，那么尝试一遍所有动作便可以找到奖赏最大的动作。但更一般的情形是，一个动作的奖赏值是来自一个概率分布，仅通过一次尝试并不能确切地获得平均奖赏值。<br>实际上，单步强化学习任务对应了一个理论模型-“K-摇臂赌博机”，K摇臂赌博机有K个摇臂，赌徒在投入硬币后可选择按下其中一个摇臂，每个摇臂以一定的概率吐出硬币，但这个概率赌徒并不知道，赌徒的目标是通过一定的策略最大化自己的奖赏，即获得最多的硬币。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/K-armed.jpeg" alt="K摇臂赌博机"><br>若仅为获知每个摇臂的期望奖赏，则可以采用“仅搜索法”:将所有尝试机会平均分配给每个摇臂，最后以每个摇臂各自平均的吐币概率作为其奖赏期望的近似估计。若仅为执行奖赏最大的动作，则可采用“仅利用”法: 按下目前最优的摇臂。显然，“仅探索”法能够很好地估计每个摇臂的奖赏，却会失去很多选择最优摇臂的机会；仅利用法则相反，它没有很好地估计摇臂期望奖赏，很可能经常选不到最优摇臂。因此，这两种方法都难以使得最终累积奖赏最大化。<br>事实上，“探索”和“利用”这两者是矛盾的，因为尝试次数有限，加强了一方则自然就会削弱另一方，这就是强化学习所面临的“探索-利用”窘境。显然，如欲累积奖赏最大，则必须在探索与利用之间达成较好的折衷。</p>
+<h4 id="epsilon-贪心"><a href="#epsilon-贪心" class="headerlink" title="$\epsilon-$贪心"></a>$\epsilon-$贪心</h4><p>$\epsilon-$贪心基于一个概率$\epsilon$来对探索和利用进行折中: 每次尝试时，以$\epsilon$概率进行探索，即以均匀概率随机选取一个摇臂；以$1- \epsilon$概率进行利用，即选择当前平均奖赏最高的摇臂。<br>令$Q(k)$记录摇臂$k$的平均奖赏，若摇臂$k$被尝试了$n$次，得到的奖赏为$v_1,v_2,\dots, v_n$,则平均奖赏为:</p>
+<script type="math/tex; mode=display">
+    Q(k) = \frac{1}{n} \sum_{i=1}^n v_i</script><p>更高效的方法是进行增量式计算，即每一次尝试后就立刻更新$Q(k)$，不妨用下标来表示尝试的次数，初始时$Q<em>0(k) = 0$。对于任意的$n \geq 1$,若第$n-1$次尝试后的平均奖赏为$Q</em>{n-1}(k)$,则在经过第$n$次尝试获得奖赏$v_n$后，平均奖赏应更新为:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        Q_n(k) &= \frac{1}{n} ((n-1) \times Q_{n-1}(k) + v_n) \\
+               &= Q_{n-1}(k) + \frac{1}{n} (v_n - Q_{n-1}(k))        
+    \end{aligned}</script><p>若摇臂奖赏的不确定性较大， 例如概率分布较宽时，则需要更多的探索，此时需要较大的$\epsilon$值；若摇臂的不确定性较小，例如概率分布较集中时，此时只需要少量的探索即可，将$\epsilon$设置值较小即可。随着尝试次数的增多，在一段时间后，摇臂的奖赏都能够较好地近似出来，不再需要探索，这种情况下可以让$\epsilon$随着尝试次数的增加而逐步减小，例如取$\epsilon = \frac{1}{\sqrt{t}}$ </p>
+<h4 id="Softmax"><a href="#Softmax" class="headerlink" title="Softmax"></a>Softmax</h4><p>Softmax 算法中摇臂概率的分配是基于Boltzmann分布:</p>
+<script type="math/tex; mode=display">
+    P(k) = \frac{e^{\frac{Q(k)}{\tau}}}{\sum_{i=1}^K e^{\frac{Q(k)}{\tau}}}</script><p>其中$q(i)$记录当前摇臂的平均奖赏，$\tau &gt;0$称为温度，$\tau$越小则平均奖赏高的摇臂被选取的概率越高，$\tau$趋于0时Softmax将趋于“仅利用”，$\tau$趋于无穷大时Softmax将趋于“仅搜索”。 </p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>前面通过K摇臂赌博机给出了单步强化学习的概念，同时介绍了单步强化学习实现的两种算法:$\epsilon$-贪心算法和Softmax算法，这两种算法并无绝对优劣差距，在进行应用中需要具体问题具体分析。<br>对于离散状态空间、离散动作空间上的多步强化学习任务，一种直接的办法是将每个状态上动作的选择看作是一个K摇臂赌博机问题，用强化学习任务的累积奖赏来代替K摇臂赌博机算法中的奖赏函数，即可将赌博机算法应用于每个状态: 对每个状态分别记录各动作的尝试次数、当前平均累积奖赏等信息，基于赌博机算法选择想要尝试的动作。<strong>然而这样做有很多局限，因为它没有考虑强化学习任务马尔可夫决策过程的结构。</strong> </p>
+<h3 id="有模型学习"><a href="#有模型学习" class="headerlink" title="有模型学习"></a>有模型学习</h3><p>考虑一个多步强化学习任务，我们假设任务对应的马尔可夫决策过程四元组$E  =<X, a,p,r>$均为已知，这样的情形称为<strong>模型已知</strong>,即机器已经对环境进行了建模。在已知模型的环境中学习称为“有模型学习”。此时，对于任意状态$x,x’$和动作$a$，在$x$状态下执行动作$a$转移到状态$x’$的概率$P<em>{x \rightarrow x’}^a$ 是已知的，该转移所带来的奖赏$R</em>{x \rightarrow x’}^a$也是已知的。为便于讨论，不妨假设状态空间和动作空间均有限。 </X,></p>
+<h4 id="策略评估"><a href="#策略评估" class="headerlink" title="策略评估"></a>策略评估</h4><p>在模型已知时，对任意策略能估计出该策略带来的期望累积奖赏，令函数$V^\pi(x)$表示从状态$x$出发，使用策略$\pi$所带来的累积奖赏。函数$Q^{\pi}(x,a)$ 表示从状态$x$出发，执行动作$a$后再使用策略$\pi$所带来的累积奖赏，这里:</p>
+<ul>
+<li>$V(\cdot)$ 称为“状态值”函数，表示指定“状态”上的累积奖赏</li>
+<li>$Q(\cdot)$ 称为“状态-动作值”函数，表示指定“状态-动作”上的累积奖赏。 </li>
+</ul>
+<p>由累积奖赏的定义，有状态值函数: </p>
+<script type="math/tex; mode=display">
+\left\{\begin{array}{l}
+V_{T}^{\pi}(x)=\mathbb{E}_{\pi}\left[\frac{1}{T} \sum_{t=1}^{T} r_{t} \mid x_{0}=x\right], \quad T \text { 步累积奖赏 } \\
+V_{\gamma}^{\pi}(x)=\mathbb{E}_{\pi}\left[\sum_{t=0}^{+\infty} \gamma^{t} r_{t+1} \mid x_{0}=x\right], \quad \gamma \text { 折扣累积奖赏. }
+\end{array}\right.</script><p>令$x_0$表示起始状态，$a_0$表示起始状态上采取的第一个动作；对于$T$步累积奖赏，用下标$t$表示后续执行的步数，我们有状态动作值函数: </p>
+<script type="math/tex; mode=display">
+\left\{\begin{array}{l}
+Q_{T}^{\pi}(x,a)=\mathbb{E}_{\pi}\left[\frac{1}{T} \sum_{t=1}^{T} r_{t} \mid x_{0}=x, a_0 = a\right], \quad T \text { 步累积奖赏 } \\
+Q_{\gamma}^{\pi}(x,a)=\mathbb{E}_{\pi}\left[\sum_{t=0}^{+\infty} \gamma^{t} r_{t+1} \mid x_{0}=x, a_0 = a\right], \quad \gamma \text { 折扣累积奖赏. }
+\end{array}\right.</script><p>根据马尔可夫决策过程的马尔可夫性，值函数可以有更加简单的递推形式，对于$T$步累积奖赏有:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        V_T^\pi (x) &= E_{\pi} [\frac{1}{T} \sum_{t=1}^T r_t| x =x_0] \\
+        &= E_{\pi} [\frac{1}{T} r_1 + \frac{T-1}{T} \frac{1}{T-1} \sum_{t=2}^T r_t | x_0 = x] \\ 
+        &= \sum_{a \in A} \pi(x,a) \sum_{x' \in X}  P_{x \rightarrow x'}^a (\frac{1}{T} R_{x \rightarrow x'}^a  + \frac{T-1}{T} E_{\pi} [\frac{1}{T-1} \sum_{t=1}^{T-1} r_t|x_0 = x'])  \\
+        &= \sum_{a \in x} \pi(x,a) \sum_{x' \in X}  P_{x \rightarrow x'} (\frac{1}{T} R_{x \rightarrow x'}^a + \frac{T-1}{T} V_{T-1}^\pi (x')) 
+    \end{aligned}</script><p>类似的，对于$\gamma$折扣累积奖赏有: </p>
+<script type="math/tex; mode=display">
+V_{\gamma}^{\pi}(x)=\sum_{a \in A} \pi(x, a) \sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(R_{x \rightarrow x^{\prime}}^{a}+\gamma V_{\gamma}^{\pi}\left(x^{\prime}\right)\right)</script><p>值函数的递推方程也被称作<strong>Bellman方程</strong>。<br>用这种递归等式来计算值函数，实际上就是一种动态规划算法。换言之，从值函数的初始值$V_0(\pi)$出发，通过每一次迭代能够计算出每个状态的单步奖赏$V_1^\pi$,进而从单步奖赏出发，通过一次迭代计算出两步累积奖赏$V_2^\pi$,对于$T$步累积奖赏，只需要迭代$T$轮就能精确地求解出值函数。<br>可以总结基于$T$步累积奖赏的策略评估办法:</p>
+<blockquote>
+<p><strong>输入:</strong> MDP四元组$E = <X,A,P,R>$; 被评估的策略$\pi$; 累积奖赏参数$T$<br><strong>算法流程:</strong> </X,A,P,R></p>
+<ul>
+<li>初始化$V(x) = 0$</li>
+<li>递推计算$V_1^\pi, V_2^\pi, \dots, V_t^\pi, \dots$ </li>
+<li>递推直到$V_t^\pi = V_T^\pi$</li>
+</ul>
+<p><strong>输出:</strong> 状态值函数$V$ </p>
+</blockquote>
+<p>对于$\gamma$折扣累积奖赏算法，与普通$T$步累积累积奖赏递推类似，同时考虑到当$t$很大时，$\gamma^t$ 会趋于0，因此算法计算终止常通过阈值来进行确定:</p>
+<script type="math/tex; mode=display">
+    \max_{x \in X} |V(x) - V'(x)| < 0</script><p>有了状态值函数，就能直接计算出状态-动作值函数:</p>
+<script type="math/tex; mode=display">
+\left\{\begin{array}{l}
+Q_{T}^{\pi}(x, a)=\sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(\frac{1}{T} R_{x \rightarrow x^{\prime}}^{a}+\frac{T-1}{T} V_{T-1}^{\pi}\left(x^{\prime}\right)\right) \\
+Q_{\gamma}^{\pi}(x, a)=\sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(R_{x \rightarrow x^{\prime}}^{a}+\gamma V_{\gamma}^{\pi}\left(x^{\prime}\right)\right)
+\end{array}\right.</script><h4 id="策略改进"><a href="#策略改进" class="headerlink" title="策略改进"></a>策略改进</h4><p>对某个策略的累积奖赏进行评估后，若发现某个策略并非最优策略，则自然期望改变策略以使累积奖赏最大：</p>
+<script type="math/tex; mode=display">
+    \pi^\ast = \argmax_{\pi} \sum_{x \in X} V^{\pi}(x)</script><p>一个强化学习任务可能有多个最优策略，最优策略所对应的值函数$V^\ast$称为最优值函数，即:</p>
+<script type="math/tex; mode=display">
+    \forall x \in X: V^{\ast} (x) = V^{\pi^\ast} (x)</script><p>注意，当策略空间无约束时$V^\ast$才是最优策略所对应的值函数，对于离散状态空间与离散动作空间，策略空间是状态上所有动作的组合，共有$|A|^|X|$种不同的策略，若策略空间有约束，则违背约束的策略是“不合法”的，即便其值函数所取得的累积奖赏最大，也不能作为最优值函数。<br>对于前面值函数的递推方程<strong>Bellman</strong>方程稍加改动便可得到最优值函数的递推公式: </p>
+<script type="math/tex; mode=display">
+\left\{\begin{array}{l}
+V_{T}^{*}(x)=\max _{a \in A} \sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(\frac{1}{T} R_{x \rightarrow x^{\prime}}^{a}+\frac{T-1}{T} V_{T-1}^{*}\left(x^{\prime}\right)\right) \\
+V_{\gamma}^{*}(x)=\max _{a \in A} \sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(R_{x \rightarrow x^{\prime}}^{a}+\gamma V_{\gamma}^{*}\left(x^{\prime}\right)\right)
+\end{array}\right.</script><p>换言之:</p>
+<script type="math/tex; mode=display">
+    V^{*}(x)=\max _{a \in A} Q^{\pi^{*}}(x, a)</script><p>将该式代入状态-动作值函数刻度可得最优状态-动作值函数: </p>
+<script type="math/tex; mode=display">
+\left\{\begin{array}{l}
+Q_{T}^{*}(x, a)=\sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(\frac{1}{T} R_{x \rightarrow x^{\prime}}^{a}+\frac{T-1}{T} \max _{a^{\prime} \in A} Q_{T-1}^{*}\left(x^{\prime}, a^{\prime}\right)\right) \\
+Q_{\gamma}^{*}(x, a)=\sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(R_{x \rightarrow x^{\prime}}^{a}+\gamma \max _{a^{\prime} \in A} Q_{\gamma}^{*}\left(x^{\prime}, a^{\prime}\right)\right)
+\end{array}\right.</script><p>上述关于最优值函数的等式，称为最优Bellman等式，其唯一解是最优值函数。<br>最优Bellman等式揭示了非最优策略的改进方式: 将策略选择的动作改编为当前最优的动作。显然，这样的改变能使策略更好，不妨记动作改变后对应的策略为$\pi’$,改变动作的条件为$Q^\pi (x, \pi^i(x)) \geq V^\pi(x)$, 以$\gamma$折扣累积奖赏为例，由式可计算递推不等式: </p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        V^{\pi}(x) &\leq Q^{\pi}(x, \pi'(x)) \\ 
+                   &= \sum_{x' \in X} P_{x \rightarrow x'}^{\pi'(x)} (R_{x \rightarrow x'}^{\pi'(x)} + \gamma V^\pi(x')) \\ 
+                   &\leq \sum_{x' \in X} P_{x \rightarrow x'}^{\pi'(x)} (R_{x \rightarrow x'}^{\pi'(x)} + \gamma Q^{\pi}(x', \pi'(x'))) \\
+                   &= .... \\
+                   &= V^{\pi'}(x)
+    \end{aligned}</script><p>值函数每一次对于策略的改进都是递增的，因此对于当前的策略$\pi$，可以放心地将其改进为:</p>
+<script type="math/tex; mode=display">
+    \pi'(x) = \argmax_{a \in A} Q^{\pi}(x, a)</script><p>直到$\pi’$与$\pi$一致、不再发生变化，此时就满足了最优Bellman等式，即找到了最优策略。</p>
+<h4 id="策略迭代与值迭代"><a href="#策略迭代与值迭代" class="headerlink" title="策略迭代与值迭代"></a>策略迭代与值迭代</h4><p>在前面介绍了两部分内容:</p>
+<ul>
+<li>如何评估一个策略的值函数 </li>
+<li>在策略评估后如何改进以获得最优策略 </li>
+</ul>
+<p>将这两者结合起来即可得到求解最优解的方法: </p>
+<blockquote>
+<p>从一个初始策略(通常是随机策略)出发，先进性策略评估，然后改进策略，评估改进的策略，再进一步改进策略，……不断迭代进行策略评估和改进直到策略不再改变为止，这样的做法称为“策略迭代”.</p>
+</blockquote>
+<p>下面给出基于$T$步累积奖赏的策略迭代算法:<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E7%AD%96%E7%95%A5%E8%BF%AD%E4%BB%A3.png" alt="策略迭代算法"></p>
+<p>策略迭代算法在每次改进策略后都需要进行策略评估，这通常比较耗时。但是实际上策略改进与值函数的改进是一致的，因此可讲策略改进视为值函数的改善:</p>
+<script type="math/tex; mode=display">
+\left\{\begin{array}{l}
+V_{T}(x)=\max _{a \in A} \sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(\frac{1}{T} R_{x \rightarrow x^{\prime}}^{a}+\frac{T-1}{T} V_{T-1}\left(x^{\prime}\right)\right) \\
+V_{\gamma}(x)=\max _{a \in A} \sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime}}^{a}\left(R_{x \rightarrow x^{\prime}}^{a}+\gamma V_{\gamma}\left(x^{\prime}\right)\right)
+\end{array}\right.</script><p>于是可以得到值迭代算法:<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E5%80%BC%E8%BF%AD%E4%BB%A3.png" alt="值迭代算法"> </p>
+<p>在模型已知时，强化学习任务能归结为基于动态规划的寻优问题。与监督学习不同，这里并未涉及泛化能力，仅仅是为每一个状态寻找的一个最佳动作。</p>
+<h3 id="免模型学习"><a href="#免模型学习" class="headerlink" title="免模型学习"></a>免模型学习</h3><p>在现实的强化学习任务中，环境的转移概率、奖赏函数往往很难得知，甚至很难直到环境中有几个状态，若学习算法不依赖于环境建模，则称为<strong>“免模型学习”</strong>。 </p>
+<h4 id="蒙特卡罗强化学习"><a href="#蒙特卡罗强化学习" class="headerlink" title="蒙特卡罗强化学习"></a>蒙特卡罗强化学习</h4><p>在免模型情况下，策略迭代算法首先碰到的问题便是策略无法评估，这是由于模型未知而导致无法做全概率展开。此时，只能通过在环境中执行选择的动作，来观察转移的状态和得到的奖赏。受K摇臂赌博机的启发，一种直接的策略评估方法是“多次采样”，然后求取平均累积奖赏作为期望累积奖赏的近似，这称为蒙特卡罗强化学习方法，由于采样必须为有限次数，因此该方法更适合于使用$T$步累积奖赏的强化学习任务。 </p>
+<p>另一方面，策略迭代算法估计的是值函数，而在进行策略选择时依赖的是状态-动作值函数$Q$，当模型已知时，从$V$到$Q$有很简单的转化方法，而当模型未知时，这也会出现困难。于是我们将估计对象从$V$转变为$Q$,即估计每一对“状态-动作”的值函数。 </p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        az^{-1} u(k) &= au(k-1) \\
+        a z^{-1} u(k)^2 &= au(k-1) u(k)
+    \end{aligned}</script>]]></content>
+      <categories>
+        <category>统计学习</category>
+      </categories>
+      <tags>
+        <tag>强化学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>指数族分布与广义线性模型</title>
+    <url>/2020/10/07/zhi-shu-zu-fen-bu-yu-guang-yi-xian-xing-mo-xing/</url>
+    <content><![CDATA[<p>在<a href="https://soundofwind.top/2020/08/24/zai-tan-ji-da-si-ran-gu-ji-qiu-jie/">再谈极大似然估计</a>中已经讨论过指数分布族的概念，并且推导出了若概率分布是指数分布族分布，则最终的对数似然函数一定是一个凹函数，直接求偏导等于0便可得到参数估计。</p>
+<p>在听了<a href="http://ml.cs.tsinghua.edu.cn/~jun/index.shtml">朱军老师</a>的关于指数分布族函数的讲解之后，发现可以从一个更加general的角度来对指数分布族函数来进行把握，而之前得到的凹性结论也不过是其中一小部分而已，该部分按照以下结构组织: </p>
+<ul>
+<li>简要回顾指数分布族 </li>
+<li>配分函数$A(\theta)$的性质 </li>
+<li>从指数分布族到广义线性模型 </li>
+<li>广义线性模型性质 </li>
+</ul>
+<span id="more"></span> 
+<h3 id="简要回顾指数分布族函数"><a href="#简要回顾指数分布族函数" class="headerlink" title="简要回顾指数分布族函数"></a>简要回顾指数分布族函数</h3><p>首先给出指数分布族的定义:</p>
+<blockquote>
+<p>指数分布族是一类概率分布的总称，这类分布的概率密度函数具有这样的形式：</p>
+<script type="math/tex; mode=display">
+    p_\theta(x) = h(x) \exp(\theta^T \phi(x) - A(\theta))</script><p>式中，$x$是密度函数自变量，$x \in \mathcal{X}$;$\phi(x)$是充分统计量，可以看做是原始变量的一个映射:</p>
+<script type="math/tex; mode=display">
+    \phi: \mathcal{X} \rightarrow R^d</script><p>$\theta$是模型参数向量，与充分统计量维度相同，$h(x)$是一个只与$x$有关的统计量，$A(\theta)$为配分函数，通过该函数来保证$p_\theta(x)$满足概率密度函数的定义：</p>
+<script type="math/tex; mode=display">
+     \int_{\mathcal{X}} p_{\theta}(x) dx = 1</script><p>由此约束条件，我们可以得到$A(\theta)$的解析表达式：</p>
+<script type="math/tex; mode=display">
+    A(\theta) = \log (\int h(x) \exp(\theta^T \phi(x))dx )</script></blockquote>
+<p>同时概率密度函数我们也可以写成如下的形式:</p>
+<script type="math/tex; mode=display">
+    p_\theta(x) = \frac{1}{Z(\theta)}  h(x) exp(\theta^T \phi(x))</script><p>其中$Z(\theta) = exp(A(\theta))$,我们日常见到的很多分布都可以转化成指数分布族标准形式，比如: 伯努利分布，多项式分布，高斯分布，gamma分布等，一些变换的例子可以参考<a href="https://soundofwind.top/2020/08/24/zai-tan-ji-da-si-ran-gu-ji-qiu-jie/"><code>再谈极大似然估计</code></a></p>
+<h3 id="配分函数-A-theta-的性质"><a href="#配分函数-A-theta-的性质" class="headerlink" title="配分函数$A(\theta)$的性质"></a>配分函数$A(\theta)$的性质</h3><h4 id="A-theta-性质"><a href="#A-theta-性质" class="headerlink" title="$A(\theta)$性质"></a>$A(\theta)$性质</h4><p>在之前证明$A(\theta)$的凸性性质时，所采用的方法是按照配分表达式直接证，通过赫尔德不等式可以从定义上证明其是凸函数，但其实$A(\theta)$具有更加一般的性质。 </p>
+<p>$A(\theta)$其实是充分统计量$\phi(x)$的中心矩生成函数(moment generating function),这意味着:</p>
+<script type="math/tex; mode=display">
+  \begin{aligned}
+      \nabla_{\theta} A(\theta) &= E_{p_{\theta}(x)}[\phi(x)] \\ 
+      \nabla_{\theta}^2 A(\theta) &= Var[\phi(x)]  \\ 
+      & ... \\
+      \nabla_{\theta}^k A(\theta) &= E_{p_\theta(x)} [(\phi(x) - E[\phi(x)])^k]
+  \end{aligned}</script><p>下面以一阶统计量为例做一下简单推导:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        \nabla_{\theta}A(\theta) & = \nabla_{\theta} \log(Z(\theta)) \\
+        &= \frac{1}{Z(\theta)} \nabla_{\theta} (\int_x h(x) \exp(\theta^T \phi(x)) dx) \\
+        &= \frac{1}{Z(\theta)} \int_x h(x) \phi(x) \exp(\theta^T \phi(x))dx \\ 
+        &= \int_x \frac{1}{Z(\theta)} h(x) \exp(\theta^T \phi(x)) \phi(x) dx \\ 
+        &= \int_x p(x|\theta) \phi(x) dx \\
+        &= E_{p_\theta(x)}[\phi(x)] 
+    \end{aligned}</script><p>$A(\theta)$的上述性质可以导出一些非常好用的结论:</p>
+<ul>
+<li><p>如果记:</p>
+<script type="math/tex; mode=display">
+  \nabla_{\theta} A(\theta) = E_{p_{\theta}(x)} [\phi(x)] \overset{\triangle}{=} \mu</script><p>这里$\mu$一般被称作矩参数或者均值参数，对于不同的指数分布族函数，一般都可以找到一个双射函数$\psi$,使得:</p>
+<script type="math/tex; mode=display">
+  \theta \overset{\triangle}{=} \psi(\mu)</script><p>这就建立了均值参数与模型的自然参数之间的一一映射关系，在参数估计时如果得到了均值参数估计，同时直到映射关系$\psi$，那么便可以直接得到模型自然参数$\theta$的估计。</p>
+</li>
+<li><p>因为$\nabla_{\theta}^2 A(\theta) = Var[\phi(x)]$，而我们知道一个向量变量的协方差矩阵至少是半正定的，也就是说:</p>
+<script type="math/tex; mode=display">
+  \nabla_{\theta}^2  A(\theta)= Var[\phi(x)] \succeq 0</script><p>这也就直接证明了$A(\theta)$的二阶海塞矩阵半正定，即$A(\theta)$是关于$\theta$的凸函数。</p>
+</li>
+</ul>
+<h4 id="iid-条件下样本集分布-p-D-theta"><a href="#iid-条件下样本集分布-p-D-theta" class="headerlink" title="$iid$条件下样本集分布$p(D|\theta)$"></a>$iid$条件下样本集分布$p(D|\theta)$</h4><p>在独立同分布假设下，我们通过采样得到样本集$D = { x_1, x_2, \dots, x_N }$, 在进行参数估计时我们往往需要计算整个样本集出现的概率:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        p(D|\theta) &= \prod_{i} h(x_i) \exp(\theta^T \phi(x_i) - A(\theta)) \\ 
+        &= (\prod_i h(x_i)) \exp(\theta^T \sum_i \phi(x_i) - N A(\theta))
+    \end{aligned}</script><p>从格式上来看，会发现样本集的分布仍然是指数族分布，只不过是充分统计量$\phi’(D)$变为了:</p>
+<script type="math/tex; mode=display">
+    \phi'(D) = \sum_i \phi(x_i)</script><p>这给我们一个启示，当我们要利用一组数据进行参数估计时，我们只需要将各个样本的充分统计量累加起来便可以得到整个样本集合的充分统计量，后面进行参数估计时只需要利用充分统计量即可，原始数据可以舍弃。</p>
+<p>在进行极大似然估计时，我们往往会求解对数似然函数最大，下面写出指数分布的对数似然函数的一般形式:</p>
+<script type="math/tex; mode=display">
+    L(D;\theta) = \sum_{i} \log h(x_i) + \theta^T \sum_{i} \phi(x_i) - N A(\theta)</script><p>由于$A(\theta)$是凸函数，所以显然$L(D; \theta)$是凹函数，因此直接对$\theta$求偏导:</p>
+<script type="math/tex; mode=display">
+    \nabla_{\theta}(D; \theta) = \sum_{i} \phi(x_i) - N \nabla_{\theta} A(\theta) = 0</script><p>可以得到:</p>
+<script type="math/tex; mode=display">
+    \hat{\mu}_{MLE} = \nabla_{\theta} A(\theta) = \frac{1}{N} \sum_i \phi(x_i)</script><p>这说明充分统计量均值的极大似然估计就等于采样均值，又从前面我们得知均值参数$\mu$与模型的自然参数$\theta$通过函数$\psi$一一对应，因此可以通过充分统计量的均值估计得到模型参数的极大似然估计:</p>
+<script type="math/tex; mode=display">
+    \hat{\theta}_{MLE} = \psi(\hat{\mu}_{MLE})</script><h3 id="从指数分布族到广义线性模型"><a href="#从指数分布族到广义线性模型" class="headerlink" title="从指数分布族到广义线性模型"></a>从指数分布族到广义线性模型</h3><p>首先给出广义线性模型的定义:</p>
+<blockquote>
+<p><strong>广义线性模型:</strong><br>假设我们的数据是${ x<em>i, y_i}</em>{i=1}^n$，其中因变量$y_i$服从某一指数族分布，即:</p>
+<script type="math/tex; mode=display">
+    p(y_i;\theta) = h(y_i) \exp(\theta^T \phi(y_i) - A(\theta))</script><p>而对于观测量$x_i$，首先获得其线性组合:</p>
+<script type="math/tex; mode=display">
+    \xi_i = \eta^T x_i</script><p>然后$y_i$与 $x_i$具有这样的关系:</p>
+<script type="math/tex; mode=display">
+    E_{p(y;\theta)}[y] = \mu = f(\eta^T x)</script><p>$f$称作联系函数或者激活函数  </p>
+</blockquote>
+<p>广义线性模型的产生可以通过下图直观展示:<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/glim.png" alt="广义线性模型"><br>在定义中的同路实际上是图中$\mu \rightarrow y$这条同路，但从图中可以看到，通过下面一条通路也是可以的，通过$\mu$和$\eta$之间的关系来构造指数分布。在进行广义线性模型选择时，我们有两个自由度:</p>
+<ul>
+<li>激活函数$f$的选择 </li>
+<li>指数分布$p$的选择 </li>
+</ul>
+<p>指数分布$p$的选择更多与实际问题有关，比如如果是一个二分类问题，常选用伯努利分布，如果是一个多分类问题，常选用多项式分布，回归问题则常选用高斯分布，而激活函数的选择则是与分布对应的均值特性有关，比如对于伯努利分布，要求均值在$[0,1]$之间，所以在$logistic$回归中选择的是$Sigmoid$函数作为激活函数。对于多分类问题，则可以选用多项式分布作为指数分布，然后激活函数选用$softmax$函数，就可以导出扩展$logistic$到多分类问题中，得到$softmax$分类器。</p>
+<p>如果取激活函数$f = \psi^{-1}$，那么模型的自然参数$\theta$:</p>
+<script type="math/tex; mode=display">
+    \theta = \eta^T x</script><p>此时该激活函数$f$被称作正则响应函数。</p>
+<h3 id="广义线性模型性质"><a href="#广义线性模型性质" class="headerlink" title="广义线性模型性质"></a>广义线性模型性质</h3><p>当我们构造出广义线性模型后，我们需要进行参数$\eta$的学习，在没有参数先验知识的情况下，我们一般采用极大似然估计来进行参数估计，我们首先写出广义线性模型的对数似然函数形式:</p>
+<script type="math/tex; mode=display">
+    L(\eta, D) = \sum_{i} \log h(x_i) + \sum_i (\theta_i y_i - A(\theta_i))</script><p>其中$\theta_i = \psi(\mu_i)$,而$\mu_i = f(\eta^T x_i)$,这其实也可以简单地认为是用回归的结果来对$y_i$的值做概率预测。 对对数似然函数求偏导，可得:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        \nabla_{\eta} L(\eta, D) &= \sum_i (y_i \nabla_{\eta} \theta_i  - \frac{d A(\theta_i)}{d \theta_i} \nabla_{\eta} \theta_i ) \\
+        &= \sum_i (y_i - \mu_i)\nabla_{\eta} \theta_i 
+    \end{aligned}</script><p>所以在进行迭代优化时，我们有:</p>
+<script type="math/tex; mode=display">
+    \theta_{t+1} = \theta_t + \rho (y_i - \mu_i^t) \nabla_{\eta} \theta_i</script>]]></content>
+      <categories>
+        <category>统计学习</category>
+      </categories>
+      <tags>
+        <tag>指数分布族， 广义线性模型</tag>
       </tags>
   </entry>
   <entry>
@@ -4209,114 +4402,6 @@ kill -KILL 123456 #强制杀死进程
       </categories>
       <tags>
         <tag>插件管理</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>指数族分布与广义线性模型</title>
-    <url>/2020/10/07/zhi-shu-zu-fen-bu-yu-guang-yi-xian-xing-mo-xing/</url>
-    <content><![CDATA[<p>在<a href="https://soundofwind.top/2020/08/24/zai-tan-ji-da-si-ran-gu-ji-qiu-jie/">再谈极大似然估计</a>中已经讨论过指数分布族的概念，并且推导出了若概率分布是指数分布族分布，则最终的对数似然函数一定是一个凹函数，直接求偏导等于0便可得到参数估计。</p>
-<p>在听了<a href="http://ml.cs.tsinghua.edu.cn/~jun/index.shtml">朱军老师</a>的关于指数分布族函数的讲解之后，发现可以从一个更加general的角度来对指数分布族函数来进行把握，而之前得到的凹性结论也不过是其中一小部分而已，该部分按照以下结构组织: </p>
-<ul>
-<li>简要回顾指数分布族 </li>
-<li>配分函数$A(\theta)$的性质 </li>
-<li>从指数分布族到广义线性模型 </li>
-<li>广义线性模型性质 </li>
-</ul>
-<span id="more"></span> 
-<h3 id="简要回顾指数分布族函数"><a href="#简要回顾指数分布族函数" class="headerlink" title="简要回顾指数分布族函数"></a>简要回顾指数分布族函数</h3><p>首先给出指数分布族的定义:</p>
-<blockquote>
-<p>指数分布族是一类概率分布的总称，这类分布的概率密度函数具有这样的形式：</p>
-<script type="math/tex; mode=display">
-    p_\theta(x) = h(x) \exp(\theta^T \phi(x) - A(\theta))</script><p>式中，$x$是密度函数自变量，$x \in \mathcal{X}$;$\phi(x)$是充分统计量，可以看做是原始变量的一个映射:</p>
-<script type="math/tex; mode=display">
-    \phi: \mathcal{X} \rightarrow R^d</script><p>$\theta$是模型参数向量，与充分统计量维度相同，$h(x)$是一个只与$x$有关的统计量，$A(\theta)$为配分函数，通过该函数来保证$p_\theta(x)$满足概率密度函数的定义：</p>
-<script type="math/tex; mode=display">
-     \int_{\mathcal{X}} p_{\theta}(x) dx = 1</script><p>由此约束条件，我们可以得到$A(\theta)$的解析表达式：</p>
-<script type="math/tex; mode=display">
-    A(\theta) = \log (\int h(x) \exp(\theta^T \phi(x))dx )</script></blockquote>
-<p>同时概率密度函数我们也可以写成如下的形式:</p>
-<script type="math/tex; mode=display">
-    p_\theta(x) = \frac{1}{Z(\theta)}  h(x) exp(\theta^T \phi(x))</script><p>其中$Z(\theta) = exp(A(\theta))$,我们日常见到的很多分布都可以转化成指数分布族标准形式，比如: 伯努利分布，多项式分布，高斯分布，gamma分布等，一些变换的例子可以参考<a href="https://soundofwind.top/2020/08/24/zai-tan-ji-da-si-ran-gu-ji-qiu-jie/"><code>再谈极大似然估计</code></a></p>
-<h3 id="配分函数-A-theta-的性质"><a href="#配分函数-A-theta-的性质" class="headerlink" title="配分函数$A(\theta)$的性质"></a>配分函数$A(\theta)$的性质</h3><h4 id="A-theta-性质"><a href="#A-theta-性质" class="headerlink" title="$A(\theta)$性质"></a>$A(\theta)$性质</h4><p>在之前证明$A(\theta)$的凸性性质时，所采用的方法是按照配分表达式直接证，通过赫尔德不等式可以从定义上证明其是凸函数，但其实$A(\theta)$具有更加一般的性质。 </p>
-<p>$A(\theta)$其实是充分统计量$\phi(x)$的中心矩生成函数(moment generating function),这意味着:</p>
-<script type="math/tex; mode=display">
-  \begin{aligned}
-      \nabla_{\theta} A(\theta) &= E_{p_{\theta}(x)}[\phi(x)] \\ 
-      \nabla_{\theta}^2 A(\theta) &= Var[\phi(x)]  \\ 
-      & ... \\
-      \nabla_{\theta}^k A(\theta) &= E_{p_\theta(x)} [(\phi(x) - E[\phi(x)])^k]
-  \end{aligned}</script><p>下面以一阶统计量为例做一下简单推导:</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        \nabla_{\theta}A(\theta) & = \nabla_{\theta} \log(Z(\theta)) \\
-        &= \frac{1}{Z(\theta)} \nabla_{\theta} (\int_x h(x) \exp(\theta^T \phi(x)) dx) \\
-        &= \frac{1}{Z(\theta)} \int_x h(x) \phi(x) \exp(\theta^T \phi(x))dx \\ 
-        &= \int_x \frac{1}{Z(\theta)} h(x) \exp(\theta^T \phi(x)) \phi(x) dx \\ 
-        &= \int_x p(x|\theta) \phi(x) dx \\
-        &= E_{p_\theta(x)}[\phi(x)] 
-    \end{aligned}</script><p>$A(\theta)$的上述性质可以导出一些非常好用的结论:</p>
-<ul>
-<li><p>如果记:</p>
-<script type="math/tex; mode=display">
-  \nabla_{\theta} A(\theta) = E_{p_{\theta}(x)} [\phi(x)] \overset{\triangle}{=} \mu</script><p>这里$\mu$一般被称作矩参数或者均值参数，对于不同的指数分布族函数，一般都可以找到一个双射函数$\psi$,使得:</p>
-<script type="math/tex; mode=display">
-  \theta \overset{\triangle}{=} \psi(\mu)</script><p>这就建立了均值参数与模型的自然参数之间的一一映射关系，在参数估计时如果得到了均值参数估计，同时直到映射关系$\psi$，那么便可以直接得到模型自然参数$\theta$的估计。</p>
-</li>
-<li><p>因为$\nabla_{\theta}^2 A(\theta) = Var[\phi(x)]$，而我们知道一个向量变量的协方差矩阵至少是半正定的，也就是说:</p>
-<script type="math/tex; mode=display">
-  \nabla_{\theta}^2  A(\theta)= Var[\phi(x)] \succeq 0</script><p>这也就直接证明了$A(\theta)$的二阶海塞矩阵半正定，即$A(\theta)$是关于$\theta$的凸函数。</p>
-</li>
-</ul>
-<h4 id="iid-条件下样本集分布-p-D-theta"><a href="#iid-条件下样本集分布-p-D-theta" class="headerlink" title="$iid$条件下样本集分布$p(D|\theta)$"></a>$iid$条件下样本集分布$p(D|\theta)$</h4><p>在独立同分布假设下，我们通过采样得到样本集$D = { x_1, x_2, \dots, x_N }$, 在进行参数估计时我们往往需要计算整个样本集出现的概率:</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        p(D|\theta) &= \prod_{i} h(x_i) \exp(\theta^T \phi(x_i) - A(\theta)) \\ 
-        &= (\prod_i h(x_i)) \exp(\theta^T \sum_i \phi(x_i) - N A(\theta))
-    \end{aligned}</script><p>从格式上来看，会发现样本集的分布仍然是指数族分布，只不过是充分统计量$\phi’(D)$变为了:</p>
-<script type="math/tex; mode=display">
-    \phi'(D) = \sum_i \phi(x_i)</script><p>这给我们一个启示，当我们要利用一组数据进行参数估计时，我们只需要将各个样本的充分统计量累加起来便可以得到整个样本集合的充分统计量，后面进行参数估计时只需要利用充分统计量即可，原始数据可以舍弃。</p>
-<p>在进行极大似然估计时，我们往往会求解对数似然函数最大，下面写出指数分布的对数似然函数的一般形式:</p>
-<script type="math/tex; mode=display">
-    L(D;\theta) = \sum_{i} \log h(x_i) + \theta^T \sum_{i} \phi(x_i) - N A(\theta)</script><p>由于$A(\theta)$是凸函数，所以显然$L(D; \theta)$是凹函数，因此直接对$\theta$求偏导:</p>
-<script type="math/tex; mode=display">
-    \nabla_{\theta}(D; \theta) = \sum_{i} \phi(x_i) - N \nabla_{\theta} A(\theta) = 0</script><p>可以得到:</p>
-<script type="math/tex; mode=display">
-    \hat{\mu}_{MLE} = \nabla_{\theta} A(\theta) = \frac{1}{N} \sum_i \phi(x_i)</script><p>这说明充分统计量均值的极大似然估计就等于采样均值，又从前面我们得知均值参数$\mu$与模型的自然参数$\theta$通过函数$\psi$一一对应，因此可以通过充分统计量的均值估计得到模型参数的极大似然估计:</p>
-<script type="math/tex; mode=display">
-    \hat{\theta}_{MLE} = \psi(\hat{\mu}_{MLE})</script><h3 id="从指数分布族到广义线性模型"><a href="#从指数分布族到广义线性模型" class="headerlink" title="从指数分布族到广义线性模型"></a>从指数分布族到广义线性模型</h3><p>首先给出广义线性模型的定义:</p>
-<blockquote>
-<p><strong>广义线性模型:</strong><br>假设我们的数据是${ x<em>i, y_i}</em>{i=1}^n$，其中因变量$y_i$服从某一指数族分布，即:</p>
-<script type="math/tex; mode=display">
-    p(y_i;\theta) = h(y_i) \exp(\theta^T \phi(y_i) - A(\theta))</script><p>而对于观测量$x_i$，首先获得其线性组合:</p>
-<script type="math/tex; mode=display">
-    \xi_i = \eta^T x_i</script><p>然后$y_i$与 $x_i$具有这样的关系:</p>
-<script type="math/tex; mode=display">
-    E_{p(y;\theta)}[y] = \mu = f(\eta^T x)</script><p>$f$称作联系函数或者激活函数  </p>
-</blockquote>
-<p>广义线性模型的产生可以通过下图直观展示:<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/glim.png" alt="广义线性模型"><br>在定义中的同路实际上是图中$\mu \rightarrow y$这条同路，但从图中可以看到，通过下面一条通路也是可以的，通过$\mu$和$\eta$之间的关系来构造指数分布。在进行广义线性模型选择时，我们有两个自由度:</p>
-<ul>
-<li>激活函数$f$的选择 </li>
-<li>指数分布$p$的选择 </li>
-</ul>
-<p>指数分布$p$的选择更多与实际问题有关，比如如果是一个二分类问题，常选用伯努利分布，如果是一个多分类问题，常选用多项式分布，回归问题则常选用高斯分布，而激活函数的选择则是与分布对应的均值特性有关，比如对于伯努利分布，要求均值在$[0,1]$之间，所以在$logistic$回归中选择的是$Sigmoid$函数作为激活函数。对于多分类问题，则可以选用多项式分布作为指数分布，然后激活函数选用$softmax$函数，就可以导出扩展$logistic$到多分类问题中，得到$softmax$分类器。</p>
-<p>如果取激活函数$f = \psi^{-1}$，那么模型的自然参数$\theta$:</p>
-<script type="math/tex; mode=display">
-    \theta = \eta^T x</script><p>此时该激活函数$f$被称作正则响应函数。</p>
-<h3 id="广义线性模型性质"><a href="#广义线性模型性质" class="headerlink" title="广义线性模型性质"></a>广义线性模型性质</h3><p>当我们构造出广义线性模型后，我们需要进行参数$\eta$的学习，在没有参数先验知识的情况下，我们一般采用极大似然估计来进行参数估计，我们首先写出广义线性模型的对数似然函数形式:</p>
-<script type="math/tex; mode=display">
-    L(\eta, D) = \sum_{i} \log h(x_i) + \sum_i (\theta_i y_i - A(\theta_i))</script><p>其中$\theta_i = \psi(\mu_i)$,而$\mu_i = f(\eta^T x_i)$,这其实也可以简单地认为是用回归的结果来对$y_i$的值做概率预测。 对对数似然函数求偏导，可得:</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        \nabla_{\eta} L(\eta, D) &= \sum_i (y_i \nabla_{\eta} \theta_i  - \frac{d A(\theta_i)}{d \theta_i} \nabla_{\eta} \theta_i ) \\
-        &= \sum_i (y_i - \mu_i)\nabla_{\eta} \theta_i 
-    \end{aligned}</script><p>所以在进行迭代优化时，我们有:</p>
-<script type="math/tex; mode=display">
-    \theta_{t+1} = \theta_t + \rho (y_i - \mu_i^t) \nabla_{\eta} \theta_i</script>]]></content>
-      <categories>
-        <category>统计学习</category>
-      </categories>
-      <tags>
-        <tag>指数分布族， 广义线性模型</tag>
       </tags>
   </entry>
   <entry>
@@ -4843,6 +4928,18 @@ a=a^b; #a=(a^b)^(a^b^b)=0^b=0
       </tags>
   </entry>
   <entry>
+    <title>有感</title>
+    <url>/2020/02/22/you-gan/</url>
+    <content><![CDATA[<p>&emsp;    或许逃避是人的天性，整个博一上学期，似乎整天忙忙碌碌，在若干门课程中来回斡旋，<span id="more"></span>但当闲下来细细一想，似乎也有很多时间自己并没有好好利用，用那些时间在逃避、在咸鱼、在发呆。整个博一上学期自己也读了一些书，比如《历史的教训》、《贫穷的本质》、《禅与摩托车维修技术》、《变革中国》，相比于完整读下来的书，挖的坑自然是更多，《纯粹理性批判》、《世界文明史》、《资本论》……如果你要问我为什么选择这些书，我只能回答机缘巧合吧，这些书或是来源于上课时某位同学的推荐，或是来自于自己查询某些资料时的推荐，不一而足。其实我认为读这些书一方面是一种对自己空余时间的填充，对纯粹理工科学习的一种暂时逃避，也是一个不断寻找答案的过程，寻找一些理工科的书籍里缺乏的一些答案。其实我一直在思考一个问题，一个人的强大究竟是来源于其内心的强大，还是来源于其所凭外物，当你一无所有（指外物）之时，你还能剩下什么？是没有灵魂的一具空壳，还是一个拥有强大生命的种子。<br>&emsp;    读史教会我的第一点是作为历史当中普通人的世事无常，我们所接触的历史往往是王侯将相的历史，是英雄名士的历史，若人类发展的角度来看历史，一个人的历史观总会趋于无情，这种无情我们可以理解为作为现代人的傲慢/优越，如今我们去各地旅游，惊叹于种种历史古迹，惊叹于古人的智慧，但是孰又会在意这些历史古迹下面是当时多少奴隶的血泪。这些遗迹显示了当时高超的建造技术，为后人留下了宝贵遗产，我们或可以说这是历史的进步，然而那些建造他们的奴隶们则消逝于历史的阴影之中。若我们接受这样的历史进步性说法，由此会自然引出下一个结论——历史的发展是必然伴随着牺牲的，作为现代人，我们可以一方面斥责当时的暴政，另一方面又可以欣赏到这些暴政所留下的历史遗迹，每每想到这些，总觉如鲠在喉。或许从这些历史中我们可以得出这样的经验，某些我们认为错误的做法确实促进了当时历史的发展，但是历史发展途径许多，我们应当选择让人民整体更加幸福的发展道路，唉，不过聊以自慰耳。<br>&emsp;行路者需要背负东西，然而不能背负太多。我第一个放入背包的叫做责任，从诞生开始，我就开始与这个世界产生联系，父母、家庭、国家、人类，这些名词限定了我是我，梁启超在《最苦与最乐》中写道：“人生最苦，莫过于身上背负着一种未了的责任；人生最乐，莫过于尽责之时。“责任二字，说来轻巧，实则沉甸甸，也因责任二字，人生少了些凄清，多了些烟火；我第二个放入背包的叫做知识，在我看来，当曾经模糊看不清楚的东西在你眼前变得清晰之时，也是精神愉悦满足之时，文学史哲让你反求诸己，塑造清明的内心世界，理血工学让你更好地认识客观世界，改造客观世界，两种知识于我而言同样重要。吾之一生，有此两者，足矣。</p>
+]]></content>
+      <categories>
+        <category>闲谈</category>
+      </categories>
+      <tags>
+        <tag>无感而发</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>机器学习理论</title>
     <url>/2020/07/06/ji-qi-xue-xi-li-lun/</url>
     <content><![CDATA[<p>笔者近期想做一下<strong>机器学习</strong>相关理论总结<span id="more"></span>，计划划分为以下章节：</p>
@@ -4875,18 +4972,6 @@ a=a^b; #a=(a^b)^(a^b^b)=0^b=0
       </categories>
       <tags>
         <tag>机器学习</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>有感</title>
-    <url>/2020/02/22/you-gan/</url>
-    <content><![CDATA[<p>&emsp;    或许逃避是人的天性，整个博一上学期，似乎整天忙忙碌碌，在若干门课程中来回斡旋，<span id="more"></span>但当闲下来细细一想，似乎也有很多时间自己并没有好好利用，用那些时间在逃避、在咸鱼、在发呆。整个博一上学期自己也读了一些书，比如《历史的教训》、《贫穷的本质》、《禅与摩托车维修技术》、《变革中国》，相比于完整读下来的书，挖的坑自然是更多，《纯粹理性批判》、《世界文明史》、《资本论》……如果你要问我为什么选择这些书，我只能回答机缘巧合吧，这些书或是来源于上课时某位同学的推荐，或是来自于自己查询某些资料时的推荐，不一而足。其实我认为读这些书一方面是一种对自己空余时间的填充，对纯粹理工科学习的一种暂时逃避，也是一个不断寻找答案的过程，寻找一些理工科的书籍里缺乏的一些答案。其实我一直在思考一个问题，一个人的强大究竟是来源于其内心的强大，还是来源于其所凭外物，当你一无所有（指外物）之时，你还能剩下什么？是没有灵魂的一具空壳，还是一个拥有强大生命的种子。<br>&emsp;    读史教会我的第一点是作为历史当中普通人的世事无常，我们所接触的历史往往是王侯将相的历史，是英雄名士的历史，若人类发展的角度来看历史，一个人的历史观总会趋于无情，这种无情我们可以理解为作为现代人的傲慢/优越，如今我们去各地旅游，惊叹于种种历史古迹，惊叹于古人的智慧，但是孰又会在意这些历史古迹下面是当时多少奴隶的血泪。这些遗迹显示了当时高超的建造技术，为后人留下了宝贵遗产，我们或可以说这是历史的进步，然而那些建造他们的奴隶们则消逝于历史的阴影之中。若我们接受这样的历史进步性说法，由此会自然引出下一个结论——历史的发展是必然伴随着牺牲的，作为现代人，我们可以一方面斥责当时的暴政，另一方面又可以欣赏到这些暴政所留下的历史遗迹，每每想到这些，总觉如鲠在喉。或许从这些历史中我们可以得出这样的经验，某些我们认为错误的做法确实促进了当时历史的发展，但是历史发展途径许多，我们应当选择让人民整体更加幸福的发展道路，唉，不过聊以自慰耳。<br>&emsp;行路者需要背负东西，然而不能背负太多。我第一个放入背包的叫做责任，从诞生开始，我就开始与这个世界产生联系，父母、家庭、国家、人类，这些名词限定了我是我，梁启超在《最苦与最乐》中写道：“人生最苦，莫过于身上背负着一种未了的责任；人生最乐，莫过于尽责之时。“责任二字，说来轻巧，实则沉甸甸，也因责任二字，人生少了些凄清，多了些烟火；我第二个放入背包的叫做知识，在我看来，当曾经模糊看不清楚的东西在你眼前变得清晰之时，也是精神愉悦满足之时，文学史哲让你反求诸己，塑造清明的内心世界，理血工学让你更好地认识客观世界，改造客观世界，两种知识于我而言同样重要。吾之一生，有此两者，足矣。</p>
-]]></content>
-      <categories>
-        <category>闲谈</category>
-      </categories>
-      <tags>
-        <tag>无感而发</tag>
       </tags>
   </entry>
   <entry>
@@ -8145,6 +8230,65 @@ P(o \mid c)=\frac{\exp \left(u_o^T v_c\right)}{\sum_{w \in V} \exp \left(u_w^T v
       </tags>
   </entry>
   <entry>
+    <title>论牺牲</title>
+    <url>/2020/11/19/lun-xi-sheng/</url>
+    <content><![CDATA[<p>本篇文章围绕以下问题做个简单讨论:</p>
+<blockquote>
+<p>人应该什么时候拿出牺牲自我的逻辑，什么时候拿出保护自己利益的逻辑？  </p>
+<p>当所处的小团体与包含小团体的大团体利益发生冲突时，此时是否应当牺牲小团体？ </p>
+</blockquote>
+<span id="more"></span>
+<h4 id="关于牺牲本身"><a href="#关于牺牲本身" class="headerlink" title="关于牺牲本身"></a>关于牺牲本身</h4><p>既然要讨论这个问题，我们首先要将问题本身定义清楚，为了使得接下来的讨论更加精确，我首先来更加精确地定义以下<strong>牺牲</strong>，其实我们看到的牺牲大致有两种: </p>
+<ul>
+<li><strong>第一种牺牲</strong>: 对于一个眼光长远的人来说，<strong>短暂的牺牲不过是为了更长远的利益</strong>，因此这种有目的的<strong>牺牲</strong>其实是一种更加隐蔽的<strong>利己</strong>，有时候对自己所谓的牺牲从这个视角来看，会有不一样的收获。</li>
+<li><strong>第二种牺牲</strong>: 这种牺牲是不考虑回报的牺牲，即就牺牲者自己的视角来看，在牺牲行为中，他/她是<strong>为某种东西损失个人利益而不问回报。</strong></li>
+</ul>
+<p>当然，这两种牺牲有时会导致同样的结局，毕竟人的认知是有差异的，但我在定义这两种牺牲，考虑的更多是<strong>动机</strong>，一种是<strong>以退为进</strong>的牺牲，另一种则是<strong>无保留</strong>的牺牲。对于待讨论的问题，我认为问题中所指的牺牲大概是我所定义的第二种牺牲，那么我们<strong>接下来所讨论的牺牲都是指代第二种牺牲。</strong></p>
+<h4 id="牺牲的对象"><a href="#牺牲的对象" class="headerlink" title="牺牲的对象"></a>牺牲的对象</h4><p>既然要讨论牺牲本身，那么我们首先从<strong>牺牲的对象</strong>来开始讨论，以具体的牺牲的行为来解构抽象的概念<strong>牺牲</strong>本身。<br>以笔者目前的认知水平，牺牲的对象大概可以粗分为三类: </p>
+<blockquote>
+<ul>
+<li>具象的个人，比如亲人和爱人 </li>
+<li>个人身处的团体</li>
+<li>某种理想或价值观念 </li>
+</ul>
+</blockquote>
+<p>下面就这三种牺牲的对象来进行分别讨论: </p>
+<ul>
+<li><strong>具象的个人</strong>: 对于亲人与爱人，这种牺牲一般是出于对某种关系的妥协，血浓于水，琴瑟和鸣，我们愿意为了维系或加深这种关系而做出个人利益的让步；对于同事或朋友所做出的牺牲也大致是如此，对于个人高度认可，对于两人关系高度认可。</li>
+<li><strong>个人身处的团体</strong>: 我们既然加入这样一个团体，必然个体与团体之间是有着一致性的，对于兴趣社团，这种一致性表现为个人兴趣可以得到更好发展；对于公司，这种一致性表现在个人以劳动换取酬金，以改善客观生活。当我们决定为团体所做牺牲时，这说明个人对团体的认可程度较高，这时可能牺牲的对象就不只是简单的<strong>团体</strong>，其中或多或少包含着对<strong>团体中个人</strong>的情感。 </li>
+<li><strong>理想或价值观念</strong>: 这种牺牲则是出于对理想与价值观念的高度认同。</li>
+</ul>
+<p>需要注意的是，基本上任何组织或团队都是三者耦合而成，会谈优秀的个人、高质量的团队、团队的价值观，而加入团体的人则是形形色色，大家奔着不同的目的(至少权重不同)加入了这样一个群体。 </p>
+<blockquote>
+<p>那么通过上面具体的讨论，我们会发现所谓牺牲的对象，其实本质上都是一种<strong>认可</strong>，对个人关系的认可，对团体的认可，对理想/价值观的认可，这种<strong>认可</strong>会驱使我们在某些情况下做出牺牲。</p>
+</blockquote>
+<h4 id="回到问题本身"><a href="#回到问题本身" class="headerlink" title="回到问题本身"></a>回到问题本身</h4><blockquote>
+<p>Q1：人什么时候应该拿出自我牺牲的逻辑呢？ </p>
+</blockquote>
+<p>下面从两个角度来进行回答: </p>
+<ul>
+<li>主观角度: 从这个角度来说，当对某个人、某个团体认可程度超过自己心中阈值之时，便可做出牺牲，这样的论断是简单的，这样做人也是舒服的。 </li>
+<li>从主客观结合角度: 当人要做出牺牲，总是担心自己<strong>白白牺牲</strong>: <ul>
+<li>帮助了一个朋友，但他/她是个白眼狼；毫无保留爱了一个人，结果受到欺骗。 </li>
+<li>为团体做出了牺牲，但却并未得到认可，甚至团体中人认为你是想出风头。 </li>
+<li>为某种理想、价值观做出牺牲，但万一这种理想、价值观本身就错误呢?<br><strong>从这个角度来考虑，那么我们的牺牲就不但要考虑作为牺牲的主体，同时也需要考虑牺牲的客体，重新认识牺牲客体对于牺牲行为本身的看法，以使自己不白白牺牲。</strong></li>
+</ul>
+</li>
+</ul>
+<p>就我个人而言，对亲人、爱人的个人牺牲，我更倾向于从主观角度进行思考，而对团体的牺牲，我需要从主客观结合的角度来思考，毕竟一个团体中鱼龙混杂，奔着不同目的的人混在了一个团体之中，此时盲目的主观牺牲就会成为”白白牺牲”。</p>
+<blockquote>
+<p>Q2: 当所处的小团体与包含小团体的大团体利益发生冲突时，此时是否应当牺牲小团体？ </p>
+</blockquote>
+<p>这个问题我认为其实是包含在第一个问题之中的，我们在一个团体中时，首先需要明确自己认可的东西是什么，认可的东西是在小团体里面还是一个所谓的大团体之中，此时千万要警惕站在<strong>别人</strong>的角度考虑这样一个问题。</p>
+]]></content>
+      <categories>
+        <category>闲谈</category>
+      </categories>
+      <tags>
+        <tag>无感而发</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>规则学习</title>
     <url>/2020/08/27/gui-ze-xue-xi/</url>
     <content><![CDATA[<p>首先讲一个有意思的现象，早期的主流人工智能专注于以逻辑为基础来进行形式化和推理，但这样很难定量地对不确定事件进行表达和处理，后来随着机器学习算法的井喷，大家都更加关注于对定量的数据进行处理。但现在，很多人发现在解决某些任务的时候，加入一些行业中的常识知识可能会让任务解决地更好，而现在定性知识与定量数据之间似乎有着一道鸿沟，唯一的联系就是进行算法设计的人可能会依赖于他的领域知识来选择合适的算法并对算法进行调参。基于学习下定性知识如何表达的想法，这部分介绍下周志华老师🍉书的倒数第二章——规则学习，这部分内容安扎以下结构组织:</p>
@@ -8212,65 +8356,6 @@ P(o \mid c)=\frac{\exp \left(u_o^T v_c\right)}{\sum_{w \in V} \exp \left(u_w^T v
       </categories>
       <tags>
         <tag>规则学习，定性关联</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>论牺牲</title>
-    <url>/2020/11/19/lun-xi-sheng/</url>
-    <content><![CDATA[<p>本篇文章围绕以下问题做个简单讨论:</p>
-<blockquote>
-<p>人应该什么时候拿出牺牲自我的逻辑，什么时候拿出保护自己利益的逻辑？  </p>
-<p>当所处的小团体与包含小团体的大团体利益发生冲突时，此时是否应当牺牲小团体？ </p>
-</blockquote>
-<span id="more"></span>
-<h4 id="关于牺牲本身"><a href="#关于牺牲本身" class="headerlink" title="关于牺牲本身"></a>关于牺牲本身</h4><p>既然要讨论这个问题，我们首先要将问题本身定义清楚，为了使得接下来的讨论更加精确，我首先来更加精确地定义以下<strong>牺牲</strong>，其实我们看到的牺牲大致有两种: </p>
-<ul>
-<li><strong>第一种牺牲</strong>: 对于一个眼光长远的人来说，<strong>短暂的牺牲不过是为了更长远的利益</strong>，因此这种有目的的<strong>牺牲</strong>其实是一种更加隐蔽的<strong>利己</strong>，有时候对自己所谓的牺牲从这个视角来看，会有不一样的收获。</li>
-<li><strong>第二种牺牲</strong>: 这种牺牲是不考虑回报的牺牲，即就牺牲者自己的视角来看，在牺牲行为中，他/她是<strong>为某种东西损失个人利益而不问回报。</strong></li>
-</ul>
-<p>当然，这两种牺牲有时会导致同样的结局，毕竟人的认知是有差异的，但我在定义这两种牺牲，考虑的更多是<strong>动机</strong>，一种是<strong>以退为进</strong>的牺牲，另一种则是<strong>无保留</strong>的牺牲。对于待讨论的问题，我认为问题中所指的牺牲大概是我所定义的第二种牺牲，那么我们<strong>接下来所讨论的牺牲都是指代第二种牺牲。</strong></p>
-<h4 id="牺牲的对象"><a href="#牺牲的对象" class="headerlink" title="牺牲的对象"></a>牺牲的对象</h4><p>既然要讨论牺牲本身，那么我们首先从<strong>牺牲的对象</strong>来开始讨论，以具体的牺牲的行为来解构抽象的概念<strong>牺牲</strong>本身。<br>以笔者目前的认知水平，牺牲的对象大概可以粗分为三类: </p>
-<blockquote>
-<ul>
-<li>具象的个人，比如亲人和爱人 </li>
-<li>个人身处的团体</li>
-<li>某种理想或价值观念 </li>
-</ul>
-</blockquote>
-<p>下面就这三种牺牲的对象来进行分别讨论: </p>
-<ul>
-<li><strong>具象的个人</strong>: 对于亲人与爱人，这种牺牲一般是出于对某种关系的妥协，血浓于水，琴瑟和鸣，我们愿意为了维系或加深这种关系而做出个人利益的让步；对于同事或朋友所做出的牺牲也大致是如此，对于个人高度认可，对于两人关系高度认可。</li>
-<li><strong>个人身处的团体</strong>: 我们既然加入这样一个团体，必然个体与团体之间是有着一致性的，对于兴趣社团，这种一致性表现为个人兴趣可以得到更好发展；对于公司，这种一致性表现在个人以劳动换取酬金，以改善客观生活。当我们决定为团体所做牺牲时，这说明个人对团体的认可程度较高，这时可能牺牲的对象就不只是简单的<strong>团体</strong>，其中或多或少包含着对<strong>团体中个人</strong>的情感。 </li>
-<li><strong>理想或价值观念</strong>: 这种牺牲则是出于对理想与价值观念的高度认同。</li>
-</ul>
-<p>需要注意的是，基本上任何组织或团队都是三者耦合而成，会谈优秀的个人、高质量的团队、团队的价值观，而加入团体的人则是形形色色，大家奔着不同的目的(至少权重不同)加入了这样一个群体。 </p>
-<blockquote>
-<p>那么通过上面具体的讨论，我们会发现所谓牺牲的对象，其实本质上都是一种<strong>认可</strong>，对个人关系的认可，对团体的认可，对理想/价值观的认可，这种<strong>认可</strong>会驱使我们在某些情况下做出牺牲。</p>
-</blockquote>
-<h4 id="回到问题本身"><a href="#回到问题本身" class="headerlink" title="回到问题本身"></a>回到问题本身</h4><blockquote>
-<p>Q1：人什么时候应该拿出自我牺牲的逻辑呢？ </p>
-</blockquote>
-<p>下面从两个角度来进行回答: </p>
-<ul>
-<li>主观角度: 从这个角度来说，当对某个人、某个团体认可程度超过自己心中阈值之时，便可做出牺牲，这样的论断是简单的，这样做人也是舒服的。 </li>
-<li>从主客观结合角度: 当人要做出牺牲，总是担心自己<strong>白白牺牲</strong>: <ul>
-<li>帮助了一个朋友，但他/她是个白眼狼；毫无保留爱了一个人，结果受到欺骗。 </li>
-<li>为团体做出了牺牲，但却并未得到认可，甚至团体中人认为你是想出风头。 </li>
-<li>为某种理想、价值观做出牺牲，但万一这种理想、价值观本身就错误呢?<br><strong>从这个角度来考虑，那么我们的牺牲就不但要考虑作为牺牲的主体，同时也需要考虑牺牲的客体，重新认识牺牲客体对于牺牲行为本身的看法，以使自己不白白牺牲。</strong></li>
-</ul>
-</li>
-</ul>
-<p>就我个人而言，对亲人、爱人的个人牺牲，我更倾向于从主观角度进行思考，而对团体的牺牲，我需要从主客观结合的角度来思考，毕竟一个团体中鱼龙混杂，奔着不同目的的人混在了一个团体之中，此时盲目的主观牺牲就会成为”白白牺牲”。</p>
-<blockquote>
-<p>Q2: 当所处的小团体与包含小团体的大团体利益发生冲突时，此时是否应当牺牲小团体？ </p>
-</blockquote>
-<p>这个问题我认为其实是包含在第一个问题之中的，我们在一个团体中时，首先需要明确自己认可的东西是什么，认可的东西是在小团体里面还是一个所谓的大团体之中，此时千万要警惕站在<strong>别人</strong>的角度考虑这样一个问题。</p>
-]]></content>
-      <categories>
-        <category>闲谈</category>
-      </categories>
-      <tags>
-        <tag>无感而发</tag>
       </tags>
   </entry>
   <entry>
