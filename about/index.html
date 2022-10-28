@@ -363,21 +363,21 @@
                     <div class="post-statis col l4 hide-on-med-and-down" data-aos="zoom-in-right">
                         
 <div class="statis">
-    <span class="count"><a href="/">61</a></span>
+    <span class="count"><a href="/">62</a></span>
     <span class="name">文章</span>
 </div>
 
 
 
 <div class="statis">
-    <span class="count"><a href="/categories">13</a></span>
+    <span class="count"><a href="/categories">14</a></span>
     <span class="name">分类</span>
 </div>
 
 
 
 <div class="statis">
-    <span class="count"><a href="/tags">55</a></span>
+    <span class="count"><a href="/tags">56</a></span>
     <span class="name">标签</span>
 </div>
 
@@ -393,21 +393,21 @@
                                 <div class="post-statis hide-on-large-only" data-aos="zoom-in-right">
                                     
 <div class="statis">
-    <span class="count"><a href="/">61</a></span>
+    <span class="count"><a href="/">62</a></span>
     <span class="name">文章</span>
 </div>
 
 
 
 <div class="statis">
-    <span class="count"><a href="/categories">13</a></span>
+    <span class="count"><a href="/categories">14</a></span>
     <span class="name">分类</span>
 </div>
 
 
 
 <div class="statis">
-    <span class="count"><a href="/tags">55</a></span>
+    <span class="count"><a href="/tags">56</a></span>
     <span class="name">标签</span>
 </div>
 
@@ -543,7 +543,7 @@
                 name: '文章篇数',
                 type: 'line',
                 color: ['#6772e5'],
-                data: [0,1,0,0,0,0,0,0,0,0,1,3,6],
+                data: [0,1,0,0,0,0,0,0,0,0,1,3,7],
                 markPoint: {
                     symbolSize: 45,
                     color: ['#fa755a','#3ecf8e','#82d3f4'],
@@ -585,7 +585,7 @@
                 type: 'pie',
                 radius: '50%',
                 color: ['#6772e5', '#ff9e0f', '#fa755a', '#3ecf8e', '#82d3f4', '#ab47bc', '#525f7f', '#f51c47', '#26A69A'],
-                data: [{"name":"统计学习","value":30},{"name":"闲谈","value":6},{"name":"环境配置","value":1},{"name":"python学习","value":1},{"name":"读后感","value":1},{"name":"灵魂雕琢","value":7},{"name":"电影观后感","value":1},{"name":"点滴生活","value":5},{"name":"开发知识","value":1},{"name":"linux","value":1},{"name":"算法岗八股文","value":2},{"name":"游戏","value":2},{"name":"读书笔记","value":2}],
+                data: [{"name":"统计学习","value":30},{"name":"闲谈","value":6},{"name":"环境配置","value":1},{"name":"python学习","value":1},{"name":"读后感","value":1},{"name":"灵魂雕琢","value":7},{"name":"电影观后感","value":1},{"name":"点滴生活","value":5},{"name":"开发知识","value":1},{"name":"技术学习","value":1},{"name":"linux","value":1},{"name":"游戏","value":2},{"name":"算法岗八股文","value":2},{"name":"读书笔记","value":2}],
                 itemStyle: {
                     emphasis: {
                         shadowBlur: 10,
@@ -609,7 +609,7 @@
         xAxis: [
             {
                 type: 'category',
-                data: ["命令行","书籍阅读","数据结构","插件管理","无感而发","概率模型，HMM","EM算法,隐变量,高斯混合模型","无向图","支持向量机","SVM,补充"]
+                data: ["命令行","书籍阅读","插件管理","数据结构","无感而发","EM算法,隐变量,高斯混合模型","无向图","支持向量机","概率模型，HMM","概率图模型，有向图"]
             }
         ],
         yAxis: [
@@ -781,12 +781,6 @@
         <div class="tag-chips center-align">
             
             
-            <a href="/tags/%E6%A6%82%E7%8E%87%E6%A8%A1%E5%9E%8B%EF%BC%8CHMM/">
-                <span class="chip center-align waves-effect waves-light chip-default">概率模型，HMM</span>
-            </a>
-            
-            
-            
             <a href="/tags/EM%E7%AE%97%E6%B3%95-%E9%9A%90%E5%8F%98%E9%87%8F-%E9%AB%98%E6%96%AF%E6%B7%B7%E5%90%88%E6%A8%A1%E5%9E%8B/">
                 <span class="chip center-align waves-effect waves-light chip-default">EM算法,隐变量,高斯混合模型</span>
             </a>
@@ -805,8 +799,8 @@
             
             
             
-            <a href="/tags/SVM-%E8%A1%A5%E5%85%85/">
-                <span class="chip center-align waves-effect waves-light chip-default">SVM,补充</span>
+            <a href="/tags/%E6%A6%82%E7%8E%87%E6%A8%A1%E5%9E%8B%EF%BC%8CHMM/">
+                <span class="chip center-align waves-effect waves-light chip-default">概率模型，HMM</span>
             </a>
             
             
@@ -817,20 +811,26 @@
             
             
             
+            <a href="/tags/SVM-%E8%A1%A5%E5%85%85/">
+                <span class="chip center-align waves-effect waves-light chip-default">SVM,补充</span>
+            </a>
+            
+            
+            
             <a href="/tags/%E5%8E%86%E5%8F%B2%EF%BC%8C%E5%9B%9E%E6%BA%AF/">
                 <span class="chip center-align waves-effect waves-light chip-default">历史，回溯</span>
             </a>
             
             
             
-            <a href="/tags/%E5%91%BD%E4%BB%A4%E8%A1%8C/">
-                <span class="chip center-align waves-effect waves-light chip-default">命令行</span>
+            <a href="/tags/logistic%E5%9B%9E%E5%BD%92-%E6%9C%80%E5%A4%A7%E7%86%B5%E6%A8%A1%E5%9E%8B-%E4%BC%98%E5%8C%96%E5%AD%A6%E4%B9%A0/">
+                <span class="chip center-align waves-effect waves-light chip-default">logistic回归, 最大熵模型, 优化学习</span>
             </a>
             
             
             
-            <a href="/tags/logistic%E5%9B%9E%E5%BD%92-%E6%9C%80%E5%A4%A7%E7%86%B5%E6%A8%A1%E5%9E%8B-%E4%BC%98%E5%8C%96%E5%AD%A6%E4%B9%A0/">
-                <span class="chip center-align waves-effect waves-light chip-default">logistic回归, 最大熵模型, 优化学习</span>
+            <a href="/tags/%E5%91%BD%E4%BB%A4%E8%A1%8C/">
+                <span class="chip center-align waves-effect waves-light chip-default">命令行</span>
             </a>
             
             
@@ -883,14 +883,14 @@
             
             
             
-            <a href="/tags/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%EF%BC%8C%E5%87%B8%E4%BC%98%E5%8C%96/">
-                <span class="chip center-align waves-effect waves-light chip-default">统计学习，凸优化</span>
+            <a href="/tags/%E6%A0%91%E6%A8%A1%E5%9E%8B-categorical%E5%8F%98%E9%87%8F/">
+                <span class="chip center-align waves-effect waves-light chip-default">树模型,categorical变量</span>
             </a>
             
             
             
-            <a href="/tags/%E6%A0%91%E6%A8%A1%E5%9E%8B-categorical%E5%8F%98%E9%87%8F/">
-                <span class="chip center-align waves-effect waves-light chip-default">树模型,categorical变量</span>
+            <a href="/tags/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%EF%BC%8C%E5%87%B8%E4%BC%98%E5%8C%96/">
+                <span class="chip center-align waves-effect waves-light chip-default">统计学习，凸优化</span>
             </a>
             
             
@@ -913,6 +913,12 @@
             
             
             
+            <a href="/tags/%E5%AE%89%E5%85%A8%E6%80%A7%E5%8D%8F%E8%AE%AE/">
+                <span class="chip center-align waves-effect waves-light chip-default">安全性协议</span>
+            </a>
+            
+            
+            
             <a href="/tags/%E5%BF%83%E6%99%BA%E6%88%90%E7%86%9F%EF%BC%8C%E5%BF%83%E7%90%86%E5%AD%A6/">
                 <span class="chip center-align waves-effect waves-light chip-default">心智成熟，心理学</span>
             </a>
@@ -925,14 +931,20 @@
             
             
             
-            <a href="/tags/%E6%8C%87%E6%95%B0%E5%88%86%E5%B8%83%E6%97%8F%EF%BC%8C-%E5%B9%BF%E4%B9%89%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B/">
-                <span class="chip center-align waves-effect waves-light chip-default">指数分布族， 广义线性模型</span>
+            <a href="/tags/Bagging-AdaBoost-%E6%8F%90%E5%8D%87%E6%A0%91%E6%A8%A1%E5%9E%8B/">
+                <span class="chip center-align waves-effect waves-light chip-default">Bagging, AdaBoost, 提升树模型</span>
             </a>
             
             
             
-            <a href="/tags/Bagging-AdaBoost-%E6%8F%90%E5%8D%87%E6%A0%91%E6%A8%A1%E5%9E%8B/">
-                <span class="chip center-align waves-effect waves-light chip-default">Bagging, AdaBoost, 提升树模型</span>
+            <a href="/tags/%E6%8F%92%E4%BB%B6%E7%AE%A1%E7%90%86/">
+                <span class="chip center-align waves-effect waves-light chip-default">插件管理</span>
+            </a>
+            
+            
+            
+            <a href="/tags/%E6%8C%87%E6%95%B0%E5%88%86%E5%B8%83%E6%97%8F%EF%BC%8C-%E5%B9%BF%E4%B9%89%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B/">
+                <span class="chip center-align waves-effect waves-light chip-default">指数分布族， 广义线性模型</span>
             </a>
             
             
@@ -945,12 +957,6 @@
             
             <a href="/tags/%E4%BD%99%E5%8D%8E%EF%BC%8C%E6%B8%85%E6%9C%AB%E6%B0%91%E5%88%9D/">
                 <span class="chip center-align waves-effect waves-light chip-default">余华，清末民初</span>
-            </a>
-            
-            
-            
-            <a href="/tags/%E6%8F%92%E4%BB%B6%E7%AE%A1%E7%90%86/">
-                <span class="chip center-align waves-effect waves-light chip-default">插件管理</span>
             </a>
             
             
@@ -991,14 +997,14 @@
             
             
             
-            <a href="/tags/%E6%AF%9B%E9%80%89%EF%BC%8C%E5%8E%86%E5%8F%B2%EF%BC%8C%E5%93%B2%E5%AD%A6/">
-                <span class="chip center-align waves-effect waves-light chip-default">毛选，历史，哲学</span>
+            <a href="/tags/%E6%AF%9B%E9%80%89%E3%80%81%E8%BE%A9%E8%AF%81%E5%94%AF%E7%89%A9%E4%B8%BB%E4%B9%89/">
+                <span class="chip center-align waves-effect waves-light chip-default">毛选、辩证唯物主义</span>
             </a>
             
             
             
-            <a href="/tags/%E6%AF%9B%E9%80%89%E3%80%81%E8%BE%A9%E8%AF%81%E5%94%AF%E7%89%A9%E4%B8%BB%E4%B9%89/">
-                <span class="chip center-align waves-effect waves-light chip-default">毛选、辩证唯物主义</span>
+            <a href="/tags/%E6%AF%9B%E9%80%89%EF%BC%8C%E5%8E%86%E5%8F%B2%EF%BC%8C%E5%93%B2%E5%AD%A6/">
+                <span class="chip center-align waves-effect waves-light chip-default">毛选，历史，哲学</span>
             </a>
             
             
@@ -1009,14 +1015,14 @@
             
             
             
-            <a href="/tags/GAN/">
-                <span class="chip center-align waves-effect waves-light chip-default">GAN</span>
+            <a href="/tags/%E7%BA%BF%E6%80%A7%E5%88%A4%E5%88%AB%E5%88%86%E6%9E%90/">
+                <span class="chip center-align waves-effect waves-light chip-default">线性判别分析</span>
             </a>
             
             
             
-            <a href="/tags/%E7%BA%BF%E6%80%A7%E5%88%A4%E5%88%AB%E5%88%86%E6%9E%90/">
-                <span class="chip center-align waves-effect waves-light chip-default">线性判别分析</span>
+            <a href="/tags/GAN/">
+                <span class="chip center-align waves-effect waves-light chip-default">GAN</span>
             </a>
             
             
@@ -1045,14 +1051,14 @@
             
             
             
-            <a href="/tags/kmeans%EF%BC%8C%E5%B1%82%E6%AC%A1%E8%81%9A%E7%B1%BB%EF%BC%8C%E8%B0%B1%E8%81%9A%E7%B1%BB/">
-                <span class="chip center-align waves-effect waves-light chip-default">kmeans，层次聚类，谱聚类</span>
+            <a href="/tags/%E7%BA%BF%E6%80%A7%E5%88%A4%E5%88%AB-%E6%84%9F%E7%9F%A5%E6%9C%BA/">
+                <span class="chip center-align waves-effect waves-light chip-default">线性判别,感知机</span>
             </a>
             
             
             
-            <a href="/tags/%E7%BA%BF%E6%80%A7%E5%88%A4%E5%88%AB-%E6%84%9F%E7%9F%A5%E6%9C%BA/">
-                <span class="chip center-align waves-effect waves-light chip-default">线性判别,感知机</span>
+            <a href="/tags/kmeans%EF%BC%8C%E5%B1%82%E6%AC%A1%E8%81%9A%E7%B1%BB%EF%BC%8C%E8%B0%B1%E8%81%9A%E7%B1%BB/">
+                <span class="chip center-align waves-effect waves-light chip-default">kmeans，层次聚类，谱聚类</span>
             </a>
             
             
@@ -1081,14 +1087,14 @@
             
             
             
-            <a href="/tags/%E5%88%86%E7%B1%BB%EF%BC%8Ck%E8%BF%91%E9%82%BB/">
-                <span class="chip center-align waves-effect waves-light chip-default">分类，k近邻</span>
+            <a href="/tags/%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%88%86%E7%B1%BB%EF%BC%8C%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92/">
+                <span class="chip center-align waves-effect waves-light chip-default">贝叶斯分类，逻辑回归</span>
             </a>
             
             
             
-            <a href="/tags/%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%88%86%E7%B1%BB%EF%BC%8C%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92/">
-                <span class="chip center-align waves-effect waves-light chip-default">贝叶斯分类，逻辑回归</span>
+            <a href="/tags/%E5%88%86%E7%B1%BB%EF%BC%8Ck%E8%BF%91%E9%82%BB/">
+                <span class="chip center-align waves-effect waves-light chip-default">分类，k近邻</span>
             </a>
             
             
@@ -1234,7 +1240,7 @@
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">166.5k</span>&nbsp;字
+                class="white-color">167.3k</span>&nbsp;字
             
             
             
