@@ -176,173 +176,33 @@ P(e) &= P(x \in \mathcal{R_1},\omega_2) + P(x \in \mathcal{R_2},\omega_1) \\
 <h4 id="学习策略"><a href="#学习策略" class="headerlink" title="学习策略"></a>学习策略</h4><h5 id="基于集成学习的域泛化"><a href="#基于集成学习的域泛化" class="headerlink" title="基于集成学习的域泛化"></a>基于集成学习的域泛化</h5><p>每个域都有一个模型，结合输出结果 </p>
 <h5 id="基于元学习的域泛化"><a href="#基于元学习的域泛化" class="headerlink" title="基于元学习的域泛化"></a>基于元学习的域泛化</h5><p>元学习的关键思想是从多个任务中学习一个通用的模型</p>
 <h5 id="基于梯度操作的域泛化"><a href="#基于梯度操作的域泛化" class="headerlink" title="基于梯度操作的域泛化"></a>基于梯度操作的域泛化</h5><p>self-challenging训练算法 </p>
-<h5 id="基于分布鲁棒优化的方法"><a href="#基于分布鲁棒优化的方法" class="headerlink" title="基于分布鲁棒优化的方法"></a>基于分布鲁棒优化的方法</h5><h5 id="基于自监督学习的域泛化"><a href="#基于自监督学习的域泛化" class="headerlink" title="基于自监督学习的域泛化"></a>基于自监督学习的域泛化</h5>]]></content>
+<h5 id="基于分布鲁棒优化的方法"><a href="#基于分布鲁棒优化的方法" class="headerlink" title="基于分布鲁棒优化的方法"></a>基于分布鲁棒优化的方法</h5><h5 id="基于自监督学习的域泛化"><a href="#基于自监督学习的域泛化" class="headerlink" title="基于自监督学习的域泛化"></a>基于自监督学习的域泛化</h5><h3 id="其他的研究方向"><a href="#其他的研究方向" class="headerlink" title="其他的研究方向"></a>其他的研究方向</h3><ul>
+<li>单源域泛化</li>
+<li>半监督域泛化 </li>
+<li>域泛化的联邦学习</li>
+</ul>
+<h3 id="域泛化的应用"><a href="#域泛化的应用" class="headerlink" title="域泛化的应用"></a>域泛化的应用</h3><p><img src="/.io//%E5%BA%94%E7%94%A8.png" alt></p>
+<h3 id="我的想法"><a href="#我的想法" class="headerlink" title="我的想法"></a>我的想法</h3><p>通过域对抗训练的方式使得模型能够提取出与模态解耦的中介变量<br><img src="/.io//%E5%9F%9F%E5%AF%B9%E6%8A%97%E8%AE%AD%E7%BB%83.png" alt></p>
+<p>现有研究进展:</p>
+<ul>
+<li>源域数据+标签均可见，目标域仅有数据 </li>
+<li>局限在视觉领域 </li>
+<li>视觉领域是否有已将该工作迁移到未知域上,已经有了<a href="https://openaccess.thecvf.com/content_cvpr_2018/papers/Li_Domain_Generalization_With_CVPR_2018_paper.pdf">2019cvpr</a></li>
+<li>衡量分布差异: 最大平均偏差(MMD)，将特征映射到高维空间，然后用在高维空间的一阶矩来度量两个分布的差异。 </li>
+</ul>
+<p>可以有的创新方向: </p>
+<ul>
+<li>应用创新，在故障诊断领域还没这么搞得，同时可以结合之前的因果框架，提取出的中介变量更具说服力。 </li>
+<li>将有标签数据与无标签数据混用，<strong>有模态标签，但无故障标签</strong>，在实际中也是常见的场景</li>
+<li>结合时序数据的一些特点 </li>
+</ul>
+<h4 id="论文复现"><a href="#论文复现" class="headerlink" title="论文复现"></a>论文复现</h4><p>将<a href="https://www.jmlr.org/papers/volume17/15-239/15-239.pdf">domain-adversarial training of neural network</a>论文结果在TEP上运行了一下，模型训练不收敛。</p>
+]]></content>
       <categories>
         <category>论文阅读</category>
       </categories>
       <tags>
         <tag>前沿方向</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>EM</title>
-    <url>/2020/07/30/em/</url>
-    <content><![CDATA[<p>在前面概率密度函数估计中，若概率模型的变量都是可观测变量，那么给定数据，便可以直接用极大似然估计法或者贝叶斯估计法来直接估计模型参数。但是当模型中含有隐变量时，便不能直接使用这些估计方法，<strong>EM算法就是含有隐变量的概率模型参数的极大似然估计法</strong><span id="more"></span>,本文便围绕EM算法展开，主要包含以下几部分：</p>
-<ul>
-<li>算法引入</li>
-<li>算法定义</li>
-<li>算法导出</li>
-<li>算法收敛性分析</li>
-<li>算法应用-高斯混合模型(GMM)</li>
-</ul>
-<h3 id="算法引入"><a href="#算法引入" class="headerlink" title="算法引入"></a>算法引入</h3><p>首先介绍一个使用EM算法的栗子，引出EM算法应用场景:</p>
-<blockquote>
-<p>三硬币模型： 假设有三枚硬币A,B,C。这三枚硬币出现正面的概率分别为$\pi,p,q$。现进行如下掷币实验：首先掷出硬币A,根据其结果选出硬币B或硬币C，正面选硬币B,反面选硬币C；然后掷选出的硬币，掷硬币的结果，正面记做1，反面记做0,独立的重复$n$次实验，得到实验结果为$(x_1,\dots,x_n)$<br><strong>问题</strong>：根据实验结果估计三枚硬币参数(正面朝上概率)</p>
-</blockquote>
-<p>这个问题的特殊性在于，我们只能够观察到最终实验结果，但是对于中间变量(硬币A的投掷结果)则没有记录，是隐变量，所以该问题是在有隐变量情况下的参数估计问题。下面首先尝试使用极大似然估计方法，做如下标记：</p>
-<ul>
-<li>待估计参数$\theta = (\pi,p,q)$</li>
-<li>观测变量$y$:最终掷硬币结果</li>
-<li>隐含变量$z$:每次实验掷硬币A的结果</li>
-</ul>
-<p>若直接采用最大似然估计，我们希望能够写出似然概率$P(y|\theta)$，但这个概率并不能够直接写出，需要引入隐含变量$z$，因此考虑将似然概率写成</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-         P(y|\theta) &= \sum P(y,z|\theta) = \sum_{z} P(z|\theta) P(y|\theta,z) \\\\
-         &= \pi p^y (1-p)^{1-y} + (1-\pi)q^y(1-q)^{1-y}
-    \end{aligned}</script><p>将观测数据记做$Y = (Y_1,\dots, Y_n)^T$,未观测数据记做$Z = (Z_1,\dots, Z_n)^T$,则似然函数可以写做：</p>
-<script type="math/tex; mode=display">
-    L = P(Y|\theta) = \prod_{j=1}^n[\pi p^{y_j} (1-p)^{1-y_j} + (1-\pi)q^{y_j}(1-q)^{1-y_j}]</script><p>对数似然函数则是:</p>
-<script type="math/tex; mode=display">
-    logL = \sum_{j=1}^nlog[\pi p^{y_j} (1-p)^{1-y_j} + (1-\pi)q^{y_j}(1-q)^{1-y_j}]</script><p>直接极大化对数似然函数并不能得到解析解，该问题只能通过EM算法迭代求解</p>
-<h3 id="算法推导"><a href="#算法推导" class="headerlink" title="算法推导"></a>算法推导</h3><p>首先给出算法定义：<br><strong>EM算法</strong>:</p>
-<blockquote>
-<p>  输入： 观测变量数据$Y$,隐变量数据$Z$，联合分布$P(Y,Z|\theta)$,条件分布$P(Z|Y,\theta$<br>  输出： 模型参数$\theta$</p>
-</blockquote>
-<ol>
-<li>选择参数初始值$\theta^0$,开始迭代</li>
-<li>E步：记$\theta^i$为第$i$次迭代参数$\theta$的估计值，在第$i+1$次迭代的E步，计算：</li>
-</ol>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        Q(\theta,\theta^i) &= E_Z[logP(Y,Z|\theta)|Y,\theta^i] \\\\
-            &= \sum_Z log P(Y,Z|\theta) P(Z|Y,\theta^i)
-    \end{aligned}</script><ol>
-<li>M步： 求使得$Q(\theta,\theta^i)$极大化的$\theta$,确定第$i+1$次迭代的参数的估计值$\theta^{i+1}$ <script type="math/tex; mode=display">\theta^{i+1} = argmax_{\theta}Q(\theta,\theta^i)</script></li>
-<li>重复第2,3步，直到算法收敛</li>
-</ol>
-<p>从形式上来看，$Q$函数与极大似然函数其实是一样的，不同之处在于$P(Z|Y,\theta^i)$中使用的是参数迭代估计值，用该迭代估计值代替真值，$Q$函数可以看作是：</p>
-<blockquote>
-<p>完全数据的对数似然函数$logP(Y,Z|\theta)$关于在给定观测数据$Y$和当前参数$\theta^i$下对未观测数据$Z$的的条件概率分布$P(Z|Y,\theta^i)$的期望。</p>
-</blockquote>
-<p>我们这样使用$Q$函数来近似优化最大似然函数，需要证明这样的迭代优化是有效的</p>
-<h3 id="算法导出"><a href="#算法导出" class="headerlink" title="算法导出"></a>算法导出</h3><p>对数似然形式前面已经讨论过，形式为：</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        L(\theta) &= log P(Y|\theta) = log \sum_Z P(Y,Z|\theta) \\
-        &= log(\sum_Z P(Y|\theta,Z) P(Z|\theta))
-    \end{aligned}</script><p>直接极大化对数似然函数困难之处在于两点：</p>
-<ul>
-<li>含有隐变量$Z$</li>
-<li>对数似然函数是和的对数的形式</li>
-</ul>
-<p>假设在第$i$次迭代后参数$\theta$估计值为$\theta^i$,新的估计值是$\theta$，我们期望新的估计值$\theta$能够使得对数似然函数增大，因此，考虑计算两者的差：</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        L(\theta) - L(\theta^i) &= log(\sum_Z P(Y|\theta,Z) P(Z|\theta)) - logP(Y|\theta^i) 
-        \\\\
-        &= log(\sum_Z P(Z|Y,\theta^i) \frac{P(Y|Z,\theta)P(Z|\theta)}{P(Z|Y,\theta^i)}) - logP(Y|\theta^i) 
-        \\\\
-        &\geq \sum_Z P(Z|Y,\theta^i) log \frac{P(Y|Z,\theta)P(Z|\theta)}{P(Z|Y,\theta^i)} - logP(Y|\theta^i)  (Jensen不等式)  
-        \\\\
-        &= \sum_Z P(Z|Y,\theta^i) log \frac{P(Y|Z,\theta)P(Z|\theta)}{P(Z|Y,\theta^i)P(Y|\theta^i)}
-    \end{aligned}</script><p>令 </p>
-<script type="math/tex; mode=display">
-    B(\theta,\theta^i) = L(\theta^i) + \sum_Z P(Z|Y,\theta^i) log \frac{P(Y|Z,\theta)P(Z|\theta)}{P(Z|Y,\theta^i)P(Y|\theta^i)}</script><p>则有：</p>
-<script type="math/tex; mode=display">
-    L(\theta) \geq B(\theta,\theta^i)</script><p>至此，我们找到了对数似然函数的一个下界，同时在点$\theta^i$处，有：</p>
-<script type="math/tex; mode=display">
-    L(\theta^i) = B(\theta^i,\theta^i)</script><p>因此若我们可以找到$\theta^{i+1}$,使得$B(\theta^{i+1},\theta^i)&gt;B(\theta^i,<br>\theta^i)$,则有：</p>
-<script type="math/tex; mode=display">
-    L(\theta^{i+1}) \geq B(\theta^{i+1},\theta^i) > B(\theta^i,\theta^i) = L(\theta^i)</script><p>因此我们可以考虑优化$B(\theta,\theta^i)$，从而变相使原始似然函数增大。接下来考虑$B(\theta,\theta^i)$中需要优化的具体是哪一项:</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        \theta^{i+1} &= argmax(L(\theta^i) +  \sum_Z P(Z|Y,\theta^i) log \frac{P(Y|Z,\theta)P(Z|\theta)}{P(Z|Y,\theta^i)P(Y|\theta^i)})  \\\\
-        &= argmax  \sum_Z P(Z|Y,\theta^i) log \frac{P(Y|Z,\theta)P(Z|\theta)}{P(Z|Y,\theta^i)P(Y|\theta^i)} \\\\
-        &= argmax \sum_Z P(Z|Y,\theta^i) log(P(Y|Z,\theta) P(Z|\theta)) \\\\
-        &= argmax \sum_Z P(Z|Y,\theta^i) log P(Y,Z|\theta) \\\\
-        &= argmax Q(\theta,\theta^i)
-    \end{aligned}</script><p><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/EM.png" alt="EM"></p>
-<p>图中下方曲线为$B(\theta,\theta^i)$，上方曲线为$L(\theta)$,在$\theta^n$处，两者相等，当对$B(\theta,\theta^n)$进行优化时，似然函数也得到了优化，同样，这种迭代算法只能够保证每次迭代都会使得似然函数增加，但并不能保证为全局最优。</p>
-<h3 id="算法收敛性分析"><a href="#算法收敛性分析" class="headerlink" title="算法收敛性分析"></a>算法收敛性分析</h3><p>该部分只给出一些结论，证明过程略过</p>
-<blockquote>
-<p><strong>定理1</strong>:设$P(Y|\theta)$为观测数据的似然函数，$\theta^i$为EM算法得到的参数估计序列，$P(Y|\theta^i)$为对应的似然函数序列，则$P(Y|\theta_i)$是单调递增的，即：</p>
-<script type="math/tex; mode=display">
-P(Y|\theta^{i+1}) \geq P(Y|\theta^i)</script><p><strong>定理2</strong>:设$L(\theta) = log P(Y|\theta)$为观测数据的对数似然函数，$\theta^i$为EM算法得到的参数估计序列，$L(\theta^i)$为对应的对数似然函数序列 </p>
-<ol>
-<li>如果$P(Y|\theta)$有上界,则$L(\theta^i) = log P(Y|\theta^i)$ 收敛到某一值$L^*$</li>
-<li>在函数$Q(\theta,\theta^{‘})$与$L(\theta)$满足一定条件下，由EM算法得到的参数估计序列$<br>\theta^i$的收敛点$\theta^*$是$L(\theta)$的稳定点</li>
-</ol>
-</blockquote>
-<h3 id="算法应用-高斯混合模型-GMM"><a href="#算法应用-高斯混合模型-GMM" class="headerlink" title="算法应用-高斯混合模型(GMM)"></a>算法应用-高斯混合模型(GMM)</h3><p>首先给出高斯混合模型定义:</p>
-<blockquote>
-<p>高斯混合模型是指具有如下形式的概率分布模型：</p>
-<script type="math/tex; mode=display">
-    P(y|\theta) = \sum_{k=1}^K \alpha_k \phi(y|\theta_k)</script><p>其中,$\alpha_k$是系数，$\alpha_k \geq 0$,$\sum \alpha_k = 1$;$\phi(y|\theta_k)$是高斯概率密度函数，$\theta_k = (\mu_k,\sigma_k^2)$,称为第$k$个分模型</p>
-</blockquote>
-<p>高斯模型是描述数据分布的一种常见模型，但在有时候单一的高斯模型并不足以对数据进行描述，因此便考虑该数据分布有没有可能用多个高斯模型来描述，即任意一个数据点可能来自于某一个分模型。假设观测数据$y_1,y_2,\dots,y_N$由高斯混合模型生成：</p>
-<script type="math/tex; mode=display">
-      P(y|\theta) = \sum_{k=1}^K \alpha_k \phi(y|\theta_k)</script><p>其中$\theta = (\alpha_1,\dots,\alpha_K;\theta_1,\dots,\theta_K)$,我们现在期望利用观测数据将这些参数估计出来。</p>
-<h4 id="隐变量定义"><a href="#隐变量定义" class="headerlink" title="隐变量定义"></a>隐变量定义</h4><p>首先来看对于这样一个模型，隐变量是什么，数据是这样产生的：首先依概率$\alpha<em>k$选择第$k$个高斯分布分模型，然后依第$k$个分模型的概率分布生成观测数据$y$。观测数据$y$是已知的，但是$y$究竟来自于哪个分模型是未知的，记该变量为隐变量$\gamma</em>{jk}$,其定义如下：</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        \gamma_{jk} &= \begin{cases}
-            1,& 第j个观测来自第k个分模型 \\
-            0,& other
-        \end{cases}   
-        \\\\
-        j &= 1,\dots,N;k = 1,\dots,K
-    \end{aligned}</script><p>目前，我们的观测数据为$y<em>j$,未观测数据是$\gamma</em>{jk}$,完全数据是：</p>
-<script type="math/tex; mode=display">
-    (y_j,\gamma_{j_1},\dots,\gamma_{jk}),j=1,\dots,N</script><p>于是，可以写出完全数据的对数似然函数：</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-         P(y,\gamma|\theta) &= \prod_{j=1}^N P(y_j,\gamma_{j1},\dots,\gamma_{jk}|\theta) \\\\
-         &= \prod_{k=1}^K \prod_{j=1}^N [\alpha_k \phi(y_j|\theta_k)]^{\gamma_{jk} } \\\\
-         &= \prod_{k=1}^K \alpha_k^{n_k} \prod_{j=1}^N [\alpha_k \phi(y_j|\theta_k)]^{\gamma_{jk} } \\\\
-         &= \prod_{k=1}^K \alpha_k^{n_k} \prod_{j=1}^N [\frac{1}{\sqrt{2\pi}\sigma_k} exp(-\frac{(y_j-\mu_k)^2}{2\sigma_k^2})]^{\gamma_{jk}}
-    \end{aligned}</script><p>公式中$n<em>k = \sum</em>{j=1}^N \gamma<em>{jk},\sum</em>{k=1}^K n_k = N$,由此，便可以写出完全数据的对数似然函数：</p>
-<script type="math/tex; mode=display">
- logP(y,\gamma|\theta) = \sum_{k=1}^K \{ n_klog\alpha_k + \sum_{j=1}^N \gamma_{jk}[log(\frac{1}{\sqrt{2\pi}})-log\sigma_k - \frac{1}{2\sigma_k^2} (y_j-\mu_k)^2]\}</script><p><strong>E步</strong>：其实就是要在已知上次迭代参数估计值$\theta$和观测值$y$的情况下将$\gamma<em>{jk}$估计出来，然后代回完全数据的对数似然函数，下面就求解下$E(\gamma</em>{jk}|y,\theta)$:</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-    \hat{\gamma}_{jk} &= E(\gamma_{jk}|y,\theta) = P(\gamma_{jk}|y,\theta)\\\\
-    &= \frac{P(\gamma_{jk = 1,y|\theta})}{\sum_{k=1}^K P(\gamma_{jk}=1,y_j|\theta)} \\\\
-    &= \frac{P(y_j|\gamma_{jk}=1,\theta)P(\gamma_{jk}=1|\theta)}{\sum_{k=1}^K P(y_j|\gamma_{jk}=1,\theta)P(\gamma_{jk}=1|\theta)} \\\\
-    &= \frac{\alpha_k \phi(y_j|\theta_k)}{\sum_{k=1}^K \alpha_k \phi(y_j|\theta_k)}
-\end{aligned}</script><p>将该估计值代回完全数据的对数似然函数，便得到了$Q$函数：</p>
-<script type="math/tex; mode=display">
-    Q(\theta,\theta^i) =  logP(y,\gamma|\theta) = \sum_{k=1}^K \{ n_klog\alpha_k + \sum_{j=1}^N \hat{\gamma}_{jk}[log(\frac{1}{\sqrt{2\pi}})-log\sigma_k - \frac{1}{2\sigma_k^2} (y_j-\mu_k)^2]\}</script><p><strong>M步</strong>：迭代的M步是求函数$Q(\theta,\theta^i)$对$\theta$的极大值，即求新一轮迭代的模型参数:</p>
-<script type="math/tex; mode=display">
-    \theta^{i+1} = \arg max_{\theta} Q(\theta,\theta^i)</script><p>该步只需分别对$\alpha<em>K,\mu_k,\sigma_k$求偏导，令偏导等于0,注意在求解$\alpha_k$时需要利用$\alpha_k$天然的约束条件$\sum</em>{k=1}^K \alpha_k = 1$,最终求解结果为:</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-    \hat{\mu}_k &= \frac{\sum_{j=1}^N \hat{\gamma}_{jk}y_j}{\sum_{j=1}^N \hat{\gamma}_{jk}} \\\\
-    \hat{\sigma}_k^2 &= \frac{\sum_{j=1}^N \hat{\gamma}_{jk}(y_j - \mu_k)^2}{\sum_{j=1}^N \hat{\gamma}_{jk}} \\\\
-    \hat{\alpha}_k &= \frac{n_k}{N} = \frac{\sum_{j=1}^N \hat{\gamma}_{jk}}{N}
-\end{aligned}</script><h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>该部分就高斯混合模型的EM算法进行总结</p>
-<ul>
-<li>取参数的初始值开始迭代</li>
-<li>E步：根据当前模型参数，计算分模型$k$对观测数据$y_j$的响应度</li>
-<li>M步：计算新一轮迭代的模型参数 </li>
-<li>重复直到算法收敛</li>
-</ul>
-]]></content>
-      <categories>
-        <category>统计学习</category>
-      </categories>
-      <tags>
-        <tag>EM算法,隐变量,高斯混合模型</tag>
       </tags>
   </entry>
   <entry>
@@ -591,6 +451,167 @@ i_t^* = \varPhi_{t+1}(i_{t+1}^*)</script>求得最优路径$I^{\ast} = (i_1^\ast
       </categories>
       <tags>
         <tag>概率模型，HMM</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>EM</title>
+    <url>/2020/07/30/em/</url>
+    <content><![CDATA[<p>在前面概率密度函数估计中，若概率模型的变量都是可观测变量，那么给定数据，便可以直接用极大似然估计法或者贝叶斯估计法来直接估计模型参数。但是当模型中含有隐变量时，便不能直接使用这些估计方法，<strong>EM算法就是含有隐变量的概率模型参数的极大似然估计法</strong><span id="more"></span>,本文便围绕EM算法展开，主要包含以下几部分：</p>
+<ul>
+<li>算法引入</li>
+<li>算法定义</li>
+<li>算法导出</li>
+<li>算法收敛性分析</li>
+<li>算法应用-高斯混合模型(GMM)</li>
+</ul>
+<h3 id="算法引入"><a href="#算法引入" class="headerlink" title="算法引入"></a>算法引入</h3><p>首先介绍一个使用EM算法的栗子，引出EM算法应用场景:</p>
+<blockquote>
+<p>三硬币模型： 假设有三枚硬币A,B,C。这三枚硬币出现正面的概率分别为$\pi,p,q$。现进行如下掷币实验：首先掷出硬币A,根据其结果选出硬币B或硬币C，正面选硬币B,反面选硬币C；然后掷选出的硬币，掷硬币的结果，正面记做1，反面记做0,独立的重复$n$次实验，得到实验结果为$(x_1,\dots,x_n)$<br><strong>问题</strong>：根据实验结果估计三枚硬币参数(正面朝上概率)</p>
+</blockquote>
+<p>这个问题的特殊性在于，我们只能够观察到最终实验结果，但是对于中间变量(硬币A的投掷结果)则没有记录，是隐变量，所以该问题是在有隐变量情况下的参数估计问题。下面首先尝试使用极大似然估计方法，做如下标记：</p>
+<ul>
+<li>待估计参数$\theta = (\pi,p,q)$</li>
+<li>观测变量$y$:最终掷硬币结果</li>
+<li>隐含变量$z$:每次实验掷硬币A的结果</li>
+</ul>
+<p>若直接采用最大似然估计，我们希望能够写出似然概率$P(y|\theta)$，但这个概率并不能够直接写出，需要引入隐含变量$z$，因此考虑将似然概率写成</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+         P(y|\theta) &= \sum P(y,z|\theta) = \sum_{z} P(z|\theta) P(y|\theta,z) \\\\
+         &= \pi p^y (1-p)^{1-y} + (1-\pi)q^y(1-q)^{1-y}
+    \end{aligned}</script><p>将观测数据记做$Y = (Y_1,\dots, Y_n)^T$,未观测数据记做$Z = (Z_1,\dots, Z_n)^T$,则似然函数可以写做：</p>
+<script type="math/tex; mode=display">
+    L = P(Y|\theta) = \prod_{j=1}^n[\pi p^{y_j} (1-p)^{1-y_j} + (1-\pi)q^{y_j}(1-q)^{1-y_j}]</script><p>对数似然函数则是:</p>
+<script type="math/tex; mode=display">
+    logL = \sum_{j=1}^nlog[\pi p^{y_j} (1-p)^{1-y_j} + (1-\pi)q^{y_j}(1-q)^{1-y_j}]</script><p>直接极大化对数似然函数并不能得到解析解，该问题只能通过EM算法迭代求解</p>
+<h3 id="算法推导"><a href="#算法推导" class="headerlink" title="算法推导"></a>算法推导</h3><p>首先给出算法定义：<br><strong>EM算法</strong>:</p>
+<blockquote>
+<p>  输入： 观测变量数据$Y$,隐变量数据$Z$，联合分布$P(Y,Z|\theta)$,条件分布$P(Z|Y,\theta$<br>  输出： 模型参数$\theta$</p>
+</blockquote>
+<ol>
+<li>选择参数初始值$\theta^0$,开始迭代</li>
+<li>E步：记$\theta^i$为第$i$次迭代参数$\theta$的估计值，在第$i+1$次迭代的E步，计算：</li>
+</ol>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        Q(\theta,\theta^i) &= E_Z[logP(Y,Z|\theta)|Y,\theta^i] \\\\
+            &= \sum_Z log P(Y,Z|\theta) P(Z|Y,\theta^i)
+    \end{aligned}</script><ol>
+<li>M步： 求使得$Q(\theta,\theta^i)$极大化的$\theta$,确定第$i+1$次迭代的参数的估计值$\theta^{i+1}$ <script type="math/tex; mode=display">\theta^{i+1} = argmax_{\theta}Q(\theta,\theta^i)</script></li>
+<li>重复第2,3步，直到算法收敛</li>
+</ol>
+<p>从形式上来看，$Q$函数与极大似然函数其实是一样的，不同之处在于$P(Z|Y,\theta^i)$中使用的是参数迭代估计值，用该迭代估计值代替真值，$Q$函数可以看作是：</p>
+<blockquote>
+<p>完全数据的对数似然函数$logP(Y,Z|\theta)$关于在给定观测数据$Y$和当前参数$\theta^i$下对未观测数据$Z$的的条件概率分布$P(Z|Y,\theta^i)$的期望。</p>
+</blockquote>
+<p>我们这样使用$Q$函数来近似优化最大似然函数，需要证明这样的迭代优化是有效的</p>
+<h3 id="算法导出"><a href="#算法导出" class="headerlink" title="算法导出"></a>算法导出</h3><p>对数似然形式前面已经讨论过，形式为：</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        L(\theta) &= log P(Y|\theta) = log \sum_Z P(Y,Z|\theta) \\
+        &= log(\sum_Z P(Y|\theta,Z) P(Z|\theta))
+    \end{aligned}</script><p>直接极大化对数似然函数困难之处在于两点：</p>
+<ul>
+<li>含有隐变量$Z$</li>
+<li>对数似然函数是和的对数的形式</li>
+</ul>
+<p>假设在第$i$次迭代后参数$\theta$估计值为$\theta^i$,新的估计值是$\theta$，我们期望新的估计值$\theta$能够使得对数似然函数增大，因此，考虑计算两者的差：</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        L(\theta) - L(\theta^i) &= log(\sum_Z P(Y|\theta,Z) P(Z|\theta)) - logP(Y|\theta^i) 
+        \\\\
+        &= log(\sum_Z P(Z|Y,\theta^i) \frac{P(Y|Z,\theta)P(Z|\theta)}{P(Z|Y,\theta^i)}) - logP(Y|\theta^i) 
+        \\\\
+        &\geq \sum_Z P(Z|Y,\theta^i) log \frac{P(Y|Z,\theta)P(Z|\theta)}{P(Z|Y,\theta^i)} - logP(Y|\theta^i)  (Jensen不等式)  
+        \\\\
+        &= \sum_Z P(Z|Y,\theta^i) log \frac{P(Y|Z,\theta)P(Z|\theta)}{P(Z|Y,\theta^i)P(Y|\theta^i)}
+    \end{aligned}</script><p>令 </p>
+<script type="math/tex; mode=display">
+    B(\theta,\theta^i) = L(\theta^i) + \sum_Z P(Z|Y,\theta^i) log \frac{P(Y|Z,\theta)P(Z|\theta)}{P(Z|Y,\theta^i)P(Y|\theta^i)}</script><p>则有：</p>
+<script type="math/tex; mode=display">
+    L(\theta) \geq B(\theta,\theta^i)</script><p>至此，我们找到了对数似然函数的一个下界，同时在点$\theta^i$处，有：</p>
+<script type="math/tex; mode=display">
+    L(\theta^i) = B(\theta^i,\theta^i)</script><p>因此若我们可以找到$\theta^{i+1}$,使得$B(\theta^{i+1},\theta^i)&gt;B(\theta^i,<br>\theta^i)$,则有：</p>
+<script type="math/tex; mode=display">
+    L(\theta^{i+1}) \geq B(\theta^{i+1},\theta^i) > B(\theta^i,\theta^i) = L(\theta^i)</script><p>因此我们可以考虑优化$B(\theta,\theta^i)$，从而变相使原始似然函数增大。接下来考虑$B(\theta,\theta^i)$中需要优化的具体是哪一项:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        \theta^{i+1} &= argmax(L(\theta^i) +  \sum_Z P(Z|Y,\theta^i) log \frac{P(Y|Z,\theta)P(Z|\theta)}{P(Z|Y,\theta^i)P(Y|\theta^i)})  \\\\
+        &= argmax  \sum_Z P(Z|Y,\theta^i) log \frac{P(Y|Z,\theta)P(Z|\theta)}{P(Z|Y,\theta^i)P(Y|\theta^i)} \\\\
+        &= argmax \sum_Z P(Z|Y,\theta^i) log(P(Y|Z,\theta) P(Z|\theta)) \\\\
+        &= argmax \sum_Z P(Z|Y,\theta^i) log P(Y,Z|\theta) \\\\
+        &= argmax Q(\theta,\theta^i)
+    \end{aligned}</script><p><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/EM.png" alt="EM"></p>
+<p>图中下方曲线为$B(\theta,\theta^i)$，上方曲线为$L(\theta)$,在$\theta^n$处，两者相等，当对$B(\theta,\theta^n)$进行优化时，似然函数也得到了优化，同样，这种迭代算法只能够保证每次迭代都会使得似然函数增加，但并不能保证为全局最优。</p>
+<h3 id="算法收敛性分析"><a href="#算法收敛性分析" class="headerlink" title="算法收敛性分析"></a>算法收敛性分析</h3><p>该部分只给出一些结论，证明过程略过</p>
+<blockquote>
+<p><strong>定理1</strong>:设$P(Y|\theta)$为观测数据的似然函数，$\theta^i$为EM算法得到的参数估计序列，$P(Y|\theta^i)$为对应的似然函数序列，则$P(Y|\theta_i)$是单调递增的，即：</p>
+<script type="math/tex; mode=display">
+P(Y|\theta^{i+1}) \geq P(Y|\theta^i)</script><p><strong>定理2</strong>:设$L(\theta) = log P(Y|\theta)$为观测数据的对数似然函数，$\theta^i$为EM算法得到的参数估计序列，$L(\theta^i)$为对应的对数似然函数序列 </p>
+<ol>
+<li>如果$P(Y|\theta)$有上界,则$L(\theta^i) = log P(Y|\theta^i)$ 收敛到某一值$L^*$</li>
+<li>在函数$Q(\theta,\theta^{‘})$与$L(\theta)$满足一定条件下，由EM算法得到的参数估计序列$<br>\theta^i$的收敛点$\theta^*$是$L(\theta)$的稳定点</li>
+</ol>
+</blockquote>
+<h3 id="算法应用-高斯混合模型-GMM"><a href="#算法应用-高斯混合模型-GMM" class="headerlink" title="算法应用-高斯混合模型(GMM)"></a>算法应用-高斯混合模型(GMM)</h3><p>首先给出高斯混合模型定义:</p>
+<blockquote>
+<p>高斯混合模型是指具有如下形式的概率分布模型：</p>
+<script type="math/tex; mode=display">
+    P(y|\theta) = \sum_{k=1}^K \alpha_k \phi(y|\theta_k)</script><p>其中,$\alpha_k$是系数，$\alpha_k \geq 0$,$\sum \alpha_k = 1$;$\phi(y|\theta_k)$是高斯概率密度函数，$\theta_k = (\mu_k,\sigma_k^2)$,称为第$k$个分模型</p>
+</blockquote>
+<p>高斯模型是描述数据分布的一种常见模型，但在有时候单一的高斯模型并不足以对数据进行描述，因此便考虑该数据分布有没有可能用多个高斯模型来描述，即任意一个数据点可能来自于某一个分模型。假设观测数据$y_1,y_2,\dots,y_N$由高斯混合模型生成：</p>
+<script type="math/tex; mode=display">
+      P(y|\theta) = \sum_{k=1}^K \alpha_k \phi(y|\theta_k)</script><p>其中$\theta = (\alpha_1,\dots,\alpha_K;\theta_1,\dots,\theta_K)$,我们现在期望利用观测数据将这些参数估计出来。</p>
+<h4 id="隐变量定义"><a href="#隐变量定义" class="headerlink" title="隐变量定义"></a>隐变量定义</h4><p>首先来看对于这样一个模型，隐变量是什么，数据是这样产生的：首先依概率$\alpha<em>k$选择第$k$个高斯分布分模型，然后依第$k$个分模型的概率分布生成观测数据$y$。观测数据$y$是已知的，但是$y$究竟来自于哪个分模型是未知的，记该变量为隐变量$\gamma</em>{jk}$,其定义如下：</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        \gamma_{jk} &= \begin{cases}
+            1,& 第j个观测来自第k个分模型 \\
+            0,& other
+        \end{cases}   
+        \\\\
+        j &= 1,\dots,N;k = 1,\dots,K
+    \end{aligned}</script><p>目前，我们的观测数据为$y<em>j$,未观测数据是$\gamma</em>{jk}$,完全数据是：</p>
+<script type="math/tex; mode=display">
+    (y_j,\gamma_{j_1},\dots,\gamma_{jk}),j=1,\dots,N</script><p>于是，可以写出完全数据的对数似然函数：</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+         P(y,\gamma|\theta) &= \prod_{j=1}^N P(y_j,\gamma_{j1},\dots,\gamma_{jk}|\theta) \\\\
+         &= \prod_{k=1}^K \prod_{j=1}^N [\alpha_k \phi(y_j|\theta_k)]^{\gamma_{jk} } \\\\
+         &= \prod_{k=1}^K \alpha_k^{n_k} \prod_{j=1}^N [\alpha_k \phi(y_j|\theta_k)]^{\gamma_{jk} } \\\\
+         &= \prod_{k=1}^K \alpha_k^{n_k} \prod_{j=1}^N [\frac{1}{\sqrt{2\pi}\sigma_k} exp(-\frac{(y_j-\mu_k)^2}{2\sigma_k^2})]^{\gamma_{jk}}
+    \end{aligned}</script><p>公式中$n<em>k = \sum</em>{j=1}^N \gamma<em>{jk},\sum</em>{k=1}^K n_k = N$,由此，便可以写出完全数据的对数似然函数：</p>
+<script type="math/tex; mode=display">
+ logP(y,\gamma|\theta) = \sum_{k=1}^K \{ n_klog\alpha_k + \sum_{j=1}^N \gamma_{jk}[log(\frac{1}{\sqrt{2\pi}})-log\sigma_k - \frac{1}{2\sigma_k^2} (y_j-\mu_k)^2]\}</script><p><strong>E步</strong>：其实就是要在已知上次迭代参数估计值$\theta$和观测值$y$的情况下将$\gamma<em>{jk}$估计出来，然后代回完全数据的对数似然函数，下面就求解下$E(\gamma</em>{jk}|y,\theta)$:</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    \hat{\gamma}_{jk} &= E(\gamma_{jk}|y,\theta) = P(\gamma_{jk}|y,\theta)\\\\
+    &= \frac{P(\gamma_{jk = 1,y|\theta})}{\sum_{k=1}^K P(\gamma_{jk}=1,y_j|\theta)} \\\\
+    &= \frac{P(y_j|\gamma_{jk}=1,\theta)P(\gamma_{jk}=1|\theta)}{\sum_{k=1}^K P(y_j|\gamma_{jk}=1,\theta)P(\gamma_{jk}=1|\theta)} \\\\
+    &= \frac{\alpha_k \phi(y_j|\theta_k)}{\sum_{k=1}^K \alpha_k \phi(y_j|\theta_k)}
+\end{aligned}</script><p>将该估计值代回完全数据的对数似然函数，便得到了$Q$函数：</p>
+<script type="math/tex; mode=display">
+    Q(\theta,\theta^i) =  logP(y,\gamma|\theta) = \sum_{k=1}^K \{ n_klog\alpha_k + \sum_{j=1}^N \hat{\gamma}_{jk}[log(\frac{1}{\sqrt{2\pi}})-log\sigma_k - \frac{1}{2\sigma_k^2} (y_j-\mu_k)^2]\}</script><p><strong>M步</strong>：迭代的M步是求函数$Q(\theta,\theta^i)$对$\theta$的极大值，即求新一轮迭代的模型参数:</p>
+<script type="math/tex; mode=display">
+    \theta^{i+1} = \arg max_{\theta} Q(\theta,\theta^i)</script><p>该步只需分别对$\alpha<em>K,\mu_k,\sigma_k$求偏导，令偏导等于0,注意在求解$\alpha_k$时需要利用$\alpha_k$天然的约束条件$\sum</em>{k=1}^K \alpha_k = 1$,最终求解结果为:</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    \hat{\mu}_k &= \frac{\sum_{j=1}^N \hat{\gamma}_{jk}y_j}{\sum_{j=1}^N \hat{\gamma}_{jk}} \\\\
+    \hat{\sigma}_k^2 &= \frac{\sum_{j=1}^N \hat{\gamma}_{jk}(y_j - \mu_k)^2}{\sum_{j=1}^N \hat{\gamma}_{jk}} \\\\
+    \hat{\alpha}_k &= \frac{n_k}{N} = \frac{\sum_{j=1}^N \hat{\gamma}_{jk}}{N}
+\end{aligned}</script><h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>该部分就高斯混合模型的EM算法进行总结</p>
+<ul>
+<li>取参数的初始值开始迭代</li>
+<li>E步：根据当前模型参数，计算分模型$k$对观测数据$y_j$的响应度</li>
+<li>M步：计算新一轮迭代的模型参数 </li>
+<li>重复直到算法收敛</li>
+</ul>
+]]></content>
+      <categories>
+        <category>统计学习</category>
+      </categories>
+      <tags>
+        <tag>EM算法,隐变量,高斯混合模型</tag>
       </tags>
   </entry>
   <entry>
@@ -1131,6 +1152,140 @@ i_t^* = \varPhi_{t+1}(i_{t+1}^*)</script>求得最优路径$I^{\ast} = (i_1^\ast
       </tags>
   </entry>
   <entry>
+    <title>conda介绍及常用命令</title>
+    <url>/2022/10/17/conda-jie-shao-ji-chang-yong-ming-ling/</url>
+    <content><![CDATA[<p>随着机器学习、深度学习的爆火，大量的python第三方库也如雨后春笋一般冒了出来，这给开发者带来了极大便利的同时，也使得管理这些库成为了一件复杂度极高的事情，相信很多人都有过为了处理库冲突而抓狂的时刻，为了简化python包管理的工作，Anaconda应运而生。<span id="more"></span></p>
+<h5 id="Anaconda"><a href="#Anaconda" class="headerlink" title="Anaconda"></a>Anaconda</h5><p>Anaconda可以看作是包含python、conda、numpy、notebook等常用包的一个集合，具有如下特点： </p>
+<ul>
+<li>安装过程简单 </li>
+<li>高性能使用python和R语言 </li>
+<li>免费的社区支持</li>
+</ul>
+<p>对于大多数用户来说，下载Anaconda的目的主要有两个: </p>
+<ul>
+<li>高效简单的配置python开发环境(python+一些基础常用包) </li>
+<li><strong>后续通过<code>conda</code>这个神器来进行包管理和虚拟环境管理</strong></li>
+</ul>
+<h5 id="Conda"><a href="#Conda" class="headerlink" title="Conda"></a>Conda</h5><p><code>conda</code>是包及其依赖项和环境的管理工具: </p>
+<ul>
+<li>适用语言: Python, R, Ruby, Lua, Scala, Java, JavaScript, C/C++, FORTRAN </li>
+<li>适用平台: Windows, Macos, Linux </li>
+<li>优点 <ul>
+<li>快速安装、运行和升级包及其依赖项</li>
+<li>在计算机中便捷地创建、保存、加载和切换环境 <blockquote>
+<p>如果你需要的包要求不同版本的Python，你无需切换到不同的环境，因为conda同样是一个环境管理器。仅需要几条命令，你可以创建一个完全独立的环境来运行不同的Python版本，同时继续在你常规的环境中使用你常用的Python版本。——Conda官方网站</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>conda常用命令</strong>: </p>
+<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">conda activate xxxx #开启xxxx环境
+conda deactivate #关闭环境
+​
+conda env list #显示所有的虚拟环境
+conda info --envs #显示所有的虚拟环境
+conda info -e #显示所有已经创建的环境
+​
+conda update -n base conda #update最新版本的conda
+​
+conda create -n xxxx python=3.6 #创建python3.6的xxxx虚拟环境
+​
+conda remove --name xxxx  --all #彻底删除旧环境
+​
+conda remove -n tensorflow --all  #彻底删除旧环境
+​
+#Conda是没有重命名环境的功能, 要实现这个基本需求, 可以通过克隆-删除的过程。
+#切记不要直接mv移动环境的文件夹来重命名, 会导致一系列无法想象的错误的发生!
+conda create --name newname --clone oldname //克隆环境
+conda remove --name oldname --all //彻底删除旧环境
+​
+conda list          #查看已经安装的文件包
+conda list -n xxx   #指定查看xxx虚拟环境下安装的package
+conda update xxx    #更新xxx文件包
+conda uninstall xxx #卸载xxx文件包
+​
+#pip 安装本地包
+pip install   ～/Downloads/a.whl
+#conda 安装本地包
+conda install --use-local  ~/Downloads/a.tar.bz2
+​
+​
+#显示目前conda的数据源有哪些
+conda config --show channels
+​
+#添加数据源：例如, 添加清华anaconda镜像：
+conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
+conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/
+conda config --set show_channel_urls yes
+​
+#删除数据源
+conda config --remove channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
+​
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="conda配置国内镜像源"><a href="#conda配置国内镜像源" class="headerlink" title="conda配置国内镜像源"></a><code>conda</code>配置国内镜像源</h5><ul>
+<li><p>方法1: 用<code>vim</code>打开文件，添加以下镜像源</p>
+<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">  vim ~/.condarc
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>  修改文件内容: </p>
+<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">      #清华源
+  channels:
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge/
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/pytorch/
+  ssl_verify: true
+  #中科大源
+  channels:
+  - https://mirrors.ustc.edu.cn/anaconda/pkgs/main/
+  - https://mirrors.ustc.edu.cn/anaconda/pkgs/free/
+  - https://mirrors.ustc.edu.cn/anaconda/cloud/conda-forge/
+  ssl_verify: true
+  #上交大源
+  channels:
+  - https://mirrors.sjtug.sjtu.edu.cn/anaconda/pkgs/main/
+  - https://mirrors.sjtug.sjtu.edu.cn/anaconda/pkgs/free/
+  - https://mirrors.sjtug.sjtu.edu.cn/anaconda/cloud/conda-forge/
+  ssl_verify: true
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li>方法2: 直接通过终端命令修改 <pre class="line-numbers language-lang-shell"><code class="language-lang-shell">  ​# 中科大镜像源
+  conda config --add channels https://mirrors.ustc.edu.cn/anaconda/pkgs/main/
+  conda config --add channels https://mirrors.ustc.edu.cn/anaconda/pkgs/free/
+  conda config --add channels https://mirrors.ustc.edu.cn/anaconda/cloud/conda-forge/
+  conda config --add channels https://mirrors.ustc.edu.cn/anaconda/cloud/msys2/
+  conda config --add channels https://mirrors.ustc.edu.cn/anaconda/cloud/bioconda/
+  conda config --add channels https://mirrors.ustc.edu.cn/anaconda/cloud/menpo/
+  conda config --add channels https://mirrors.ustc.edu.cn/anaconda/cloud/
+  ​
+  # 阿里镜像源
+  conda config --add channels https://mirrors.aliyun.com/pypi/simple/
+  ​
+  # 豆瓣的python的源
+  ​
+  conda config --add channels http://pypi.douban.com/simple/ 
+  ​
+  # 显示检索路径，每次安装包时会将包源路径显示出来
+  ​
+  conda config --set show_channel_urls yes
+  ​
+  conda config --set always_yes True
+  ​
+  # 显示所有镜像通道路径命令
+  ​
+  conda config --show channels
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>环境配置</category>
+      </categories>
+      <tags>
+        <tag>命令行</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>logistic回归与最大熵模型</title>
     <url>/2020/08/23/logistic-hui-gui-yu-zui-da-shang-mo-xing/</url>
     <content><![CDATA[<p>在学习李航老师《统计学习》条件随机场章节时，对于学习算法感到有些陌生，后来发现在书中第六章“logistic回归与最大熵模型”有过一些介绍，因此本章节便总结一下相关知识，其中logistic回归模型做简要介绍，重点放在最大熵模型的学习算法上，本文按照如下结构组织：</p>
@@ -1325,369 +1480,6 @@ i_t^* = \varPhi_{t+1}(i_{t+1}^*)</script>求得最优路径$I^{\ast} = (i_1^\ast
       </categories>
       <tags>
         <tag>logistic回归, 最大熵模型, 优化学习</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>conda介绍及常用命令</title>
-    <url>/2022/10/17/conda-jie-shao-ji-chang-yong-ming-ling/</url>
-    <content><![CDATA[<p>随着机器学习、深度学习的爆火，大量的python第三方库也如雨后春笋一般冒了出来，这给开发者带来了极大便利的同时，也使得管理这些库成为了一件复杂度极高的事情，相信很多人都有过为了处理库冲突而抓狂的时刻，为了简化python包管理的工作，Anaconda应运而生。<span id="more"></span></p>
-<h5 id="Anaconda"><a href="#Anaconda" class="headerlink" title="Anaconda"></a>Anaconda</h5><p>Anaconda可以看作是包含python、conda、numpy、notebook等常用包的一个集合，具有如下特点： </p>
-<ul>
-<li>安装过程简单 </li>
-<li>高性能使用python和R语言 </li>
-<li>免费的社区支持</li>
-</ul>
-<p>对于大多数用户来说，下载Anaconda的目的主要有两个: </p>
-<ul>
-<li>高效简单的配置python开发环境(python+一些基础常用包) </li>
-<li><strong>后续通过<code>conda</code>这个神器来进行包管理和虚拟环境管理</strong></li>
-</ul>
-<h5 id="Conda"><a href="#Conda" class="headerlink" title="Conda"></a>Conda</h5><p><code>conda</code>是包及其依赖项和环境的管理工具: </p>
-<ul>
-<li>适用语言: Python, R, Ruby, Lua, Scala, Java, JavaScript, C/C++, FORTRAN </li>
-<li>适用平台: Windows, Macos, Linux </li>
-<li>优点 <ul>
-<li>快速安装、运行和升级包及其依赖项</li>
-<li>在计算机中便捷地创建、保存、加载和切换环境 <blockquote>
-<p>如果你需要的包要求不同版本的Python，你无需切换到不同的环境，因为conda同样是一个环境管理器。仅需要几条命令，你可以创建一个完全独立的环境来运行不同的Python版本，同时继续在你常规的环境中使用你常用的Python版本。——Conda官方网站</p>
-</blockquote>
-</li>
-</ul>
-</li>
-</ul>
-<p><strong>conda常用命令</strong>: </p>
-<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">conda activate xxxx #开启xxxx环境
-conda deactivate #关闭环境
-​
-conda env list #显示所有的虚拟环境
-conda info --envs #显示所有的虚拟环境
-conda info -e #显示所有已经创建的环境
-​
-conda update -n base conda #update最新版本的conda
-​
-conda create -n xxxx python=3.6 #创建python3.6的xxxx虚拟环境
-​
-conda remove --name xxxx  --all #彻底删除旧环境
-​
-conda remove -n tensorflow --all  #彻底删除旧环境
-​
-#Conda是没有重命名环境的功能, 要实现这个基本需求, 可以通过克隆-删除的过程。
-#切记不要直接mv移动环境的文件夹来重命名, 会导致一系列无法想象的错误的发生!
-conda create --name newname --clone oldname //克隆环境
-conda remove --name oldname --all //彻底删除旧环境
-​
-conda list          #查看已经安装的文件包
-conda list -n xxx   #指定查看xxx虚拟环境下安装的package
-conda update xxx    #更新xxx文件包
-conda uninstall xxx #卸载xxx文件包
-​
-#pip 安装本地包
-pip install   ～/Downloads/a.whl
-#conda 安装本地包
-conda install --use-local  ~/Downloads/a.tar.bz2
-​
-​
-#显示目前conda的数据源有哪些
-conda config --show channels
-​
-#添加数据源：例如, 添加清华anaconda镜像：
-conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
-conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/
-conda config --set show_channel_urls yes
-​
-#删除数据源
-conda config --remove channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
-​
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h5 id="conda配置国内镜像源"><a href="#conda配置国内镜像源" class="headerlink" title="conda配置国内镜像源"></a><code>conda</code>配置国内镜像源</h5><ul>
-<li><p>方法1: 用<code>vim</code>打开文件，添加以下镜像源</p>
-<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">  vim ~/.condarc
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>  修改文件内容: </p>
-<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">      #清华源
-  channels:
-  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/
-  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
-  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge/
-  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/pytorch/
-  ssl_verify: true
-  #中科大源
-  channels:
-  - https://mirrors.ustc.edu.cn/anaconda/pkgs/main/
-  - https://mirrors.ustc.edu.cn/anaconda/pkgs/free/
-  - https://mirrors.ustc.edu.cn/anaconda/cloud/conda-forge/
-  ssl_verify: true
-  #上交大源
-  channels:
-  - https://mirrors.sjtug.sjtu.edu.cn/anaconda/pkgs/main/
-  - https://mirrors.sjtug.sjtu.edu.cn/anaconda/pkgs/free/
-  - https://mirrors.sjtug.sjtu.edu.cn/anaconda/cloud/conda-forge/
-  ssl_verify: true
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li>方法2: 直接通过终端命令修改 <pre class="line-numbers language-lang-shell"><code class="language-lang-shell">  ​# 中科大镜像源
-  conda config --add channels https://mirrors.ustc.edu.cn/anaconda/pkgs/main/
-  conda config --add channels https://mirrors.ustc.edu.cn/anaconda/pkgs/free/
-  conda config --add channels https://mirrors.ustc.edu.cn/anaconda/cloud/conda-forge/
-  conda config --add channels https://mirrors.ustc.edu.cn/anaconda/cloud/msys2/
-  conda config --add channels https://mirrors.ustc.edu.cn/anaconda/cloud/bioconda/
-  conda config --add channels https://mirrors.ustc.edu.cn/anaconda/cloud/menpo/
-  conda config --add channels https://mirrors.ustc.edu.cn/anaconda/cloud/
-  ​
-  # 阿里镜像源
-  conda config --add channels https://mirrors.aliyun.com/pypi/simple/
-  ​
-  # 豆瓣的python的源
-  ​
-  conda config --add channels http://pypi.douban.com/simple/ 
-  ​
-  # 显示检索路径，每次安装包时会将包源路径显示出来
-  ​
-  conda config --set show_channel_urls yes
-  ​
-  conda config --set always_yes True
-  ​
-  # 显示所有镜像通道路径命令
-  ​
-  conda config --show channels
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>环境配置</category>
-      </categories>
-      <tags>
-        <tag>命令行</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>python数据处理之时间变换</title>
-    <url>/2020/09/19/python-shu-ju-chu-li-zhi-shi-jian-bian-huan/</url>
-    <content><![CDATA[<p>本文将就<code>python</code>中对时间标识的处理做一点讲解，在进行数据分析时，有些时候我们需要对时间序列数据进行处理，比如像下面这样一组数据<span id="more"></span>:</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">Time</th>
-<th style="text-align:center">feature1</th>
-<th style="text-align:center">…</th>
-<th style="text-align:center">feature n</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">2013年-01月-01日: 00时00分00秒</td>
-<td style="text-align:center">…</td>
-<td style="text-align:center">…</td>
-<td style="text-align:center">…</td>
-</tr>
-<tr>
-<td style="text-align:center">2013年-01月-01日: 02时00分00秒</td>
-<td style="text-align:center">…</td>
-<td style="text-align:center">…</td>
-<td style="text-align:center">…</td>
-</tr>
-<tr>
-<td style="text-align:center">…</td>
-<td style="text-align:center">…</td>
-<td style="text-align:center">…</td>
-<td style="text-align:center">…</td>
-</tr>
-<tr>
-<td style="text-align:center">2015年-01月-01日: 00时00分00秒</td>
-<td style="text-align:center">…</td>
-<td style="text-align:center">…</td>
-<td style="text-align:center">…</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>对于这样一段时序数据，采样间隔2小时。当我们拿到这组数据之后，首先要考虑的问题就是这组数据有没有缺失，而判断数据记录有无缺失的关键在于其时间序列<code>Time</code>是否连续。我们一般采用<code>pandas.read_csv()</code>函数来进行<code>csv</code>文件中数据的读取，读取得到的第一列是一个字符串形式，通过这些字符串来判断时间是否连续是比较困难的，需要重新写一个函数来对字符串进行处理。但幸运的是，其实已经有函数可以帮我们完成这样一项工作了，下面介绍下本文的关键对象—-<code>unix时间戳</code>：</p>
-<blockquote>
-<p><strong>unix时间戳:</strong> unix时间戳是一种跟踪时间（以秒为单位）的方式。此计数从1970年1月1日UTC的Unix Epoch开始。因此，unix时间戳仅仅是特定日期与Unix纪元之间的秒数。</p>
-</blockquote>
-<p>简而言之，unix时间戳就是一个<code>int</code>型的数据，其值代表了某个时间点距离<code>1997-01-01: 00:00:00</code>的秒数，那么如果我们能够将我们的时间字符串转换成unix时间戳，那么后面的数据拆分、数据缺失定位就更加得心应手了。本文按照以下结构进行组织:</p>
-<ul>
-<li>常见日期时间类型 </li>
-<li>日期格式转换 </li>
-<li>总结</li>
-</ul>
-<h3 id="常见日期时间类型"><a href="#常见日期时间类型" class="headerlink" title="常见日期时间类型"></a>常见日期时间类型</h3><p>在进行时间序列数据处理时，常见的日期时间类型大概有以下四种:</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:left">类型</th>
-<th style="text-align:left">格式</th>
-<th style="text-align:center">示例</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">time</td>
-<td style="text-align:left">时间格式</td>
-<td style="text-align:center">17:00:00</td>
-</tr>
-<tr>
-<td style="text-align:left">date</td>
-<td style="text-align:left">日期格式</td>
-<td style="text-align:center">2019-09-19</td>
-</tr>
-<tr>
-<td style="text-align:left">datetime</td>
-<td style="text-align:left">日期时间格式</td>
-<td style="text-align:center">2019-09-19: 17:00:00</td>
-</tr>
-<tr>
-<td style="text-align:left">timestamp</td>
-<td style="text-align:left">时间戳格式</td>
-<td style="text-align:center">1568912400</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>实际上以上四种类型可以粗分为两个类型: 字符串类型和时间戳格式，时间字符串直接转时间戳格式并不自然，因此在python中实现两者转化还需借助一个中间变量类型<code>struct_time</code>，时间格式变换流程如下:</p>
-<script type="math/tex; mode=display">
-    str \Leftrightarrow struct \, time \Leftrightarrow stamp</script><p>字符串格式和时间戳格式通过我上面的讲解大家应该可以有一个基本认识，下面重点介绍下<code>struct_time</code>类型，它是一个具有命名元祖接口的对象:可以通过索引和属性名访问值，存在以下值:</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">index</th>
-<th style="text-align:center">attribute</th>
-<th style="text-align:center">values</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">0</td>
-<td style="text-align:center">tm-year</td>
-<td style="text-align:center">年份</td>
-</tr>
-<tr>
-<td style="text-align:center">1</td>
-<td style="text-align:center">tm-mon</td>
-<td style="text-align:center">月份range(1,12)</td>
-</tr>
-<tr>
-<td style="text-align:center">2</td>
-<td style="text-align:center">tm-mday</td>
-<td style="text-align:center">天数range(1,31)</td>
-</tr>
-<tr>
-<td style="text-align:center">3</td>
-<td style="text-align:center">tm-hour</td>
-<td style="text-align:center">小时range(0,23)</td>
-</tr>
-<tr>
-<td style="text-align:center">4</td>
-<td style="text-align:center">tm-min</td>
-<td style="text-align:center">分钟range(0,59)</td>
-</tr>
-<tr>
-<td style="text-align:center">5</td>
-<td style="text-align:center">tm-sec</td>
-<td style="text-align:center">秒数range(0,59)</td>
-</tr>
-<tr>
-<td style="text-align:center">6</td>
-<td style="text-align:center">tm-wday</td>
-<td style="text-align:center">星期range(0,6)</td>
-</tr>
-<tr>
-<td style="text-align:center">7</td>
-<td style="text-align:center">tm-yday</td>
-<td style="text-align:center">年中的一天range(1,366)</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>而要实现这样的变换，则就要提到<code>python</code>中两个专门与时间打交道的模块<code>time</code>和<code>datetime</code>。</p>
-<h3 id="日期和格式转换"><a href="#日期和格式转换" class="headerlink" title="日期和格式转换"></a>日期和格式转换</h3><p>这部份将介绍以下<code>time</code>以及<code>datetime</code>中常用的一些方法。</p>
-<h4 id="time模块"><a href="#time模块" class="headerlink" title="time模块"></a><code>time</code>模块</h4><p><a href="https://docs.python.org/3/library/time.html"><code>time</code></a>模块是操作系统层面上的， 与<code>os</code>模块类似，主要提供一些系统层面的与时间有关的操作，该模块是其他所有与时间相关模块的基础，我们用到该模块比较多的方法主要有以下几个:</p>
-<ul>
-<li><p><code>time.time()</code>: 返回当前时间的时间戳 </p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">>>>: 
-print(time.time())
->>>: 
-1600502127.7830698
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><p><code>time.loacltime()</code>: 将一个<code>unix stamp</code>转换为本地时间(东八区)的<code>struct_time</code>类型 </p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">>>>: 
-print(time.localtime(time.time())) 
->>>: 
-time.struct_time(tm_year=2020, tm_mon=9, tm_mday=19, tm_hour=16, tm_min=2, tm_sec=55, tm_wday=5, tm_yday=263, tm_isdst=0)
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><code>time.gmtime()</code>: 将一个<code>unix stamp</code>转换为格林威治时间的<code>struct_time</code>类型 <pre class="line-numbers language-lang-python"><code class="language-lang-python">>>>: 
-print(time.gmtime(time.time()))
->>>: 
-time.struct_time(tm_year=2020, tm_mon=9, tm_mday=19, tm_hour=8, tm_min=5, tm_sec=31, tm_wday=5, tm_yday=263, tm_isdst=0)
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><code>time.strftime(format, struct_time)</code>: 将一个<code>struct_time</code>类型输出转换为指定格式的字符串  <pre class="line-numbers language-lang-python"><code class="language-lang-python">>>>: 
-format = '%Y-%m-%d: %H:%M:%S' 
-struct_time = time.localtime(time.time()) 
-print(time.strftime(format, struct_time)) 
->>>: 
-2020-09-19: 16:10:42
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><p><code>time.strptime(str, format)</code>: 与<code>strftime</code>作用相反，将一个时间字符串按照<code>format</code>格式解析成<code>struct_time</code>类型 </p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">>>>: 
-format = '%Y-%m-%d: %H:%M:%S'  
-time_str = '2020-9-19: 16:17:00' 
-print(time.strptime(time_str, format))  
->>>: 
-time.struct_time(tm_year=2020, tm_mon=9, tm_mday=19, tm_hour=16, tm_min=17, tm_sec=0, tm_wday=5, tm_yday=263, tm_isdst=-1)
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><p><code>time.mktime(struct_time)</code>: 将一个<code>struct_time</code>类型数据转化成<code>unxi_stample</code>, 该操作是<code>time.localtime()</code>的反操作，因此其默认输入的<code>struct_time</code>是本地时间</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">>>>: 
-format = '%Y-%m-%d: %H:%M:%S'  
-time_str = '2020-9-19: 16:17:00' 
-time_struct = time.strptime(time_str, format) 
-print(time_struct)
-print(time.mktime(time_struct)) 
-print(time.localtime(time.mktime(time_struct)))
->>>:
-time.struct_time(tm_year=2020, tm_mon=9, tm_mday=19, tm_hour=16, tm_min=17, tm_sec=0, tm_wday=5, tm_yday=263, tm_isdst=-1)
-1600503420.0
-time.struct_time(tm_year=2020, tm_mon=9, tm_mday=19, tm_hour=16, tm_min=17, tm_sec=0, tm_wday=5, tm_yday=263, tm_isdst=0)
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
-<p>上面这些方法实际上就已经完全可以实现我们的功能，大致是下面这样一张图:</p>
-<p><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/time.png" alt="转换方法"></p>
-<h4 id="datetime模块"><a href="#datetime模块" class="headerlink" title="datetime模块"></a><code>datetime</code>模块</h4><p><code>datetime</code>模块可以看作是对<code>time</code>模块的一个封装和扩展，上面提到的<code>time</code>中常用方法在<code>datetime</code>中均有对应, 在<code>datetime</code>下主要有以下几个类：</p>
-<ul>
-<li><code>date</code>: 处理与日期相关的数据，属性: year, month, day </li>
-<li><code>time</code>: 处理与某天时间相对应的数据， 属性: hour, minute, second, microsecond, tzinfo </li>
-<li><code>datetime</code>: 日期和时间的组合，属性: year, month, day, hour, minute, second, microsecond, tzinfo </li>
-<li><code>timedelta</code>: 与持续时间计算有关  </li>
-<li><code>tzinfo</code>: 时区信息类  </li>
-</ul>
-<p><code>datetime</code>类基本已经可以实现上面<code>time</code>模块所能实现的功能，具体对应大家可以去官网<a href="https://docs.python.org/2/library/datetime.html">datetime</a>查看，我后面如果需要用到也会进行总结。 </p>
-<h4 id="pandas-to-datetime"><a href="#pandas-to-datetime" class="headerlink" title="pandas.to_datetime()"></a><code>pandas.to_datetime()</code></h4><p>我们读取数据往往需要使用<code>pandas</code>库，得到<code>Dateframe</code>类型的数据，读取之后往往某一列就是时间序列，若用前面的方法来做转换，需要对每一个时间字符串操作，比较麻烦。为了解决该问题，就需要使用<code>pandas.to_datetime()</code>方法，使用该方法可以将变量变为<code>datetime</code>类型，方便后面进行操作。</p>
-<ul>
-<li>字符串时间转时间戳<pre class="line-numbers language-lang-python"><code class="language-lang-python">data.time = pandas.to_datetime(data.time) 
-data.time = data.time.apply(lambda x: time.mktime(x.tuple))
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-</li>
-<li>时间戳转字符串 <pre class="line-numbers language-lang-python"><code class="language-lang-python">data.time = pandas.to_datetime(data.time) 
-data.time = data.time.apply(lambda x: time.strftime(format, x.tuple))
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-</li>
-</ul>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>在进行数据处理的时候我们往往不能够默认数据是“好数据”，因此就必须通过程序来对数据进行验证，而对于时序数据，时间信息的处理是绕不过去的，掌握了<code>python</code>中常用的对时间处理方法，后面处理时序数据可以更加得心应手。</p>
-]]></content>
-      <categories>
-        <category>python学习</category>
-      </categories>
-      <tags>
-        <tag>编程技能， 时序数据</tag>
       </tags>
   </entry>
   <entry>
@@ -2027,6 +1819,255 @@ data.time = data.time.apply(lambda x: time.strftime(format, x.tuple))
       </tags>
   </entry>
   <entry>
+    <title>python数据处理之时间变换</title>
+    <url>/2020/09/19/python-shu-ju-chu-li-zhi-shi-jian-bian-huan/</url>
+    <content><![CDATA[<p>本文将就<code>python</code>中对时间标识的处理做一点讲解，在进行数据分析时，有些时候我们需要对时间序列数据进行处理，比如像下面这样一组数据<span id="more"></span>:</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Time</th>
+<th style="text-align:center">feature1</th>
+<th style="text-align:center">…</th>
+<th style="text-align:center">feature n</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">2013年-01月-01日: 00时00分00秒</td>
+<td style="text-align:center">…</td>
+<td style="text-align:center">…</td>
+<td style="text-align:center">…</td>
+</tr>
+<tr>
+<td style="text-align:center">2013年-01月-01日: 02时00分00秒</td>
+<td style="text-align:center">…</td>
+<td style="text-align:center">…</td>
+<td style="text-align:center">…</td>
+</tr>
+<tr>
+<td style="text-align:center">…</td>
+<td style="text-align:center">…</td>
+<td style="text-align:center">…</td>
+<td style="text-align:center">…</td>
+</tr>
+<tr>
+<td style="text-align:center">2015年-01月-01日: 00时00分00秒</td>
+<td style="text-align:center">…</td>
+<td style="text-align:center">…</td>
+<td style="text-align:center">…</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>对于这样一段时序数据，采样间隔2小时。当我们拿到这组数据之后，首先要考虑的问题就是这组数据有没有缺失，而判断数据记录有无缺失的关键在于其时间序列<code>Time</code>是否连续。我们一般采用<code>pandas.read_csv()</code>函数来进行<code>csv</code>文件中数据的读取，读取得到的第一列是一个字符串形式，通过这些字符串来判断时间是否连续是比较困难的，需要重新写一个函数来对字符串进行处理。但幸运的是，其实已经有函数可以帮我们完成这样一项工作了，下面介绍下本文的关键对象—-<code>unix时间戳</code>：</p>
+<blockquote>
+<p><strong>unix时间戳:</strong> unix时间戳是一种跟踪时间（以秒为单位）的方式。此计数从1970年1月1日UTC的Unix Epoch开始。因此，unix时间戳仅仅是特定日期与Unix纪元之间的秒数。</p>
+</blockquote>
+<p>简而言之，unix时间戳就是一个<code>int</code>型的数据，其值代表了某个时间点距离<code>1997-01-01: 00:00:00</code>的秒数，那么如果我们能够将我们的时间字符串转换成unix时间戳，那么后面的数据拆分、数据缺失定位就更加得心应手了。本文按照以下结构进行组织:</p>
+<ul>
+<li>常见日期时间类型 </li>
+<li>日期格式转换 </li>
+<li>总结</li>
+</ul>
+<h3 id="常见日期时间类型"><a href="#常见日期时间类型" class="headerlink" title="常见日期时间类型"></a>常见日期时间类型</h3><p>在进行时间序列数据处理时，常见的日期时间类型大概有以下四种:</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">类型</th>
+<th style="text-align:left">格式</th>
+<th style="text-align:center">示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">time</td>
+<td style="text-align:left">时间格式</td>
+<td style="text-align:center">17:00:00</td>
+</tr>
+<tr>
+<td style="text-align:left">date</td>
+<td style="text-align:left">日期格式</td>
+<td style="text-align:center">2019-09-19</td>
+</tr>
+<tr>
+<td style="text-align:left">datetime</td>
+<td style="text-align:left">日期时间格式</td>
+<td style="text-align:center">2019-09-19: 17:00:00</td>
+</tr>
+<tr>
+<td style="text-align:left">timestamp</td>
+<td style="text-align:left">时间戳格式</td>
+<td style="text-align:center">1568912400</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>实际上以上四种类型可以粗分为两个类型: 字符串类型和时间戳格式，时间字符串直接转时间戳格式并不自然，因此在python中实现两者转化还需借助一个中间变量类型<code>struct_time</code>，时间格式变换流程如下:</p>
+<script type="math/tex; mode=display">
+    str \Leftrightarrow struct \, time \Leftrightarrow stamp</script><p>字符串格式和时间戳格式通过我上面的讲解大家应该可以有一个基本认识，下面重点介绍下<code>struct_time</code>类型，它是一个具有命名元祖接口的对象:可以通过索引和属性名访问值，存在以下值:</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">index</th>
+<th style="text-align:center">attribute</th>
+<th style="text-align:center">values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">tm-year</td>
+<td style="text-align:center">年份</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">tm-mon</td>
+<td style="text-align:center">月份range(1,12)</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td style="text-align:center">tm-mday</td>
+<td style="text-align:center">天数range(1,31)</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td style="text-align:center">tm-hour</td>
+<td style="text-align:center">小时range(0,23)</td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td style="text-align:center">tm-min</td>
+<td style="text-align:center">分钟range(0,59)</td>
+</tr>
+<tr>
+<td style="text-align:center">5</td>
+<td style="text-align:center">tm-sec</td>
+<td style="text-align:center">秒数range(0,59)</td>
+</tr>
+<tr>
+<td style="text-align:center">6</td>
+<td style="text-align:center">tm-wday</td>
+<td style="text-align:center">星期range(0,6)</td>
+</tr>
+<tr>
+<td style="text-align:center">7</td>
+<td style="text-align:center">tm-yday</td>
+<td style="text-align:center">年中的一天range(1,366)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>而要实现这样的变换，则就要提到<code>python</code>中两个专门与时间打交道的模块<code>time</code>和<code>datetime</code>。</p>
+<h3 id="日期和格式转换"><a href="#日期和格式转换" class="headerlink" title="日期和格式转换"></a>日期和格式转换</h3><p>这部份将介绍以下<code>time</code>以及<code>datetime</code>中常用的一些方法。</p>
+<h4 id="time模块"><a href="#time模块" class="headerlink" title="time模块"></a><code>time</code>模块</h4><p><a href="https://docs.python.org/3/library/time.html"><code>time</code></a>模块是操作系统层面上的， 与<code>os</code>模块类似，主要提供一些系统层面的与时间有关的操作，该模块是其他所有与时间相关模块的基础，我们用到该模块比较多的方法主要有以下几个:</p>
+<ul>
+<li><p><code>time.time()</code>: 返回当前时间的时间戳 </p>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">>>>: 
+print(time.time())
+>>>: 
+1600502127.7830698
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p><code>time.loacltime()</code>: 将一个<code>unix stamp</code>转换为本地时间(东八区)的<code>struct_time</code>类型 </p>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">>>>: 
+print(time.localtime(time.time())) 
+>>>: 
+time.struct_time(tm_year=2020, tm_mon=9, tm_mday=19, tm_hour=16, tm_min=2, tm_sec=55, tm_wday=5, tm_yday=263, tm_isdst=0)
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><code>time.gmtime()</code>: 将一个<code>unix stamp</code>转换为格林威治时间的<code>struct_time</code>类型 <pre class="line-numbers language-lang-python"><code class="language-lang-python">>>>: 
+print(time.gmtime(time.time()))
+>>>: 
+time.struct_time(tm_year=2020, tm_mon=9, tm_mday=19, tm_hour=8, tm_min=5, tm_sec=31, tm_wday=5, tm_yday=263, tm_isdst=0)
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><code>time.strftime(format, struct_time)</code>: 将一个<code>struct_time</code>类型输出转换为指定格式的字符串  <pre class="line-numbers language-lang-python"><code class="language-lang-python">>>>: 
+format = '%Y-%m-%d: %H:%M:%S' 
+struct_time = time.localtime(time.time()) 
+print(time.strftime(format, struct_time)) 
+>>>: 
+2020-09-19: 16:10:42
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p><code>time.strptime(str, format)</code>: 与<code>strftime</code>作用相反，将一个时间字符串按照<code>format</code>格式解析成<code>struct_time</code>类型 </p>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">>>>: 
+format = '%Y-%m-%d: %H:%M:%S'  
+time_str = '2020-9-19: 16:17:00' 
+print(time.strptime(time_str, format))  
+>>>: 
+time.struct_time(tm_year=2020, tm_mon=9, tm_mday=19, tm_hour=16, tm_min=17, tm_sec=0, tm_wday=5, tm_yday=263, tm_isdst=-1)
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p><code>time.mktime(struct_time)</code>: 将一个<code>struct_time</code>类型数据转化成<code>unxi_stample</code>, 该操作是<code>time.localtime()</code>的反操作，因此其默认输入的<code>struct_time</code>是本地时间</p>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">>>>: 
+format = '%Y-%m-%d: %H:%M:%S'  
+time_str = '2020-9-19: 16:17:00' 
+time_struct = time.strptime(time_str, format) 
+print(time_struct)
+print(time.mktime(time_struct)) 
+print(time.localtime(time.mktime(time_struct)))
+>>>:
+time.struct_time(tm_year=2020, tm_mon=9, tm_mday=19, tm_hour=16, tm_min=17, tm_sec=0, tm_wday=5, tm_yday=263, tm_isdst=-1)
+1600503420.0
+time.struct_time(tm_year=2020, tm_mon=9, tm_mday=19, tm_hour=16, tm_min=17, tm_sec=0, tm_wday=5, tm_yday=263, tm_isdst=0)
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ul>
+<p>上面这些方法实际上就已经完全可以实现我们的功能，大致是下面这样一张图:</p>
+<p><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/time.png" alt="转换方法"></p>
+<h4 id="datetime模块"><a href="#datetime模块" class="headerlink" title="datetime模块"></a><code>datetime</code>模块</h4><p><code>datetime</code>模块可以看作是对<code>time</code>模块的一个封装和扩展，上面提到的<code>time</code>中常用方法在<code>datetime</code>中均有对应, 在<code>datetime</code>下主要有以下几个类：</p>
+<ul>
+<li><code>date</code>: 处理与日期相关的数据，属性: year, month, day </li>
+<li><code>time</code>: 处理与某天时间相对应的数据， 属性: hour, minute, second, microsecond, tzinfo </li>
+<li><code>datetime</code>: 日期和时间的组合，属性: year, month, day, hour, minute, second, microsecond, tzinfo </li>
+<li><code>timedelta</code>: 与持续时间计算有关  </li>
+<li><code>tzinfo</code>: 时区信息类  </li>
+</ul>
+<p><code>datetime</code>类基本已经可以实现上面<code>time</code>模块所能实现的功能，具体对应大家可以去官网<a href="https://docs.python.org/2/library/datetime.html">datetime</a>查看，我后面如果需要用到也会进行总结。 </p>
+<h4 id="pandas-to-datetime"><a href="#pandas-to-datetime" class="headerlink" title="pandas.to_datetime()"></a><code>pandas.to_datetime()</code></h4><p>我们读取数据往往需要使用<code>pandas</code>库，得到<code>Dateframe</code>类型的数据，读取之后往往某一列就是时间序列，若用前面的方法来做转换，需要对每一个时间字符串操作，比较麻烦。为了解决该问题，就需要使用<code>pandas.to_datetime()</code>方法，使用该方法可以将变量变为<code>datetime</code>类型，方便后面进行操作。</p>
+<ul>
+<li>字符串时间转时间戳<pre class="line-numbers language-lang-python"><code class="language-lang-python">data.time = pandas.to_datetime(data.time) 
+data.time = data.time.apply(lambda x: time.mktime(x.tuple))
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+</li>
+<li>时间戳转字符串 <pre class="line-numbers language-lang-python"><code class="language-lang-python">data.time = pandas.to_datetime(data.time) 
+data.time = data.time.apply(lambda x: time.strftime(format, x.tuple))
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+</li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>在进行数据处理的时候我们往往不能够默认数据是“好数据”，因此就必须通过程序来对数据进行验证，而对于时序数据，时间信息的处理是绕不过去的，掌握了<code>python</code>中常用的对时间处理方法，后面处理时序数据可以更加得心应手。</p>
+]]></content>
+      <categories>
+        <category>python学习</category>
+      </categories>
+      <tags>
+        <tag>编程技能， 时序数据</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>《生之欲》观后感</title>
+    <url>/2021/05/27/sheng-zhi-yu-guan-hou-gan/</url>
+    <content><![CDATA[<p>今天以讨论座谈的形式观看了电影《生之欲》，借这个博客记录一下我觉得这部电影想要表达的内容。<br><span id="more"></span></p>
+<ul>
+<li><p><strong>对人生的反思</strong><br>该部电影的日语题名为“<strong>生きる</strong>”，直译过来的意思是“<strong>活着</strong>”。人活着究竟是为什么？ 这是一个永远不会过时的哲学命题，对于本部电影中的主人公渡边堪治而言，在妻子死后，他活着唯一让他感到有价值的事情就是将他的儿子抚养长大，而在得知自己时日无多之时，又了解到自己的儿子更看重的其实只是他的退休金，这让他万念俱灰，人生仿佛失去了方向，已然接近终点的人生再不见一丝光亮。在这种情况下，他经历了两周的灯红酒绿，经历了与部门离职小姑娘小田切美纪的相伴，似乎，这些都不能让他感觉到活着的意义，而在了解到小田切美纪认为自己现在的工作很有意义时，渡边开始反省自己的工作，认为自己也能改变一些东西，由此渡边找到了继续活下去的理由，开始“真正”地活着。 </p>
+</li>
+<li><p><strong>对于公共部门官僚主义的讽刺</strong><br>这应当是这部电影最直接表现的主题了，公共部门中的每个人似乎都很忙，但似乎又什么都没干，大家都浑浑噩噩，不求有功，但求无过。<br>当初公共部门的创立是为了更好地服务，然而随着时间的推进，整个机构仿佛就已经僵化了，人人都在自己的位置上如一个没有思想的木偶，机械地运转着，大家都已经忘记了公共部门本身存在的意义。 </p>
+</li>
+<li><p><strong>理想主义与现实主义的冲突</strong><br>当渡边决定将建儿童公园作为其人生的意义之时，理想主义与现实主义的冲突就展开了，建立一个对人民有利的公园是理想，而公共部门彼此之间的扯皮是现实，两者似乎很难达成一致。<br>从这个角度来说，渡边是幸运的，好像是所有人最终都被他“说服”了，公园最终如期建成，然而黑泽明也在片中隐晦地透露道，如果不是刚好赶上副市长和议员竞选，渡边将很难说服市里的领导批准建公园，这不由传递出了一丝悲哀，哪怕另一边是死亡在追逐自己，可能最终也并不能跑赢现实。<br>但是努力改变，学会真正地“活着”又是应当去追求的，儿童乐园、儿童玩具，剧中的这些细节无不在透露着，哪怕现实已经如此的糟糕，但因为这些孩子的存在，我们也应当心存期待。 </p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>电影观后感</category>
+      </categories>
+      <tags>
+        <tag>日本电影、黑泽明</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>《正义论》读书笔记</title>
     <url>/2022/10/03/zheng-yi-lun-du-shu-bi-ji/</url>
     <content><![CDATA[<p>人生路走的愈远，愈发意识到个人的边界，愈发对社会现实有了更加清醒的认识。一切的矛盾说到根源也逃不出分配二字，什么样的分配制度是正义的呢？带着这样一个问题，我翻开了罗尔斯的《正义论》，期待罗尔斯能够给我一个答案。<span id="more"></span> </p>
@@ -2059,102 +2100,8 @@ data.time = data.time.apply(lambda x: time.strftime(format, x.tuple))
       </tags>
   </entry>
   <entry>
-    <title>《生之欲》观后感</title>
-    <url>/2021/05/27/sheng-zhi-yu-guan-hou-gan/</url>
-    <content><![CDATA[<p>今天以讨论座谈的形式观看了电影《生之欲》，借这个博客记录一下我觉得这部电影想要表达的内容。<br><span id="more"></span></p>
-<ul>
-<li><p><strong>对人生的反思</strong><br>该部电影的日语题名为“<strong>生きる</strong>”，直译过来的意思是“<strong>活着</strong>”。人活着究竟是为什么？ 这是一个永远不会过时的哲学命题，对于本部电影中的主人公渡边堪治而言，在妻子死后，他活着唯一让他感到有价值的事情就是将他的儿子抚养长大，而在得知自己时日无多之时，又了解到自己的儿子更看重的其实只是他的退休金，这让他万念俱灰，人生仿佛失去了方向，已然接近终点的人生再不见一丝光亮。在这种情况下，他经历了两周的灯红酒绿，经历了与部门离职小姑娘小田切美纪的相伴，似乎，这些都不能让他感觉到活着的意义，而在了解到小田切美纪认为自己现在的工作很有意义时，渡边开始反省自己的工作，认为自己也能改变一些东西，由此渡边找到了继续活下去的理由，开始“真正”地活着。 </p>
-</li>
-<li><p><strong>对于公共部门官僚主义的讽刺</strong><br>这应当是这部电影最直接表现的主题了，公共部门中的每个人似乎都很忙，但似乎又什么都没干，大家都浑浑噩噩，不求有功，但求无过。<br>当初公共部门的创立是为了更好地服务，然而随着时间的推进，整个机构仿佛就已经僵化了，人人都在自己的位置上如一个没有思想的木偶，机械地运转着，大家都已经忘记了公共部门本身存在的意义。 </p>
-</li>
-<li><p><strong>理想主义与现实主义的冲突</strong><br>当渡边决定将建儿童公园作为其人生的意义之时，理想主义与现实主义的冲突就展开了，建立一个对人民有利的公园是理想，而公共部门彼此之间的扯皮是现实，两者似乎很难达成一致。<br>从这个角度来说，渡边是幸运的，好像是所有人最终都被他“说服”了，公园最终如期建成，然而黑泽明也在片中隐晦地透露道，如果不是刚好赶上副市长和议员竞选，渡边将很难说服市里的领导批准建公园，这不由传递出了一丝悲哀，哪怕另一边是死亡在追逐自己，可能最终也并不能跑赢现实。<br>但是努力改变，学会真正地“活着”又是应当去追求的，儿童乐园、儿童玩具，剧中的这些细节无不在透露着，哪怕现实已经如此的糟糕，但因为这些孩子的存在，我们也应当心存期待。 </p>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>电影观后感</category>
-      </categories>
-      <tags>
-        <tag>日本电影、黑泽明</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>《贫穷的本质》读书笔记</title>
     <url>/2022/10/05/pin-qiong-de-ben-zhi-du-hou-gan-sfconflict-2019310913-tsinghua.edu.cn-2022-10-15-10-49-22/</url>
-    <content><![CDATA[<p>我今天收拾房间的时候发现了当初读这本书时记的笔记，读来感觉有些观点已经有些遗忘了，便赶快将手稿收起来，更新到博客上，也借此机会温习一下这本书。<span id="more"></span> </p>
-<h4 id="Chapter1-2"><a href="#Chapter1-2" class="headerlink" title="Chapter1-2"></a>Chapter1-2</h4><p>作者首先给出了“<strong>贫困陷阱</strong>”这样一个概念，这意味着当人没有足够的卡路里支持进行劳动时，便无法获得报酬，进而进入恶性循环，步入“贫困陷阱”。 作者驳斥了这样一个观点，他认为穷人购买食物往往会选择价格低廉、口味好的非健康食品，同时在食物之外也会将钱花在别处，以让自己的生活少点乏味。</p>
-<blockquote>
-<p>他们不会迁怒于自己的命运，而是通过降低标准来增强自己的忍耐力，然而他们却并一定因此而专注必需品，也不一定会排斥奢侈品。 </p>
-</blockquote>
-<p>作者在这里给出了贫穷的第一个理由：</p>
-<blockquote>
-<p>穷人关注当前，尽可能让日子过的愉快 </p>
-</blockquote>
-<h4 id="Chapter3-提高全球居民健康水平"><a href="#Chapter3-提高全球居民健康水平" class="headerlink" title="Chapter3 提高全球居民健康水平"></a>Chapter3 提高全球居民健康水平</h4><p>作者首先介绍了“健康陷阱”： </p>
-<blockquote>
-<p>贫穷 -&gt; 不能有效预防疾病 -&gt; 疾病流行 -&gt; 贫穷 </p>
-</blockquote>
-<p>在作者看来，从这个角度来制订脱贫政策是“好摘的果子”，比如疫苗、蚊帐。<br>《贫穷的终结》的作者萨克斯认为：</p>
-<blockquote>
-<p>对于处于“健康陷阱”之中的人，用钱就可以将他们救出，穷人有些找不到梯子，有些则根本不想搭上梯子，<strong>穷人往往将钱花在昂贵的治疗上，而不是廉价的预防上</strong>。 </p>
-</blockquote>
-<p>在贫穷国家，由于这种短视，公共机构往往不能够得到有效运转，免费的东西往往起不到应有的作用：</p>
-<blockquote>
-<p>心理沉没成本：人们更有可能会利用他们为之支付很多钱的东西 </p>
-</blockquote>
-<p>在这一章节里，作者总结了穷人的困境与富裕的优势:</p>
-<ul>
-<li>穷人的困境： 缺乏信息、信念不坚定、拖延</li>
-<li>富裕的优势： 无处不在的助推力 </li>
-</ul>
-<h4 id="Chapter4-全班最优"><a href="#Chapter4-全班最优" class="headerlink" title="Chapter4 全班最优"></a>Chapter4 全班最优</h4><p>在章节开篇就抛出了一个问题：</p>
-<ul>
-<li>为何发展中国家的学校对学生不具备吸引力？ </li>
-</ul>
-<p>对于教育，不同派别的人有不同的看法： </p>
-<ul>
-<li>教育干涉主义：受教育者学习、生活等各方面的行为需要进行严厉管束</li>
-<li>自由教育主义：除非有明确需求，否则根本没必要提供教育</li>
-<li>需求主义：教育不过是另一种形式的投资，人们投资于教育，就像投资于任何其他领域一样，目的是赚到更多的钱，增加未来的收入 </li>
-<li>对家长来说，教育不仅仅是一种投资，而且是他们赠送给孩子的礼物 </li>
-</ul>
-<p>为了鼓励父母将孩子送去接受教育，可以进行<strong>有条件的现金转移</strong>，奖励那些将孩子送去学校的父母，现金转移可以使家长们摆脱极度贫困的状态，或许也可以拓宽他们的思想空间，让他们拥有更长远的人生观。 </p>
-<p>作者最后回答了章节开头的那个问题：</p>
-<blockquote>
-<p>不现实的目标、不必要的悲观预期以及不恰当的教师鼓励机制，导致发展中国家的教育体系没能完成自身两大任务： </p>
-<ul>
-<li>给予每个人一套健全的基本技能</li>
-<li>发掘人才 </li>
-</ul>
-</blockquote>
-<h4 id="Chapter5-来自克苏达诺的大家庭"><a href="#Chapter5-来自克苏达诺的大家庭" class="headerlink" title="Chapter5 来自克苏达诺的大家庭"></a>Chapter5 来自克苏达诺的大家庭</h4><p>孩子“质”与“量”的取舍，穷人往往多生，来规避风险 </p>
-<h4 id="Chapter7-贷款给穷人：不那么简单的经济学"><a href="#Chapter7-贷款给穷人：不那么简单的经济学" class="headerlink" title="Chapter7 贷款给穷人：不那么简单的经济学"></a>Chapter7 贷款给穷人：不那么简单的经济学</h4><p>对于正规机构来说，可贷款数量与借款人的资金现状挂钩，因此穷人借款只能通过放债人，穷人使用高利贷规避可能出现的灾病风险，几乎不可能的脱贫，因为高利贷的利息成本和穷人的违约率“一损俱损”。 </p>
-<h4 id="Chapter8-节省一砖一瓦"><a href="#Chapter8-节省一砖一瓦" class="headerlink" title="Chapter8 节省一砖一瓦"></a>Chapter8 节省一砖一瓦</h4><p>穷人耐心不够，不会未雨绸缪</p>
-<h4 id="Chapter9-不情愿的企业家们-穷人"><a href="#Chapter9-不情愿的企业家们-穷人" class="headerlink" title="Chapter9 不情愿的企业家们(穷人)"></a>Chapter9 不情愿的企业家们(穷人)</h4><p>穷人企业的特点：小本生意、利润低<br>穷人做生意往往是失败的经济模式的演绎，这是因为他们对稳定十分向往。</p>
-<h4 id="Chapter10-政策、政治"><a href="#Chapter10-政策、政治" class="headerlink" title="Chapter10 政策、政治"></a>Chapter10 政策、政治</h4><p>政治制度的存在是为了防止领导者建立为自己谋私利的经济制度<br>民主能够给政府提供直接的反馈信息，约束政府履行其职责 </p>
-<blockquote>
-<p>自由不能从外部引入，否则就不会有真正的自由</p>
-</blockquote>
-<p>政策的制定者是政治精英们，他们往往有着复杂的动机，制定后将作用于普通大众，割裂。<br>三大问题：意识形态、无知、惯性 </p>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><ul>
-<li>穷人缺少信息来源</li>
-<li>穷人肩负着生活中的诸多责任</li>
-<li>一些服务于穷人的市场正在消失，得到补贴的市场受到严格监管</li>
-<li>贫困的国家不会因为贫穷或者不堪回首的历史而注定失败 </li>
-<li>改变人们的期望是不容易的，在启动一个良性循环时，人们不应害怕必要的付出</li>
-<li>拒绝懒惰和公式化的思考模式 </li>
-</ul>
-]]></content>
-      <categories>
-        <category>灵魂雕琢</category>
-      </categories>
-      <tags>
-        <tag>书籍阅读</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>《贫穷的本质》读书笔记</title>
-    <url>/2022/10/05/pin-qiong-de-ben-zhi-du-hou-gan/</url>
     <content><![CDATA[<p>我今天收拾房间的时候发现了当初读这本书时记的笔记，读来感觉有些观点已经有些遗忘了，便赶快将手稿收起来，更新到博客上，也借此机会温习一下这本书。<span id="more"></span> </p>
 <h4 id="Chapter1-2"><a href="#Chapter1-2" class="headerlink" title="Chapter1-2"></a>Chapter1-2</h4><p>作者首先给出了“<strong>贫困陷阱</strong>”这样一个概念，这意味着当人没有足够的卡路里支持进行劳动时，便无法获得报酬，进而进入恶性循环，步入“贫困陷阱”。 作者驳斥了这样一个观点，他认为穷人购买食物往往会选择价格低廉、口味好的非健康食品，同时在食物之外也会将钱花在别处，以让自己的生活少点乏味。</p>
 <blockquote>
@@ -2370,6 +2317,80 @@ data.time = data.time.apply(lambda x: time.strftime(format, x.tuple))
       </categories>
       <tags>
         <tag>人像摄影入门，光线构图</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>《贫穷的本质》读书笔记</title>
+    <url>/2022/10/05/pin-qiong-de-ben-zhi-du-hou-gan/</url>
+    <content><![CDATA[<p>我今天收拾房间的时候发现了当初读这本书时记的笔记，读来感觉有些观点已经有些遗忘了，便赶快将手稿收起来，更新到博客上，也借此机会温习一下这本书。<span id="more"></span> </p>
+<h4 id="Chapter1-2"><a href="#Chapter1-2" class="headerlink" title="Chapter1-2"></a>Chapter1-2</h4><p>作者首先给出了“<strong>贫困陷阱</strong>”这样一个概念，这意味着当人没有足够的卡路里支持进行劳动时，便无法获得报酬，进而进入恶性循环，步入“贫困陷阱”。 作者驳斥了这样一个观点，他认为穷人购买食物往往会选择价格低廉、口味好的非健康食品，同时在食物之外也会将钱花在别处，以让自己的生活少点乏味。</p>
+<blockquote>
+<p>他们不会迁怒于自己的命运，而是通过降低标准来增强自己的忍耐力，然而他们却并一定因此而专注必需品，也不一定会排斥奢侈品。 </p>
+</blockquote>
+<p>作者在这里给出了贫穷的第一个理由：</p>
+<blockquote>
+<p>穷人关注当前，尽可能让日子过的愉快 </p>
+</blockquote>
+<h4 id="Chapter3-提高全球居民健康水平"><a href="#Chapter3-提高全球居民健康水平" class="headerlink" title="Chapter3 提高全球居民健康水平"></a>Chapter3 提高全球居民健康水平</h4><p>作者首先介绍了“健康陷阱”： </p>
+<blockquote>
+<p>贫穷 -&gt; 不能有效预防疾病 -&gt; 疾病流行 -&gt; 贫穷 </p>
+</blockquote>
+<p>在作者看来，从这个角度来制订脱贫政策是“好摘的果子”，比如疫苗、蚊帐。<br>《贫穷的终结》的作者萨克斯认为：</p>
+<blockquote>
+<p>对于处于“健康陷阱”之中的人，用钱就可以将他们救出，穷人有些找不到梯子，有些则根本不想搭上梯子，<strong>穷人往往将钱花在昂贵的治疗上，而不是廉价的预防上</strong>。 </p>
+</blockquote>
+<p>在贫穷国家，由于这种短视，公共机构往往不能够得到有效运转，免费的东西往往起不到应有的作用：</p>
+<blockquote>
+<p>心理沉没成本：人们更有可能会利用他们为之支付很多钱的东西 </p>
+</blockquote>
+<p>在这一章节里，作者总结了穷人的困境与富裕的优势:</p>
+<ul>
+<li>穷人的困境： 缺乏信息、信念不坚定、拖延</li>
+<li>富裕的优势： 无处不在的助推力 </li>
+</ul>
+<h4 id="Chapter4-全班最优"><a href="#Chapter4-全班最优" class="headerlink" title="Chapter4 全班最优"></a>Chapter4 全班最优</h4><p>在章节开篇就抛出了一个问题：</p>
+<ul>
+<li>为何发展中国家的学校对学生不具备吸引力？ </li>
+</ul>
+<p>对于教育，不同派别的人有不同的看法： </p>
+<ul>
+<li>教育干涉主义：受教育者学习、生活等各方面的行为需要进行严厉管束</li>
+<li>自由教育主义：除非有明确需求，否则根本没必要提供教育</li>
+<li>需求主义：教育不过是另一种形式的投资，人们投资于教育，就像投资于任何其他领域一样，目的是赚到更多的钱，增加未来的收入 </li>
+<li>对家长来说，教育不仅仅是一种投资，而且是他们赠送给孩子的礼物 </li>
+</ul>
+<p>为了鼓励父母将孩子送去接受教育，可以进行<strong>有条件的现金转移</strong>，奖励那些将孩子送去学校的父母，现金转移可以使家长们摆脱极度贫困的状态，或许也可以拓宽他们的思想空间，让他们拥有更长远的人生观。 </p>
+<p>作者最后回答了章节开头的那个问题：</p>
+<blockquote>
+<p>不现实的目标、不必要的悲观预期以及不恰当的教师鼓励机制，导致发展中国家的教育体系没能完成自身两大任务： </p>
+<ul>
+<li>给予每个人一套健全的基本技能</li>
+<li>发掘人才 </li>
+</ul>
+</blockquote>
+<h4 id="Chapter5-来自克苏达诺的大家庭"><a href="#Chapter5-来自克苏达诺的大家庭" class="headerlink" title="Chapter5 来自克苏达诺的大家庭"></a>Chapter5 来自克苏达诺的大家庭</h4><p>孩子“质”与“量”的取舍，穷人往往多生，来规避风险 </p>
+<h4 id="Chapter7-贷款给穷人：不那么简单的经济学"><a href="#Chapter7-贷款给穷人：不那么简单的经济学" class="headerlink" title="Chapter7 贷款给穷人：不那么简单的经济学"></a>Chapter7 贷款给穷人：不那么简单的经济学</h4><p>对于正规机构来说，可贷款数量与借款人的资金现状挂钩，因此穷人借款只能通过放债人，穷人使用高利贷规避可能出现的灾病风险，几乎不可能的脱贫，因为高利贷的利息成本和穷人的违约率“一损俱损”。 </p>
+<h4 id="Chapter8-节省一砖一瓦"><a href="#Chapter8-节省一砖一瓦" class="headerlink" title="Chapter8 节省一砖一瓦"></a>Chapter8 节省一砖一瓦</h4><p>穷人耐心不够，不会未雨绸缪</p>
+<h4 id="Chapter9-不情愿的企业家们-穷人"><a href="#Chapter9-不情愿的企业家们-穷人" class="headerlink" title="Chapter9 不情愿的企业家们(穷人)"></a>Chapter9 不情愿的企业家们(穷人)</h4><p>穷人企业的特点：小本生意、利润低<br>穷人做生意往往是失败的经济模式的演绎，这是因为他们对稳定十分向往。</p>
+<h4 id="Chapter10-政策、政治"><a href="#Chapter10-政策、政治" class="headerlink" title="Chapter10 政策、政治"></a>Chapter10 政策、政治</h4><p>政治制度的存在是为了防止领导者建立为自己谋私利的经济制度<br>民主能够给政府提供直接的反馈信息，约束政府履行其职责 </p>
+<blockquote>
+<p>自由不能从外部引入，否则就不会有真正的自由</p>
+</blockquote>
+<p>政策的制定者是政治精英们，他们往往有着复杂的动机，制定后将作用于普通大众，割裂。<br>三大问题：意识形态、无知、惯性 </p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><ul>
+<li>穷人缺少信息来源</li>
+<li>穷人肩负着生活中的诸多责任</li>
+<li>一些服务于穷人的市场正在消失，得到补贴的市场受到严格监管</li>
+<li>贫困的国家不会因为贫穷或者不堪回首的历史而注定失败 </li>
+<li>改变人们的期望是不容易的，在启动一个良性循环时，人们不应害怕必要的付出</li>
+<li>拒绝懒惰和公式化的思考模式 </li>
+</ul>
+]]></content>
+      <categories>
+        <category>灵魂雕琢</category>
+      </categories>
+      <tags>
+        <tag>书籍阅读</tag>
       </tags>
   </entry>
   <entry>
@@ -3443,139 +3464,6 @@ if __name__ == '__main__':
       </tags>
   </entry>
   <entry>
-    <title>少有人走的路-读后感</title>
-    <url>/2021/01/09/shao-you-ren-zou-de-lu-du-hou-gan/</url>
-    <content><![CDATA[<p>自己前一段时间收了几本旧书，偶然注意到了其中一本名叫《少有人走的路-心智成熟的旅程》的书，刚好那时《中国哲学简史》刚刚读完，我便开始着手读这本书。刚开始其实我是抱着读鸡汤文的想法读一读的，但在读的过程中发现从心理学的角度来看待心智成熟也是蛮有意思的一件事。<br>跳出此书，单纯从“心智成熟”这四个字出发，其实我更觉得这是一个属于哲学范畴的命题，所谓“心智成熟”，在我看来主要体现于以下几个方面<span id="more"></span>: </p>
-<ul>
-<li>明确个体在世界中的位置，在一个庞大的坐标系中找到自己所处的位置。 </li>
-<li>不断地反思是与非的界限，并清晰地认识到自己认知的局限。 </li>
-<li>敢于面对想法与现实之间的gap并可以为消除gap不断努力。 </li>
-</ul>
-<p>其实这三个方面其实就是讨论了人与世界、事物(事件)、自身的关系，这三个方面其实只是一个大框架，针对具体的个人答案可能会全然不同，但是如果是一个认真反省过这三件事的人，那么想必他/她的生活中会少一些迷茫，多一些坚定。<br>本文后面内容就按照原书的四个章节划分进行组织。 </p>
-<h4 id="第一部分-自律"><a href="#第一部分-自律" class="headerlink" title="第一部分 自律"></a>第一部分 自律</h4><blockquote>
-<p>自律是解决人生问题最主要的工具，也是消除人生痛苦最重要的方法。</p>
-</blockquote>
-<p>人生苦难重重，而也正是因为这些苦难，我们才能够不断成长，但苦难可以让一个人成长，也可以让一个人毁灭，其根源区别就在于<strong>个人是否自律</strong>，何为自律? </p>
-<blockquote>
-<p>自律就是主动要求自己以积极的态度去承受痛苦，解决问题。 </p>
-</blockquote>
-<p>在作者看来，自律有四个原则: </p>
-<ul>
-<li>推迟满足感</li>
-<li>承担责任 </li>
-<li>忠于事实 </li>
-<li>保持平衡 </li>
-</ul>
-<p>这四个道理其实很简单，然而这却会与人的本性相违背，因此个体总会或多或少落入四个原则的对立面，这就要求我们在日常生活中不断自省，及时修正自己的想法和行为。<br>关于承担责任，对应于心理学领域的两种疾病: </p>
-<ul>
-<li>神经官能症: 患者总是为自己强加责任，导致个体焦虑。 </li>
-<li>人格失调症: 患者总是不愿承担原本属于自己的责任，总认为错在他人。 </li>
-</ul>
-<blockquote>
-<p>作为成年人，我们一生都充满选择和决定的机会，接受这一事实，就会变成自由的人；无法接受这种事实，就会永远觉得自己是牺牲品。</p>
-</blockquote>
-<p>忠于事实，意味着我们要用一生的时间不间断地进行自我反省，意味着我们要敢于接受外界的质疑与挑战。对于自律其是，总结来说: </p>
-<blockquote>
-<p>自律是一项艰苦而复杂的任务，需要足够的勇气和判断力。你要以追求诚实为己任，也需要隐瞒部分事实和真相。你既要承担责任，也要拒绝不该承担的责任。你既要学会推迟满足感，先苦后甜，把眼光放远，同时又要尽可能过好当前的生活，让人生的快乐多于痛苦，这就要求我们拥有保持平衡的艺术。</p>
-</blockquote>
-<p>在本章的最后，作者谈论了“放弃与新生”，有点佛教理论的味道了，死亡与新生正如一枚硬币的正反面，两者所带来的痛苦并无不同: </p>
-<blockquote>
-<p>如同死亡，新的诞生也带给我们痛苦。 </p>
-</blockquote>
-<h4 id="第二部分-爱"><a href="#第二部分-爱" class="headerlink" title="第二部分-爱"></a>第二部分-爱</h4><blockquote>
-<p>爱，是为了促进自己和他人心智成熟，而不断拓展自我界限，实现自我完善的一种意愿。      </p>
-</blockquote>
-<p>在谈论完自律之后，作者分析了自律背后的深层次原因-爱，这一部分内容则主要来自于作者的主观总结，在作者看来，真正的“爱”具有以下几点特征：</p>
-<ul>
-<li>爱与非爱最显著的区别之一，就在于当事人意识和潜意识中的目标是否一致，如果不一致，就不是真正的爱。(ps. 潜意识中的目标似乎很难确定) </li>
-<li>爱是一个长期、渐进的过程。 </li>
-<li>真正意义上的爱，既是爱自己，也是爱他人。 </li>
-<li>爱是一种意愿，需要付出努力。 </li>
-</ul>
-<p>就具体表现而言，“爱”的结果是导致自我界限的扩展还是自我界限的崩溃是区分成熟的爱与原始冲动的重要指标。</p>
-<blockquote>
-<p>真正的爱是一种扩展自我界限的体验，既是扩展自己的，也要扩展被爱对象。</p>
-</blockquote>
-<p>简单的“坠入情网”并非是爱，“依赖性”也并不是爱(消极性依赖人格失调症)，“一味的给予，纯粹的自我牺牲”也并不是爱。</p>
-<blockquote>
-<p>真正的爱不是忘乎所以，而是深思熟虑，是奉献全部身心的重大决定。  </p>
-</blockquote>
-<p>当“爱”落实到具体的小事之时，则需要一些技巧：</p>
-<ul>
-<li>学会聆听他人。 </li>
-<li>在指导他人之时，既要尊重对方的独立性，又要给出有价值的指导。</li>
-</ul>
-<blockquote>
-<p>真正以爱为出发点的人，总是致力于自我完善，让自己具备起码的道德与智慧，然后才会行使批评权。</p>
-</blockquote>
-<p>与之相对的是自恋的人: </p>
-<blockquote>
-<p>自恋的人无视别人的存在，只把别人当成自我的延伸(缺乏共情心)。 </p>
-</blockquote>
-<p>婚姻可以看作是“爱”的契约: </p>
-<blockquote>
-<p>理想婚姻的基本目标，是让双方同时得到滋养，推动两颗心灵的共同成长。</p>
-</blockquote>
-<p>纪伯伦在《论婚姻》中这样谈到:</p>
-<blockquote>
-<p>你们一块出生<br>也将永远相依<br>当死神的白色羽翼驱散你们的日子，你们也应在一起<br>的确，你们始终相守，即使在上帝的记忆中</p>
-<p>但在聚守中你们要保留空间<br>让来自天堂的风在你们的空隙之间舞动 </p>
-<p>彼此相爱，但不要让爱成为束缚<br>让爱成为奔流于你们灵魂海岸间的海洋<br>盛满彼此的杯盏，但不要只从一只杯盏中取饮<br>彼此互赠面包，但不要只向一块面包取食 </p>
-<p>一起欢歌曼舞<br>但要保持各自的独立<br>鲁特琴的琴弦也彼此分开<br>即使它们为同一首乐曲震颤 </p>
-<p>一定要把心扉向对方敞开<br>但并不是交给对方来保管<br>因为唯有生命之手才能接纳你们的心 </p>
-<p>站在一起，但不要靠的太近<br>因为殿宇的支柱总是彼此分立的<br>橡树和松柏也不在彼此的阴影下生长 </p>
-</blockquote>
-<h4 id="第三部分-成长与信仰"><a href="#第三部分-成长与信仰" class="headerlink" title="第三部分-成长与信仰"></a>第三部分-成长与信仰</h4><blockquote>
-<p>人人都有自己的信仰，对人生的认识和了解就属于信仰的范畴。</p>
-</blockquote>
-<p>首先来谈一下什么是世界观: </p>
-<blockquote>
-<p>世界观其实就是一个人所感受到的世界的模样(规律和本质)。</p>
-</blockquote>
-<p>在作者看来，我们对于一种信仰并不应当是深信不疑，而是： </p>
-<blockquote>
-<p>我们应当过去的信仰提出疑问，主动探索陌生领域，挑战某些久被视为真理的结论。只有怀疑和挑战，才能使我们走上神圣的自由之路。 </p>
-</blockquote>
-<p>我们生活中很多的知识都是二手的资料，像自然科学的各种定理，但我们可以在日常中进行验证，因此这些知识尽管“二手”，但仍“充满活力”。 </p>
-<blockquote>
-<p>但是，有关人类生存的意义、目的与死亡的问题，一切二手材料我都无法接受。 </p>
-</blockquote>
-<p>或许，在我看: </p>
-<blockquote>
-<p><strong>敢于摆脱既往的经验，敢于迎接未知的挑战，敢于质疑所谓的权威，这本身也是一种信仰，一种更具神性的信仰。</strong></p>
-</blockquote>
-<p>最后谈一下宗教,许多心理学家往往视宗教为心理成熟的重大障碍： </p>
-<blockquote>
-<p>宗教本身就是一种神经官能症——一种禁锢心灵的非理性观念。 </p>
-</blockquote>
-<p>就我个人对宗教浅薄的理解来说: </p>
-<blockquote>
-<p>宗教既可以是毒药，也可以是解药，它的效用取决于作用于什么样的人身上。</p>
-</blockquote>
-<h4 id="第四部分-恩典"><a href="#第四部分-恩典" class="headerlink" title="第四部分-恩典"></a>第四部分-恩典</h4><blockquote>
-<p>我们之所以具备爱的能力和成长的意愿，不仅取决于童年时父母爱的滋养，也取决于我们一生中对恩典的接纳。 </p>
-</blockquote>
-<p>这个世界每天都会发生一些我们无法解释的事件，纯粹的数理学派可以将它们简单归类于“小概率时间”，而斯科特$\cdot$派克则就这些事件从心理学角度展开了思考，将它们看作是<strong>恩典</strong>。</p>
-<p>作者主要从梦境、潜意识出发来试图对这些<strong>恩典</strong>进行说明，荣格的“集体潜意识”理论暗示，我们的智慧来自于对全人类智慧的继承。<br>画<br>下面给出恩典的定义: </p>
-<blockquote>
-<ul>
-<li>它们具有滋养生命、促进心智成熟的作用。</li>
-<li>它们的具体作用机制仍然无法用科学解释。 </li>
-<li>它们是人类世界中的普遍现象，在不同的人身上均会反复发生。</li>
-<li>尽管它们可能或多或少受意识影响，但它们的根源位于意识和主观思维之外。</li>
-</ul>
-</blockquote>
-<p>然后作者还从熵的角度来进行理解，熵会让一个物体走向无序，走向发散，但人类的进化以及心智的成熟其实是逆熵增的，这从某个角度来说也可以说是<strong>恩典</strong>。</p>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>斯科特$\cdot$派克本人是一名出色的心理医生，因此斯科特在叙述一套理论时，往往都会附上一些具体的心理学案例加以辅助说明，这使得本书没有落入过分理论的窠臼之中。然后从内容角度来说，因为我们都是“人”的具体化，因此对于书中总结的一些规律，我们往往会有感同深受之感，若是一个心智成熟的人阅读这本书，那么可能更多的是为自己的行为找到了一些理论支撑，同时也可以以一套更加成熟的框架(成熟的语言体系)来分析其他人的行为。本书分为四部分——自律、爱、成长与信仰、恩典，就我看来，第一、三部分是较为可信的，而二、四部分属于见仁见智的部分，毕竟有点“形上学”了，这也是渴望将具体问题纳入一个更加宏大的框架来进行描述必然面临的问题，也不失为斯科特$\cdot$派克作为心理学家的一种尝试吧。 </p>
-]]></content>
-      <categories>
-        <category>灵魂雕琢</category>
-      </categories>
-      <tags>
-        <tag>心智成熟，心理学</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>常用Linux命令整理</title>
     <url>/2022/10/18/chang-yong-linux-ming-ling-zheng-li/</url>
     <content><![CDATA[<p>在服务器上训练深度学习模型时不可避免地需要进行大量的命令行操作，熟练使用命令行已经成为了一项程序员必备的技能，本文对常用的linux命令进行整理，以加深印象和方便后续查询。<br><span id="more"></span> </p>
@@ -3830,6 +3718,139 @@ kill -KILL 123456 #强制杀死进程
       </categories>
       <tags>
         <tag>命令行</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>少有人走的路-读后感</title>
+    <url>/2021/01/09/shao-you-ren-zou-de-lu-du-hou-gan/</url>
+    <content><![CDATA[<p>自己前一段时间收了几本旧书，偶然注意到了其中一本名叫《少有人走的路-心智成熟的旅程》的书，刚好那时《中国哲学简史》刚刚读完，我便开始着手读这本书。刚开始其实我是抱着读鸡汤文的想法读一读的，但在读的过程中发现从心理学的角度来看待心智成熟也是蛮有意思的一件事。<br>跳出此书，单纯从“心智成熟”这四个字出发，其实我更觉得这是一个属于哲学范畴的命题，所谓“心智成熟”，在我看来主要体现于以下几个方面<span id="more"></span>: </p>
+<ul>
+<li>明确个体在世界中的位置，在一个庞大的坐标系中找到自己所处的位置。 </li>
+<li>不断地反思是与非的界限，并清晰地认识到自己认知的局限。 </li>
+<li>敢于面对想法与现实之间的gap并可以为消除gap不断努力。 </li>
+</ul>
+<p>其实这三个方面其实就是讨论了人与世界、事物(事件)、自身的关系，这三个方面其实只是一个大框架，针对具体的个人答案可能会全然不同，但是如果是一个认真反省过这三件事的人，那么想必他/她的生活中会少一些迷茫，多一些坚定。<br>本文后面内容就按照原书的四个章节划分进行组织。 </p>
+<h4 id="第一部分-自律"><a href="#第一部分-自律" class="headerlink" title="第一部分 自律"></a>第一部分 自律</h4><blockquote>
+<p>自律是解决人生问题最主要的工具，也是消除人生痛苦最重要的方法。</p>
+</blockquote>
+<p>人生苦难重重，而也正是因为这些苦难，我们才能够不断成长，但苦难可以让一个人成长，也可以让一个人毁灭，其根源区别就在于<strong>个人是否自律</strong>，何为自律? </p>
+<blockquote>
+<p>自律就是主动要求自己以积极的态度去承受痛苦，解决问题。 </p>
+</blockquote>
+<p>在作者看来，自律有四个原则: </p>
+<ul>
+<li>推迟满足感</li>
+<li>承担责任 </li>
+<li>忠于事实 </li>
+<li>保持平衡 </li>
+</ul>
+<p>这四个道理其实很简单，然而这却会与人的本性相违背，因此个体总会或多或少落入四个原则的对立面，这就要求我们在日常生活中不断自省，及时修正自己的想法和行为。<br>关于承担责任，对应于心理学领域的两种疾病: </p>
+<ul>
+<li>神经官能症: 患者总是为自己强加责任，导致个体焦虑。 </li>
+<li>人格失调症: 患者总是不愿承担原本属于自己的责任，总认为错在他人。 </li>
+</ul>
+<blockquote>
+<p>作为成年人，我们一生都充满选择和决定的机会，接受这一事实，就会变成自由的人；无法接受这种事实，就会永远觉得自己是牺牲品。</p>
+</blockquote>
+<p>忠于事实，意味着我们要用一生的时间不间断地进行自我反省，意味着我们要敢于接受外界的质疑与挑战。对于自律其是，总结来说: </p>
+<blockquote>
+<p>自律是一项艰苦而复杂的任务，需要足够的勇气和判断力。你要以追求诚实为己任，也需要隐瞒部分事实和真相。你既要承担责任，也要拒绝不该承担的责任。你既要学会推迟满足感，先苦后甜，把眼光放远，同时又要尽可能过好当前的生活，让人生的快乐多于痛苦，这就要求我们拥有保持平衡的艺术。</p>
+</blockquote>
+<p>在本章的最后，作者谈论了“放弃与新生”，有点佛教理论的味道了，死亡与新生正如一枚硬币的正反面，两者所带来的痛苦并无不同: </p>
+<blockquote>
+<p>如同死亡，新的诞生也带给我们痛苦。 </p>
+</blockquote>
+<h4 id="第二部分-爱"><a href="#第二部分-爱" class="headerlink" title="第二部分-爱"></a>第二部分-爱</h4><blockquote>
+<p>爱，是为了促进自己和他人心智成熟，而不断拓展自我界限，实现自我完善的一种意愿。      </p>
+</blockquote>
+<p>在谈论完自律之后，作者分析了自律背后的深层次原因-爱，这一部分内容则主要来自于作者的主观总结，在作者看来，真正的“爱”具有以下几点特征：</p>
+<ul>
+<li>爱与非爱最显著的区别之一，就在于当事人意识和潜意识中的目标是否一致，如果不一致，就不是真正的爱。(ps. 潜意识中的目标似乎很难确定) </li>
+<li>爱是一个长期、渐进的过程。 </li>
+<li>真正意义上的爱，既是爱自己，也是爱他人。 </li>
+<li>爱是一种意愿，需要付出努力。 </li>
+</ul>
+<p>就具体表现而言，“爱”的结果是导致自我界限的扩展还是自我界限的崩溃是区分成熟的爱与原始冲动的重要指标。</p>
+<blockquote>
+<p>真正的爱是一种扩展自我界限的体验，既是扩展自己的，也要扩展被爱对象。</p>
+</blockquote>
+<p>简单的“坠入情网”并非是爱，“依赖性”也并不是爱(消极性依赖人格失调症)，“一味的给予，纯粹的自我牺牲”也并不是爱。</p>
+<blockquote>
+<p>真正的爱不是忘乎所以，而是深思熟虑，是奉献全部身心的重大决定。  </p>
+</blockquote>
+<p>当“爱”落实到具体的小事之时，则需要一些技巧：</p>
+<ul>
+<li>学会聆听他人。 </li>
+<li>在指导他人之时，既要尊重对方的独立性，又要给出有价值的指导。</li>
+</ul>
+<blockquote>
+<p>真正以爱为出发点的人，总是致力于自我完善，让自己具备起码的道德与智慧，然后才会行使批评权。</p>
+</blockquote>
+<p>与之相对的是自恋的人: </p>
+<blockquote>
+<p>自恋的人无视别人的存在，只把别人当成自我的延伸(缺乏共情心)。 </p>
+</blockquote>
+<p>婚姻可以看作是“爱”的契约: </p>
+<blockquote>
+<p>理想婚姻的基本目标，是让双方同时得到滋养，推动两颗心灵的共同成长。</p>
+</blockquote>
+<p>纪伯伦在《论婚姻》中这样谈到:</p>
+<blockquote>
+<p>你们一块出生<br>也将永远相依<br>当死神的白色羽翼驱散你们的日子，你们也应在一起<br>的确，你们始终相守，即使在上帝的记忆中</p>
+<p>但在聚守中你们要保留空间<br>让来自天堂的风在你们的空隙之间舞动 </p>
+<p>彼此相爱，但不要让爱成为束缚<br>让爱成为奔流于你们灵魂海岸间的海洋<br>盛满彼此的杯盏，但不要只从一只杯盏中取饮<br>彼此互赠面包，但不要只向一块面包取食 </p>
+<p>一起欢歌曼舞<br>但要保持各自的独立<br>鲁特琴的琴弦也彼此分开<br>即使它们为同一首乐曲震颤 </p>
+<p>一定要把心扉向对方敞开<br>但并不是交给对方来保管<br>因为唯有生命之手才能接纳你们的心 </p>
+<p>站在一起，但不要靠的太近<br>因为殿宇的支柱总是彼此分立的<br>橡树和松柏也不在彼此的阴影下生长 </p>
+</blockquote>
+<h4 id="第三部分-成长与信仰"><a href="#第三部分-成长与信仰" class="headerlink" title="第三部分-成长与信仰"></a>第三部分-成长与信仰</h4><blockquote>
+<p>人人都有自己的信仰，对人生的认识和了解就属于信仰的范畴。</p>
+</blockquote>
+<p>首先来谈一下什么是世界观: </p>
+<blockquote>
+<p>世界观其实就是一个人所感受到的世界的模样(规律和本质)。</p>
+</blockquote>
+<p>在作者看来，我们对于一种信仰并不应当是深信不疑，而是： </p>
+<blockquote>
+<p>我们应当过去的信仰提出疑问，主动探索陌生领域，挑战某些久被视为真理的结论。只有怀疑和挑战，才能使我们走上神圣的自由之路。 </p>
+</blockquote>
+<p>我们生活中很多的知识都是二手的资料，像自然科学的各种定理，但我们可以在日常中进行验证，因此这些知识尽管“二手”，但仍“充满活力”。 </p>
+<blockquote>
+<p>但是，有关人类生存的意义、目的与死亡的问题，一切二手材料我都无法接受。 </p>
+</blockquote>
+<p>或许，在我看: </p>
+<blockquote>
+<p><strong>敢于摆脱既往的经验，敢于迎接未知的挑战，敢于质疑所谓的权威，这本身也是一种信仰，一种更具神性的信仰。</strong></p>
+</blockquote>
+<p>最后谈一下宗教,许多心理学家往往视宗教为心理成熟的重大障碍： </p>
+<blockquote>
+<p>宗教本身就是一种神经官能症——一种禁锢心灵的非理性观念。 </p>
+</blockquote>
+<p>就我个人对宗教浅薄的理解来说: </p>
+<blockquote>
+<p>宗教既可以是毒药，也可以是解药，它的效用取决于作用于什么样的人身上。</p>
+</blockquote>
+<h4 id="第四部分-恩典"><a href="#第四部分-恩典" class="headerlink" title="第四部分-恩典"></a>第四部分-恩典</h4><blockquote>
+<p>我们之所以具备爱的能力和成长的意愿，不仅取决于童年时父母爱的滋养，也取决于我们一生中对恩典的接纳。 </p>
+</blockquote>
+<p>这个世界每天都会发生一些我们无法解释的事件，纯粹的数理学派可以将它们简单归类于“小概率时间”，而斯科特$\cdot$派克则就这些事件从心理学角度展开了思考，将它们看作是<strong>恩典</strong>。</p>
+<p>作者主要从梦境、潜意识出发来试图对这些<strong>恩典</strong>进行说明，荣格的“集体潜意识”理论暗示，我们的智慧来自于对全人类智慧的继承。<br>画<br>下面给出恩典的定义: </p>
+<blockquote>
+<ul>
+<li>它们具有滋养生命、促进心智成熟的作用。</li>
+<li>它们的具体作用机制仍然无法用科学解释。 </li>
+<li>它们是人类世界中的普遍现象，在不同的人身上均会反复发生。</li>
+<li>尽管它们可能或多或少受意识影响，但它们的根源位于意识和主观思维之外。</li>
+</ul>
+</blockquote>
+<p>然后作者还从熵的角度来进行理解，熵会让一个物体走向无序，走向发散，但人类的进化以及心智的成熟其实是逆熵增的，这从某个角度来说也可以说是<strong>恩典</strong>。</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>斯科特$\cdot$派克本人是一名出色的心理医生，因此斯科特在叙述一套理论时，往往都会附上一些具体的心理学案例加以辅助说明，这使得本书没有落入过分理论的窠臼之中。然后从内容角度来说，因为我们都是“人”的具体化，因此对于书中总结的一些规律，我们往往会有感同深受之感，若是一个心智成熟的人阅读这本书，那么可能更多的是为自己的行为找到了一些理论支撑，同时也可以以一套更加成熟的框架(成熟的语言体系)来分析其他人的行为。本书分为四部分——自律、爱、成长与信仰、恩典，就我看来，第一、三部分是较为可信的，而二、四部分属于见仁见智的部分，毕竟有点“形上学”了，这也是渴望将具体问题纳入一个更加宏大的框架来进行描述必然面临的问题，也不失为斯科特$\cdot$派克作为心理学家的一种尝试吧。 </p>
+]]></content>
+      <categories>
+        <category>灵魂雕琢</category>
+      </categories>
+      <tags>
+        <tag>心智成熟，心理学</tag>
       </tags>
   </entry>
   <entry>
@@ -4405,6 +4426,43 @@ V_{\gamma}(x)=\max _{a \in A} \sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime
       </tags>
   </entry>
   <entry>
+    <title>数据库基础知识</title>
+    <url>/2022/10/31/shu-ju-ku-ji-chu-zhi-shi/</url>
+    <content><![CDATA[<h4 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h4><p>数据库是<strong>结构化信息或数据的有序集合</strong>，一般以电子形式存储在计算系统中，通常由数据库管理系统(DBMS)来控制，在现实中，数据、DBMS 及关联应用一起被称为数据库系统，通常简称为数据库。<br>为了提高数据处理和查询效率，当今最常见的数据库通常以行和列的形式将数据存储在一系列的表中，支持用户便捷地访问、管理、修改、更新、控制和组织数据。另外，大多数数据库都使用结构化查询语言 (SQL) 来编写和查询数据。<span id="more"></span></p>
+<h4 id="结构化查询语言SQL"><a href="#结构化查询语言SQL" class="headerlink" title="结构化查询语言SQL"></a>结构化查询语言SQL</h4><p>目前几乎所有的关系数据库都使用 SQL 编程语言来查询、操作和定义数据，进行数据访问控制。SQL 最初于 20 世纪 70 年代由 IBM 开发，当时 Oracle 是一个主要的贡献者，这推动了 SQL ANSI 标准的实施，而 SQL 的兴起也刺激了 IBM、Oracle 和 Microsoft 等公司开始全面扩张。时至今日，虽然 SQL 仍被广泛使用，但是新的编程语言也已经崭露头角。</p>
+<h4 id="数据库的发展历程"><a href="#数据库的发展历程" class="headerlink" title="数据库的发展历程"></a>数据库的发展历程</h4><p>自 20 世纪 60 年代初诞生至今，数据库已经发生了翻天覆地的变化。最初，人们使用<strong>分层数据库</strong>（树形模型，仅支持一对多关系）和<strong>网络数据库</strong>（更加灵活，支持多种关系）这样的导航数据库来存储和操作数据。这些早期系统虽然简单，但缺乏灵活性。20 世纪 80 年代，<strong>关系数据库</strong>开始兴起；20 世纪 90 年代，<strong>面向对象的数据库</strong>开始成为主流。最近，随着互联网的快速发展，为了更快速地处理非结构化数据，NoSQL 数据库应运而生。现在，云数据库和自治驾驶数据库在数据收集、存储、管理和利用方面正不断取得新的突破。</p>
+<h4 id="常用SQL语言"><a href="#常用SQL语言" class="headerlink" title="常用SQL语言"></a>常用SQL语言</h4><ul>
+<li>查询表中所有数据 <pre class="line-numbers language-lang-sql"><code class="language-lang-sql">SELECT * FROM 表名
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</li>
+<li><p>查找表中特定内容</p>
+<pre class="line-numbers language-lang-sql"><code class="language-lang-sql">SELECT selection_list /*要查询的列名称*/
+FROM table_list /*要查询的表名称*/
+WHERE condition /*行条件*/
+GROUP BY grouping_columns /*对结果分组*/
+HAVING condition /*分组后的行条件*/
+ORDER BY sorting_columns /*对结果分组*/
+LIMIT offset_start, row_count /*结果限定*/
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>聚合函数: 做纵向运算</p>
+<pre class="line-numbers language-lang-sql"><code class="language-lang-sql">COUNT()：统计指定列不为NULL的记录行数；
+MAX()：计算指定列的最大值，如果指定列是字符串类型，那么使用字符串排序运算；
+MIN()：计算指定列的最小值，如果指定列是字符串类型，那么使用字符串排序运算；
+SUM()：计算指定列的数值和，如果指定列类型不是数值类型，那么计算结果为0；
+AVG()：计算指定列的平均值，如果指定列类型不是数值类型，那么计算结果为0；
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>技术学习</category>
+      </categories>
+      <tags>
+        <tag>数据库</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>数据结构与算法</title>
     <url>/2022/09/29/shu-ju-jie-gou-yu-suan-fa/</url>
     <content><![CDATA[<p>数据结构与算法算是必考内容，如果能在笔试/面试的过程中快速找到算法题的解题思路，无疑会给面试官留下很好的印象，这类题目主要考察两个方面: </p>
@@ -4824,43 +4882,6 @@ a=a^b; #a=(a^b)^(a^b^b)=0^b=0
       </tags>
   </entry>
   <entry>
-    <title>文城-读后感</title>
-    <url>/2021/03/20/wen-cheng-du-hou-gan/</url>
-    <content><![CDATA[<blockquote>
-<p><strong>序:</strong> 3月12日晚，在王府井街道上的三联韬奋书店中，我轻抚着一本本书的封面，似乎试图透过封面上的零星字眼来寻找某种共鸣感，<strong>当我看到《文城》这本书时，腰封上的“人生就是自己的往事和他人的序章”蓦然间打动了我，于是我拿起了这本书，将与这本书的相遇纳入我的往事之中。</strong></p>
-</blockquote>
-<span id="more"></span>
-<p>在读《文城》之前，我并没有读过余华的其他作品，但或许也正是因为这个原因，《文城》带给了我极大的惊喜感，不快不慢的文章节奏，入木三分的人物刻画，张弛有度的感情释放，引人入胜的情节设计…… 无不让我有眼前一亮之感。<br>读完《文城》后，我的脑中思绪万千，人物、情节、时代背景、个人命运…… 似乎从哪一个点切入都有着零碎的只言片语。然零星的只言片语只有经过文字的整理才能够成体系，本文就基于这样的目的简单地谈一谈自己对这本书的感受。 </p>
-<h3 id="故事情节"><a href="#故事情节" class="headerlink" title="故事情节"></a>故事情节</h3><p>《文城》中的故事发生在清末民初的一个南方小镇中，其所述的故事兼具民间性与传奇性，小说由“文城”和“文城 补”构成，两部分，犹如两面镜子，彼此相互映照，但只有将两个镜中世界进行拼合，才能看到完整的故事。</p>
-<blockquote>
-<p><strong>文城</strong><br>阿强和小美在前往北京的过程中遇到了林祥福，阿强谎称他们来自“文城”，此后阿强独自离开，林祥福娶了留在家中的小美，小美在得知家中金条储藏位置后拿走少部分金条不辞而别；遭遇打击的林祥福为将被拿走的金条补上，开始四处拜师学艺，磨练自己的木匠活技巧；在林祥福生活再次归入平淡之际，小美归来了，但在为他诞下一女后又再次逃离；为寻找小美，林祥福决定将家产托付给管家，带着女儿踏上了去“文城”寻找小美之路，寻“文城”未果后林祥福在溪镇扎了根，叙述了林祥福父女与陈永良一家相伴生活的故事，然后在溪镇发生了遭遇龙卷风、霜冻自然灾害、遭遇北洋军阀的掠夺、遭遇土匪祸乱等事件，塑造了陈永良、顾益民、民团、匪帮等形象，最终林祥福在土匪祸乱中走向了他人生的句点。<br><strong>文城 补</strong><br>纪小美作为阿强家的童养媳从十岁开始便在阿强家长大，后因为接济家中弟弟被休回家。后来，阿强违逆父母心意，独自出逃去将纪小美从娘家带走，开启了一段冒险之旅，在山穷水尽之际，他们遇到了林祥福，小美在为林祥福诞下一女后与阿强返回溪镇，纪小美将对女儿的思念和对林祥福的歉意深埋心底，在溪镇与阿强开启了新的生活。当得知林祥福来到溪镇后，两人刻意躲避，在林祥福寻”文城”未果后，又于 雪冻之时返回了溪镇，时光在此交汇，阿强和纪小美冻死在了祭天之时，冻死于林祥福重新踏入溪镇准备开启新生活之时。 </p>
-</blockquote>
-<p><strong>如果说”文城”是江河表面的波澜壮阔，那么”文城 补”则是其下的暗流涌动，两者互为表里，综合起来便是林祥福、小美、阿强的完整人生。余华在”文城”篇也运用了倒叙和插叙的手法，让读者在阅读时始终带着悬念，当读完”文城 补”，一切谜底都揭晓之时，疑云消散，独留对命运的慨叹在心中回荡。</strong></p>
-<h3 id="人物"><a href="#人物" class="headerlink" title="人物"></a>人物</h3><p>《文城》中人物刻画的突出特点就是人物内核的始终如一：</p>
-<ul>
-<li><strong>至纯至善的林祥福:</strong> 好心接纳阿强与小美留宿，原谅小美盗窃金条，携幼女南下寻找小美，在溪镇与陈永良一家组成组合家庭，面对匪帮时挺身而出。从出场到落幕，善始终是林祥福这个角色最浓重的一抹底色。 </li>
-<li><strong>善良且富有母性的纪小美:</strong> 这个清秀温柔的南方女子，被命运裹挟着从溪镇来到了林祥福的家乡，后又回到了溪镇。这个简单的女子在与复杂的命运碰撞中，体验过幸福快乐，也经历过痛彻心扉。 </li>
-<li><strong>沉稳且富有担当的顾益民:</strong> 雪冻之时组织祭拜苍天，沉着应对北洋军阀使溪镇化险为夷，组建溪镇民团，担任民团首领…… 这个沉稳严肃的黑瘦男子始终如溪镇的主心骨一般，在这个飘摇动荡的年代支撑起了溪镇，小说结尾，顾益民那“低头弓背，弱不禁风”的模样似乎预示了在这乱世中，溪镇将走向的结局。 </li>
-<li>………</li>
-</ul>
-<p>故事中所有的人物大都是有着始终如一的底色，所以每一个人物都可以给读者留下深刻的印象，这在一定程度上削弱了故事的复杂性，但个性鲜明的人物加上精巧的剧情设计，使得整个故事的复杂度刚刚好，人物与情节耦合地纹丝合缝。<br>人物塑造的始终如一、人物与故事的相得益彰使得文中着墨描写的人物都十分鲜活，当我读完这本书之时，除了会慨叹命运之外，也会回味于走向结局之人的一生，也会构想那些未交代结局但在我脑海中鲜活着的人物的命运……这或许就是好小说的魅力所在吧，仿佛林祥福、纪小美、沈阿强、顾益民等角色真真正正地存在过，存在于那个久远的兵荒马乱的清末民初之时。<br><strong>或许某一天我会因《文城》中的某个人物而对现实中的某个人产生熟悉感，毕竟小说源于现实，而人性又总是相通的。</strong></p>
-<h3 id="时代背景与个人命运"><a href="#时代背景与个人命运" class="headerlink" title="时代背景与个人命运"></a>时代背景与个人命运</h3><p>正如书的腰封中所说: </p>
-<blockquote>
-<p>这是一个蛮荒的时代，结束的尚未结束，开始的尚未开始。 </p>
-</blockquote>
-<p>在这样一个时代大背景下，个人命运被时代的洪流裹挟着前进，在那样一个乱的年代，各式各样的人性会随时代的奏乐喷涌而出，衍生出一个又一个的传奇故事，我想这也是余华老师选择清末民初作为小说背景的原因之一。<br>在这样的时代背景下讨论个人命运，我相信也是需要跳出我们的“现代人视角”来进行审视，林祥福、小美的命运显然是不够圆满的，他们的命运凸显着“裹挟”二字，他们被时代“裹挟”着相遇、分离、各自走向人生终点。但若回顾他们的一生，他们又都是幸运的，他们都短暂品尝到了人生中难得的温情，并不单调的度过了人生。 </p>
-<blockquote>
-<p><strong>最后我想引用林培源对这本书的书评中的一句话:</strong><br><strong>“任何故事经过转述，都面临被稀释的风险，《文城》感人至深、催人泪下的部分只有在阅读时才能被激活和唤醒。”</strong><br><strong>这或许也正是文字的魅力吧，完成了无法言传的情感的传递。</strong></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>灵魂雕琢</category>
-      </categories>
-      <tags>
-        <tag>余华，清末民初</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>星轨拍摄与延时视频</title>
     <url>/2021/02/19/xing-kong-she-ying-yu-yan-shi-shi-pin/</url>
     <content><![CDATA[<p>在上学期马上要结束时，我动了换相机的邪念，这邪念最终导致我的钱包缩水，我的相机也由尼康家的D3500换成了佳能家Eosrp。鉴于我以前假期在家都是高强度娱乐，带回去的书往往就呆在行李箱睡大觉，这次我便将新购的相机和三脚架一并带回了家，<strong>万一自己在家想出去拍拍照呢？</strong></p>
@@ -4928,15 +4949,40 @@ a=a^b; #a=(a^b)^(a^b^b)=0^b=0
       </tags>
   </entry>
   <entry>
-    <title>有感</title>
-    <url>/2020/02/22/you-gan/</url>
-    <content><![CDATA[<p>&emsp;    或许逃避是人的天性，整个博一上学期，似乎整天忙忙碌碌，在若干门课程中来回斡旋，<span id="more"></span>但当闲下来细细一想，似乎也有很多时间自己并没有好好利用，用那些时间在逃避、在咸鱼、在发呆。整个博一上学期自己也读了一些书，比如《历史的教训》、《贫穷的本质》、《禅与摩托车维修技术》、《变革中国》，相比于完整读下来的书，挖的坑自然是更多，《纯粹理性批判》、《世界文明史》、《资本论》……如果你要问我为什么选择这些书，我只能回答机缘巧合吧，这些书或是来源于上课时某位同学的推荐，或是来自于自己查询某些资料时的推荐，不一而足。其实我认为读这些书一方面是一种对自己空余时间的填充，对纯粹理工科学习的一种暂时逃避，也是一个不断寻找答案的过程，寻找一些理工科的书籍里缺乏的一些答案。其实我一直在思考一个问题，一个人的强大究竟是来源于其内心的强大，还是来源于其所凭外物，当你一无所有（指外物）之时，你还能剩下什么？是没有灵魂的一具空壳，还是一个拥有强大生命的种子。<br>&emsp;    读史教会我的第一点是作为历史当中普通人的世事无常，我们所接触的历史往往是王侯将相的历史，是英雄名士的历史，若人类发展的角度来看历史，一个人的历史观总会趋于无情，这种无情我们可以理解为作为现代人的傲慢/优越，如今我们去各地旅游，惊叹于种种历史古迹，惊叹于古人的智慧，但是孰又会在意这些历史古迹下面是当时多少奴隶的血泪。这些遗迹显示了当时高超的建造技术，为后人留下了宝贵遗产，我们或可以说这是历史的进步，然而那些建造他们的奴隶们则消逝于历史的阴影之中。若我们接受这样的历史进步性说法，由此会自然引出下一个结论——历史的发展是必然伴随着牺牲的，作为现代人，我们可以一方面斥责当时的暴政，另一方面又可以欣赏到这些暴政所留下的历史遗迹，每每想到这些，总觉如鲠在喉。或许从这些历史中我们可以得出这样的经验，某些我们认为错误的做法确实促进了当时历史的发展，但是历史发展途径许多，我们应当选择让人民整体更加幸福的发展道路，唉，不过聊以自慰耳。<br>&emsp;行路者需要背负东西，然而不能背负太多。我第一个放入背包的叫做责任，从诞生开始，我就开始与这个世界产生联系，父母、家庭、国家、人类，这些名词限定了我是我，梁启超在《最苦与最乐》中写道：“人生最苦，莫过于身上背负着一种未了的责任；人生最乐，莫过于尽责之时。“责任二字，说来轻巧，实则沉甸甸，也因责任二字，人生少了些凄清，多了些烟火；我第二个放入背包的叫做知识，在我看来，当曾经模糊看不清楚的东西在你眼前变得清晰之时，也是精神愉悦满足之时，文学史哲让你反求诸己，塑造清明的内心世界，理血工学让你更好地认识客观世界，改造客观世界，两种知识于我而言同样重要。吾之一生，有此两者，足矣。</p>
+    <title>文城-读后感</title>
+    <url>/2021/03/20/wen-cheng-du-hou-gan/</url>
+    <content><![CDATA[<blockquote>
+<p><strong>序:</strong> 3月12日晚，在王府井街道上的三联韬奋书店中，我轻抚着一本本书的封面，似乎试图透过封面上的零星字眼来寻找某种共鸣感，<strong>当我看到《文城》这本书时，腰封上的“人生就是自己的往事和他人的序章”蓦然间打动了我，于是我拿起了这本书，将与这本书的相遇纳入我的往事之中。</strong></p>
+</blockquote>
+<span id="more"></span>
+<p>在读《文城》之前，我并没有读过余华的其他作品，但或许也正是因为这个原因，《文城》带给了我极大的惊喜感，不快不慢的文章节奏，入木三分的人物刻画，张弛有度的感情释放，引人入胜的情节设计…… 无不让我有眼前一亮之感。<br>读完《文城》后，我的脑中思绪万千，人物、情节、时代背景、个人命运…… 似乎从哪一个点切入都有着零碎的只言片语。然零星的只言片语只有经过文字的整理才能够成体系，本文就基于这样的目的简单地谈一谈自己对这本书的感受。 </p>
+<h3 id="故事情节"><a href="#故事情节" class="headerlink" title="故事情节"></a>故事情节</h3><p>《文城》中的故事发生在清末民初的一个南方小镇中，其所述的故事兼具民间性与传奇性，小说由“文城”和“文城 补”构成，两部分，犹如两面镜子，彼此相互映照，但只有将两个镜中世界进行拼合，才能看到完整的故事。</p>
+<blockquote>
+<p><strong>文城</strong><br>阿强和小美在前往北京的过程中遇到了林祥福，阿强谎称他们来自“文城”，此后阿强独自离开，林祥福娶了留在家中的小美，小美在得知家中金条储藏位置后拿走少部分金条不辞而别；遭遇打击的林祥福为将被拿走的金条补上，开始四处拜师学艺，磨练自己的木匠活技巧；在林祥福生活再次归入平淡之际，小美归来了，但在为他诞下一女后又再次逃离；为寻找小美，林祥福决定将家产托付给管家，带着女儿踏上了去“文城”寻找小美之路，寻“文城”未果后林祥福在溪镇扎了根，叙述了林祥福父女与陈永良一家相伴生活的故事，然后在溪镇发生了遭遇龙卷风、霜冻自然灾害、遭遇北洋军阀的掠夺、遭遇土匪祸乱等事件，塑造了陈永良、顾益民、民团、匪帮等形象，最终林祥福在土匪祸乱中走向了他人生的句点。<br><strong>文城 补</strong><br>纪小美作为阿强家的童养媳从十岁开始便在阿强家长大，后因为接济家中弟弟被休回家。后来，阿强违逆父母心意，独自出逃去将纪小美从娘家带走，开启了一段冒险之旅，在山穷水尽之际，他们遇到了林祥福，小美在为林祥福诞下一女后与阿强返回溪镇，纪小美将对女儿的思念和对林祥福的歉意深埋心底，在溪镇与阿强开启了新的生活。当得知林祥福来到溪镇后，两人刻意躲避，在林祥福寻”文城”未果后，又于 雪冻之时返回了溪镇，时光在此交汇，阿强和纪小美冻死在了祭天之时，冻死于林祥福重新踏入溪镇准备开启新生活之时。 </p>
+</blockquote>
+<p><strong>如果说”文城”是江河表面的波澜壮阔，那么”文城 补”则是其下的暗流涌动，两者互为表里，综合起来便是林祥福、小美、阿强的完整人生。余华在”文城”篇也运用了倒叙和插叙的手法，让读者在阅读时始终带着悬念，当读完”文城 补”，一切谜底都揭晓之时，疑云消散，独留对命运的慨叹在心中回荡。</strong></p>
+<h3 id="人物"><a href="#人物" class="headerlink" title="人物"></a>人物</h3><p>《文城》中人物刻画的突出特点就是人物内核的始终如一：</p>
+<ul>
+<li><strong>至纯至善的林祥福:</strong> 好心接纳阿强与小美留宿，原谅小美盗窃金条，携幼女南下寻找小美，在溪镇与陈永良一家组成组合家庭，面对匪帮时挺身而出。从出场到落幕，善始终是林祥福这个角色最浓重的一抹底色。 </li>
+<li><strong>善良且富有母性的纪小美:</strong> 这个清秀温柔的南方女子，被命运裹挟着从溪镇来到了林祥福的家乡，后又回到了溪镇。这个简单的女子在与复杂的命运碰撞中，体验过幸福快乐，也经历过痛彻心扉。 </li>
+<li><strong>沉稳且富有担当的顾益民:</strong> 雪冻之时组织祭拜苍天，沉着应对北洋军阀使溪镇化险为夷，组建溪镇民团，担任民团首领…… 这个沉稳严肃的黑瘦男子始终如溪镇的主心骨一般，在这个飘摇动荡的年代支撑起了溪镇，小说结尾，顾益民那“低头弓背，弱不禁风”的模样似乎预示了在这乱世中，溪镇将走向的结局。 </li>
+<li>………</li>
+</ul>
+<p>故事中所有的人物大都是有着始终如一的底色，所以每一个人物都可以给读者留下深刻的印象，这在一定程度上削弱了故事的复杂性，但个性鲜明的人物加上精巧的剧情设计，使得整个故事的复杂度刚刚好，人物与情节耦合地纹丝合缝。<br>人物塑造的始终如一、人物与故事的相得益彰使得文中着墨描写的人物都十分鲜活，当我读完这本书之时，除了会慨叹命运之外，也会回味于走向结局之人的一生，也会构想那些未交代结局但在我脑海中鲜活着的人物的命运……这或许就是好小说的魅力所在吧，仿佛林祥福、纪小美、沈阿强、顾益民等角色真真正正地存在过，存在于那个久远的兵荒马乱的清末民初之时。<br><strong>或许某一天我会因《文城》中的某个人物而对现实中的某个人产生熟悉感，毕竟小说源于现实，而人性又总是相通的。</strong></p>
+<h3 id="时代背景与个人命运"><a href="#时代背景与个人命运" class="headerlink" title="时代背景与个人命运"></a>时代背景与个人命运</h3><p>正如书的腰封中所说: </p>
+<blockquote>
+<p>这是一个蛮荒的时代，结束的尚未结束，开始的尚未开始。 </p>
+</blockquote>
+<p>在这样一个时代大背景下，个人命运被时代的洪流裹挟着前进，在那样一个乱的年代，各式各样的人性会随时代的奏乐喷涌而出，衍生出一个又一个的传奇故事，我想这也是余华老师选择清末民初作为小说背景的原因之一。<br>在这样的时代背景下讨论个人命运，我相信也是需要跳出我们的“现代人视角”来进行审视，林祥福、小美的命运显然是不够圆满的，他们的命运凸显着“裹挟”二字，他们被时代“裹挟”着相遇、分离、各自走向人生终点。但若回顾他们的一生，他们又都是幸运的，他们都短暂品尝到了人生中难得的温情，并不单调的度过了人生。 </p>
+<blockquote>
+<p><strong>最后我想引用林培源对这本书的书评中的一句话:</strong><br><strong>“任何故事经过转述，都面临被稀释的风险，《文城》感人至深、催人泪下的部分只有在阅读时才能被激活和唤醒。”</strong><br><strong>这或许也正是文字的魅力吧，完成了无法言传的情感的传递。</strong></p>
+</blockquote>
 ]]></content>
       <categories>
-        <category>闲谈</category>
+        <category>灵魂雕琢</category>
       </categories>
       <tags>
-        <tag>无感而发</tag>
+        <tag>余华，清末民初</tag>
       </tags>
   </entry>
   <entry>
@@ -4972,6 +5018,18 @@ a=a^b; #a=(a^b)^(a^b^b)=0^b=0
       </categories>
       <tags>
         <tag>机器学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>有感</title>
+    <url>/2020/02/22/you-gan/</url>
+    <content><![CDATA[<p>&emsp;    或许逃避是人的天性，整个博一上学期，似乎整天忙忙碌碌，在若干门课程中来回斡旋，<span id="more"></span>但当闲下来细细一想，似乎也有很多时间自己并没有好好利用，用那些时间在逃避、在咸鱼、在发呆。整个博一上学期自己也读了一些书，比如《历史的教训》、《贫穷的本质》、《禅与摩托车维修技术》、《变革中国》，相比于完整读下来的书，挖的坑自然是更多，《纯粹理性批判》、《世界文明史》、《资本论》……如果你要问我为什么选择这些书，我只能回答机缘巧合吧，这些书或是来源于上课时某位同学的推荐，或是来自于自己查询某些资料时的推荐，不一而足。其实我认为读这些书一方面是一种对自己空余时间的填充，对纯粹理工科学习的一种暂时逃避，也是一个不断寻找答案的过程，寻找一些理工科的书籍里缺乏的一些答案。其实我一直在思考一个问题，一个人的强大究竟是来源于其内心的强大，还是来源于其所凭外物，当你一无所有（指外物）之时，你还能剩下什么？是没有灵魂的一具空壳，还是一个拥有强大生命的种子。<br>&emsp;    读史教会我的第一点是作为历史当中普通人的世事无常，我们所接触的历史往往是王侯将相的历史，是英雄名士的历史，若人类发展的角度来看历史，一个人的历史观总会趋于无情，这种无情我们可以理解为作为现代人的傲慢/优越，如今我们去各地旅游，惊叹于种种历史古迹，惊叹于古人的智慧，但是孰又会在意这些历史古迹下面是当时多少奴隶的血泪。这些遗迹显示了当时高超的建造技术，为后人留下了宝贵遗产，我们或可以说这是历史的进步，然而那些建造他们的奴隶们则消逝于历史的阴影之中。若我们接受这样的历史进步性说法，由此会自然引出下一个结论——历史的发展是必然伴随着牺牲的，作为现代人，我们可以一方面斥责当时的暴政，另一方面又可以欣赏到这些暴政所留下的历史遗迹，每每想到这些，总觉如鲠在喉。或许从这些历史中我们可以得出这样的经验，某些我们认为错误的做法确实促进了当时历史的发展，但是历史发展途径许多，我们应当选择让人民整体更加幸福的发展道路，唉，不过聊以自慰耳。<br>&emsp;行路者需要背负东西，然而不能背负太多。我第一个放入背包的叫做责任，从诞生开始，我就开始与这个世界产生联系，父母、家庭、国家、人类，这些名词限定了我是我，梁启超在《最苦与最乐》中写道：“人生最苦，莫过于身上背负着一种未了的责任；人生最乐，莫过于尽责之时。“责任二字，说来轻巧，实则沉甸甸，也因责任二字，人生少了些凄清，多了些烟火；我第二个放入背包的叫做知识，在我看来，当曾经模糊看不清楚的东西在你眼前变得清晰之时，也是精神愉悦满足之时，文学史哲让你反求诸己，塑造清明的内心世界，理血工学让你更好地认识客观世界，改造客观世界，两种知识于我而言同样重要。吾之一生，有此两者，足矣。</p>
+]]></content>
+      <categories>
+        <category>闲谈</category>
+      </categories>
+      <tags>
+        <tag>无感而发</tag>
       </tags>
   </entry>
   <entry>
@@ -7298,6 +7356,91 @@ if __name__ == '__main__':
       </tags>
   </entry>
   <entry>
+    <title>纯粹理性批判</title>
+    <url>/2020/12/14/chun-cui-li-xing-pi-pan/</url>
+    <content><![CDATA[<p>在一年前我磕磕绊绊读完《西方哲学简史》后，试图想要征服康德的《纯粹理性批判》，然而《纯粹理性批判》实在晦涩难读，加之以当时我自身哲学素养不够，我最终读到百分之十左右时便放弃了。时至今日，我再次尝试精读一下《纯粹理性批判》这本书，这篇博客也就用来记录一下我读期间的一些所思所感。 <span id="more"></span></p>
+<h4 id="第一版前言"><a href="#第一版前言" class="headerlink" title="第一版前言"></a>第一版前言</h4><p>主要的问题: </p>
+<blockquote>
+<p>知性和理性脱离开一切经验能够认识什么、认识多少？</p>
+</blockquote>
+<p>论证的明晰性主要体现在: </p>
+<ul>
+<li>概念的推论(逻辑的)明晰性，这是本文所重视的。</li>
+<li>直观的、亦即凭借具体的实例和其他说明的直觉的(感性的)明晰性，本文并不注重，康德给出的理由是：明晰性的辅助手段虽然在各个部分上有所助益，但却往往在整体上分散精力。</li>
+</ul>
+<p>本文的基本思路: </p>
+<ul>
+<li>在自然的形而上学这个标题自身下面提供出纯粹理性的一个体系，即论述清楚待批判的对象本身。 </li>
+<li>对纯粹理性的批判。</li>
+</ul>
+<h4 id="第二版前言"><a href="#第二版前言" class="headerlink" title="第二版前言"></a>第二版前言</h4><p>逻辑学的界限: </p>
+<blockquote>
+<p>一门仅仅详尽地阐明和严格地证明一切思维的形式规则的科学。</p>
+</blockquote>
+<p>形而上学的做法迄今为止还只是一种来回摸索，而最糟糕的是仅仅在概念中间来回摸索。<br>如何才能寻找到一条科学的可靠道路？ </p>
+<blockquote>
+<p>反省对数学和自然科学这两门学科来说变得如此有益的思维方式变革的本质性部分，并在这里就它们作为理性知识与形而上学的类似所允许，至少尝试效仿它们。</p>
+</blockquote>
+<p>康德对纯粹理性批判这一工作的概述: </p>
+<blockquote>
+<p>纯粹思辨理性的这一批判的工作就在于那种尝试，即通过我们按照几何学家和自然研究者的范例对形而上学进行一场完全的革命，来变革形而上学迄今为止的做法。</p>
+</blockquote>
+<p>纯粹思辨理性自身具有的特征: </p>
+<blockquote>
+<p>它能够而且应当根据它为自己选择思维客体的方式的不同来衡量它自己的能力，甚至完备地列举出为自己提出任务的各种方式，并这样来描画形而上学体系的整个轮廓。</p>
+</blockquote>
+<p>形而上学本身的优势在于当它被这种批判带上一门科学的道路之后，它就完全能把握住属于它的知识的整个领域，从而完成自己的事业。<br>但问题在于，<strong>凭借这样一种通过批判澄清的、但因此也达到一种恒定状态的形而上学究竟是一笔怎样的财富？</strong></p>
+<blockquote>
+<p>永远不要冒险通过思辨理性去超越经验的界限，但同时，它借此同时排除了限制或者有完全根除理性的实践应用的危险的障碍，事实上却具有积极的和非常重要的用处。 </p>
+</blockquote>
+<p>在批判的分析部分将证明，空间和时间不过是感性直观的形式，因而只不过是作为显像的物实存的条件，此外除非能够被给予与知性概念相应的直观，否则我们就没有任何知性概念，从而也根本没有任何达到物的知识的要素，于是我们对于<strong>任何作为物自身的对象</strong>都不可能有知识，而只有在它作为<strong>感性直观的客体、即作为显象</strong>时才能有知识。由此当然也就能够得出，一切思辨的理性知识，都仅仅限制在经验的对象之上。<br>但从另一个角度来说，正是这些作为物自身的对象，我们即使不能认识，至少也必须能够思维。我能够思维我想思维的任何东西，只要我不与自己本身相矛盾，也就是说，只要我的概念是一个可能的思想，即使我不能保证在所有可能性的总和中是否也有一个客体与它相对应。但是，要赋予这样一个概念以客观的有效性(实在的可能性)，就要求某种更多的东西。但这种更多的东西恰好不需要在理论的知识来源中寻找，它也可能存在于实际的知识来源之中。<br>同一个意志就在显象中被设定为必然遵守自然规律的、就此而言是不自由的，但在另一方面又被设想为属于一个物自身而不服从自然规律的，从而就被设想为自由的。</p>
+<blockquote>
+<p>批判告诉我们，就物自身而言，我们不可避免地无知，我们在理论上能够认识的一切仅仅限制在显像上。‘</p>
+</blockquote>
+<p>康德的对纯粹理性的批判更多的是针对形而上学中的“独断论者”。</p>
+<blockquote>
+<p>批判并不与理性在其作为科学的纯粹知识中的独断方法对立，而是与独断论对立，也就是说，与凭借一种从概念出发的纯粹知识按照理性早已运用的原则、从不调查理性达到这种知识的方式和权利就能前进的僭妄对立。</p>
+</blockquote>
+<h4 id="导论"><a href="#导论" class="headerlink" title="导论"></a>导论</h4><h5 id="论纯粹理性知识与经验性知识的区别"><a href="#论纯粹理性知识与经验性知识的区别" class="headerlink" title="论纯粹理性知识与经验性知识的区别"></a>论纯粹理性知识与经验性知识的区别</h5><blockquote>
+<p>我们的一切知识都以经验开始，这是毋庸置疑的。在时间上，我们没有任何知识先行于经验，一切知识都是从经验开始。 </p>
+</blockquote>
+<p>但需要明确的是，<strong>尽管我们的一切知识都以经验开始，它们却并不因此都产生自经验</strong>，这句话看似有一些矛盾，但康德想表达的意思是: </p>
+<blockquote>
+<p>我们的知识并不仅仅是来自于经验，而是<strong>印象所接受的东西</strong>与<strong>我们自己的认识能力从自己本身提供的东西</strong>的一个复合物。</p>
+</blockquote>
+<p>我们的这个<strong>附加</strong>则是一个需要讨论的重点，由此便引出了一个关键问题:</p>
+<blockquote>
+<p><strong>是否有一种独立于经验，甚至独立于一切感官印象的知识。</strong> 人们称这样的知识为<strong>先天的</strong>，并把它们与那些具有后天的来源、即在经验中具有其来源的经验性的知识区别开来。</p>
+</blockquote>
+<p>同时康德为了更加精确地定义<strong>先天知识</strong>，举了一个人挖墙角的例子: </p>
+<blockquote>
+<p>关于某个挖墙脚的人，人们会说:” 他能够先天的知道房子会倒，也就是说，他不必等待这房子真的倒下来以获得经验。 然而，他并不能完全先天地知道这一点，“房子会倒”这样的认识也是来自于经验“物体是有重量的”。 </p>
+</blockquote>
+<p>因此，康德给出了他认为的先天知识的定义: </p>
+<blockquote>
+<p>先天知识指<strong>绝对不依赖于一切经验而发生的知识。</strong></p>
+</blockquote>
+<p>与这些知识相反的是经验性的知识，或者是<strong>仅仅后天地、即通过经验才可能的知识。</strong> 同时康德对先天知识又进行了划分:</p>
+<blockquote>
+<p>先天知识中根本不掺杂任何经验性因素的知识叫做<strong>纯粹的先天知识</strong>。<br> 在本节最后，康德举了一个后面还会经常提到的例子:<br>“每一变化皆有其原因”这个命题就是一个先天命题，但并不是纯粹的，因为变化是一个只能从经验中取得的概念。 </p>
+</blockquote>
+<h5 id="我们拥有某些先天知识，甚至普通的知性也从不缺少它们"><a href="#我们拥有某些先天知识，甚至普通的知性也从不缺少它们" class="headerlink" title="我们拥有某些先天知识，甚至普通的知性也从不缺少它们"></a>我们拥有某些先天知识，甚至普通的知性也从不缺少它们</h5><p>虽然在上一节给出了先天知识和经验性知识的定义，但从哪些特征出发可以清晰地分辨两种特征？ </p>
+<blockquote>
+<ul>
+<li>如果有一个命题与它的必然性一同被思维，那么它就是一个先天判断。 </li>
+<li>除了自身又是作为一个必然命题而有效的命题之外，它也不是从任何命题派生出的。 </li>
+<li>经验永远不赋予自己的判断以真正的或者严格的普遍性，而是只赋予它们以假定的、相对的普遍性。 </li>
+</ul>
+</blockquote>
+]]></content>
+      <categories>
+        <category>灵魂雕琢</category>
+      </categories>
+      <tags>
+        <tag>康德，哲学</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>剑指offer题目总结</title>
     <url>/2022/09/29/suan-fa-ti-zong-jie/</url>
     <content><![CDATA[<h3 id="剑指offer题目总结"><a href="#剑指offer题目总结" class="headerlink" title="剑指offer题目总结"></a>剑指offer题目总结</h3><h4 id="链表题目"><a href="#链表题目" class="headerlink" title="链表题目"></a>链表题目</h4><ul>
@@ -7537,91 +7680,6 @@ mp = collections.defaultdict(lambda:999) # 默认值为999
       </categories>
       <tags>
         <tag>数据结构</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>纯粹理性批判</title>
-    <url>/2020/12/14/chun-cui-li-xing-pi-pan/</url>
-    <content><![CDATA[<p>在一年前我磕磕绊绊读完《西方哲学简史》后，试图想要征服康德的《纯粹理性批判》，然而《纯粹理性批判》实在晦涩难读，加之以当时我自身哲学素养不够，我最终读到百分之十左右时便放弃了。时至今日，我再次尝试精读一下《纯粹理性批判》这本书，这篇博客也就用来记录一下我读期间的一些所思所感。 <span id="more"></span></p>
-<h4 id="第一版前言"><a href="#第一版前言" class="headerlink" title="第一版前言"></a>第一版前言</h4><p>主要的问题: </p>
-<blockquote>
-<p>知性和理性脱离开一切经验能够认识什么、认识多少？</p>
-</blockquote>
-<p>论证的明晰性主要体现在: </p>
-<ul>
-<li>概念的推论(逻辑的)明晰性，这是本文所重视的。</li>
-<li>直观的、亦即凭借具体的实例和其他说明的直觉的(感性的)明晰性，本文并不注重，康德给出的理由是：明晰性的辅助手段虽然在各个部分上有所助益，但却往往在整体上分散精力。</li>
-</ul>
-<p>本文的基本思路: </p>
-<ul>
-<li>在自然的形而上学这个标题自身下面提供出纯粹理性的一个体系，即论述清楚待批判的对象本身。 </li>
-<li>对纯粹理性的批判。</li>
-</ul>
-<h4 id="第二版前言"><a href="#第二版前言" class="headerlink" title="第二版前言"></a>第二版前言</h4><p>逻辑学的界限: </p>
-<blockquote>
-<p>一门仅仅详尽地阐明和严格地证明一切思维的形式规则的科学。</p>
-</blockquote>
-<p>形而上学的做法迄今为止还只是一种来回摸索，而最糟糕的是仅仅在概念中间来回摸索。<br>如何才能寻找到一条科学的可靠道路？ </p>
-<blockquote>
-<p>反省对数学和自然科学这两门学科来说变得如此有益的思维方式变革的本质性部分，并在这里就它们作为理性知识与形而上学的类似所允许，至少尝试效仿它们。</p>
-</blockquote>
-<p>康德对纯粹理性批判这一工作的概述: </p>
-<blockquote>
-<p>纯粹思辨理性的这一批判的工作就在于那种尝试，即通过我们按照几何学家和自然研究者的范例对形而上学进行一场完全的革命，来变革形而上学迄今为止的做法。</p>
-</blockquote>
-<p>纯粹思辨理性自身具有的特征: </p>
-<blockquote>
-<p>它能够而且应当根据它为自己选择思维客体的方式的不同来衡量它自己的能力，甚至完备地列举出为自己提出任务的各种方式，并这样来描画形而上学体系的整个轮廓。</p>
-</blockquote>
-<p>形而上学本身的优势在于当它被这种批判带上一门科学的道路之后，它就完全能把握住属于它的知识的整个领域，从而完成自己的事业。<br>但问题在于，<strong>凭借这样一种通过批判澄清的、但因此也达到一种恒定状态的形而上学究竟是一笔怎样的财富？</strong></p>
-<blockquote>
-<p>永远不要冒险通过思辨理性去超越经验的界限，但同时，它借此同时排除了限制或者有完全根除理性的实践应用的危险的障碍，事实上却具有积极的和非常重要的用处。 </p>
-</blockquote>
-<p>在批判的分析部分将证明，空间和时间不过是感性直观的形式，因而只不过是作为显像的物实存的条件，此外除非能够被给予与知性概念相应的直观，否则我们就没有任何知性概念，从而也根本没有任何达到物的知识的要素，于是我们对于<strong>任何作为物自身的对象</strong>都不可能有知识，而只有在它作为<strong>感性直观的客体、即作为显象</strong>时才能有知识。由此当然也就能够得出，一切思辨的理性知识，都仅仅限制在经验的对象之上。<br>但从另一个角度来说，正是这些作为物自身的对象，我们即使不能认识，至少也必须能够思维。我能够思维我想思维的任何东西，只要我不与自己本身相矛盾，也就是说，只要我的概念是一个可能的思想，即使我不能保证在所有可能性的总和中是否也有一个客体与它相对应。但是，要赋予这样一个概念以客观的有效性(实在的可能性)，就要求某种更多的东西。但这种更多的东西恰好不需要在理论的知识来源中寻找，它也可能存在于实际的知识来源之中。<br>同一个意志就在显象中被设定为必然遵守自然规律的、就此而言是不自由的，但在另一方面又被设想为属于一个物自身而不服从自然规律的，从而就被设想为自由的。</p>
-<blockquote>
-<p>批判告诉我们，就物自身而言，我们不可避免地无知，我们在理论上能够认识的一切仅仅限制在显像上。‘</p>
-</blockquote>
-<p>康德的对纯粹理性的批判更多的是针对形而上学中的“独断论者”。</p>
-<blockquote>
-<p>批判并不与理性在其作为科学的纯粹知识中的独断方法对立，而是与独断论对立，也就是说，与凭借一种从概念出发的纯粹知识按照理性早已运用的原则、从不调查理性达到这种知识的方式和权利就能前进的僭妄对立。</p>
-</blockquote>
-<h4 id="导论"><a href="#导论" class="headerlink" title="导论"></a>导论</h4><h5 id="论纯粹理性知识与经验性知识的区别"><a href="#论纯粹理性知识与经验性知识的区别" class="headerlink" title="论纯粹理性知识与经验性知识的区别"></a>论纯粹理性知识与经验性知识的区别</h5><blockquote>
-<p>我们的一切知识都以经验开始，这是毋庸置疑的。在时间上，我们没有任何知识先行于经验，一切知识都是从经验开始。 </p>
-</blockquote>
-<p>但需要明确的是，<strong>尽管我们的一切知识都以经验开始，它们却并不因此都产生自经验</strong>，这句话看似有一些矛盾，但康德想表达的意思是: </p>
-<blockquote>
-<p>我们的知识并不仅仅是来自于经验，而是<strong>印象所接受的东西</strong>与<strong>我们自己的认识能力从自己本身提供的东西</strong>的一个复合物。</p>
-</blockquote>
-<p>我们的这个<strong>附加</strong>则是一个需要讨论的重点，由此便引出了一个关键问题:</p>
-<blockquote>
-<p><strong>是否有一种独立于经验，甚至独立于一切感官印象的知识。</strong> 人们称这样的知识为<strong>先天的</strong>，并把它们与那些具有后天的来源、即在经验中具有其来源的经验性的知识区别开来。</p>
-</blockquote>
-<p>同时康德为了更加精确地定义<strong>先天知识</strong>，举了一个人挖墙角的例子: </p>
-<blockquote>
-<p>关于某个挖墙脚的人，人们会说:” 他能够先天的知道房子会倒，也就是说，他不必等待这房子真的倒下来以获得经验。 然而，他并不能完全先天地知道这一点，“房子会倒”这样的认识也是来自于经验“物体是有重量的”。 </p>
-</blockquote>
-<p>因此，康德给出了他认为的先天知识的定义: </p>
-<blockquote>
-<p>先天知识指<strong>绝对不依赖于一切经验而发生的知识。</strong></p>
-</blockquote>
-<p>与这些知识相反的是经验性的知识，或者是<strong>仅仅后天地、即通过经验才可能的知识。</strong> 同时康德对先天知识又进行了划分:</p>
-<blockquote>
-<p>先天知识中根本不掺杂任何经验性因素的知识叫做<strong>纯粹的先天知识</strong>。<br> 在本节最后，康德举了一个后面还会经常提到的例子:<br>“每一变化皆有其原因”这个命题就是一个先天命题，但并不是纯粹的，因为变化是一个只能从经验中取得的概念。 </p>
-</blockquote>
-<h5 id="我们拥有某些先天知识，甚至普通的知性也从不缺少它们"><a href="#我们拥有某些先天知识，甚至普通的知性也从不缺少它们" class="headerlink" title="我们拥有某些先天知识，甚至普通的知性也从不缺少它们"></a>我们拥有某些先天知识，甚至普通的知性也从不缺少它们</h5><p>虽然在上一节给出了先天知识和经验性知识的定义，但从哪些特征出发可以清晰地分辨两种特征？ </p>
-<blockquote>
-<ul>
-<li>如果有一个命题与它的必然性一同被思维，那么它就是一个先天判断。 </li>
-<li>除了自身又是作为一个必然命题而有效的命题之外，它也不是从任何命题派生出的。 </li>
-<li>经验永远不赋予自己的判断以真正的或者严格的普遍性，而是只赋予它们以假定的、相对的普遍性。 </li>
-</ul>
-</blockquote>
-]]></content>
-      <categories>
-        <category>灵魂雕琢</category>
-      </categories>
-      <tags>
-        <tag>康德，哲学</tag>
       </tags>
   </entry>
   <entry>
@@ -8826,27 +8884,6 @@ P(o \mid c)=\frac{\exp \left(u_o^T v_c\right)}{\sum_{w \in V} \exp \left(u_w^T v
       </tags>
   </entry>
   <entry>
-    <title>非监督学习</title>
-    <url>/2020/09/11/fei-jian-du-xue-xi/</url>
-    <content><![CDATA[<p>这部分总结下传统统计学习的最后一部分内容——非监督学习，非监督学习又称无监督学习，我们前面讲的大部分算法都是需要样本的标签的，通过标签来构造损失函数，进而进行模型学习，但在有的情况下我们并没有数据的标签，这种情况下我们就什么都不能做了么？当然不是，对于无标签数据，我们仍旧可以开展一部分工作，比如：</p>
-<ul>
-<li>概率模型估计 </li>
-<li>数据降维</li>
-<li>数据聚类</li>
-</ul>
-<p>由于概率模型估计算法在前面已经讲过了(<a href="https://xuejy19.github.io/2020/07/30/EM/">EM算法</a>、<a href="https://xuejy19.github.io/2020/07/27/概率密度函数估计/#more">概率密度函数估计</a>)，这里就不再赘述，本文主要简单介绍下无监督学习问题的思想。</p>
-<span id="more"></span>
-<h3 id="无监督学习思想"><a href="#无监督学习思想" class="headerlink" title="无监督学习思想"></a>无监督学习思想</h3><p>无监督学习是从无标注的数据中学习数据的统计规律或者说内在结构的机器学习，主要包括聚类、降维、概率估计，<strong>无监督学习可以用于数据分析或者监督学习预处理</strong>。<br>无监督学习使用无标注数据$U = { x<em>1, x_2, \dots, x_N}$学习或训练，其中$x_i，i = 1,2,\dots,N$, 是样本，由特征向量组成。无监督学习的模型是函数$z = g</em>{\theta}(x)$ , 条件概率分布$P<em>{\theta}(z|x)$，或条件概率分布$P</em>{\theta}(x|z)$。其中$x \in X$是输入，表示样本； $z \in Z$是输出，表示对样本的分析结果，可以是类别、转换、概率；$\theta$是参数。<br>无监督学习是一个困难的任务，因为数据没有标注，也就是没有人为的引导，机器需要自己从数据中找出规律。模型的输入$x$在数据中可以观测，而输出$z$隐藏在数据中。无监督学习通常需要大量的数据，因为对数据隐藏的规律的发现需要足够的观测。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/Unsupervised.jpg" alt="机器学习算法划分"></p>
-<p>后面将会有两片文章分别介绍降维算法和聚类算法。</p>
-]]></content>
-      <categories>
-        <category>统计学习</category>
-      </categories>
-      <tags>
-        <tag>降维，聚类，概率密度估计</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>风光摄影</title>
     <url>/2020/11/27/feng-guang-she-ying/</url>
     <content><![CDATA[<p>这一篇文章就跟随校风光摄影的大佬来了解一下风光摄影的一些知识，该部分按照以下三部分进行组织: </p>
@@ -8969,6 +9006,27 @@ P(o \mid c)=\frac{\exp \left(u_o^T v_c\right)}{\sum_{w \in V} \exp \left(u_w^T v
       </categories>
       <tags>
         <tag>风光摄影</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>非监督学习</title>
+    <url>/2020/09/11/fei-jian-du-xue-xi/</url>
+    <content><![CDATA[<p>这部分总结下传统统计学习的最后一部分内容——非监督学习，非监督学习又称无监督学习，我们前面讲的大部分算法都是需要样本的标签的，通过标签来构造损失函数，进而进行模型学习，但在有的情况下我们并没有数据的标签，这种情况下我们就什么都不能做了么？当然不是，对于无标签数据，我们仍旧可以开展一部分工作，比如：</p>
+<ul>
+<li>概率模型估计 </li>
+<li>数据降维</li>
+<li>数据聚类</li>
+</ul>
+<p>由于概率模型估计算法在前面已经讲过了(<a href="https://xuejy19.github.io/2020/07/30/EM/">EM算法</a>、<a href="https://xuejy19.github.io/2020/07/27/概率密度函数估计/#more">概率密度函数估计</a>)，这里就不再赘述，本文主要简单介绍下无监督学习问题的思想。</p>
+<span id="more"></span>
+<h3 id="无监督学习思想"><a href="#无监督学习思想" class="headerlink" title="无监督学习思想"></a>无监督学习思想</h3><p>无监督学习是从无标注的数据中学习数据的统计规律或者说内在结构的机器学习，主要包括聚类、降维、概率估计，<strong>无监督学习可以用于数据分析或者监督学习预处理</strong>。<br>无监督学习使用无标注数据$U = { x<em>1, x_2, \dots, x_N}$学习或训练，其中$x_i，i = 1,2,\dots,N$, 是样本，由特征向量组成。无监督学习的模型是函数$z = g</em>{\theta}(x)$ , 条件概率分布$P<em>{\theta}(z|x)$，或条件概率分布$P</em>{\theta}(x|z)$。其中$x \in X$是输入，表示样本； $z \in Z$是输出，表示对样本的分析结果，可以是类别、转换、概率；$\theta$是参数。<br>无监督学习是一个困难的任务，因为数据没有标注，也就是没有人为的引导，机器需要自己从数据中找出规律。模型的输入$x$在数据中可以观测，而输出$z$隐藏在数据中。无监督学习通常需要大量的数据，因为对数据隐藏的规律的发现需要足够的观测。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/Unsupervised.jpg" alt="机器学习算法划分"></p>
+<p>后面将会有两片文章分别介绍降维算法和聚类算法。</p>
+]]></content>
+      <categories>
+        <category>统计学习</category>
+      </categories>
+      <tags>
+        <tag>降维，聚类，概率密度估计</tag>
       </tags>
   </entry>
 </search>
