@@ -100,6 +100,112 @@ P(e) &= P(x \in \mathcal{R_1},\omega_2) + P(x \in \mathcal{R_2},\omega_1) \\
       </categories>
   </entry>
   <entry>
+    <title>Domain generalization</title>
+    <url>/2022/10/28/domain-generalization/</url>
+    <content><![CDATA[<p>本篇文章是对文章<a href="https://arxiv.org/pdf/2103.03097.pdf">Generalizing to Unseen Domains: A Survey on<br>Domain Generalization</a>的研读介绍，旨在对域泛化(domain generalization)领域研究现状有粗略了解，考虑将该领域的一些研究思想迁移到故障检测/溯源/软测量等任务上去。<span id="more"></span> </p>
+<h3 id="出发点"><a href="#出发点" class="headerlink" title="出发点"></a>出发点</h3><ul>
+<li><p>现有算法面临的挑战<br>传统的机器学习算法的泛化能力依赖于训练域与测试域的独立同分布(i.i.d)假设，而在现实数据中，这样的假设往往无法得到满足。</p>
+</li>
+<li><p>目的<br>如果我们已经拥有了一个/多个域的数据，希望让训练得到的模型在未知域上仍能有良好的泛化能力。 </p>
+</li>
+</ul>
+<h3 id="问题数学描述"><a href="#问题数学描述" class="headerlink" title="问题数学描述"></a>问题数学描述</h3><blockquote>
+<ul>
+<li><p>domain: 记$\mathcal{X}$为非空的输入空间，$\mathcal{Y}$为输出空间，输入输出之间的关系通过联合概率分布$P<em>{XY}$来描述，域则由从该分布中采样得到的样本组成$S = {(x_i,y_i)}</em>{i=1}^n \sim P_{XY}$。</p>
+</li>
+<li><p>domain generalization: 在域泛化任务中，我们有$M$个训练/源域的数据</p>
+<script type="math/tex; mode=display">
+  S_{train} = {S_i|i=1,...,M}, where \quad S^i = \{(x_j^i, y_j^i)\}_{j=1}^{n_i} \quad denotes \quad i_{th} \quad domain</script><p>不同域的数据具有不同的联合概率分布，即$P<em>{XY}^i \neq P</em>{XY}^j $；域泛化的目标是学习到一个<strong>鲁棒且可泛化的预测方程</strong>$h: \mathcal{X} \rightarrow \mathcal{Y}$, 该模型在未知域$S_{test}$上的预测误差要尽可能小: </p>
+<script type="math/tex; mode=display">
+  \min_{h} \mathbb{E}_{(x,y) \in S_{test}} [\ell(h(x),y)]</script></li>
+</ul>
+</blockquote>
+<h3 id="相关研究领域介绍"><a href="#相关研究领域介绍" class="headerlink" title="相关研究领域介绍"></a>相关研究领域介绍</h3><ul>
+<li><strong>多任务学习(Multi-task learning)</strong>: 在多个任务上联合优化模型，目的是为了提高模型在原始任务上的泛化能力，多域学习(multi-domain learning)可以看作多任务学习的一种特例。</li>
+<li><strong>迁移学习(Transfer learning)</strong>: 在源任务/域上训练得到模型，目的在于提高模型在目标任务/域上的性能，迁移学习最广泛的应用就是<strong>预训练模型+微调</strong>的范式，与域泛化的区别在于迁移学习中目标域的数据是可获取的。</li>
+<li><strong>域适应(domain adaptation)</strong>: 该领域可以看作是迁移学习的一个分支，也是需要能够获取目标域的数据。 </li>
+<li><strong>元学习(Meta-learning)</strong>: 学习学习算法，即learning to learn, 元学习是一种通用的学习策略可以用于实现域泛化。 </li>
+<li><strong>终身学习/持续学习</strong>: 随着任务/数据域的不断更新，模型需要不断利用新的知识来更新模型参数。 </li>
+<li><strong>零样本学习(Zero-shot learning)</strong>: 利用已有类别的数据学习模型，对新类别的样本仍能分辨出来。 </li>
+</ul>
+<h3 id="方法分类"><a href="#方法分类" class="headerlink" title="方法分类"></a>方法分类</h3><p><img src="/.io//%E6%96%B9%E6%B3%95%E5%88%86%E7%B1%BB.png" alt></p>
+<p>目前域泛化的方法可以分为三类： </p>
+<ul>
+<li><strong>数据操纵</strong>: 基本思路是提高训练数据的涵盖范围，常用的思路有两个: <ul>
+<li>数据扩充: 数据扩展/随机变换 </li>
+<li>数据生成: 生成更具多样性的样本 </li>
+</ul>
+</li>
+<li><strong>表征学习</strong>: 基本思想是学习到一些稳定的特征，可细分为两个方向: <ul>
+<li>域不变表征学习 </li>
+<li>特征解偶</li>
+</ul>
+</li>
+<li><strong>学习策略</strong>: 探索一般性的学习策略以提升模型泛化能力，常用思路有: <ul>
+<li>集成学习</li>
+<li>元学习 </li>
+<li>梯度操作 </li>
+<li>分布鲁棒优化 </li>
+<li>自监督学习 </li>
+</ul>
+</li>
+</ul>
+<h4 id="数据操纵-data-manipulation"><a href="#数据操纵-data-manipulation" class="headerlink" title="数据操纵(data manipulation)"></a>数据操纵(data manipulation)</h4><p>提高训练数据的多样性，数据增强的有效性在于增强过后的数据未来有可能出现在测试域中，<strong>能否考虑应用一些机理知识来进行数据增强，类似于反事实的概念</strong>。 </p>
+<h5 id="基于数据扩充的域泛化"><a href="#基于数据扩充的域泛化" class="headerlink" title="基于数据扩充的域泛化"></a>基于数据扩充的域泛化</h5><p>常用的数据扩充操作有翻转、旋转、裁剪、添加噪声等</p>
+<ul>
+<li>域随机化: 改变目标大小/位置/光线/随机噪声 </li>
+<li>对抗数据增广: 实现有效数据增广，同标签，沿差异大的方向扩充样本 </li>
+</ul>
+<h5 id="基于数据生成的域泛化"><a href="#基于数据生成的域泛化" class="headerlink" title="基于数据生成的域泛化"></a>基于数据生成的域泛化</h5><p>一般是通过VAE或者GAN来实现数据增强</p>
+<h4 id="表征学习"><a href="#表征学习" class="headerlink" title="表征学习"></a>表征学习</h4><p>将预测方程$h$拆分未$h = f \cdot g$, 表征学习的目标为: </p>
+<script type="math/tex; mode=display">
+\min _{f, g} \mathbb{E}_{\mathbf{x}, y} \ell(f(g(\mathbf{x})), y)+\lambda \ell_{\mathrm{reg}}</script><h5 id="基于域不变性表征学习的域泛化"><a href="#基于域不变性表征学习的域泛化" class="headerlink" title="基于域不变性表征学习的域泛化"></a>基于域不变性表征学习的域泛化</h5><p>理论保证: 如果不同数据域的表征相同，那么说明该表征具有一般性并且可以迁移到其他域，在该表征函数下，源域的数据和目标域的数据更接近了，使得泛化误差上界更紧。</p>
+<ul>
+<li>基于核的方法(Kernel-based methods): 将原始数据映射到高维空间，通过核函数可以在不知道样本高维坐标情况下计算两样本内积，将不同域样本映射到高维空间，分布一致。</li>
+<li>域对抗学习(Domain adversarial learning): 判别器来识别数据属于不同域，生成器用来学习不变表征让判别器分辨不出来。</li>
+<li>显式特征对齐(Explicit feature alignment): 在学习的过程显式让特征对齐 </li>
+<li>不变风险最小化(Invariant risk minimization): </li>
+</ul>
+<h5 id="基于特征解耦的域泛化"><a href="#基于特征解耦的域泛化" class="headerlink" title="基于特征解耦的域泛化"></a>基于特征解耦的域泛化</h5><p>将原始数据投影到特征空间，将特征分为domain-shared feature 和 domain-specific feature, 目标函数一般为如下形式: </p>
+<script type="math/tex; mode=display">
+\min _{g_c, g_s, f} \mathbb{E}_{\mathbf{x}, y} \ell\left(f\left(g_c(\mathbf{x})\right), y\right)+\lambda \ell_{\mathrm{reg}}+\mu \ell_{\mathrm{recon}}\left(\left[g_c(\mathbf{x}), g_s(\mathbf{x})\right], \mathbf{x}\right)</script><ul>
+<li>多成分分析: 用不同的特征提取器来提取数据中的不同成分 </li>
+<li>生成模型: Domain-invariant VAE </li>
+<li>因果启发的方法: </li>
+</ul>
+<h4 id="学习策略"><a href="#学习策略" class="headerlink" title="学习策略"></a>学习策略</h4><h5 id="基于集成学习的域泛化"><a href="#基于集成学习的域泛化" class="headerlink" title="基于集成学习的域泛化"></a>基于集成学习的域泛化</h5><p>每个域都有一个模型，结合输出结果 </p>
+<h5 id="基于元学习的域泛化"><a href="#基于元学习的域泛化" class="headerlink" title="基于元学习的域泛化"></a>基于元学习的域泛化</h5><p>元学习的关键思想是从多个任务中学习一个通用的模型</p>
+<h5 id="基于梯度操作的域泛化"><a href="#基于梯度操作的域泛化" class="headerlink" title="基于梯度操作的域泛化"></a>基于梯度操作的域泛化</h5><p>self-challenging训练算法 </p>
+<h5 id="基于分布鲁棒优化的方法"><a href="#基于分布鲁棒优化的方法" class="headerlink" title="基于分布鲁棒优化的方法"></a>基于分布鲁棒优化的方法</h5><h5 id="基于自监督学习的域泛化"><a href="#基于自监督学习的域泛化" class="headerlink" title="基于自监督学习的域泛化"></a>基于自监督学习的域泛化</h5><h3 id="其他的研究方向"><a href="#其他的研究方向" class="headerlink" title="其他的研究方向"></a>其他的研究方向</h3><ul>
+<li>单源域泛化</li>
+<li>半监督域泛化 </li>
+<li>域泛化的联邦学习</li>
+</ul>
+<h3 id="域泛化的应用"><a href="#域泛化的应用" class="headerlink" title="域泛化的应用"></a>域泛化的应用</h3><p><img src="/.io//%E5%BA%94%E7%94%A8.png" alt></p>
+<h3 id="我的想法"><a href="#我的想法" class="headerlink" title="我的想法"></a>我的想法</h3><p>通过域对抗训练的方式使得模型能够提取出与模态解耦的中介变量<br><img src="/.io//%E5%9F%9F%E5%AF%B9%E6%8A%97%E8%AE%AD%E7%BB%83.png" alt></p>
+<p>现有研究进展:</p>
+<ul>
+<li>源域数据+标签均可见，目标域仅有数据 </li>
+<li>局限在视觉领域 </li>
+<li>视觉领域是否有已将该工作迁移到未知域上,已经有了<a href="https://openaccess.thecvf.com/content_cvpr_2018/papers/Li_Domain_Generalization_With_CVPR_2018_paper.pdf">2019cvpr</a></li>
+<li>衡量分布差异: 最大平均偏差(MMD)，将特征映射到高维空间，然后用在高维空间的一阶矩来度量两个分布的差异。 </li>
+</ul>
+<p>可以有的创新方向: </p>
+<ul>
+<li>应用创新，在故障诊断领域还没这么搞得，同时可以结合之前的因果框架，提取出的中介变量更具说服力。 </li>
+<li>将有标签数据与无标签数据混用，<strong>有模态标签，但无故障标签</strong>，在实际中也是常见的场景</li>
+<li>结合时序数据的一些特点 </li>
+</ul>
+<h4 id="论文复现"><a href="#论文复现" class="headerlink" title="论文复现"></a>论文复现</h4><p>将<a href="https://www.jmlr.org/papers/volume17/15-239/15-239.pdf">domain-adversarial training of neural network</a>论文结果在TEP上运行了一下，模型训练不收敛。</p>
+]]></content>
+      <categories>
+        <category>论文阅读</category>
+      </categories>
+      <tags>
+        <tag>前沿方向</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>EM</title>
     <url>/2020/07/30/em/</url>
     <content><![CDATA[<p>在前面概率密度函数估计中，若概率模型的变量都是可观测变量，那么给定数据，便可以直接用极大似然估计法或者贝叶斯估计法来直接估计模型参数。但是当模型中含有隐变量时，便不能直接使用这些估计方法，<strong>EM算法就是含有隐变量的概率模型参数的极大似然估计法</strong><span id="more"></span>,本文便围绕EM算法展开，主要包含以下几部分：</p>
@@ -258,112 +364,6 @@ P(Y|\theta^{i+1}) \geq P(Y|\theta^i)</script><p><strong>定理2</strong>:设$L(\
       </categories>
       <tags>
         <tag>EM算法,隐变量,高斯混合模型</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Domain generalization</title>
-    <url>/2022/10/28/domain-generalization/</url>
-    <content><![CDATA[<p>本篇文章是对文章<a href="https://arxiv.org/pdf/2103.03097.pdf">Generalizing to Unseen Domains: A Survey on<br>Domain Generalization</a>的研读介绍，旨在对域泛化(domain generalization)领域研究现状有粗略了解，考虑将该领域的一些研究思想迁移到故障检测/溯源/软测量等任务上去。<span id="more"></span> </p>
-<h3 id="出发点"><a href="#出发点" class="headerlink" title="出发点"></a>出发点</h3><ul>
-<li><p>现有算法面临的挑战<br>传统的机器学习算法的泛化能力依赖于训练域与测试域的独立同分布(i.i.d)假设，而在现实数据中，这样的假设往往无法得到满足。</p>
-</li>
-<li><p>目的<br>如果我们已经拥有了一个/多个域的数据，希望让训练得到的模型在未知域上仍能有良好的泛化能力。 </p>
-</li>
-</ul>
-<h3 id="问题数学描述"><a href="#问题数学描述" class="headerlink" title="问题数学描述"></a>问题数学描述</h3><blockquote>
-<ul>
-<li><p>domain: 记$\mathcal{X}$为非空的输入空间，$\mathcal{Y}$为输出空间，输入输出之间的关系通过联合概率分布$P<em>{XY}$来描述，域则由从该分布中采样得到的样本组成$S = {(x_i,y_i)}</em>{i=1}^n \sim P_{XY}$。</p>
-</li>
-<li><p>domain generalization: 在域泛化任务中，我们有$M$个训练/源域的数据</p>
-<script type="math/tex; mode=display">
-  S_{train} = {S_i|i=1,...,M}, where \quad S^i = \{(x_j^i, y_j^i)\}_{j=1}^{n_i} \quad denotes \quad i_{th} \quad domain</script><p>不同域的数据具有不同的联合概率分布，即$P<em>{XY}^i \neq P</em>{XY}^j $；域泛化的目标是学习到一个<strong>鲁棒且可泛化的预测方程</strong>$h: \mathcal{X} \rightarrow \mathcal{Y}$, 该模型在未知域$S_{test}$上的预测误差要尽可能小: </p>
-<script type="math/tex; mode=display">
-  \min_{h} \mathbb{E}_{(x,y) \in S_{test}} [\ell(h(x),y)]</script></li>
-</ul>
-</blockquote>
-<h3 id="相关研究领域介绍"><a href="#相关研究领域介绍" class="headerlink" title="相关研究领域介绍"></a>相关研究领域介绍</h3><ul>
-<li><strong>多任务学习(Multi-task learning)</strong>: 在多个任务上联合优化模型，目的是为了提高模型在原始任务上的泛化能力，多域学习(multi-domain learning)可以看作多任务学习的一种特例。</li>
-<li><strong>迁移学习(Transfer learning)</strong>: 在源任务/域上训练得到模型，目的在于提高模型在目标任务/域上的性能，迁移学习最广泛的应用就是<strong>预训练模型+微调</strong>的范式，与域泛化的区别在于迁移学习中目标域的数据是可获取的。</li>
-<li><strong>域适应(domain adaptation)</strong>: 该领域可以看作是迁移学习的一个分支，也是需要能够获取目标域的数据。 </li>
-<li><strong>元学习(Meta-learning)</strong>: 学习学习算法，即learning to learn, 元学习是一种通用的学习策略可以用于实现域泛化。 </li>
-<li><strong>终身学习/持续学习</strong>: 随着任务/数据域的不断更新，模型需要不断利用新的知识来更新模型参数。 </li>
-<li><strong>零样本学习(Zero-shot learning)</strong>: 利用已有类别的数据学习模型，对新类别的样本仍能分辨出来。 </li>
-</ul>
-<h3 id="方法分类"><a href="#方法分类" class="headerlink" title="方法分类"></a>方法分类</h3><p><img src="/.io//%E6%96%B9%E6%B3%95%E5%88%86%E7%B1%BB.png" alt></p>
-<p>目前域泛化的方法可以分为三类： </p>
-<ul>
-<li><strong>数据操纵</strong>: 基本思路是提高训练数据的涵盖范围，常用的思路有两个: <ul>
-<li>数据扩充: 数据扩展/随机变换 </li>
-<li>数据生成: 生成更具多样性的样本 </li>
-</ul>
-</li>
-<li><strong>表征学习</strong>: 基本思想是学习到一些稳定的特征，可细分为两个方向: <ul>
-<li>域不变表征学习 </li>
-<li>特征解偶</li>
-</ul>
-</li>
-<li><strong>学习策略</strong>: 探索一般性的学习策略以提升模型泛化能力，常用思路有: <ul>
-<li>集成学习</li>
-<li>元学习 </li>
-<li>梯度操作 </li>
-<li>分布鲁棒优化 </li>
-<li>自监督学习 </li>
-</ul>
-</li>
-</ul>
-<h4 id="数据操纵-data-manipulation"><a href="#数据操纵-data-manipulation" class="headerlink" title="数据操纵(data manipulation)"></a>数据操纵(data manipulation)</h4><p>提高训练数据的多样性，数据增强的有效性在于增强过后的数据未来有可能出现在测试域中，<strong>能否考虑应用一些机理知识来进行数据增强，类似于反事实的概念</strong>。 </p>
-<h5 id="基于数据扩充的域泛化"><a href="#基于数据扩充的域泛化" class="headerlink" title="基于数据扩充的域泛化"></a>基于数据扩充的域泛化</h5><p>常用的数据扩充操作有翻转、旋转、裁剪、添加噪声等</p>
-<ul>
-<li>域随机化: 改变目标大小/位置/光线/随机噪声 </li>
-<li>对抗数据增广: 实现有效数据增广，同标签，沿差异大的方向扩充样本 </li>
-</ul>
-<h5 id="基于数据生成的域泛化"><a href="#基于数据生成的域泛化" class="headerlink" title="基于数据生成的域泛化"></a>基于数据生成的域泛化</h5><p>一般是通过VAE或者GAN来实现数据增强</p>
-<h4 id="表征学习"><a href="#表征学习" class="headerlink" title="表征学习"></a>表征学习</h4><p>将预测方程$h$拆分未$h = f \cdot g$, 表征学习的目标为: </p>
-<script type="math/tex; mode=display">
-\min _{f, g} \mathbb{E}_{\mathbf{x}, y} \ell(f(g(\mathbf{x})), y)+\lambda \ell_{\mathrm{reg}}</script><h5 id="基于域不变性表征学习的域泛化"><a href="#基于域不变性表征学习的域泛化" class="headerlink" title="基于域不变性表征学习的域泛化"></a>基于域不变性表征学习的域泛化</h5><p>理论保证: 如果不同数据域的表征相同，那么说明该表征具有一般性并且可以迁移到其他域，在该表征函数下，源域的数据和目标域的数据更接近了，使得泛化误差上界更紧。</p>
-<ul>
-<li>基于核的方法(Kernel-based methods): 将原始数据映射到高维空间，通过核函数可以在不知道样本高维坐标情况下计算两样本内积，将不同域样本映射到高维空间，分布一致。</li>
-<li>域对抗学习(Domain adversarial learning): 判别器来识别数据属于不同域，生成器用来学习不变表征让判别器分辨不出来。</li>
-<li>显式特征对齐(Explicit feature alignment): 在学习的过程显式让特征对齐 </li>
-<li>不变风险最小化(Invariant risk minimization): </li>
-</ul>
-<h5 id="基于特征解耦的域泛化"><a href="#基于特征解耦的域泛化" class="headerlink" title="基于特征解耦的域泛化"></a>基于特征解耦的域泛化</h5><p>将原始数据投影到特征空间，将特征分为domain-shared feature 和 domain-specific feature, 目标函数一般为如下形式: </p>
-<script type="math/tex; mode=display">
-\min _{g_c, g_s, f} \mathbb{E}_{\mathbf{x}, y} \ell\left(f\left(g_c(\mathbf{x})\right), y\right)+\lambda \ell_{\mathrm{reg}}+\mu \ell_{\mathrm{recon}}\left(\left[g_c(\mathbf{x}), g_s(\mathbf{x})\right], \mathbf{x}\right)</script><ul>
-<li>多成分分析: 用不同的特征提取器来提取数据中的不同成分 </li>
-<li>生成模型: Domain-invariant VAE </li>
-<li>因果启发的方法: </li>
-</ul>
-<h4 id="学习策略"><a href="#学习策略" class="headerlink" title="学习策略"></a>学习策略</h4><h5 id="基于集成学习的域泛化"><a href="#基于集成学习的域泛化" class="headerlink" title="基于集成学习的域泛化"></a>基于集成学习的域泛化</h5><p>每个域都有一个模型，结合输出结果 </p>
-<h5 id="基于元学习的域泛化"><a href="#基于元学习的域泛化" class="headerlink" title="基于元学习的域泛化"></a>基于元学习的域泛化</h5><p>元学习的关键思想是从多个任务中学习一个通用的模型</p>
-<h5 id="基于梯度操作的域泛化"><a href="#基于梯度操作的域泛化" class="headerlink" title="基于梯度操作的域泛化"></a>基于梯度操作的域泛化</h5><p>self-challenging训练算法 </p>
-<h5 id="基于分布鲁棒优化的方法"><a href="#基于分布鲁棒优化的方法" class="headerlink" title="基于分布鲁棒优化的方法"></a>基于分布鲁棒优化的方法</h5><h5 id="基于自监督学习的域泛化"><a href="#基于自监督学习的域泛化" class="headerlink" title="基于自监督学习的域泛化"></a>基于自监督学习的域泛化</h5><h3 id="其他的研究方向"><a href="#其他的研究方向" class="headerlink" title="其他的研究方向"></a>其他的研究方向</h3><ul>
-<li>单源域泛化</li>
-<li>半监督域泛化 </li>
-<li>域泛化的联邦学习</li>
-</ul>
-<h3 id="域泛化的应用"><a href="#域泛化的应用" class="headerlink" title="域泛化的应用"></a>域泛化的应用</h3><p><img src="/.io//%E5%BA%94%E7%94%A8.png" alt></p>
-<h3 id="我的想法"><a href="#我的想法" class="headerlink" title="我的想法"></a>我的想法</h3><p>通过域对抗训练的方式使得模型能够提取出与模态解耦的中介变量<br><img src="/.io//%E5%9F%9F%E5%AF%B9%E6%8A%97%E8%AE%AD%E7%BB%83.png" alt></p>
-<p>现有研究进展:</p>
-<ul>
-<li>源域数据+标签均可见，目标域仅有数据 </li>
-<li>局限在视觉领域 </li>
-<li>视觉领域是否有已将该工作迁移到未知域上,已经有了<a href="https://openaccess.thecvf.com/content_cvpr_2018/papers/Li_Domain_Generalization_With_CVPR_2018_paper.pdf">2019cvpr</a></li>
-<li>衡量分布差异: 最大平均偏差(MMD)，将特征映射到高维空间，然后用在高维空间的一阶矩来度量两个分布的差异。 </li>
-</ul>
-<p>可以有的创新方向: </p>
-<ul>
-<li>应用创新，在故障诊断领域还没这么搞得，同时可以结合之前的因果框架，提取出的中介变量更具说服力。 </li>
-<li>将有标签数据与无标签数据混用，<strong>有模态标签，但无故障标签</strong>，在实际中也是常见的场景</li>
-<li>结合时序数据的一些特点 </li>
-</ul>
-<h4 id="论文复现"><a href="#论文复现" class="headerlink" title="论文复现"></a>论文复现</h4><p>将<a href="https://www.jmlr.org/papers/volume17/15-239/15-239.pdf">domain-adversarial training of neural network</a>论文结果在TEP上运行了一下，模型训练不收敛。</p>
-]]></content>
-      <categories>
-        <category>论文阅读</category>
-      </categories>
-      <tags>
-        <tag>前沿方向</tag>
       </tags>
   </entry>
   <entry>
@@ -1288,7 +1288,7 @@ conda config --remove channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkg
   <entry>
     <title>docker学习</title>
     <url>/2022/11/03/docker-xue-xi/</url>
-    <content><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><h4 id="从实际场景谈起"><a href="#从实际场景谈起" class="headerlink" title="从实际场景谈起"></a>从实际场景谈起</h4><p>在没有虚拟机之前，环境的迁移是一项非常复杂的工作，开发人员开发时需要搭建一个环境，服务开发完毕后，测试人员又需要重新搭建一遍环境，而到环境上线时，还需要再搭建一遍环境，这大大浪费了时间，降低了效率。</p>
+    <content><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><h4 id="从实际场景谈起"><a href="#从实际场景谈起" class="headerlink" title="从实际场景谈起"></a>从实际场景谈起</h4><p>在没有虚拟机之前，环境的迁移是一项非常复杂的工作，开发人员开发时需要搭建一个环境，服务开发完毕后，测试人员又需要重新搭建一遍环境，而到环境上线时，还需要再搭建一遍环境，这大大浪费了时间，降低了效率。<span id="more"></span></p>
 <p>大多问题都是在运行环境改变时才显现的，可能是这样一种场景，开发者把代码从开发环境 push 到测试环境然后到更上层的环境。比如开发者在 Windows 上编写应用代码，但是上层环境（测试、stage 或是生产环境）是基于 Linux 的。在这种情况下，当操作系统变化时，应用的某些功能可能就会出现问题。所以，基本上，当配套软件环境不一样的时候，间歇性故障的几率就会更大。</p>
 <p>正如 Docker 创始人 Solomon Hykes 所说，“测试环境使用 Python 2.7，但是生产环境使用 Python 3，那么一些奇怪的事情就会发生。或者你依赖某个特定版本的 SSl 库的行为，但是却安装了另外一个版本。在 Debian 上运行测试环境，但是生产环境使用 Redhat，那么任何奇怪的事情都可能发生。”</p>
 <p>改变可能不只是运行环境，也有可能是网络，Hykes 补充道，“网络拓扑可能不同，或者安全策略和存储也有可能不同，但是，软件需要在这些基础设施上面运行。”</p>
@@ -1455,6 +1455,93 @@ Build Cache     0         0         0B        0B
 <pre class="line-numbers language-lang-shell"><code class="language-lang-shell">$ docker image rm [选项] <镜像1> [<镜像2> ...]
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>其中<code>&lt;镜像&gt;</code>可以是<code>镜像名、镜像短ID、镜像长ID、镜像摘要</code></p>
+<h5 id="利用commit理解镜像构成"><a href="#利用commit理解镜像构成" class="headerlink" title="利用commit理解镜像构成"></a>利用<code>commit</code>理解镜像构成</h5><blockquote>
+<p><strong>注意</strong>: <code>docker commit</code>除了学习之外，还有一些特殊的应用场合，比如入侵后保存现场等。但是一般不使用<code>docker commit</code>定制镜像，定制镜像应当使用<code>Dockerfile</code>来完成。</p>
+</blockquote>
+<p>镜像是容器的基础，每次执行<code>docker run</code>都需要指定哪个镜像作为容器运行的基础，在之前的例子中，我们所使用的都是来自<code>Docker Hub</code>的镜像，而当这些镜像无法之结满足需求时，就需要进行镜像定制。 </p>
+<p>镜像是多层存储，每一层是在前一层的基础上进行的修改；而容器同样也是多层存储，是在以镜像为基础层，在其基础上加一层作为容器运行的存储层。</p>
+<p>以定制一个web服务器为栗子，讲解镜像构建: </p>
+<ul>
+<li><p>运行容器</p>
+<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">$ docker run --name webserver -d -p 80:80 nginx
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>这条命令会用<code>nginx</code>镜像启动了一个容器，命名为<code>webserver</code>，并且映射了80端口，这样可以用浏览器去访问<code>nginx</code>服务器。<br><img src="/.io//%E7%95%8C%E9%9D%A2%E6%98%BE%E7%A4%BA.png" alt></p>
+</li>
+<li><p>修改界面显示内容<br>可以使用<code>docker exec</code>命令进入容器，修改其内容.</p>
+<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">$ docker exec -it webserver bash 
+root@f979a53d4179:/# echo '<h1>Hello, Docker!</h1>' > /usr/share/nginx/html/index.html
+root@f979a53d4179:/# exit
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>我们以交互式终端进入<code>webserver</code>容器，并执行了<code>bash</code>命令，也就是获得一个可操作的Shell。<br>然后替代了<code>index.html</code>中的内容以修改网页显示内容，此时刷新浏览器:<br><img src="/.io//%E9%A1%B5%E9%9D%A2%E6%98%BE%E7%A4%BA_%E6%9B%B4%E6%94%B9%E5%90%8E.png" alt> </p>
+</li>
+<li><p>查看变化<br>我们修改了容器的文件，也就是改动了容器的存储层，我们可以通过<code>docker diff</code>命令看到具体的改动，在修改了容器后，我们希望能将其保存下来形成镜像。<br>当我们运行一个容器的时候(如果不使用卷的话)，我们做的任何文件修改都会被记录在容器存储层里。而Docker提供了一个<code>docker commit</code>命令，可以将容器的存储层保存下来成为镜像。换句话说，就是在原有镜像的基础上，再叠加上容器的存储层，并构成新的镜像，以后我们运行这个新镜像的时候，就会拥有原有容器最后的文件变化。</p>
+</li>
+<li><p>生成镜像<br><code>docker commit</code>的语法格式为</p>
+<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">docker commit [选项] <容器ID或容器名> [<仓库名>[:<标签>]]
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>可以使用下面的命令将容器保存为镜像: </p>
+<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">$ docker commit \
+  --author "xuejy" \
+  --message "修改了默认网页" \
+  webserver \
+  nginx:v2
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>其中<code>--author</code>是指定修改的作者，而<code>--message</code>则是记录本次修改的内容</p>
+</li>
+<li><p>慎用<code>docker commit</code><br>通过<code>docker diff webserver</code>可以看到有大量无关内容被添加进来，导致镜像极为臃肿。<br>此外，使用<code>docker commit</code>意味着所有对镜像的操作都是黑箱操作，生成的镜像也被称为<code>黑箱镜像</code>，换句话说，除了制作镜像的人知道执行过什么命令、怎么生成的镜像，别人根本无从得知。</p>
+</li>
+</ul>
+<h5 id="使用Dockerfile定制镜像"><a href="#使用Dockerfile定制镜像" class="headerlink" title="使用Dockerfile定制镜像"></a>使用Dockerfile定制镜像</h5><p>镜像的定制实际上就是定制每一层所添加的配置、文件。如果我们可以把每一层修改、安装、构建、操作的命令都写入一个脚本，用这个脚本来构建、定制镜像，那么之前提及的无法重复的问题、镜像构建透明性的问题、体积的问题就都会解决，这个脚本就是dockerfile。<br>Dockerfile是一个文本文件，其包含了一条条的指令，每一条指令构建一层，因此每一条指令的内容就是描述该层应当如何构建。</p>
+<ul>
+<li>在一个空白目录中，建立一个文本文件，并命名为<code>Dockerfile</code>:<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">$ mkdir mynginx
+$ cd mynginx
+$ touch Dockerfile
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>其内容为</p>
+<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">FROM nginx
+RUN echo '<h1>Hello, Docker!</h1>' > /usr/share/nginx/html/index
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<ul>
+<li><strong>FROM指定基础镜像</strong><br>所谓定制镜像，就是以一个镜像为基础，在其上进行定制。<code>FROM</code>就是指定<strong>基础镜像</strong>，基础镜像可以使一些服务类的镜像，比如<code>nginx、redis</code>，也可以是语言类的镜像，比如<code>python、ruby</code>，甚至可以是更为基础的操作系统镜像，如<code>ubuntu、debian</code>等；除了选择现有镜像为基础镜像外，Docker还存在一个特殊的镜像，名为<code>scratch</code>，表示一个空白的镜像。</li>
+<li><strong>RUN执行命令</strong><br><code>RUN</code>是用来执行命令行命令的，其格式有两种: <ul>
+<li>shell格式: <code>RUN&lt;命令&gt;</code>，就像直接在命令行中输入的命令一样</li>
+<li>exec格式: <code>RUN [&quot;可执行文件&quot;, &quot;参数1&quot;, &quot;参数2&quot;]</code>，这更像是函数调用中的格式<br>需要注意，<code>RUN</code>命令可以像<code>Shell</code>脚本一样执行命令，但并不是要把每个命令对应一个<code>RUN</code>，因为每一个<code>RUN</code>行为都会建立一层镜像，臃肿、非常多层的镜像，不仅仅增加了构建部署的时间，也很容易出错。对于多条命令的单层镜像，正确的写法应当如下: <pre class="line-numbers language-lang-shell"><code class="language-lang-shell">FROM debian:stretch
+RUN set -x; buildDeps='gcc libc6-dev make wget' \
+&& apt-get update \
+&& apt-get install -y $buildDeps \
+&& wget -O redis.tar.gz "http://download.redis.io/releases/redis-5.0.3.tar.gz" \
+&& mkdir -p /usr/src/redis \
+&& tar -xzf redis.tar.gz -C /usr/src/redis --strip-components=1 \
+&& make -C /usr/src/redis \
+&& make -C /usr/src/redis install \
+&& rm -rf /var/lib/apt/lists/* \
+&& rm redis.tar.gz \
+&& rm -r /usr/src/redis \
+&& apt-get purge -y --auto-remove $buildDeps
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<strong>注意在构建之后一定要清理掉无关文件</strong>。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>构建镜像</p>
+<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">$ docker build -t nginx:v3 .
+Sending build context to Docker daemon 2.048 kB
+Step 1 : FROM nginx
+---> e43d811ce2f4
+Step 2 : RUN echo '<h1>Hello, Docker!</h1>' > /usr/share/nginx/html/index.html
+---> Running in 9cdc27646c7b
+---> 44aa4490ce2c
+Removing intermediate container 9cdc27646c7b
+Successfully built 44aa4490ce2c
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>镜像构建上下文<br><code>docker build</code>命令最后的<code>.</code>指定的是上下文路径。<br>Docker在运行时分为Docker引擎(服务端守护进程)和客户端工具，Docker的引擎提供了一组REST API, 被称为<code>Docker remote API</code>，而如<code>docker</code>命令这样的客户端工具，则是通过这组API与Docker引擎交互，从而完成各种功能。因此，虽然表面上我们在本机使用各种<code>docker</code>功能，但实际上，一切的都是使用的远程调用形式在服务端完成。</p>
+</li>
+</ul>
+<p>当我们进行镜像构建时，经常会需要将一些本地文件复制进镜像，而通过指定上下文路径，相当于给定了一个地址锚点，让服务端能够找到这些文件。</p>
+<h5 id="Dockerfile-指令详解"><a href="#Dockerfile-指令详解" class="headerlink" title="Dockerfile 指令详解"></a>Dockerfile 指令详解</h5><p>除了<code>FROM</code>、<code>RUN</code>，还提供了<code>COPY、ADD</code>等十多个指令可供使用 </p>
 <h4 id="操作容器"><a href="#操作容器" class="headerlink" title="操作容器"></a>操作容器</h4><p>容器是独立运行的一个或一组应用，以及它们的运行态环境。</p>
 <h5 id="容器启动"><a href="#容器启动" class="headerlink" title="容器启动"></a>容器启动</h5><p>启动容器有两种方式，一种是基于镜像新建一个容器并启动，另外一个是将在终止状态的容器重新启动。</p>
 <ul>
@@ -1540,17 +1627,39 @@ Status: Downloaded newer image for centos:latest
 docker.io/library/centos:latest
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </li>
-<li>推送镜像<br>用户也可以在登陆后通过<code>docker push</code>将自己的镜像推送到Docker Hub<br>```shell<br>$ docker tag ubuntu:18.04 username/ubuntu:18.04</li>
+<li>推送镜像<br>用户也可以在登陆后通过<code>docker push</code>将自己的镜像推送到Docker Hub</li>
 </ul>
-<p>$ docker image ls</p>
-<p>REPOSITORY                                               TAG                    IMAGE ID            CREATED             SIZE<br>ubuntu                                                   18.04                  275d79972a86        6 days ago          94.6MB<br>username/ubuntu                                          18.04                  275d79972a86        6 days ago          94.6MB</p>
-<p>$ docker push username/ubuntu:18.04</p>
-<p>$ docker search username</p>
-<p>NAME                      DESCRIPTION                                     STARS               OFFICIAL            AUTOMATED<br>username/ubuntu<br>```</p>
+<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">$ docker tag ubuntu:18.04 username/ubuntu:18.04
+
+$ docker image ls
+
+REPOSITORY                                               TAG                    IMAGE ID            CREATED             SIZE
+ubuntu                                                   18.04                  275d79972a86        6 days ago          94.6MB
+username/ubuntu                                          18.04                  275d79972a86        6 days ago          94.6MB
+
+$ docker push username/ubuntu:18.04
+
+$ docker search username
+
+NAME                      DESCRIPTION                                     STARS               OFFICIAL            AUTOMATED
+username/ubuntu
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li>自动构建(付费服务)<br>自动构建可以自动触发构建镜像，方便升级镜像。自动构建允许用户通过Docker Hub指定跟踪一个目标网站(比如<code>github</code>)上的项目，一旦项目发生新的提交或者创建了新的标签，Docker Hub会自动构建镜像并推送到Docker Hub中。</li>
 </ul>
-<h6 id="私有仓库"><a href="#私有仓库" class="headerlink" title="私有仓库"></a>私有仓库</h6>]]></content>
+<h6 id="私有仓库"><a href="#私有仓库" class="headerlink" title="私有仓库"></a>私有仓库</h6><h4 id="数据管理"><a href="#数据管理" class="headerlink" title="数据管理"></a>数据管理</h4><p><code>数据卷</code>是可供一个或多个容器使用的特殊目录，它绕过<code>UFS</code>，可以提供很多有用的特性:</p>
+<ul>
+<li><code>数据卷</code>可以在容器之间共享和重用</li>
+<li>对<code>数据卷</code>的修改会立马生效</li>
+<li>对<code>数据卷</code>的更新不会影响镜像 </li>
+<li><code>数据卷</code>默认会一直存在，即使容器被删除 </li>
+</ul>
+<blockquote>
+<p> <code>数据卷</code>的使用，类似于Linux下对目录或文件进行mount,镜像中被指定为挂载点的目录中的文件会复制到数据卷中</p>
+</blockquote>
+<h5 id="创建一个数据卷"><a href="#创建一个数据卷" class="headerlink" title="创建一个数据卷"></a>创建一个数据卷</h5><pre class="line-numbers language-lang-shell"><code class="language-lang-shell">$ docker volume create my-vol
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+]]></content>
       <tags>
         <tag>容器化技术</tag>
       </tags>
@@ -4026,114 +4135,6 @@ V_{\gamma}(x)=\max _{a \in A} \sum_{x^{\prime} \in X} P_{x \rightarrow x^{\prime
       </tags>
   </entry>
   <entry>
-    <title>指数族分布与广义线性模型</title>
-    <url>/2020/10/07/zhi-shu-zu-fen-bu-yu-guang-yi-xian-xing-mo-xing/</url>
-    <content><![CDATA[<p>在<a href="https://soundofwind.top/2020/08/24/zai-tan-ji-da-si-ran-gu-ji-qiu-jie/">再谈极大似然估计</a>中已经讨论过指数分布族的概念，并且推导出了若概率分布是指数分布族分布，则最终的对数似然函数一定是一个凹函数，直接求偏导等于0便可得到参数估计。</p>
-<p>在听了<a href="http://ml.cs.tsinghua.edu.cn/~jun/index.shtml">朱军老师</a>的关于指数分布族函数的讲解之后，发现可以从一个更加general的角度来对指数分布族函数来进行把握，而之前得到的凹性结论也不过是其中一小部分而已，该部分按照以下结构组织: </p>
-<ul>
-<li>简要回顾指数分布族 </li>
-<li>配分函数$A(\theta)$的性质 </li>
-<li>从指数分布族到广义线性模型 </li>
-<li>广义线性模型性质 </li>
-</ul>
-<span id="more"></span> 
-<h3 id="简要回顾指数分布族函数"><a href="#简要回顾指数分布族函数" class="headerlink" title="简要回顾指数分布族函数"></a>简要回顾指数分布族函数</h3><p>首先给出指数分布族的定义:</p>
-<blockquote>
-<p>指数分布族是一类概率分布的总称，这类分布的概率密度函数具有这样的形式：</p>
-<script type="math/tex; mode=display">
-    p_\theta(x) = h(x) \exp(\theta^T \phi(x) - A(\theta))</script><p>式中，$x$是密度函数自变量，$x \in \mathcal{X}$;$\phi(x)$是充分统计量，可以看做是原始变量的一个映射:</p>
-<script type="math/tex; mode=display">
-    \phi: \mathcal{X} \rightarrow R^d</script><p>$\theta$是模型参数向量，与充分统计量维度相同，$h(x)$是一个只与$x$有关的统计量，$A(\theta)$为配分函数，通过该函数来保证$p_\theta(x)$满足概率密度函数的定义：</p>
-<script type="math/tex; mode=display">
-     \int_{\mathcal{X}} p_{\theta}(x) dx = 1</script><p>由此约束条件，我们可以得到$A(\theta)$的解析表达式：</p>
-<script type="math/tex; mode=display">
-    A(\theta) = \log (\int h(x) \exp(\theta^T \phi(x))dx )</script></blockquote>
-<p>同时概率密度函数我们也可以写成如下的形式:</p>
-<script type="math/tex; mode=display">
-    p_\theta(x) = \frac{1}{Z(\theta)}  h(x) exp(\theta^T \phi(x))</script><p>其中$Z(\theta) = exp(A(\theta))$,我们日常见到的很多分布都可以转化成指数分布族标准形式，比如: 伯努利分布，多项式分布，高斯分布，gamma分布等，一些变换的例子可以参考<a href="https://soundofwind.top/2020/08/24/zai-tan-ji-da-si-ran-gu-ji-qiu-jie/"><code>再谈极大似然估计</code></a></p>
-<h3 id="配分函数-A-theta-的性质"><a href="#配分函数-A-theta-的性质" class="headerlink" title="配分函数$A(\theta)$的性质"></a>配分函数$A(\theta)$的性质</h3><h4 id="A-theta-性质"><a href="#A-theta-性质" class="headerlink" title="$A(\theta)$性质"></a>$A(\theta)$性质</h4><p>在之前证明$A(\theta)$的凸性性质时，所采用的方法是按照配分表达式直接证，通过赫尔德不等式可以从定义上证明其是凸函数，但其实$A(\theta)$具有更加一般的性质。 </p>
-<p>$A(\theta)$其实是充分统计量$\phi(x)$的中心矩生成函数(moment generating function),这意味着:</p>
-<script type="math/tex; mode=display">
-  \begin{aligned}
-      \nabla_{\theta} A(\theta) &= E_{p_{\theta}(x)}[\phi(x)] \\ 
-      \nabla_{\theta}^2 A(\theta) &= Var[\phi(x)]  \\ 
-      & ... \\
-      \nabla_{\theta}^k A(\theta) &= E_{p_\theta(x)} [(\phi(x) - E[\phi(x)])^k]
-  \end{aligned}</script><p>下面以一阶统计量为例做一下简单推导:</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        \nabla_{\theta}A(\theta) & = \nabla_{\theta} \log(Z(\theta)) \\
-        &= \frac{1}{Z(\theta)} \nabla_{\theta} (\int_x h(x) \exp(\theta^T \phi(x)) dx) \\
-        &= \frac{1}{Z(\theta)} \int_x h(x) \phi(x) \exp(\theta^T \phi(x))dx \\ 
-        &= \int_x \frac{1}{Z(\theta)} h(x) \exp(\theta^T \phi(x)) \phi(x) dx \\ 
-        &= \int_x p(x|\theta) \phi(x) dx \\
-        &= E_{p_\theta(x)}[\phi(x)] 
-    \end{aligned}</script><p>$A(\theta)$的上述性质可以导出一些非常好用的结论:</p>
-<ul>
-<li><p>如果记:</p>
-<script type="math/tex; mode=display">
-  \nabla_{\theta} A(\theta) = E_{p_{\theta}(x)} [\phi(x)] \overset{\triangle}{=} \mu</script><p>这里$\mu$一般被称作矩参数或者均值参数，对于不同的指数分布族函数，一般都可以找到一个双射函数$\psi$,使得:</p>
-<script type="math/tex; mode=display">
-  \theta \overset{\triangle}{=} \psi(\mu)</script><p>这就建立了均值参数与模型的自然参数之间的一一映射关系，在参数估计时如果得到了均值参数估计，同时直到映射关系$\psi$，那么便可以直接得到模型自然参数$\theta$的估计。</p>
-</li>
-<li><p>因为$\nabla_{\theta}^2 A(\theta) = Var[\phi(x)]$，而我们知道一个向量变量的协方差矩阵至少是半正定的，也就是说:</p>
-<script type="math/tex; mode=display">
-  \nabla_{\theta}^2  A(\theta)= Var[\phi(x)] \succeq 0</script><p>这也就直接证明了$A(\theta)$的二阶海塞矩阵半正定，即$A(\theta)$是关于$\theta$的凸函数。</p>
-</li>
-</ul>
-<h4 id="iid-条件下样本集分布-p-D-theta"><a href="#iid-条件下样本集分布-p-D-theta" class="headerlink" title="$iid$条件下样本集分布$p(D|\theta)$"></a>$iid$条件下样本集分布$p(D|\theta)$</h4><p>在独立同分布假设下，我们通过采样得到样本集$D = { x_1, x_2, \dots, x_N }$, 在进行参数估计时我们往往需要计算整个样本集出现的概率:</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        p(D|\theta) &= \prod_{i} h(x_i) \exp(\theta^T \phi(x_i) - A(\theta)) \\ 
-        &= (\prod_i h(x_i)) \exp(\theta^T \sum_i \phi(x_i) - N A(\theta))
-    \end{aligned}</script><p>从格式上来看，会发现样本集的分布仍然是指数族分布，只不过是充分统计量$\phi’(D)$变为了:</p>
-<script type="math/tex; mode=display">
-    \phi'(D) = \sum_i \phi(x_i)</script><p>这给我们一个启示，当我们要利用一组数据进行参数估计时，我们只需要将各个样本的充分统计量累加起来便可以得到整个样本集合的充分统计量，后面进行参数估计时只需要利用充分统计量即可，原始数据可以舍弃。</p>
-<p>在进行极大似然估计时，我们往往会求解对数似然函数最大，下面写出指数分布的对数似然函数的一般形式:</p>
-<script type="math/tex; mode=display">
-    L(D;\theta) = \sum_{i} \log h(x_i) + \theta^T \sum_{i} \phi(x_i) - N A(\theta)</script><p>由于$A(\theta)$是凸函数，所以显然$L(D; \theta)$是凹函数，因此直接对$\theta$求偏导:</p>
-<script type="math/tex; mode=display">
-    \nabla_{\theta}(D; \theta) = \sum_{i} \phi(x_i) - N \nabla_{\theta} A(\theta) = 0</script><p>可以得到:</p>
-<script type="math/tex; mode=display">
-    \hat{\mu}_{MLE} = \nabla_{\theta} A(\theta) = \frac{1}{N} \sum_i \phi(x_i)</script><p>这说明充分统计量均值的极大似然估计就等于采样均值，又从前面我们得知均值参数$\mu$与模型的自然参数$\theta$通过函数$\psi$一一对应，因此可以通过充分统计量的均值估计得到模型参数的极大似然估计:</p>
-<script type="math/tex; mode=display">
-    \hat{\theta}_{MLE} = \psi(\hat{\mu}_{MLE})</script><h3 id="从指数分布族到广义线性模型"><a href="#从指数分布族到广义线性模型" class="headerlink" title="从指数分布族到广义线性模型"></a>从指数分布族到广义线性模型</h3><p>首先给出广义线性模型的定义:</p>
-<blockquote>
-<p><strong>广义线性模型:</strong><br>假设我们的数据是${ x<em>i, y_i}</em>{i=1}^n$，其中因变量$y_i$服从某一指数族分布，即:</p>
-<script type="math/tex; mode=display">
-    p(y_i;\theta) = h(y_i) \exp(\theta^T \phi(y_i) - A(\theta))</script><p>而对于观测量$x_i$，首先获得其线性组合:</p>
-<script type="math/tex; mode=display">
-    \xi_i = \eta^T x_i</script><p>然后$y_i$与 $x_i$具有这样的关系:</p>
-<script type="math/tex; mode=display">
-    E_{p(y;\theta)}[y] = \mu = f(\eta^T x)</script><p>$f$称作联系函数或者激活函数  </p>
-</blockquote>
-<p>广义线性模型的产生可以通过下图直观展示:<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/glim.png" alt="广义线性模型"><br>在定义中的同路实际上是图中$\mu \rightarrow y$这条同路，但从图中可以看到，通过下面一条通路也是可以的，通过$\mu$和$\eta$之间的关系来构造指数分布。在进行广义线性模型选择时，我们有两个自由度:</p>
-<ul>
-<li>激活函数$f$的选择 </li>
-<li>指数分布$p$的选择 </li>
-</ul>
-<p>指数分布$p$的选择更多与实际问题有关，比如如果是一个二分类问题，常选用伯努利分布，如果是一个多分类问题，常选用多项式分布，回归问题则常选用高斯分布，而激活函数的选择则是与分布对应的均值特性有关，比如对于伯努利分布，要求均值在$[0,1]$之间，所以在$logistic$回归中选择的是$Sigmoid$函数作为激活函数。对于多分类问题，则可以选用多项式分布作为指数分布，然后激活函数选用$softmax$函数，就可以导出扩展$logistic$到多分类问题中，得到$softmax$分类器。</p>
-<p>如果取激活函数$f = \psi^{-1}$，那么模型的自然参数$\theta$:</p>
-<script type="math/tex; mode=display">
-    \theta = \eta^T x</script><p>此时该激活函数$f$被称作正则响应函数。</p>
-<h3 id="广义线性模型性质"><a href="#广义线性模型性质" class="headerlink" title="广义线性模型性质"></a>广义线性模型性质</h3><p>当我们构造出广义线性模型后，我们需要进行参数$\eta$的学习，在没有参数先验知识的情况下，我们一般采用极大似然估计来进行参数估计，我们首先写出广义线性模型的对数似然函数形式:</p>
-<script type="math/tex; mode=display">
-    L(\eta, D) = \sum_{i} \log h(x_i) + \sum_i (\theta_i y_i - A(\theta_i))</script><p>其中$\theta_i = \psi(\mu_i)$,而$\mu_i = f(\eta^T x_i)$,这其实也可以简单地认为是用回归的结果来对$y_i$的值做概率预测。 对对数似然函数求偏导，可得:</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        \nabla_{\eta} L(\eta, D) &= \sum_i (y_i \nabla_{\eta} \theta_i  - \frac{d A(\theta_i)}{d \theta_i} \nabla_{\eta} \theta_i ) \\
-        &= \sum_i (y_i - \mu_i)\nabla_{\eta} \theta_i 
-    \end{aligned}</script><p>所以在进行迭代优化时，我们有:</p>
-<script type="math/tex; mode=display">
-    \theta_{t+1} = \theta_t + \rho (y_i - \mu_i^t) \nabla_{\eta} \theta_i</script>]]></content>
-      <categories>
-        <category>统计学习</category>
-      </categories>
-      <tags>
-        <tag>指数分布族， 广义线性模型</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>常用Linux命令整理</title>
     <url>/2022/10/18/chang-yong-linux-ming-ling-zheng-li/</url>
     <content><![CDATA[<p>在服务器上训练深度学习模型时不可避免地需要进行大量的命令行操作，熟练使用命令行已经成为了一项程序员必备的技能，本文对常用的linux命令进行整理，以加深印象和方便后续查询。<br><span id="more"></span> </p>
@@ -4388,6 +4389,114 @@ kill -KILL 123456 #强制杀死进程
       </categories>
       <tags>
         <tag>命令行</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>指数族分布与广义线性模型</title>
+    <url>/2020/10/07/zhi-shu-zu-fen-bu-yu-guang-yi-xian-xing-mo-xing/</url>
+    <content><![CDATA[<p>在<a href="https://soundofwind.top/2020/08/24/zai-tan-ji-da-si-ran-gu-ji-qiu-jie/">再谈极大似然估计</a>中已经讨论过指数分布族的概念，并且推导出了若概率分布是指数分布族分布，则最终的对数似然函数一定是一个凹函数，直接求偏导等于0便可得到参数估计。</p>
+<p>在听了<a href="http://ml.cs.tsinghua.edu.cn/~jun/index.shtml">朱军老师</a>的关于指数分布族函数的讲解之后，发现可以从一个更加general的角度来对指数分布族函数来进行把握，而之前得到的凹性结论也不过是其中一小部分而已，该部分按照以下结构组织: </p>
+<ul>
+<li>简要回顾指数分布族 </li>
+<li>配分函数$A(\theta)$的性质 </li>
+<li>从指数分布族到广义线性模型 </li>
+<li>广义线性模型性质 </li>
+</ul>
+<span id="more"></span> 
+<h3 id="简要回顾指数分布族函数"><a href="#简要回顾指数分布族函数" class="headerlink" title="简要回顾指数分布族函数"></a>简要回顾指数分布族函数</h3><p>首先给出指数分布族的定义:</p>
+<blockquote>
+<p>指数分布族是一类概率分布的总称，这类分布的概率密度函数具有这样的形式：</p>
+<script type="math/tex; mode=display">
+    p_\theta(x) = h(x) \exp(\theta^T \phi(x) - A(\theta))</script><p>式中，$x$是密度函数自变量，$x \in \mathcal{X}$;$\phi(x)$是充分统计量，可以看做是原始变量的一个映射:</p>
+<script type="math/tex; mode=display">
+    \phi: \mathcal{X} \rightarrow R^d</script><p>$\theta$是模型参数向量，与充分统计量维度相同，$h(x)$是一个只与$x$有关的统计量，$A(\theta)$为配分函数，通过该函数来保证$p_\theta(x)$满足概率密度函数的定义：</p>
+<script type="math/tex; mode=display">
+     \int_{\mathcal{X}} p_{\theta}(x) dx = 1</script><p>由此约束条件，我们可以得到$A(\theta)$的解析表达式：</p>
+<script type="math/tex; mode=display">
+    A(\theta) = \log (\int h(x) \exp(\theta^T \phi(x))dx )</script></blockquote>
+<p>同时概率密度函数我们也可以写成如下的形式:</p>
+<script type="math/tex; mode=display">
+    p_\theta(x) = \frac{1}{Z(\theta)}  h(x) exp(\theta^T \phi(x))</script><p>其中$Z(\theta) = exp(A(\theta))$,我们日常见到的很多分布都可以转化成指数分布族标准形式，比如: 伯努利分布，多项式分布，高斯分布，gamma分布等，一些变换的例子可以参考<a href="https://soundofwind.top/2020/08/24/zai-tan-ji-da-si-ran-gu-ji-qiu-jie/"><code>再谈极大似然估计</code></a></p>
+<h3 id="配分函数-A-theta-的性质"><a href="#配分函数-A-theta-的性质" class="headerlink" title="配分函数$A(\theta)$的性质"></a>配分函数$A(\theta)$的性质</h3><h4 id="A-theta-性质"><a href="#A-theta-性质" class="headerlink" title="$A(\theta)$性质"></a>$A(\theta)$性质</h4><p>在之前证明$A(\theta)$的凸性性质时，所采用的方法是按照配分表达式直接证，通过赫尔德不等式可以从定义上证明其是凸函数，但其实$A(\theta)$具有更加一般的性质。 </p>
+<p>$A(\theta)$其实是充分统计量$\phi(x)$的中心矩生成函数(moment generating function),这意味着:</p>
+<script type="math/tex; mode=display">
+  \begin{aligned}
+      \nabla_{\theta} A(\theta) &= E_{p_{\theta}(x)}[\phi(x)] \\ 
+      \nabla_{\theta}^2 A(\theta) &= Var[\phi(x)]  \\ 
+      & ... \\
+      \nabla_{\theta}^k A(\theta) &= E_{p_\theta(x)} [(\phi(x) - E[\phi(x)])^k]
+  \end{aligned}</script><p>下面以一阶统计量为例做一下简单推导:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        \nabla_{\theta}A(\theta) & = \nabla_{\theta} \log(Z(\theta)) \\
+        &= \frac{1}{Z(\theta)} \nabla_{\theta} (\int_x h(x) \exp(\theta^T \phi(x)) dx) \\
+        &= \frac{1}{Z(\theta)} \int_x h(x) \phi(x) \exp(\theta^T \phi(x))dx \\ 
+        &= \int_x \frac{1}{Z(\theta)} h(x) \exp(\theta^T \phi(x)) \phi(x) dx \\ 
+        &= \int_x p(x|\theta) \phi(x) dx \\
+        &= E_{p_\theta(x)}[\phi(x)] 
+    \end{aligned}</script><p>$A(\theta)$的上述性质可以导出一些非常好用的结论:</p>
+<ul>
+<li><p>如果记:</p>
+<script type="math/tex; mode=display">
+  \nabla_{\theta} A(\theta) = E_{p_{\theta}(x)} [\phi(x)] \overset{\triangle}{=} \mu</script><p>这里$\mu$一般被称作矩参数或者均值参数，对于不同的指数分布族函数，一般都可以找到一个双射函数$\psi$,使得:</p>
+<script type="math/tex; mode=display">
+  \theta \overset{\triangle}{=} \psi(\mu)</script><p>这就建立了均值参数与模型的自然参数之间的一一映射关系，在参数估计时如果得到了均值参数估计，同时直到映射关系$\psi$，那么便可以直接得到模型自然参数$\theta$的估计。</p>
+</li>
+<li><p>因为$\nabla_{\theta}^2 A(\theta) = Var[\phi(x)]$，而我们知道一个向量变量的协方差矩阵至少是半正定的，也就是说:</p>
+<script type="math/tex; mode=display">
+  \nabla_{\theta}^2  A(\theta)= Var[\phi(x)] \succeq 0</script><p>这也就直接证明了$A(\theta)$的二阶海塞矩阵半正定，即$A(\theta)$是关于$\theta$的凸函数。</p>
+</li>
+</ul>
+<h4 id="iid-条件下样本集分布-p-D-theta"><a href="#iid-条件下样本集分布-p-D-theta" class="headerlink" title="$iid$条件下样本集分布$p(D|\theta)$"></a>$iid$条件下样本集分布$p(D|\theta)$</h4><p>在独立同分布假设下，我们通过采样得到样本集$D = { x_1, x_2, \dots, x_N }$, 在进行参数估计时我们往往需要计算整个样本集出现的概率:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        p(D|\theta) &= \prod_{i} h(x_i) \exp(\theta^T \phi(x_i) - A(\theta)) \\ 
+        &= (\prod_i h(x_i)) \exp(\theta^T \sum_i \phi(x_i) - N A(\theta))
+    \end{aligned}</script><p>从格式上来看，会发现样本集的分布仍然是指数族分布，只不过是充分统计量$\phi’(D)$变为了:</p>
+<script type="math/tex; mode=display">
+    \phi'(D) = \sum_i \phi(x_i)</script><p>这给我们一个启示，当我们要利用一组数据进行参数估计时，我们只需要将各个样本的充分统计量累加起来便可以得到整个样本集合的充分统计量，后面进行参数估计时只需要利用充分统计量即可，原始数据可以舍弃。</p>
+<p>在进行极大似然估计时，我们往往会求解对数似然函数最大，下面写出指数分布的对数似然函数的一般形式:</p>
+<script type="math/tex; mode=display">
+    L(D;\theta) = \sum_{i} \log h(x_i) + \theta^T \sum_{i} \phi(x_i) - N A(\theta)</script><p>由于$A(\theta)$是凸函数，所以显然$L(D; \theta)$是凹函数，因此直接对$\theta$求偏导:</p>
+<script type="math/tex; mode=display">
+    \nabla_{\theta}(D; \theta) = \sum_{i} \phi(x_i) - N \nabla_{\theta} A(\theta) = 0</script><p>可以得到:</p>
+<script type="math/tex; mode=display">
+    \hat{\mu}_{MLE} = \nabla_{\theta} A(\theta) = \frac{1}{N} \sum_i \phi(x_i)</script><p>这说明充分统计量均值的极大似然估计就等于采样均值，又从前面我们得知均值参数$\mu$与模型的自然参数$\theta$通过函数$\psi$一一对应，因此可以通过充分统计量的均值估计得到模型参数的极大似然估计:</p>
+<script type="math/tex; mode=display">
+    \hat{\theta}_{MLE} = \psi(\hat{\mu}_{MLE})</script><h3 id="从指数分布族到广义线性模型"><a href="#从指数分布族到广义线性模型" class="headerlink" title="从指数分布族到广义线性模型"></a>从指数分布族到广义线性模型</h3><p>首先给出广义线性模型的定义:</p>
+<blockquote>
+<p><strong>广义线性模型:</strong><br>假设我们的数据是${ x<em>i, y_i}</em>{i=1}^n$，其中因变量$y_i$服从某一指数族分布，即:</p>
+<script type="math/tex; mode=display">
+    p(y_i;\theta) = h(y_i) \exp(\theta^T \phi(y_i) - A(\theta))</script><p>而对于观测量$x_i$，首先获得其线性组合:</p>
+<script type="math/tex; mode=display">
+    \xi_i = \eta^T x_i</script><p>然后$y_i$与 $x_i$具有这样的关系:</p>
+<script type="math/tex; mode=display">
+    E_{p(y;\theta)}[y] = \mu = f(\eta^T x)</script><p>$f$称作联系函数或者激活函数  </p>
+</blockquote>
+<p>广义线性模型的产生可以通过下图直观展示:<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/glim.png" alt="广义线性模型"><br>在定义中的同路实际上是图中$\mu \rightarrow y$这条同路，但从图中可以看到，通过下面一条通路也是可以的，通过$\mu$和$\eta$之间的关系来构造指数分布。在进行广义线性模型选择时，我们有两个自由度:</p>
+<ul>
+<li>激活函数$f$的选择 </li>
+<li>指数分布$p$的选择 </li>
+</ul>
+<p>指数分布$p$的选择更多与实际问题有关，比如如果是一个二分类问题，常选用伯努利分布，如果是一个多分类问题，常选用多项式分布，回归问题则常选用高斯分布，而激活函数的选择则是与分布对应的均值特性有关，比如对于伯努利分布，要求均值在$[0,1]$之间，所以在$logistic$回归中选择的是$Sigmoid$函数作为激活函数。对于多分类问题，则可以选用多项式分布作为指数分布，然后激活函数选用$softmax$函数，就可以导出扩展$logistic$到多分类问题中，得到$softmax$分类器。</p>
+<p>如果取激活函数$f = \psi^{-1}$，那么模型的自然参数$\theta$:</p>
+<script type="math/tex; mode=display">
+    \theta = \eta^T x</script><p>此时该激活函数$f$被称作正则响应函数。</p>
+<h3 id="广义线性模型性质"><a href="#广义线性模型性质" class="headerlink" title="广义线性模型性质"></a>广义线性模型性质</h3><p>当我们构造出广义线性模型后，我们需要进行参数$\eta$的学习，在没有参数先验知识的情况下，我们一般采用极大似然估计来进行参数估计，我们首先写出广义线性模型的对数似然函数形式:</p>
+<script type="math/tex; mode=display">
+    L(\eta, D) = \sum_{i} \log h(x_i) + \sum_i (\theta_i y_i - A(\theta_i))</script><p>其中$\theta_i = \psi(\mu_i)$,而$\mu_i = f(\eta^T x_i)$,这其实也可以简单地认为是用回归的结果来对$y_i$的值做概率预测。 对对数似然函数求偏导，可得:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        \nabla_{\eta} L(\eta, D) &= \sum_i (y_i \nabla_{\eta} \theta_i  - \frac{d A(\theta_i)}{d \theta_i} \nabla_{\eta} \theta_i ) \\
+        &= \sum_i (y_i - \mu_i)\nabla_{\eta} \theta_i 
+    \end{aligned}</script><p>所以在进行迭代优化时，我们有:</p>
+<script type="math/tex; mode=display">
+    \theta_{t+1} = \theta_t + \rho (y_i - \mu_i^t) \nabla_{\eta} \theta_i</script>]]></content>
+      <categories>
+        <category>统计学习</category>
+      </categories>
+      <tags>
+        <tag>指数分布族， 广义线性模型</tag>
       </tags>
   </entry>
   <entry>
@@ -6295,6 +6404,83 @@ $$ \hat{P} = \frac{k}{N}</script><p>若超立方体$\mathcal{R}$很小，则可�
       </tags>
   </entry>
   <entry>
+    <title>线性判别分析</title>
+    <url>/2020/09/01/te-zheng-ti-qu-yu-te-zheng-xuan-ze/</url>
+    <content><![CDATA[<p>线性判别分析(LDA)是一种经典的线性学习方法，在二分类问题上最早由fisher提出，因此线性判别分析又称Fisher线性判别，该部分按照以下结构组织:</p>
+<ul>
+<li>LDA算法思想</li>
+<li>LDA算法推导</li>
+<li>多分类任务</li>
+</ul>
+<span id="more"></span> 
+<h3 id="算法思想"><a href="#算法思想" class="headerlink" title="算法思想"></a>算法思想</h3><p>LDA的思想非常朴素：给定训练样例集，设法将样例投影到一条直线上，使得同类样例的投影点尽可能接近、异类样例的投影点尽可能远离，在对新的样本进行分类时，首先将其投影到同样的这条直线上，再根据投影点的位置来确定新样本的类别。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/LDA.png" alt="LDA"></p>
+<h3 id="理论推导"><a href="#理论推导" class="headerlink" title="理论推导"></a>理论推导</h3><h4 id="投影方向求解"><a href="#投影方向求解" class="headerlink" title="投影方向求解"></a>投影方向求解</h4><p>假设共有$N$个样本点$x_1,x_2,\dots,x_N$,其中有$N_1$个样本属于类别1，$N_2$个样本属于类别2，$N_1 + N_2 = N$, 记第$i$类样本点的均值为$\mu_i$,协方差矩阵为$\Sigma_i$,则有：</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        \mu_i &= \frac{1}{N_i} \sum_{x_i \in \mathcal{C_i}} x_i \\
+        \Sigma_i &= \frac{1}{N_i} \sum_{x_i \in \mathcal{C_i}} (x_i - \mu_i)(x_i - \mu_i)^T
+    \end{aligned}</script><p>当将这些样本点向$w$投影后，投影后得到的点为$\tilde{x}_i = w^T x$,记此时类别$i$的均值为$\tilde{\mu}_i$,方差为$\sigma^2_i$,由均值方差计算公式可得:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+        \tilde{\mu}_i &= \frac{1}{N_i} \sum_{x_i \in \mathcal{C_i}} \tilde{x}_i = w^T \frac{1}{N} \sum_{x_i \in \mathcal{C_i}}  x_i = w^T \mu_i  \\
+        \sigma^2_i &= \frac{1}{N_i} \sum_{x_i \in \mathcal{C_i}}(\tilde{x}_i - \tilde{\mu
+        }_i)^2 = \frac{1}{N_i} \sum_{x_i \in \mathcal{C_i}} (w^T x_i - w^T \mu_i)^2 \\
+                &= w^T [\frac{1}{N_i} \sum_{x_i \in \mathcal{C_i}} (x_i - \mu_i)(x_i - \mu_i)^T] w \\
+             &= w^T \Sigma_i w
+    \end{aligned}</script><p>LDA有两个目标，一个是同类的点投影后尽可能接近，另一个目标则是不同类的点尽可能远离：</p>
+<ul>
+<li>第一个目标我们通过投影后各类点的方差来进行刻画，使同类点的方差尽可能小:<script type="math/tex; mode=display">
+  \min \quad w^T \Sigma_1 w + w^T \Sigma_2 w</script></li>
+<li>第二个目标通过不同类的均值尽可能远来进行刻画,使不同类的均值尽可能远:<script type="math/tex; mode=display">
+  \max \quad (w^T \mu_1 - w^T \mu_2)^2 = w^T (\mu_1 - \mu_2)(\mu_1 - \mu_2)^T w</script></li>
+</ul>
+<p>这两个目标可以通过一个目标函数来刻画：</p>
+<script type="math/tex; mode=display">
+    \max \quad \frac{w^T (\mu_1 - \mu_2)(\mu_1 - \mu_2)^T w}{w^T \Sigma_1 w + w^T \Sigma_2 w }</script><p>下面做如下标记,记$S_w = \Sigma_1 + \Sigma_2$为类内离散度矩阵，记$S_b = (\mu_1 - \mu_2)(\mu_1 - \mu_2)^T$ 为类间离散度矩阵，由此便得目标函数形式为:</p>
+<script type="math/tex; mode=display">
+    \max \quad \frac{w^T S_b w}{w^T S_w w}</script><p>这是一个广义瑞利熵形式的优化问题，因为分子分母均是$w$的二次项，因此该优化问题的解仅与$w$的方向有关(因为用$cw$ 替代$w$并不影响目标函数的值)，不失一般性，可以限制$w^T S_w w = 1$，上述优化问题可以写为:</p>
+<script type="math/tex; mode=display">
+    \max \quad w^T S_b w  \quad s.t. \quad w^T S_w w = 1</script><p>该优化问题可以通过拉格朗日乘子法来进行求解,首先写出拉格朗日函数：</p>
+<script type="math/tex; mode=display">
+    L(w,\lambda) = w^T S_b w - \lambda (w^T S_w w - 1)</script><p>上式对$w$求导可得:</p>
+<script type="math/tex; mode=display">
+    \frac{\partial L(w, \lambda)}{\partial w} = S_b w - \lambda S_w w</script><p>令偏导等于0，可得$w$应当满足条件:</p>
+<script type="math/tex; mode=display">
+    S_b w = \lambda S_w w</script><p>其中$S_b w = (\mu_1 - \mu_2)(\mu_1 - \mu_2)^Tw = c(u_1 - u_2)$,又因为前面讨论过优化目标的取值仅仅与$w$的方向有关，因此不妨取$c = \lambda$,可得:</p>
+<script type="math/tex; mode=display">
+    \mu_1 - \mu_2 = S_w w</script><p>因此可得最终$w$最优取值:</p>
+<script type="math/tex; mode=display">w^\ast = S_w^{-1}(\mu_1 - \mu_2)</script><p>这里需要说明一下，因为从前面我们可以推出这样一个表达式$S_w^{-1} S_b w = \lambda w$,这说明$w$应当是矩阵$S_w^{-1} S_b$的特征值，目标函数最大值应当是该矩阵的最大的特征值，最优$w$应当是该最大特征值所对应的特征向量，但后面求解为何没有没有从这个角度入手，这是该问题的特殊性，为解释这一点，首先看$S_b$表达式:</p>
+<script type="math/tex; mode=display">
+    S_b = (\mu_1 - \mu_2)(\mu_1 - \mu_2)^T</script><p>这说明矩阵$S_b$的秩等于1($\mu_1 \neq \mu_2$),所以$S_w^{-1}S_b$秩也为1，这说明该矩阵有且仅有一个大于0的特征值，前面的推导相当于是构造性的给出了该最大特征值及对应特征向量表达式,将$w^\ast$代入$S_w^{-1}S_b w$:</p>
+<script type="math/tex; mode=display">
+    \begin{aligned}
+         S_w^{-1} S_b w^\ast &= S_w^{-1} (\mu_1 - \mu_2)(\mu_1 - \mu_2)^T S_w^{-1}(\mu_1 - \mu_2) \\
+         &= C S_w^{-1}(\mu_1 -\mu_2)
+    \end{aligned}</script><p>其中$C = (\mu_1 - \mu_2)^TS_w^{-1}(\mu_1 - \mu_2) &gt;0 $($S_w$对称且可逆，推出其正定)，这说明$S_w^{-1}S_b$的最大特征值就是$C$,对应的特征向量刚好是$w^\ast$!<br>考虑到数值的稳定性，在实践中往往会首先对$S_w$进行特征值分解$S_w = U \Sigma U^T$,然后再求逆。</p>
+<h4 id="在线分类"><a href="#在线分类" class="headerlink" title="在线分类"></a>在线分类</h4><p>在得到最佳投影向量后，需要设定一个策略，来对新来的样本进行分类，该策略选择通常有以下几种:</p>
+<ul>
+<li>设定阈值，阈值选择通常有以下两种:<ul>
+<li>均值取平均<script type="math/tex; mode=display">t = \frac{\tilde{\mu}_1 + \tilde{\mu}_2}{2}</script></li>
+<li>根据样本点个数进行加权<script type="math/tex; mode=display">t = \frac{N_2 \tilde{\mu}_1 + N_1 \tilde{\mu}_2}{N_1 + N_2}</script></li>
+</ul>
+</li>
+<li>在一维上估计概率密度函数，用Bayes决策方法分类<h3 id="多分类任务"><a href="#多分类任务" class="headerlink" title="多分类任务"></a>多分类任务</h3>LDA 也可以推广到多分类任务中，假定存在$N$类，且第$i$类的样本数为$m_i$,首先定义全局散度矩阵:<script type="math/tex; mode=display">
+  S_t = S_w + S_b = \sum_{i=1}^m(x_i - \mu)(x_i - \mu)^T</script>其中$\mu$ 是所有样本点的均值，将类内离散度矩阵定义为每个类别的离散度矩阵之和:<script type="math/tex; mode=display">
+  S_w = \sum_{i=1}^N S_{w_i}, \quad S_{w_i} = \sum_{x \in \mathcal{X_i}} (x - \mu_i)(x - \mu_i)^T</script>然后求出类间离散度矩阵表达式:<script type="math/tex; mode=display">
+  S_b = S_t -S_w = \sum_{i=1}^N m_i(\mu_i - \mu)(\mu_i - \mu)^T</script>优化目标函数可以写成:<script type="math/tex; mode=display">
+  \max_{W} \frac{tr(W^T S_b W)}{tr(W^T S_w W)}</script>该问题的求导与前面一样，同样根据$W$的尺度不变性将上述优化问题转化为：<script type="math/tex; mode=display">
+  \max_{W} \quad tr(W^T S_b W) \quad s.t. tr(W^T S_w W) = 1</script>应用拉格朗日乘子法，并对$W$求导令导数为0可得:<script type="math/tex; mode=display">
+  S_b W = \lambda S_w W</script>$W$的闭式解则是$S_w^{-1} S_b$的$d’$个最大非零广义特征值所对应的特征向量组成的矩阵，需要注意的是最终降的维数应当满足$d’ \leq N-1$,这是因为矩阵$S_b$本身最大只有$N-1$维，因此$S_w^{-1}S_b$至多有$N-1$个非零特征值。<br>若将$W$视为一个投影矩阵，则多分类LDA相当于将样本投影到$d’$空间，$d’$通常远小于数据原有的属性数$d$,于是可以通过这个投影来达到讲维的目的，同时这个过程中也应用了类别的信息，因此$LDA$也常被视为一种经典的监督降维技术。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>统计学习</category>
+      </categories>
+      <tags>
+        <tag>线性判别分析</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>深度学习基础</title>
     <url>/2020/09/02/shen-du-xue-xi-ji-chu/</url>
     <content><![CDATA[<p>近些年来，神经网络算法家族蓬勃发展，本部分主要介绍一下这些算法的一些通用原理基础，该部分按照以下结构组织:</p>
@@ -6452,83 +6638,6 @@ $$ \hat{P} = \frac{k}{N}</script><p>若超立方体$\mathcal{R}$很小，则可�
       </categories>
       <tags>
         <tag>BP算法， 深度学习， CNN</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>线性判别分析</title>
-    <url>/2020/09/01/te-zheng-ti-qu-yu-te-zheng-xuan-ze/</url>
-    <content><![CDATA[<p>线性判别分析(LDA)是一种经典的线性学习方法，在二分类问题上最早由fisher提出，因此线性判别分析又称Fisher线性判别，该部分按照以下结构组织:</p>
-<ul>
-<li>LDA算法思想</li>
-<li>LDA算法推导</li>
-<li>多分类任务</li>
-</ul>
-<span id="more"></span> 
-<h3 id="算法思想"><a href="#算法思想" class="headerlink" title="算法思想"></a>算法思想</h3><p>LDA的思想非常朴素：给定训练样例集，设法将样例投影到一条直线上，使得同类样例的投影点尽可能接近、异类样例的投影点尽可能远离，在对新的样本进行分类时，首先将其投影到同样的这条直线上，再根据投影点的位置来确定新样本的类别。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/LDA.png" alt="LDA"></p>
-<h3 id="理论推导"><a href="#理论推导" class="headerlink" title="理论推导"></a>理论推导</h3><h4 id="投影方向求解"><a href="#投影方向求解" class="headerlink" title="投影方向求解"></a>投影方向求解</h4><p>假设共有$N$个样本点$x_1,x_2,\dots,x_N$,其中有$N_1$个样本属于类别1，$N_2$个样本属于类别2，$N_1 + N_2 = N$, 记第$i$类样本点的均值为$\mu_i$,协方差矩阵为$\Sigma_i$,则有：</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        \mu_i &= \frac{1}{N_i} \sum_{x_i \in \mathcal{C_i}} x_i \\
-        \Sigma_i &= \frac{1}{N_i} \sum_{x_i \in \mathcal{C_i}} (x_i - \mu_i)(x_i - \mu_i)^T
-    \end{aligned}</script><p>当将这些样本点向$w$投影后，投影后得到的点为$\tilde{x}_i = w^T x$,记此时类别$i$的均值为$\tilde{\mu}_i$,方差为$\sigma^2_i$,由均值方差计算公式可得:</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-        \tilde{\mu}_i &= \frac{1}{N_i} \sum_{x_i \in \mathcal{C_i}} \tilde{x}_i = w^T \frac{1}{N} \sum_{x_i \in \mathcal{C_i}}  x_i = w^T \mu_i  \\
-        \sigma^2_i &= \frac{1}{N_i} \sum_{x_i \in \mathcal{C_i}}(\tilde{x}_i - \tilde{\mu
-        }_i)^2 = \frac{1}{N_i} \sum_{x_i \in \mathcal{C_i}} (w^T x_i - w^T \mu_i)^2 \\
-                &= w^T [\frac{1}{N_i} \sum_{x_i \in \mathcal{C_i}} (x_i - \mu_i)(x_i - \mu_i)^T] w \\
-             &= w^T \Sigma_i w
-    \end{aligned}</script><p>LDA有两个目标，一个是同类的点投影后尽可能接近，另一个目标则是不同类的点尽可能远离：</p>
-<ul>
-<li>第一个目标我们通过投影后各类点的方差来进行刻画，使同类点的方差尽可能小:<script type="math/tex; mode=display">
-  \min \quad w^T \Sigma_1 w + w^T \Sigma_2 w</script></li>
-<li>第二个目标通过不同类的均值尽可能远来进行刻画,使不同类的均值尽可能远:<script type="math/tex; mode=display">
-  \max \quad (w^T \mu_1 - w^T \mu_2)^2 = w^T (\mu_1 - \mu_2)(\mu_1 - \mu_2)^T w</script></li>
-</ul>
-<p>这两个目标可以通过一个目标函数来刻画：</p>
-<script type="math/tex; mode=display">
-    \max \quad \frac{w^T (\mu_1 - \mu_2)(\mu_1 - \mu_2)^T w}{w^T \Sigma_1 w + w^T \Sigma_2 w }</script><p>下面做如下标记,记$S_w = \Sigma_1 + \Sigma_2$为类内离散度矩阵，记$S_b = (\mu_1 - \mu_2)(\mu_1 - \mu_2)^T$ 为类间离散度矩阵，由此便得目标函数形式为:</p>
-<script type="math/tex; mode=display">
-    \max \quad \frac{w^T S_b w}{w^T S_w w}</script><p>这是一个广义瑞利熵形式的优化问题，因为分子分母均是$w$的二次项，因此该优化问题的解仅与$w$的方向有关(因为用$cw$ 替代$w$并不影响目标函数的值)，不失一般性，可以限制$w^T S_w w = 1$，上述优化问题可以写为:</p>
-<script type="math/tex; mode=display">
-    \max \quad w^T S_b w  \quad s.t. \quad w^T S_w w = 1</script><p>该优化问题可以通过拉格朗日乘子法来进行求解,首先写出拉格朗日函数：</p>
-<script type="math/tex; mode=display">
-    L(w,\lambda) = w^T S_b w - \lambda (w^T S_w w - 1)</script><p>上式对$w$求导可得:</p>
-<script type="math/tex; mode=display">
-    \frac{\partial L(w, \lambda)}{\partial w} = S_b w - \lambda S_w w</script><p>令偏导等于0，可得$w$应当满足条件:</p>
-<script type="math/tex; mode=display">
-    S_b w = \lambda S_w w</script><p>其中$S_b w = (\mu_1 - \mu_2)(\mu_1 - \mu_2)^Tw = c(u_1 - u_2)$,又因为前面讨论过优化目标的取值仅仅与$w$的方向有关，因此不妨取$c = \lambda$,可得:</p>
-<script type="math/tex; mode=display">
-    \mu_1 - \mu_2 = S_w w</script><p>因此可得最终$w$最优取值:</p>
-<script type="math/tex; mode=display">w^\ast = S_w^{-1}(\mu_1 - \mu_2)</script><p>这里需要说明一下，因为从前面我们可以推出这样一个表达式$S_w^{-1} S_b w = \lambda w$,这说明$w$应当是矩阵$S_w^{-1} S_b$的特征值，目标函数最大值应当是该矩阵的最大的特征值，最优$w$应当是该最大特征值所对应的特征向量，但后面求解为何没有没有从这个角度入手，这是该问题的特殊性，为解释这一点，首先看$S_b$表达式:</p>
-<script type="math/tex; mode=display">
-    S_b = (\mu_1 - \mu_2)(\mu_1 - \mu_2)^T</script><p>这说明矩阵$S_b$的秩等于1($\mu_1 \neq \mu_2$),所以$S_w^{-1}S_b$秩也为1，这说明该矩阵有且仅有一个大于0的特征值，前面的推导相当于是构造性的给出了该最大特征值及对应特征向量表达式,将$w^\ast$代入$S_w^{-1}S_b w$:</p>
-<script type="math/tex; mode=display">
-    \begin{aligned}
-         S_w^{-1} S_b w^\ast &= S_w^{-1} (\mu_1 - \mu_2)(\mu_1 - \mu_2)^T S_w^{-1}(\mu_1 - \mu_2) \\
-         &= C S_w^{-1}(\mu_1 -\mu_2)
-    \end{aligned}</script><p>其中$C = (\mu_1 - \mu_2)^TS_w^{-1}(\mu_1 - \mu_2) &gt;0 $($S_w$对称且可逆，推出其正定)，这说明$S_w^{-1}S_b$的最大特征值就是$C$,对应的特征向量刚好是$w^\ast$!<br>考虑到数值的稳定性，在实践中往往会首先对$S_w$进行特征值分解$S_w = U \Sigma U^T$,然后再求逆。</p>
-<h4 id="在线分类"><a href="#在线分类" class="headerlink" title="在线分类"></a>在线分类</h4><p>在得到最佳投影向量后，需要设定一个策略，来对新来的样本进行分类，该策略选择通常有以下几种:</p>
-<ul>
-<li>设定阈值，阈值选择通常有以下两种:<ul>
-<li>均值取平均<script type="math/tex; mode=display">t = \frac{\tilde{\mu}_1 + \tilde{\mu}_2}{2}</script></li>
-<li>根据样本点个数进行加权<script type="math/tex; mode=display">t = \frac{N_2 \tilde{\mu}_1 + N_1 \tilde{\mu}_2}{N_1 + N_2}</script></li>
-</ul>
-</li>
-<li>在一维上估计概率密度函数，用Bayes决策方法分类<h3 id="多分类任务"><a href="#多分类任务" class="headerlink" title="多分类任务"></a>多分类任务</h3>LDA 也可以推广到多分类任务中，假定存在$N$类，且第$i$类的样本数为$m_i$,首先定义全局散度矩阵:<script type="math/tex; mode=display">
-  S_t = S_w + S_b = \sum_{i=1}^m(x_i - \mu)(x_i - \mu)^T</script>其中$\mu$ 是所有样本点的均值，将类内离散度矩阵定义为每个类别的离散度矩阵之和:<script type="math/tex; mode=display">
-  S_w = \sum_{i=1}^N S_{w_i}, \quad S_{w_i} = \sum_{x \in \mathcal{X_i}} (x - \mu_i)(x - \mu_i)^T</script>然后求出类间离散度矩阵表达式:<script type="math/tex; mode=display">
-  S_b = S_t -S_w = \sum_{i=1}^N m_i(\mu_i - \mu)(\mu_i - \mu)^T</script>优化目标函数可以写成:<script type="math/tex; mode=display">
-  \max_{W} \frac{tr(W^T S_b W)}{tr(W^T S_w W)}</script>该问题的求导与前面一样，同样根据$W$的尺度不变性将上述优化问题转化为：<script type="math/tex; mode=display">
-  \max_{W} \quad tr(W^T S_b W) \quad s.t. tr(W^T S_w W) = 1</script>应用拉格朗日乘子法，并对$W$求导令导数为0可得:<script type="math/tex; mode=display">
-  S_b W = \lambda S_w W</script>$W$的闭式解则是$S_w^{-1} S_b$的$d’$个最大非零广义特征值所对应的特征向量组成的矩阵，需要注意的是最终降的维数应当满足$d’ \leq N-1$,这是因为矩阵$S_b$本身最大只有$N-1$维，因此$S_w^{-1}S_b$至多有$N-1$个非零特征值。<br>若将$W$视为一个投影矩阵，则多分类LDA相当于将样本投影到$d’$空间，$d’$通常远小于数据原有的属性数$d$,于是可以通过这个投影来达到讲维的目的，同时这个过程中也应用了类别的信息，因此$LDA$也常被视为一种经典的监督降维技术。</li>
-</ul>
-]]></content>
-      <categories>
-        <category>统计学习</category>
-      </categories>
-      <tags>
-        <tag>线性判别分析</tag>
       </tags>
   </entry>
   <entry>
@@ -7110,333 +7219,6 @@ if __name__ == '__main__':
       </tags>
   </entry>
   <entry>
-    <title>剑指offer题目总结</title>
-    <url>/2022/09/29/suan-fa-ti-zong-jie/</url>
-    <content><![CDATA[<h3 id="剑指offer题目总结"><a href="#剑指offer题目总结" class="headerlink" title="剑指offer题目总结"></a>剑指offer题目总结</h3><h4 id="链表题目"><a href="#链表题目" class="headerlink" title="链表题目"></a>链表题目</h4><ul>
-<li>从尾到头打印链表  </li>
-<li>反转链表 </li>
-<li>合并两个排序的链表(递归/遍历)</li>
-<li>两个链表的第一个公共节点(双指针/哈希表) </li>
-<li>链表中环的入口节点(快慢指针/字典) </li>
-<li>链表中倒数最后k个节点(快慢指针) </li>
-<li>复杂链表的复制(1. 复制 2. 随机指针复制 3.打断两个链表) -手写可能出错 </li>
-<li>删除链表中的节点(简单遍历)<span id="more"></span>
-<blockquote>
-<p>总结：简单遍历+快慢指针+哈希 </p>
-</blockquote>
-</li>
-</ul>
-<h4 id="树题目"><a href="#树题目" class="headerlink" title="树题目"></a>树题目</h4><ul>
-<li>二叉树的深度(简单递归/队列辅助层次遍历)</li>
-<li>按之字顺序打印二叉树(层次遍历 + flag判断奇偶层)</li>
-<li>二叉搜索树的第k个节点(深度优先遍历，结合二叉搜索树的特点)</li>
-<li>重建二叉树(递归 + 结合前序中序遍历的特点) </li>
-<li>树的子结构(递归，注意三种匹配情况) </li>
-<li>二叉树的镜像(递归，左右子树镜像，交换)</li>
-<li>从上往下打印二叉树(简单的层次遍历) </li>
-<li>二叉搜索树的后序遍历序列(递归，后序遍历，根节点) </li>
-<li>二叉树中和为某一值的路径1(递归，不需保存路径)</li>
-<li>二叉树中和为某一值的路径2(递归，保存路径, dfs)</li>
-<li>二叉搜索树与双向链表(中序遍历，维护一个pre_node)</li>
-<li>判断是不是平衡二叉树(递归判断，专门写一个判断树深度的函数即可)</li>
-<li>二叉树的下一个节点(获取中序遍历序列/分情况讨论)</li>
-<li>对称的二叉树(递归，输入两棵树，左右子树是否match， 因为单一递归，同时只能到一部分，需要两部分同步递归)</li>
-<li>把二叉树打印成多行(用队列实现树的BFS)</li>
-<li>序列化二叉树(确定规则，指针遍历，节点值后面加符号来分割树节点) </li>
-<li>二叉树中和为某一值的路径3(层次遍历 + dfs/借助哈希表，一次遍历)</li>
-<li>在二叉树中找到两个节点的最近公共祖先(dfs+最后一个共同节点/递归)</li>
-<li>二叉搜索树的最近公共祖先(简单递归，利用二叉搜索树的特点)</li>
-</ul>
-<blockquote>
-<p>总结: 树的题目基本都是围绕递归遍历展开 </p>
-<ul>
-<li>几种遍历方式: 前序、中序、后序、层次 </li>
-<li>合理考虑递归边界，特殊情况 </li>
-</ul>
-</blockquote>
-<h4 id="队列-amp-栈"><a href="#队列-amp-栈" class="headerlink" title="队列&amp;栈"></a>队列&amp;栈</h4><ul>
-<li>用两个栈实现队列(进行两次压栈操作即可) </li>
-<li>包含min函数的栈(普通栈+最小栈) </li>
-<li>栈的压入弹出序列(辅助栈模拟) </li>
-<li>翻转单词序列(两次翻转/直接split+join)</li>
-<li>滑动窗口的最大值(双向队列，维护前向最大值)</li>
-</ul>
-<blockquote>
-<p>总结：数据结构特点的基础应用 </p>
-</blockquote>
-<h4 id="搜索算法"><a href="#搜索算法" class="headerlink" title="搜索算法"></a>搜索算法</h4><ul>
-<li>数字在升序数组中出现的次数(二分查找 target-0.5 target+0.5) </li>
-<li>二维数组中的查找(有序数组，从角落开始搜索)</li>
-<li>旋转数组中的最小数字(二分查找，特殊情况考虑，注意等号) </li>
-<li>字符串的排列(遍历) </li>
-<li>数字序列中的某一位数字(模拟, 几位数字位数关系) </li>
-</ul>
-<blockquote>
-<p>总结：二分搜索 or 模拟遍历  </p>
-</blockquote>
-<h4 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h4><ul>
-<li>连续子数组的最大和(一维dp, 可以不另外开辟数组) </li>
-<li>连续子数组最大和(二)(一维dp,维护起始位置，可以不另外开辟数组) </li>
-<li>跳台阶(斐波那契数列) </li>
-<li>斐波那契数列 </li>
-<li>正则表达式匹配(二维dp) </li>
-<li>跳台阶扩展问题($2^{n-1}$) </li>
-<li>矩阵覆盖(斐波那契数列)</li>
-<li>买股票的最好时机(一维dp) </li>
-<li>礼物的最大价值(二维dp, 可以不另外开辟数组) </li>
-<li>最长不含重复字符的子字符串(借助字典，1维dp)</li>
-<li>把数字翻译成字符串(一维dp) </li>
-</ul>
-<blockquote>
-<p>总结： 这类问题的关键在于</p>
-<ul>
-<li>状态的定义 </li>
-<li>状态转移方程的形式 </li>
-</ul>
-</blockquote>
-<h4 id="回溯"><a href="#回溯" class="headerlink" title="回溯"></a>回溯</h4><ul>
-<li>矩阵中的路径(dfs + 标志矩阵)</li>
-<li>机器人的运动范围(dfs + 标志矩阵)</li>
-</ul>
-<blockquote>
-<p>dfs + 标志矩阵  </p>
-</blockquote>
-<h4 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h4><ul>
-<li>数组中重复的数字(哈希/位置重排) </li>
-<li>数组中的逆序对(归并排序) </li>
-<li>最小的k个数 </li>
-<li>数据流中的中位数 </li>
-</ul>
-<blockquote>
-<p>总结：熟练掌握归并排序和快速排序 </p>
-</blockquote>
-<h4 id="位运算"><a href="#位运算" class="headerlink" title="位运算"></a>位运算</h4><ul>
-<li>不用加减乘除做加法(异或运算获取非进位和，与运算加左移算子获取进位信息) </li>
-<li>二进制中1的个数(n&amp;n-1, 将低位1变为0，注意处理负数) </li>
-<li>数值的整数次方(借助二进制运算实现快速幂) </li>
-<li>数组中只出现一次的两个数字(异或运算的特点) </li>
-<li>求1+2+…+n(通过与运算终止递归) </li>
-</ul>
-<h4 id="模拟"><a href="#模拟" class="headerlink" title="模拟"></a>模拟</h4><ul>
-<li>顺时针打印矩阵(简单模拟，通过边界控制循环结束)</li>
-<li>扑克牌顺子(借助hash)</li>
-<li>把字符串转换成整数(去空格，找符号，转换，取模)</li>
-<li>表示数值的字符串 </li>
-</ul>
-<h4 id="其他算法"><a href="#其他算法" class="headerlink" title="其他算法"></a>其他算法</h4><ul>
-<li>构建乘积数组 </li>
-<li>第一个只出现一次的字符 </li>
-<li>替换空格 </li>
-<li>调整数组顺序使奇数位于偶数前面 </li>
-<li>数组中出现超过一半次数的数字 </li>
-<li>整数中1出现的次数 </li>
-<li>把数组排成最小的数 </li>
-<li>丑数 </li>
-<li>和为S的连续正数序列 </li>
-<li>和为S的两个数字 </li>
-<li>左旋转字符串 </li>
-<li>孩子们的游戏(约瑟夫环)</li>
-<li>字符流中第一个不重复地字符 </li>
-<li>剪绳子 </li>
-<li>调整数组顺序使奇数位于偶数前面</li>
-<li>剪绳子(进阶版)</li>
-<li>打印从1到最大的n位数<h4 id="python中常用数据结构模块"><a href="#python中常用数据结构模块" class="headerlink" title="python中常用数据结构模块"></a>python中常用数据结构模块</h4></li>
-</ul>
-<ol>
-<li>队列 <code>queue.Queue()</code> </li>
-</ol>
-<ul>
-<li><code>Queue().qsize()</code>: 返回队列的大小 </li>
-<li><code>Queue().empty()</code>: 如果队列为空返回<code>True</code>，反之返回<code>False</code> </li>
-<li><code>Queue().full()</code>: 如果队列满了，返回<code>True</code>,反之返回<code>False</code> </li>
-<li><code>Queue().get()</code>: 获取队列的第一个值，出队列 </li>
-<li><code>Queue().put()</code>: 写入队列 </li>
-<li>题目: 从上往下打印二叉树 <pre class="line-numbers language-lang-python"><code class="language-lang-python">import queue 
-class Solution:
-  def PrintFromTopToBottom(self , root: TreeNode) -> List[int]:
-      # write code here 
-      res = [] 
-      if not root:
-          return res 
-      q = queue.Queue() 
-      q.put(root) 
-      while not q.empty(): 
-          cur_node = q.get() 
-          res.append(cur_node.val) 
-          if cur_node.left: 
-              q.put(cur_node.left) 
-          if cur_node.right: 
-              q.put(cur_node.right) 
-      return res
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
-<ol>
-<li>双向队列<code>collections.deque()</code> </li>
-</ol>
-<ul>
-<li><code>deque()</code>: 创建 </li>
-<li><code>deque().append()</code>: 向队列中添加元素 </li>
-<li><code>deque().pop()</code>: 抛出最后一个元素 </li>
-<li><code>deque().leftpop()</code>: 抛出第一个元素 </li>
-<li><code>deque().extend()</code>: 添加list项到原<code>deque()</code>中 </li>
-<li><code>deque().extendleft()</code>: 添加list项到原<code>deque()</code>头部 </li>
-<li><p>题目: 滑动窗口的最大值 </p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">from collections import deque 
-class Solution:
-  def maxInWindows(self , num: List[int], size: int) -> List[int]:
-      # write code here 
-      res = [] 
-      dq = deque()
-      if size > len(num) or not size: 
-          return [] 
-
-      for i in range(size): 
-          while len(dq) > 0 and num[dq[-1]] < num[i]: 
-              dq.pop() 
-          dq.append(i) 
-
-      for i in range(size, len(num)): 
-          res.append(num[dq[0]]) 
-          while len(dq) > 0 and dq[0] < i - size + 1: 
-              dq.popleft() 
-          while len(dq) > 0 and num[dq[-1]] < num[i]:
-              dq.pop() 
-          dq.append(i) 
-      res.append(num[dq[0]]) 
-      return res
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
-<ol>
-<li>小根堆<code>heapq</code></li>
-</ol>
-<ul>
-<li><code>heapq.heappush(pq, value)</code> 入堆 </li>
-<li><code>heapq.heapreplace(pq,value)</code> 替换堆中元素 </li>
-<li><code>heapq.pop(pq)</code> 出堆 </li>
-</ul>
-<ol>
-<li><code>collections.defaultdict()</code><br><code>dict</code>的一个子类，可以使创建的字典具有默认值，可以预先指定默认值类型：<pre class="line-numbers language-lang-python"><code class="language-lang-python">import collections 
-mp = collections.defaultdict(list) # 默认值为[]
-mp = collections.defaultdict(int)  # 默认值为0
-mp = collections.defaultdict(lambda:999) # 默认值为999
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-在python中，可哈希的数据类型有：</li>
-</ol>
-<ul>
-<li>数字类型(<code>int</code>、<code>float</code>、<code>bool</code>), 字符串<code>str</code>、元组<code>tuple</code></li>
-</ul>
-<p>不可哈希的数据类型有:</p>
-<ul>
-<li>字典<code>dict</code>、列表<code>list</code>、集合<code>set</code><h4 id="算法题常用解题思路"><a href="#算法题常用解题思路" class="headerlink" title="算法题常用解题思路"></a>算法题常用解题思路</h4><h5 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h5></li>
-<li>什么样的问题可以用递归解决? <ul>
-<li>主问题可以拆分为若干子问题 </li>
-<li>主问题和子问题的解题思路一致</li>
-<li>存在终止条件 </li>
-</ul>
-</li>
-<li>递归问题如何解决？ <ul>
-<li>找到递推公式 </li>
-<li>找到终止条件 </li>
-<li>翻译成代码 </li>
-</ul>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>算法岗八股文</category>
-      </categories>
-      <tags>
-        <tag>数据结构</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>纯粹理性批判</title>
-    <url>/2020/12/14/chun-cui-li-xing-pi-pan/</url>
-    <content><![CDATA[<p>在一年前我磕磕绊绊读完《西方哲学简史》后，试图想要征服康德的《纯粹理性批判》，然而《纯粹理性批判》实在晦涩难读，加之以当时我自身哲学素养不够，我最终读到百分之十左右时便放弃了。时至今日，我再次尝试精读一下《纯粹理性批判》这本书，这篇博客也就用来记录一下我读期间的一些所思所感。 <span id="more"></span></p>
-<h4 id="第一版前言"><a href="#第一版前言" class="headerlink" title="第一版前言"></a>第一版前言</h4><p>主要的问题: </p>
-<blockquote>
-<p>知性和理性脱离开一切经验能够认识什么、认识多少？</p>
-</blockquote>
-<p>论证的明晰性主要体现在: </p>
-<ul>
-<li>概念的推论(逻辑的)明晰性，这是本文所重视的。</li>
-<li>直观的、亦即凭借具体的实例和其他说明的直觉的(感性的)明晰性，本文并不注重，康德给出的理由是：明晰性的辅助手段虽然在各个部分上有所助益，但却往往在整体上分散精力。</li>
-</ul>
-<p>本文的基本思路: </p>
-<ul>
-<li>在自然的形而上学这个标题自身下面提供出纯粹理性的一个体系，即论述清楚待批判的对象本身。 </li>
-<li>对纯粹理性的批判。</li>
-</ul>
-<h4 id="第二版前言"><a href="#第二版前言" class="headerlink" title="第二版前言"></a>第二版前言</h4><p>逻辑学的界限: </p>
-<blockquote>
-<p>一门仅仅详尽地阐明和严格地证明一切思维的形式规则的科学。</p>
-</blockquote>
-<p>形而上学的做法迄今为止还只是一种来回摸索，而最糟糕的是仅仅在概念中间来回摸索。<br>如何才能寻找到一条科学的可靠道路？ </p>
-<blockquote>
-<p>反省对数学和自然科学这两门学科来说变得如此有益的思维方式变革的本质性部分，并在这里就它们作为理性知识与形而上学的类似所允许，至少尝试效仿它们。</p>
-</blockquote>
-<p>康德对纯粹理性批判这一工作的概述: </p>
-<blockquote>
-<p>纯粹思辨理性的这一批判的工作就在于那种尝试，即通过我们按照几何学家和自然研究者的范例对形而上学进行一场完全的革命，来变革形而上学迄今为止的做法。</p>
-</blockquote>
-<p>纯粹思辨理性自身具有的特征: </p>
-<blockquote>
-<p>它能够而且应当根据它为自己选择思维客体的方式的不同来衡量它自己的能力，甚至完备地列举出为自己提出任务的各种方式，并这样来描画形而上学体系的整个轮廓。</p>
-</blockquote>
-<p>形而上学本身的优势在于当它被这种批判带上一门科学的道路之后，它就完全能把握住属于它的知识的整个领域，从而完成自己的事业。<br>但问题在于，<strong>凭借这样一种通过批判澄清的、但因此也达到一种恒定状态的形而上学究竟是一笔怎样的财富？</strong></p>
-<blockquote>
-<p>永远不要冒险通过思辨理性去超越经验的界限，但同时，它借此同时排除了限制或者有完全根除理性的实践应用的危险的障碍，事实上却具有积极的和非常重要的用处。 </p>
-</blockquote>
-<p>在批判的分析部分将证明，空间和时间不过是感性直观的形式，因而只不过是作为显像的物实存的条件，此外除非能够被给予与知性概念相应的直观，否则我们就没有任何知性概念，从而也根本没有任何达到物的知识的要素，于是我们对于<strong>任何作为物自身的对象</strong>都不可能有知识，而只有在它作为<strong>感性直观的客体、即作为显象</strong>时才能有知识。由此当然也就能够得出，一切思辨的理性知识，都仅仅限制在经验的对象之上。<br>但从另一个角度来说，正是这些作为物自身的对象，我们即使不能认识，至少也必须能够思维。我能够思维我想思维的任何东西，只要我不与自己本身相矛盾，也就是说，只要我的概念是一个可能的思想，即使我不能保证在所有可能性的总和中是否也有一个客体与它相对应。但是，要赋予这样一个概念以客观的有效性(实在的可能性)，就要求某种更多的东西。但这种更多的东西恰好不需要在理论的知识来源中寻找，它也可能存在于实际的知识来源之中。<br>同一个意志就在显象中被设定为必然遵守自然规律的、就此而言是不自由的，但在另一方面又被设想为属于一个物自身而不服从自然规律的，从而就被设想为自由的。</p>
-<blockquote>
-<p>批判告诉我们，就物自身而言，我们不可避免地无知，我们在理论上能够认识的一切仅仅限制在显像上。‘</p>
-</blockquote>
-<p>康德的对纯粹理性的批判更多的是针对形而上学中的“独断论者”。</p>
-<blockquote>
-<p>批判并不与理性在其作为科学的纯粹知识中的独断方法对立，而是与独断论对立，也就是说，与凭借一种从概念出发的纯粹知识按照理性早已运用的原则、从不调查理性达到这种知识的方式和权利就能前进的僭妄对立。</p>
-</blockquote>
-<h4 id="导论"><a href="#导论" class="headerlink" title="导论"></a>导论</h4><h5 id="论纯粹理性知识与经验性知识的区别"><a href="#论纯粹理性知识与经验性知识的区别" class="headerlink" title="论纯粹理性知识与经验性知识的区别"></a>论纯粹理性知识与经验性知识的区别</h5><blockquote>
-<p>我们的一切知识都以经验开始，这是毋庸置疑的。在时间上，我们没有任何知识先行于经验，一切知识都是从经验开始。 </p>
-</blockquote>
-<p>但需要明确的是，<strong>尽管我们的一切知识都以经验开始，它们却并不因此都产生自经验</strong>，这句话看似有一些矛盾，但康德想表达的意思是: </p>
-<blockquote>
-<p>我们的知识并不仅仅是来自于经验，而是<strong>印象所接受的东西</strong>与<strong>我们自己的认识能力从自己本身提供的东西</strong>的一个复合物。</p>
-</blockquote>
-<p>我们的这个<strong>附加</strong>则是一个需要讨论的重点，由此便引出了一个关键问题:</p>
-<blockquote>
-<p><strong>是否有一种独立于经验，甚至独立于一切感官印象的知识。</strong> 人们称这样的知识为<strong>先天的</strong>，并把它们与那些具有后天的来源、即在经验中具有其来源的经验性的知识区别开来。</p>
-</blockquote>
-<p>同时康德为了更加精确地定义<strong>先天知识</strong>，举了一个人挖墙角的例子: </p>
-<blockquote>
-<p>关于某个挖墙脚的人，人们会说:” 他能够先天的知道房子会倒，也就是说，他不必等待这房子真的倒下来以获得经验。 然而，他并不能完全先天地知道这一点，“房子会倒”这样的认识也是来自于经验“物体是有重量的”。 </p>
-</blockquote>
-<p>因此，康德给出了他认为的先天知识的定义: </p>
-<blockquote>
-<p>先天知识指<strong>绝对不依赖于一切经验而发生的知识。</strong></p>
-</blockquote>
-<p>与这些知识相反的是经验性的知识，或者是<strong>仅仅后天地、即通过经验才可能的知识。</strong> 同时康德对先天知识又进行了划分:</p>
-<blockquote>
-<p>先天知识中根本不掺杂任何经验性因素的知识叫做<strong>纯粹的先天知识</strong>。<br> 在本节最后，康德举了一个后面还会经常提到的例子:<br>“每一变化皆有其原因”这个命题就是一个先天命题，但并不是纯粹的，因为变化是一个只能从经验中取得的概念。 </p>
-</blockquote>
-<h5 id="我们拥有某些先天知识，甚至普通的知性也从不缺少它们"><a href="#我们拥有某些先天知识，甚至普通的知性也从不缺少它们" class="headerlink" title="我们拥有某些先天知识，甚至普通的知性也从不缺少它们"></a>我们拥有某些先天知识，甚至普通的知性也从不缺少它们</h5><p>虽然在上一节给出了先天知识和经验性知识的定义，但从哪些特征出发可以清晰地分辨两种特征？ </p>
-<blockquote>
-<ul>
-<li>如果有一个命题与它的必然性一同被思维，那么它就是一个先天判断。 </li>
-<li>除了自身又是作为一个必然命题而有效的命题之外，它也不是从任何命题派生出的。 </li>
-<li>经验永远不赋予自己的判断以真正的或者严格的普遍性，而是只赋予它们以假定的、相对的普遍性。 </li>
-</ul>
-</blockquote>
-]]></content>
-      <categories>
-        <category>灵魂雕琢</category>
-      </categories>
-      <tags>
-        <tag>康德，哲学</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>社会学的想象力</title>
     <url>/2020/11/30/she-hui-xue-de-xiang-xiang-li/</url>
     <content><![CDATA[<p>为了适当打破一下自己固化的圈子，也为了读一本新书，自己鬼使神差般报名了乐学组织的读书打卡活动，我所选读的书是:</p>
@@ -7953,6 +7735,333 @@ mp = collections.defaultdict(lambda:999) # 默认值为999
       </tags>
   </entry>
   <entry>
+    <title>剑指offer题目总结</title>
+    <url>/2022/09/29/suan-fa-ti-zong-jie/</url>
+    <content><![CDATA[<h3 id="剑指offer题目总结"><a href="#剑指offer题目总结" class="headerlink" title="剑指offer题目总结"></a>剑指offer题目总结</h3><h4 id="链表题目"><a href="#链表题目" class="headerlink" title="链表题目"></a>链表题目</h4><ul>
+<li>从尾到头打印链表  </li>
+<li>反转链表 </li>
+<li>合并两个排序的链表(递归/遍历)</li>
+<li>两个链表的第一个公共节点(双指针/哈希表) </li>
+<li>链表中环的入口节点(快慢指针/字典) </li>
+<li>链表中倒数最后k个节点(快慢指针) </li>
+<li>复杂链表的复制(1. 复制 2. 随机指针复制 3.打断两个链表) -手写可能出错 </li>
+<li>删除链表中的节点(简单遍历)<span id="more"></span>
+<blockquote>
+<p>总结：简单遍历+快慢指针+哈希 </p>
+</blockquote>
+</li>
+</ul>
+<h4 id="树题目"><a href="#树题目" class="headerlink" title="树题目"></a>树题目</h4><ul>
+<li>二叉树的深度(简单递归/队列辅助层次遍历)</li>
+<li>按之字顺序打印二叉树(层次遍历 + flag判断奇偶层)</li>
+<li>二叉搜索树的第k个节点(深度优先遍历，结合二叉搜索树的特点)</li>
+<li>重建二叉树(递归 + 结合前序中序遍历的特点) </li>
+<li>树的子结构(递归，注意三种匹配情况) </li>
+<li>二叉树的镜像(递归，左右子树镜像，交换)</li>
+<li>从上往下打印二叉树(简单的层次遍历) </li>
+<li>二叉搜索树的后序遍历序列(递归，后序遍历，根节点) </li>
+<li>二叉树中和为某一值的路径1(递归，不需保存路径)</li>
+<li>二叉树中和为某一值的路径2(递归，保存路径, dfs)</li>
+<li>二叉搜索树与双向链表(中序遍历，维护一个pre_node)</li>
+<li>判断是不是平衡二叉树(递归判断，专门写一个判断树深度的函数即可)</li>
+<li>二叉树的下一个节点(获取中序遍历序列/分情况讨论)</li>
+<li>对称的二叉树(递归，输入两棵树，左右子树是否match， 因为单一递归，同时只能到一部分，需要两部分同步递归)</li>
+<li>把二叉树打印成多行(用队列实现树的BFS)</li>
+<li>序列化二叉树(确定规则，指针遍历，节点值后面加符号来分割树节点) </li>
+<li>二叉树中和为某一值的路径3(层次遍历 + dfs/借助哈希表，一次遍历)</li>
+<li>在二叉树中找到两个节点的最近公共祖先(dfs+最后一个共同节点/递归)</li>
+<li>二叉搜索树的最近公共祖先(简单递归，利用二叉搜索树的特点)</li>
+</ul>
+<blockquote>
+<p>总结: 树的题目基本都是围绕递归遍历展开 </p>
+<ul>
+<li>几种遍历方式: 前序、中序、后序、层次 </li>
+<li>合理考虑递归边界，特殊情况 </li>
+</ul>
+</blockquote>
+<h4 id="队列-amp-栈"><a href="#队列-amp-栈" class="headerlink" title="队列&amp;栈"></a>队列&amp;栈</h4><ul>
+<li>用两个栈实现队列(进行两次压栈操作即可) </li>
+<li>包含min函数的栈(普通栈+最小栈) </li>
+<li>栈的压入弹出序列(辅助栈模拟) </li>
+<li>翻转单词序列(两次翻转/直接split+join)</li>
+<li>滑动窗口的最大值(双向队列，维护前向最大值)</li>
+</ul>
+<blockquote>
+<p>总结：数据结构特点的基础应用 </p>
+</blockquote>
+<h4 id="搜索算法"><a href="#搜索算法" class="headerlink" title="搜索算法"></a>搜索算法</h4><ul>
+<li>数字在升序数组中出现的次数(二分查找 target-0.5 target+0.5) </li>
+<li>二维数组中的查找(有序数组，从角落开始搜索)</li>
+<li>旋转数组中的最小数字(二分查找，特殊情况考虑，注意等号) </li>
+<li>字符串的排列(遍历) </li>
+<li>数字序列中的某一位数字(模拟, 几位数字位数关系) </li>
+</ul>
+<blockquote>
+<p>总结：二分搜索 or 模拟遍历  </p>
+</blockquote>
+<h4 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h4><ul>
+<li>连续子数组的最大和(一维dp, 可以不另外开辟数组) </li>
+<li>连续子数组最大和(二)(一维dp,维护起始位置，可以不另外开辟数组) </li>
+<li>跳台阶(斐波那契数列) </li>
+<li>斐波那契数列 </li>
+<li>正则表达式匹配(二维dp) </li>
+<li>跳台阶扩展问题($2^{n-1}$) </li>
+<li>矩阵覆盖(斐波那契数列)</li>
+<li>买股票的最好时机(一维dp) </li>
+<li>礼物的最大价值(二维dp, 可以不另外开辟数组) </li>
+<li>最长不含重复字符的子字符串(借助字典，1维dp)</li>
+<li>把数字翻译成字符串(一维dp) </li>
+</ul>
+<blockquote>
+<p>总结： 这类问题的关键在于</p>
+<ul>
+<li>状态的定义 </li>
+<li>状态转移方程的形式 </li>
+</ul>
+</blockquote>
+<h4 id="回溯"><a href="#回溯" class="headerlink" title="回溯"></a>回溯</h4><ul>
+<li>矩阵中的路径(dfs + 标志矩阵)</li>
+<li>机器人的运动范围(dfs + 标志矩阵)</li>
+</ul>
+<blockquote>
+<p>dfs + 标志矩阵  </p>
+</blockquote>
+<h4 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h4><ul>
+<li>数组中重复的数字(哈希/位置重排) </li>
+<li>数组中的逆序对(归并排序) </li>
+<li>最小的k个数 </li>
+<li>数据流中的中位数 </li>
+</ul>
+<blockquote>
+<p>总结：熟练掌握归并排序和快速排序 </p>
+</blockquote>
+<h4 id="位运算"><a href="#位运算" class="headerlink" title="位运算"></a>位运算</h4><ul>
+<li>不用加减乘除做加法(异或运算获取非进位和，与运算加左移算子获取进位信息) </li>
+<li>二进制中1的个数(n&amp;n-1, 将低位1变为0，注意处理负数) </li>
+<li>数值的整数次方(借助二进制运算实现快速幂) </li>
+<li>数组中只出现一次的两个数字(异或运算的特点) </li>
+<li>求1+2+…+n(通过与运算终止递归) </li>
+</ul>
+<h4 id="模拟"><a href="#模拟" class="headerlink" title="模拟"></a>模拟</h4><ul>
+<li>顺时针打印矩阵(简单模拟，通过边界控制循环结束)</li>
+<li>扑克牌顺子(借助hash)</li>
+<li>把字符串转换成整数(去空格，找符号，转换，取模)</li>
+<li>表示数值的字符串 </li>
+</ul>
+<h4 id="其他算法"><a href="#其他算法" class="headerlink" title="其他算法"></a>其他算法</h4><ul>
+<li>构建乘积数组 </li>
+<li>第一个只出现一次的字符 </li>
+<li>替换空格 </li>
+<li>调整数组顺序使奇数位于偶数前面 </li>
+<li>数组中出现超过一半次数的数字 </li>
+<li>整数中1出现的次数 </li>
+<li>把数组排成最小的数 </li>
+<li>丑数 </li>
+<li>和为S的连续正数序列 </li>
+<li>和为S的两个数字 </li>
+<li>左旋转字符串 </li>
+<li>孩子们的游戏(约瑟夫环)</li>
+<li>字符流中第一个不重复地字符 </li>
+<li>剪绳子 </li>
+<li>调整数组顺序使奇数位于偶数前面</li>
+<li>剪绳子(进阶版)</li>
+<li>打印从1到最大的n位数<h4 id="python中常用数据结构模块"><a href="#python中常用数据结构模块" class="headerlink" title="python中常用数据结构模块"></a>python中常用数据结构模块</h4></li>
+</ul>
+<ol>
+<li>队列 <code>queue.Queue()</code> </li>
+</ol>
+<ul>
+<li><code>Queue().qsize()</code>: 返回队列的大小 </li>
+<li><code>Queue().empty()</code>: 如果队列为空返回<code>True</code>，反之返回<code>False</code> </li>
+<li><code>Queue().full()</code>: 如果队列满了，返回<code>True</code>,反之返回<code>False</code> </li>
+<li><code>Queue().get()</code>: 获取队列的第一个值，出队列 </li>
+<li><code>Queue().put()</code>: 写入队列 </li>
+<li>题目: 从上往下打印二叉树 <pre class="line-numbers language-lang-python"><code class="language-lang-python">import queue 
+class Solution:
+  def PrintFromTopToBottom(self , root: TreeNode) -> List[int]:
+      # write code here 
+      res = [] 
+      if not root:
+          return res 
+      q = queue.Queue() 
+      q.put(root) 
+      while not q.empty(): 
+          cur_node = q.get() 
+          res.append(cur_node.val) 
+          if cur_node.left: 
+              q.put(cur_node.left) 
+          if cur_node.right: 
+              q.put(cur_node.right) 
+      return res
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ul>
+<ol>
+<li>双向队列<code>collections.deque()</code> </li>
+</ol>
+<ul>
+<li><code>deque()</code>: 创建 </li>
+<li><code>deque().append()</code>: 向队列中添加元素 </li>
+<li><code>deque().pop()</code>: 抛出最后一个元素 </li>
+<li><code>deque().leftpop()</code>: 抛出第一个元素 </li>
+<li><code>deque().extend()</code>: 添加list项到原<code>deque()</code>中 </li>
+<li><code>deque().extendleft()</code>: 添加list项到原<code>deque()</code>头部 </li>
+<li><p>题目: 滑动窗口的最大值 </p>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">from collections import deque 
+class Solution:
+  def maxInWindows(self , num: List[int], size: int) -> List[int]:
+      # write code here 
+      res = [] 
+      dq = deque()
+      if size > len(num) or not size: 
+          return [] 
+
+      for i in range(size): 
+          while len(dq) > 0 and num[dq[-1]] < num[i]: 
+              dq.pop() 
+          dq.append(i) 
+
+      for i in range(size, len(num)): 
+          res.append(num[dq[0]]) 
+          while len(dq) > 0 and dq[0] < i - size + 1: 
+              dq.popleft() 
+          while len(dq) > 0 and num[dq[-1]] < num[i]:
+              dq.pop() 
+          dq.append(i) 
+      res.append(num[dq[0]]) 
+      return res
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ul>
+<ol>
+<li>小根堆<code>heapq</code></li>
+</ol>
+<ul>
+<li><code>heapq.heappush(pq, value)</code> 入堆 </li>
+<li><code>heapq.heapreplace(pq,value)</code> 替换堆中元素 </li>
+<li><code>heapq.pop(pq)</code> 出堆 </li>
+</ul>
+<ol>
+<li><code>collections.defaultdict()</code><br><code>dict</code>的一个子类，可以使创建的字典具有默认值，可以预先指定默认值类型：<pre class="line-numbers language-lang-python"><code class="language-lang-python">import collections 
+mp = collections.defaultdict(list) # 默认值为[]
+mp = collections.defaultdict(int)  # 默认值为0
+mp = collections.defaultdict(lambda:999) # 默认值为999
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+在python中，可哈希的数据类型有：</li>
+</ol>
+<ul>
+<li>数字类型(<code>int</code>、<code>float</code>、<code>bool</code>), 字符串<code>str</code>、元组<code>tuple</code></li>
+</ul>
+<p>不可哈希的数据类型有:</p>
+<ul>
+<li>字典<code>dict</code>、列表<code>list</code>、集合<code>set</code><h4 id="算法题常用解题思路"><a href="#算法题常用解题思路" class="headerlink" title="算法题常用解题思路"></a>算法题常用解题思路</h4><h5 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h5></li>
+<li>什么样的问题可以用递归解决? <ul>
+<li>主问题可以拆分为若干子问题 </li>
+<li>主问题和子问题的解题思路一致</li>
+<li>存在终止条件 </li>
+</ul>
+</li>
+<li>递归问题如何解决？ <ul>
+<li>找到递推公式 </li>
+<li>找到终止条件 </li>
+<li>翻译成代码 </li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>算法岗八股文</category>
+      </categories>
+      <tags>
+        <tag>数据结构</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>纯粹理性批判</title>
+    <url>/2020/12/14/chun-cui-li-xing-pi-pan/</url>
+    <content><![CDATA[<p>在一年前我磕磕绊绊读完《西方哲学简史》后，试图想要征服康德的《纯粹理性批判》，然而《纯粹理性批判》实在晦涩难读，加之以当时我自身哲学素养不够，我最终读到百分之十左右时便放弃了。时至今日，我再次尝试精读一下《纯粹理性批判》这本书，这篇博客也就用来记录一下我读期间的一些所思所感。 <span id="more"></span></p>
+<h4 id="第一版前言"><a href="#第一版前言" class="headerlink" title="第一版前言"></a>第一版前言</h4><p>主要的问题: </p>
+<blockquote>
+<p>知性和理性脱离开一切经验能够认识什么、认识多少？</p>
+</blockquote>
+<p>论证的明晰性主要体现在: </p>
+<ul>
+<li>概念的推论(逻辑的)明晰性，这是本文所重视的。</li>
+<li>直观的、亦即凭借具体的实例和其他说明的直觉的(感性的)明晰性，本文并不注重，康德给出的理由是：明晰性的辅助手段虽然在各个部分上有所助益，但却往往在整体上分散精力。</li>
+</ul>
+<p>本文的基本思路: </p>
+<ul>
+<li>在自然的形而上学这个标题自身下面提供出纯粹理性的一个体系，即论述清楚待批判的对象本身。 </li>
+<li>对纯粹理性的批判。</li>
+</ul>
+<h4 id="第二版前言"><a href="#第二版前言" class="headerlink" title="第二版前言"></a>第二版前言</h4><p>逻辑学的界限: </p>
+<blockquote>
+<p>一门仅仅详尽地阐明和严格地证明一切思维的形式规则的科学。</p>
+</blockquote>
+<p>形而上学的做法迄今为止还只是一种来回摸索，而最糟糕的是仅仅在概念中间来回摸索。<br>如何才能寻找到一条科学的可靠道路？ </p>
+<blockquote>
+<p>反省对数学和自然科学这两门学科来说变得如此有益的思维方式变革的本质性部分，并在这里就它们作为理性知识与形而上学的类似所允许，至少尝试效仿它们。</p>
+</blockquote>
+<p>康德对纯粹理性批判这一工作的概述: </p>
+<blockquote>
+<p>纯粹思辨理性的这一批判的工作就在于那种尝试，即通过我们按照几何学家和自然研究者的范例对形而上学进行一场完全的革命，来变革形而上学迄今为止的做法。</p>
+</blockquote>
+<p>纯粹思辨理性自身具有的特征: </p>
+<blockquote>
+<p>它能够而且应当根据它为自己选择思维客体的方式的不同来衡量它自己的能力，甚至完备地列举出为自己提出任务的各种方式，并这样来描画形而上学体系的整个轮廓。</p>
+</blockquote>
+<p>形而上学本身的优势在于当它被这种批判带上一门科学的道路之后，它就完全能把握住属于它的知识的整个领域，从而完成自己的事业。<br>但问题在于，<strong>凭借这样一种通过批判澄清的、但因此也达到一种恒定状态的形而上学究竟是一笔怎样的财富？</strong></p>
+<blockquote>
+<p>永远不要冒险通过思辨理性去超越经验的界限，但同时，它借此同时排除了限制或者有完全根除理性的实践应用的危险的障碍，事实上却具有积极的和非常重要的用处。 </p>
+</blockquote>
+<p>在批判的分析部分将证明，空间和时间不过是感性直观的形式，因而只不过是作为显像的物实存的条件，此外除非能够被给予与知性概念相应的直观，否则我们就没有任何知性概念，从而也根本没有任何达到物的知识的要素，于是我们对于<strong>任何作为物自身的对象</strong>都不可能有知识，而只有在它作为<strong>感性直观的客体、即作为显象</strong>时才能有知识。由此当然也就能够得出，一切思辨的理性知识，都仅仅限制在经验的对象之上。<br>但从另一个角度来说，正是这些作为物自身的对象，我们即使不能认识，至少也必须能够思维。我能够思维我想思维的任何东西，只要我不与自己本身相矛盾，也就是说，只要我的概念是一个可能的思想，即使我不能保证在所有可能性的总和中是否也有一个客体与它相对应。但是，要赋予这样一个概念以客观的有效性(实在的可能性)，就要求某种更多的东西。但这种更多的东西恰好不需要在理论的知识来源中寻找，它也可能存在于实际的知识来源之中。<br>同一个意志就在显象中被设定为必然遵守自然规律的、就此而言是不自由的，但在另一方面又被设想为属于一个物自身而不服从自然规律的，从而就被设想为自由的。</p>
+<blockquote>
+<p>批判告诉我们，就物自身而言，我们不可避免地无知，我们在理论上能够认识的一切仅仅限制在显像上。‘</p>
+</blockquote>
+<p>康德的对纯粹理性的批判更多的是针对形而上学中的“独断论者”。</p>
+<blockquote>
+<p>批判并不与理性在其作为科学的纯粹知识中的独断方法对立，而是与独断论对立，也就是说，与凭借一种从概念出发的纯粹知识按照理性早已运用的原则、从不调查理性达到这种知识的方式和权利就能前进的僭妄对立。</p>
+</blockquote>
+<h4 id="导论"><a href="#导论" class="headerlink" title="导论"></a>导论</h4><h5 id="论纯粹理性知识与经验性知识的区别"><a href="#论纯粹理性知识与经验性知识的区别" class="headerlink" title="论纯粹理性知识与经验性知识的区别"></a>论纯粹理性知识与经验性知识的区别</h5><blockquote>
+<p>我们的一切知识都以经验开始，这是毋庸置疑的。在时间上，我们没有任何知识先行于经验，一切知识都是从经验开始。 </p>
+</blockquote>
+<p>但需要明确的是，<strong>尽管我们的一切知识都以经验开始，它们却并不因此都产生自经验</strong>，这句话看似有一些矛盾，但康德想表达的意思是: </p>
+<blockquote>
+<p>我们的知识并不仅仅是来自于经验，而是<strong>印象所接受的东西</strong>与<strong>我们自己的认识能力从自己本身提供的东西</strong>的一个复合物。</p>
+</blockquote>
+<p>我们的这个<strong>附加</strong>则是一个需要讨论的重点，由此便引出了一个关键问题:</p>
+<blockquote>
+<p><strong>是否有一种独立于经验，甚至独立于一切感官印象的知识。</strong> 人们称这样的知识为<strong>先天的</strong>，并把它们与那些具有后天的来源、即在经验中具有其来源的经验性的知识区别开来。</p>
+</blockquote>
+<p>同时康德为了更加精确地定义<strong>先天知识</strong>，举了一个人挖墙角的例子: </p>
+<blockquote>
+<p>关于某个挖墙脚的人，人们会说:” 他能够先天的知道房子会倒，也就是说，他不必等待这房子真的倒下来以获得经验。 然而，他并不能完全先天地知道这一点，“房子会倒”这样的认识也是来自于经验“物体是有重量的”。 </p>
+</blockquote>
+<p>因此，康德给出了他认为的先天知识的定义: </p>
+<blockquote>
+<p>先天知识指<strong>绝对不依赖于一切经验而发生的知识。</strong></p>
+</blockquote>
+<p>与这些知识相反的是经验性的知识，或者是<strong>仅仅后天地、即通过经验才可能的知识。</strong> 同时康德对先天知识又进行了划分:</p>
+<blockquote>
+<p>先天知识中根本不掺杂任何经验性因素的知识叫做<strong>纯粹的先天知识</strong>。<br> 在本节最后，康德举了一个后面还会经常提到的例子:<br>“每一变化皆有其原因”这个命题就是一个先天命题，但并不是纯粹的，因为变化是一个只能从经验中取得的概念。 </p>
+</blockquote>
+<h5 id="我们拥有某些先天知识，甚至普通的知性也从不缺少它们"><a href="#我们拥有某些先天知识，甚至普通的知性也从不缺少它们" class="headerlink" title="我们拥有某些先天知识，甚至普通的知性也从不缺少它们"></a>我们拥有某些先天知识，甚至普通的知性也从不缺少它们</h5><p>虽然在上一节给出了先天知识和经验性知识的定义，但从哪些特征出发可以清晰地分辨两种特征？ </p>
+<blockquote>
+<ul>
+<li>如果有一个命题与它的必然性一同被思维，那么它就是一个先天判断。 </li>
+<li>除了自身又是作为一个必然命题而有效的命题之外，它也不是从任何命题派生出的。 </li>
+<li>经验永远不赋予自己的判断以真正的或者严格的普遍性，而是只赋予它们以假定的、相对的普遍性。 </li>
+</ul>
+</blockquote>
+]]></content>
+      <categories>
+        <category>灵魂雕琢</category>
+      </categories>
+      <tags>
+        <tag>康德，哲学</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>线性判别函数</title>
     <url>/2020/08/11/xian-xing-pan-bie-han-shu/</url>
     <content><![CDATA[<p>在这一部分将总结一下关于感知机的一些相关知识点，不过首先我想要介绍下统计学习相关算法的一种分类标准。该部分内容将按照以下几部分进行组织：</p>
@@ -8374,29 +8483,6 @@ P(o \mid c)=\frac{\exp \left(u_o^T v_c\right)}{\sum_{w \in V} \exp \left(u_w^T v
       </tags>
   </entry>
   <entry>
-    <title>致时光</title>
-    <url>/2020/09/25/zhi-shi-guang/</url>
-    <content><![CDATA[<p>我很久之前就想写这一篇文章了，但或是感触未深，或是时光未老，迟迟不知如何落笔。<br>今天是2020年9月25月，我的人生的第24个年头已经悄然逝去过半；上个月我姐生下了小宝宝安宁，我也正式升格为舅舅；明天我大哥也就要结婚了，我们这一辈已经开始慢慢化身我儿时父辈的角色。时光的巨轮已然于我之身滚动两旬，新旧两代交替的音符已然在空中交响。<br><span id="more"></span><br>如果让我为自己的人生划分章节，我倾向于将自己的人生划为四个章节。</p>
-<ul>
-<li>初识人间，懵懵懂懂 </li>
-<li>渐知人事，似懂非懂 </li>
-<li>洞察人事，知己知人 </li>
-</ul>
-<p>下面我就按照我自己划分的人生章节来对我24年的人生进行一个阶段性总结。</p>
-<h3 id="初识人间，懵懵懂懂"><a href="#初识人间，懵懵懂懂" class="headerlink" title="初识人间，懵懵懂懂"></a>初识人间，懵懵懂懂</h3><p>1997年1月30日，伴随着一声啼哭，我来到了这个人世间，掀开了我的人生篇章。那时的我，并没有太多的想法与感情，驱动我的只有最基本的感觉，比如饥饿感，不适感，满足感等等，我觉得舒服了就开心地笑笑，我觉得不舒服了就在那里哭。我并不清楚我诞生在了一个什么样的地方，我的父亲、母亲究竟是什么样的人，也并不了解周围大人的欢喜与忧愁。</p>
-<p>诞生之初，我的脑中并没有任何的行为准则，在周围亲人的引导下，我渐渐学会了喊“爸爸”和“妈妈”等一系列亲人的称谓，了解了当我有需求的时候可以向哪些人求助，整体而言，我的行为是缺乏约束的，我的欢喜与忧愁并不受周围环境影响，我的言语也并不受周围人影响，所谓童言无忌。</p>
-<p>如果要对人生的这一阶段做一个比喻，我觉得孩子诞生之初就是一张白纸，然后父母开始帮忙在这张纸上写写画画，教我尊重长辈，教我约束行为，以他们的语言和经历向我描述他们眼中的世界。这一阶段我的记忆是模糊的，没有特别好的记忆，也没有特别差的记忆，依我看来，这一段人生时光是不易留下记忆的，但若留下记忆便可能会影响孩子的一生，毕竟人生的构建是自下而上。</p>
-<p>我曾经思考过这样一个问题，如果将所有知识、习俗对一个孩子进行隔绝，那么这个孩子会是什么模样？ 我思考的答案是这个孩子将会成为一个原始人，与整个人类社会格格不入。每念及此，我常心怀感激之情，感激这几千年的文化知识传承，让我出生便站在了一个古人难以企及的起点上；感激父母赐予我生命，让我能够来此世间一游，写下属于我的故事。</p>
-<h3 id="渐知人事，似懂非懂"><a href="#渐知人事，似懂非懂" class="headerlink" title="渐知人事，似懂非懂"></a>渐知人事，似懂非懂</h3><p>随着年龄的增长，我也开始陆陆续续见识到种种事物。</p>
-]]></content>
-      <categories>
-        <category>闲谈</category>
-      </categories>
-      <tags>
-        <tag>时光，岁月，人生</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>自编码器AE</title>
     <url>/2020/10/10/zi-bian-ma-qi-ae/</url>
     <content><![CDATA[<p>在进行数据降维和数据降噪时常用的深度学习方法是自编码器<code>AutoEncoder</code>类算法，其具有以下特点:</p>
@@ -8555,6 +8641,29 @@ P(o \mid c)=\frac{\exp \left(u_o^T v_c\right)}{\sum_{w \in V} \exp \left(u_w^T v
       </categories>
       <tags>
         <tag>自编码，变分自编码，降噪自编码</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>致时光</title>
+    <url>/2020/09/25/zhi-shi-guang/</url>
+    <content><![CDATA[<p>我很久之前就想写这一篇文章了，但或是感触未深，或是时光未老，迟迟不知如何落笔。<br>今天是2020年9月25月，我的人生的第24个年头已经悄然逝去过半；上个月我姐生下了小宝宝安宁，我也正式升格为舅舅；明天我大哥也就要结婚了，我们这一辈已经开始慢慢化身我儿时父辈的角色。时光的巨轮已然于我之身滚动两旬，新旧两代交替的音符已然在空中交响。<br><span id="more"></span><br>如果让我为自己的人生划分章节，我倾向于将自己的人生划为四个章节。</p>
+<ul>
+<li>初识人间，懵懵懂懂 </li>
+<li>渐知人事，似懂非懂 </li>
+<li>洞察人事，知己知人 </li>
+</ul>
+<p>下面我就按照我自己划分的人生章节来对我24年的人生进行一个阶段性总结。</p>
+<h3 id="初识人间，懵懵懂懂"><a href="#初识人间，懵懵懂懂" class="headerlink" title="初识人间，懵懵懂懂"></a>初识人间，懵懵懂懂</h3><p>1997年1月30日，伴随着一声啼哭，我来到了这个人世间，掀开了我的人生篇章。那时的我，并没有太多的想法与感情，驱动我的只有最基本的感觉，比如饥饿感，不适感，满足感等等，我觉得舒服了就开心地笑笑，我觉得不舒服了就在那里哭。我并不清楚我诞生在了一个什么样的地方，我的父亲、母亲究竟是什么样的人，也并不了解周围大人的欢喜与忧愁。</p>
+<p>诞生之初，我的脑中并没有任何的行为准则，在周围亲人的引导下，我渐渐学会了喊“爸爸”和“妈妈”等一系列亲人的称谓，了解了当我有需求的时候可以向哪些人求助，整体而言，我的行为是缺乏约束的，我的欢喜与忧愁并不受周围环境影响，我的言语也并不受周围人影响，所谓童言无忌。</p>
+<p>如果要对人生的这一阶段做一个比喻，我觉得孩子诞生之初就是一张白纸，然后父母开始帮忙在这张纸上写写画画，教我尊重长辈，教我约束行为，以他们的语言和经历向我描述他们眼中的世界。这一阶段我的记忆是模糊的，没有特别好的记忆，也没有特别差的记忆，依我看来，这一段人生时光是不易留下记忆的，但若留下记忆便可能会影响孩子的一生，毕竟人生的构建是自下而上。</p>
+<p>我曾经思考过这样一个问题，如果将所有知识、习俗对一个孩子进行隔绝，那么这个孩子会是什么模样？ 我思考的答案是这个孩子将会成为一个原始人，与整个人类社会格格不入。每念及此，我常心怀感激之情，感激这几千年的文化知识传承，让我出生便站在了一个古人难以企及的起点上；感激父母赐予我生命，让我能够来此世间一游，写下属于我的故事。</p>
+<h3 id="渐知人事，似懂非懂"><a href="#渐知人事，似懂非懂" class="headerlink" title="渐知人事，似懂非懂"></a>渐知人事，似懂非懂</h3><p>随着年龄的增长，我也开始陆陆续续见识到种种事物。</p>
+]]></content>
+      <categories>
+        <category>闲谈</category>
+      </categories>
+      <tags>
+        <tag>时光，岁月，人生</tag>
       </tags>
   </entry>
   <entry>

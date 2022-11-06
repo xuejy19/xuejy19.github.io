@@ -458,21 +458,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2022-11-04
+                    2022-11-06
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    5.3k
+                    7.1k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    19 分
+                    26 分
                 </div>
                 
 
@@ -487,7 +487,7 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><h4 id="从实际场景谈起"><a href="#从实际场景谈起" class="headerlink" title="从实际场景谈起"></a>从实际场景谈起</h4><p>在没有虚拟机之前，环境的迁移是一项非常复杂的工作，开发人员开发时需要搭建一个环境，服务开发完毕后，测试人员又需要重新搭建一遍环境，而到环境上线时，还需要再搭建一遍环境，这大大浪费了时间，降低了效率。</p>
+                <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><h4 id="从实际场景谈起"><a href="#从实际场景谈起" class="headerlink" title="从实际场景谈起"></a>从实际场景谈起</h4><p>在没有虚拟机之前，环境的迁移是一项非常复杂的工作，开发人员开发时需要搭建一个环境，服务开发完毕后，测试人员又需要重新搭建一遍环境，而到环境上线时，还需要再搭建一遍环境，这大大浪费了时间，降低了效率。<span id="more"></span></p>
 <p>大多问题都是在运行环境改变时才显现的，可能是这样一种场景，开发者把代码从开发环境 push 到测试环境然后到更上层的环境。比如开发者在 Windows 上编写应用代码，但是上层环境（测试、stage 或是生产环境）是基于 Linux 的。在这种情况下，当操作系统变化时，应用的某些功能可能就会出现问题。所以，基本上，当配套软件环境不一样的时候，间歇性故障的几率就会更大。</p>
 <p>正如 Docker 创始人 Solomon Hykes 所说，“测试环境使用 Python 2.7，但是生产环境使用 Python 3，那么一些奇怪的事情就会发生。或者你依赖某个特定版本的 SSl 库的行为，但是却安装了另外一个版本。在 Debian 上运行测试环境，但是生产环境使用 Redhat，那么任何奇怪的事情都可能发生。”</p>
 <p>改变可能不只是运行环境，也有可能是网络，Hykes 补充道，“网络拓扑可能不同，或者安全策略和存储也有可能不同，但是，软件需要在这些基础设施上面运行。”</p>
@@ -654,6 +654,93 @@ Build Cache     0         0         0B        0B
 <pre class="line-numbers language-lang-shell"><code class="language-lang-shell">$ docker image rm [选项] <镜像1> [<镜像2> ...]
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>其中<code>&lt;镜像&gt;</code>可以是<code>镜像名、镜像短ID、镜像长ID、镜像摘要</code></p>
+<h5 id="利用commit理解镜像构成"><a href="#利用commit理解镜像构成" class="headerlink" title="利用commit理解镜像构成"></a>利用<code>commit</code>理解镜像构成</h5><blockquote>
+<p><strong>注意</strong>: <code>docker commit</code>除了学习之外，还有一些特殊的应用场合，比如入侵后保存现场等。但是一般不使用<code>docker commit</code>定制镜像，定制镜像应当使用<code>Dockerfile</code>来完成。</p>
+</blockquote>
+<p>镜像是容器的基础，每次执行<code>docker run</code>都需要指定哪个镜像作为容器运行的基础，在之前的例子中，我们所使用的都是来自<code>Docker Hub</code>的镜像，而当这些镜像无法之结满足需求时，就需要进行镜像定制。 </p>
+<p>镜像是多层存储，每一层是在前一层的基础上进行的修改；而容器同样也是多层存储，是在以镜像为基础层，在其基础上加一层作为容器运行的存储层。</p>
+<p>以定制一个web服务器为栗子，讲解镜像构建: </p>
+<ul>
+<li><p>运行容器</p>
+<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">$ docker run --name webserver -d -p 80:80 nginx
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>这条命令会用<code>nginx</code>镜像启动了一个容器，命名为<code>webserver</code>，并且映射了80端口，这样可以用浏览器去访问<code>nginx</code>服务器。<br><img src="/.io//%E7%95%8C%E9%9D%A2%E6%98%BE%E7%A4%BA.png" alt></p>
+</li>
+<li><p>修改界面显示内容<br>可以使用<code>docker exec</code>命令进入容器，修改其内容.</p>
+<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">$ docker exec -it webserver bash 
+root@f979a53d4179:/# echo '<h1>Hello, Docker!</h1>' > /usr/share/nginx/html/index.html
+root@f979a53d4179:/# exit
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>我们以交互式终端进入<code>webserver</code>容器，并执行了<code>bash</code>命令，也就是获得一个可操作的Shell。<br>然后替代了<code>index.html</code>中的内容以修改网页显示内容，此时刷新浏览器:<br><img src="/.io//%E9%A1%B5%E9%9D%A2%E6%98%BE%E7%A4%BA_%E6%9B%B4%E6%94%B9%E5%90%8E.png" alt> </p>
+</li>
+<li><p>查看变化<br>我们修改了容器的文件，也就是改动了容器的存储层，我们可以通过<code>docker diff</code>命令看到具体的改动，在修改了容器后，我们希望能将其保存下来形成镜像。<br>当我们运行一个容器的时候(如果不使用卷的话)，我们做的任何文件修改都会被记录在容器存储层里。而Docker提供了一个<code>docker commit</code>命令，可以将容器的存储层保存下来成为镜像。换句话说，就是在原有镜像的基础上，再叠加上容器的存储层，并构成新的镜像，以后我们运行这个新镜像的时候，就会拥有原有容器最后的文件变化。</p>
+</li>
+<li><p>生成镜像<br><code>docker commit</code>的语法格式为</p>
+<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">docker commit [选项] <容器ID或容器名> [<仓库名>[:<标签>]]
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>可以使用下面的命令将容器保存为镜像: </p>
+<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">$ docker commit \
+  --author "xuejy" \
+  --message "修改了默认网页" \
+  webserver \
+  nginx:v2
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>其中<code>--author</code>是指定修改的作者，而<code>--message</code>则是记录本次修改的内容</p>
+</li>
+<li><p>慎用<code>docker commit</code><br>通过<code>docker diff webserver</code>可以看到有大量无关内容被添加进来，导致镜像极为臃肿。<br>此外，使用<code>docker commit</code>意味着所有对镜像的操作都是黑箱操作，生成的镜像也被称为<code>黑箱镜像</code>，换句话说，除了制作镜像的人知道执行过什么命令、怎么生成的镜像，别人根本无从得知。</p>
+</li>
+</ul>
+<h5 id="使用Dockerfile定制镜像"><a href="#使用Dockerfile定制镜像" class="headerlink" title="使用Dockerfile定制镜像"></a>使用Dockerfile定制镜像</h5><p>镜像的定制实际上就是定制每一层所添加的配置、文件。如果我们可以把每一层修改、安装、构建、操作的命令都写入一个脚本，用这个脚本来构建、定制镜像，那么之前提及的无法重复的问题、镜像构建透明性的问题、体积的问题就都会解决，这个脚本就是dockerfile。<br>Dockerfile是一个文本文件，其包含了一条条的指令，每一条指令构建一层，因此每一条指令的内容就是描述该层应当如何构建。</p>
+<ul>
+<li>在一个空白目录中，建立一个文本文件，并命名为<code>Dockerfile</code>:<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">$ mkdir mynginx
+$ cd mynginx
+$ touch Dockerfile
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>其内容为</p>
+<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">FROM nginx
+RUN echo '<h1>Hello, Docker!</h1>' > /usr/share/nginx/html/index
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<ul>
+<li><strong>FROM指定基础镜像</strong><br>所谓定制镜像，就是以一个镜像为基础，在其上进行定制。<code>FROM</code>就是指定<strong>基础镜像</strong>，基础镜像可以使一些服务类的镜像，比如<code>nginx、redis</code>，也可以是语言类的镜像，比如<code>python、ruby</code>，甚至可以是更为基础的操作系统镜像，如<code>ubuntu、debian</code>等；除了选择现有镜像为基础镜像外，Docker还存在一个特殊的镜像，名为<code>scratch</code>，表示一个空白的镜像。</li>
+<li><strong>RUN执行命令</strong><br><code>RUN</code>是用来执行命令行命令的，其格式有两种: <ul>
+<li>shell格式: <code>RUN&lt;命令&gt;</code>，就像直接在命令行中输入的命令一样</li>
+<li>exec格式: <code>RUN [&quot;可执行文件&quot;, &quot;参数1&quot;, &quot;参数2&quot;]</code>，这更像是函数调用中的格式<br>需要注意，<code>RUN</code>命令可以像<code>Shell</code>脚本一样执行命令，但并不是要把每个命令对应一个<code>RUN</code>，因为每一个<code>RUN</code>行为都会建立一层镜像，臃肿、非常多层的镜像，不仅仅增加了构建部署的时间，也很容易出错。对于多条命令的单层镜像，正确的写法应当如下: <pre class="line-numbers language-lang-shell"><code class="language-lang-shell">FROM debian:stretch
+RUN set -x; buildDeps='gcc libc6-dev make wget' \
+&& apt-get update \
+&& apt-get install -y $buildDeps \
+&& wget -O redis.tar.gz "http://download.redis.io/releases/redis-5.0.3.tar.gz" \
+&& mkdir -p /usr/src/redis \
+&& tar -xzf redis.tar.gz -C /usr/src/redis --strip-components=1 \
+&& make -C /usr/src/redis \
+&& make -C /usr/src/redis install \
+&& rm -rf /var/lib/apt/lists/* \
+&& rm redis.tar.gz \
+&& rm -r /usr/src/redis \
+&& apt-get purge -y --auto-remove $buildDeps
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<strong>注意在构建之后一定要清理掉无关文件</strong>。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>构建镜像</p>
+<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">$ docker build -t nginx:v3 .
+Sending build context to Docker daemon 2.048 kB
+Step 1 : FROM nginx
+---> e43d811ce2f4
+Step 2 : RUN echo '<h1>Hello, Docker!</h1>' > /usr/share/nginx/html/index.html
+---> Running in 9cdc27646c7b
+---> 44aa4490ce2c
+Removing intermediate container 9cdc27646c7b
+Successfully built 44aa4490ce2c
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>镜像构建上下文<br><code>docker build</code>命令最后的<code>.</code>指定的是上下文路径。<br>Docker在运行时分为Docker引擎(服务端守护进程)和客户端工具，Docker的引擎提供了一组REST API, 被称为<code>Docker remote API</code>，而如<code>docker</code>命令这样的客户端工具，则是通过这组API与Docker引擎交互，从而完成各种功能。因此，虽然表面上我们在本机使用各种<code>docker</code>功能，但实际上，一切的都是使用的远程调用形式在服务端完成。</p>
+</li>
+</ul>
+<p>当我们进行镜像构建时，经常会需要将一些本地文件复制进镜像，而通过指定上下文路径，相当于给定了一个地址锚点，让服务端能够找到这些文件。</p>
+<h5 id="Dockerfile-指令详解"><a href="#Dockerfile-指令详解" class="headerlink" title="Dockerfile 指令详解"></a>Dockerfile 指令详解</h5><p>除了<code>FROM</code>、<code>RUN</code>，还提供了<code>COPY、ADD</code>等十多个指令可供使用 </p>
 <h4 id="操作容器"><a href="#操作容器" class="headerlink" title="操作容器"></a>操作容器</h4><p>容器是独立运行的一个或一组应用，以及它们的运行态环境。</p>
 <h5 id="容器启动"><a href="#容器启动" class="headerlink" title="容器启动"></a>容器启动</h5><p>启动容器有两种方式，一种是基于镜像新建一个容器并启动，另外一个是将在终止状态的容器重新启动。</p>
 <ul>
@@ -739,17 +826,39 @@ Status: Downloaded newer image for centos:latest
 docker.io/library/centos:latest
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </li>
-<li>推送镜像<br>用户也可以在登陆后通过<code>docker push</code>将自己的镜像推送到Docker Hub<br>```shell<br>$ docker tag ubuntu:18.04 username/ubuntu:18.04</li>
+<li>推送镜像<br>用户也可以在登陆后通过<code>docker push</code>将自己的镜像推送到Docker Hub</li>
 </ul>
-<p>$ docker image ls</p>
-<p>REPOSITORY                                               TAG                    IMAGE ID            CREATED             SIZE<br>ubuntu                                                   18.04                  275d79972a86        6 days ago          94.6MB<br>username/ubuntu                                          18.04                  275d79972a86        6 days ago          94.6MB</p>
-<p>$ docker push username/ubuntu:18.04</p>
-<p>$ docker search username</p>
-<p>NAME                      DESCRIPTION                                     STARS               OFFICIAL            AUTOMATED<br>username/ubuntu<br>```</p>
+<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">$ docker tag ubuntu:18.04 username/ubuntu:18.04
+
+$ docker image ls
+
+REPOSITORY                                               TAG                    IMAGE ID            CREATED             SIZE
+ubuntu                                                   18.04                  275d79972a86        6 days ago          94.6MB
+username/ubuntu                                          18.04                  275d79972a86        6 days ago          94.6MB
+
+$ docker push username/ubuntu:18.04
+
+$ docker search username
+
+NAME                      DESCRIPTION                                     STARS               OFFICIAL            AUTOMATED
+username/ubuntu
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li>自动构建(付费服务)<br>自动构建可以自动触发构建镜像，方便升级镜像。自动构建允许用户通过Docker Hub指定跟踪一个目标网站(比如<code>github</code>)上的项目，一旦项目发生新的提交或者创建了新的标签，Docker Hub会自动构建镜像并推送到Docker Hub中。</li>
 </ul>
-<h6 id="私有仓库"><a href="#私有仓库" class="headerlink" title="私有仓库"></a>私有仓库</h6>
+<h6 id="私有仓库"><a href="#私有仓库" class="headerlink" title="私有仓库"></a>私有仓库</h6><h4 id="数据管理"><a href="#数据管理" class="headerlink" title="数据管理"></a>数据管理</h4><p><code>数据卷</code>是可供一个或多个容器使用的特殊目录，它绕过<code>UFS</code>，可以提供很多有用的特性:</p>
+<ul>
+<li><code>数据卷</code>可以在容器之间共享和重用</li>
+<li>对<code>数据卷</code>的修改会立马生效</li>
+<li>对<code>数据卷</code>的更新不会影响镜像 </li>
+<li><code>数据卷</code>默认会一直存在，即使容器被删除 </li>
+</ul>
+<blockquote>
+<p> <code>数据卷</code>的使用，类似于Linux下对目录或文件进行mount,镜像中被指定为挂载点的目录中的文件会复制到数据卷中</p>
+</blockquote>
+<h5 id="创建一个数据卷"><a href="#创建一个数据卷" class="headerlink" title="创建一个数据卷"></a>创建一个数据卷</h5><pre class="line-numbers language-lang-shell"><code class="language-lang-shell">$ docker volume create my-vol
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
             </div>
             <hr/>
 
@@ -1261,7 +1370,7 @@ docker.io/library/centos:latest
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            
+                            前言从实际场景谈起在没有虚拟机之前，环境的迁移是一项非常复杂的工作，开发人员开发时需要搭建一个环境，服务开发完毕后，测试人员又需要重新搭建一遍环境，而到环境上线时，还需要再搭建一遍环境，这大大浪费了时间，降低了效率。
                         
                     </div>
                     <div class="publish-info">
@@ -1544,7 +1653,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">175.2k</span>&nbsp;字
+                class="white-color">177k</span>&nbsp;字
             
             
             
