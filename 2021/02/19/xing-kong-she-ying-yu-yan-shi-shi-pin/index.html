@@ -17,24 +17,23 @@
 
 
     <title>星轨拍摄与延时视频 | 风之声</title>
-    <link rel="icon" type="image/jpeg" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/favicon.jpg">
+    <link rel="icon" type="image/jpeg" href="/favicon.jpg">
 
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/awesome/css/all.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/materialize/materialize.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aos/aos.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/animate/animate.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/lightGallery/css/lightgallery.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/css/matery.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/css/my.css">
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <link rel="stylesheet" href="/vendor/katex/katex.min.css">
+    <link rel="stylesheet" href="/css/prism.css">
+    <link rel="stylesheet" href="/css/prism-line-numbers.css">
+    <link rel="stylesheet" href="/css/custom.css">
 
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/jquery/jquery.min.js"></script>
+    <script src="/libs/jquery/jquery.min.js"></script>
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"><link rel="stylesheet" href="/css/prism.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<meta name="generator" content="Hexo 8.1.2"></head>
 
 
 <body>
@@ -44,7 +43,7 @@
             <div class="brand-logo">
                 <a href="/" class="waves-effect waves-light">
                     
-                    <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/logo.png" class="logo-img" alt="LOGO">
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
                     
                     <span class="logo-span">风之声</span>
                 </a>
@@ -143,7 +142,7 @@
 
     <div class="mobile-head bg-color">
         
-        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/logo.png" class="logo-img circle responsive-img">
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
         
         <div class="logo-name">风之声</div>
         <div class="logo-desc">
@@ -310,10 +309,23 @@
 </header>
 
     
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/1.png')">
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/1.png')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -331,7 +343,7 @@
 <main class="post-container content">
 
     
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
 <style>
     #articleContent h1::before,
     #articleContent h2::before,
@@ -451,6 +463,10 @@
                                 点滴生活
                             </a>
                         
+                            <a href="/categories/%E7%82%B9%E6%BB%B4%E7%94%9F%E6%B4%BB/%E7%81%B5%E9%AD%82%E9%9B%95%E7%90%A2/" class="post-category">
+                                灵魂雕琢
+                            </a>
+                        
                     </div>
                     
                 </div>
@@ -481,7 +497,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    3 分
+                    4 分
                 </div>
                 
 
@@ -496,62 +512,64 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>在上学期马上要结束时，我动了换相机的邪念，这邪念最终导致我的钱包缩水，我的相机也由尼康家的D3500换成了佳能家Eosrp。鉴于我以前假期在家都是高强度娱乐，带回去的书往往就呆在行李箱睡大觉，这次我便将新购的相机和三脚架一并带回了家，<strong>万一自己在家想出去拍拍照呢？</strong></p>
+                
+<p>在上学期马上要结束时，我动了换相机的邪念，这邪念最终导致我的钱包缩水，我的相机也由尼康家的D3500换成了佳能家Eosrp。鉴于我以前假期在家都是高强度娱乐，带回去的书往往就呆在行李箱睡大觉，这次我便将新购的相机和三脚架一并带回了家，<strong>万一自己在家想出去拍拍照呢？</strong></p>
 <p>因为疫情原因，我也就在家周围拍了拍，就藉这篇文章简单地分享下自己拍的一些照片，然后介绍下星轨照片和延时视频制作的流程吧。 <span id="more"></span></p>
-<h4 id="影像记录"><a href="#影像记录" class="headerlink" title="影像记录"></a>影像记录</h4><p><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/落日-清音大桥.JPG" alt="落日-清音大桥"><br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/夕阳-河流4.JPG" alt="落日-河流"><br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/湖中村落.JPG" alt="湖中村落"><br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/星空-堆栈-20MB.jpg" alt="星轨"></p>
-<h4 id="延时视频"><a href="#延时视频" class="headerlink" title="延时视频"></a>延时视频</h4><ul>
+<h4 id="影像记录"><a href="#%E5%BD%B1%E5%83%8F%E8%AE%B0%E5%BD%95" class="headerlink" title="影像记录"></a>影像记录</h4><p><img src="/Img/%E8%90%BD%E6%97%A5-%E6%B8%85%E9%9F%B3%E5%A4%A7%E6%A1%A5.JPG" alt="落日-清音大桥"><br><img src="/Img/%E5%A4%95%E9%98%B3-%E6%B2%B3%E6%B5%814.JPG" alt="落日-河流"><br><img src="/Img/%E6%B9%96%E4%B8%AD%E6%9D%91%E8%90%BD.JPG" alt="湖中村落"><br><img src="/Img/%E6%98%9F%E7%A9%BA-%E5%A0%86%E6%A0%88-20MB.jpg" alt="星轨"></p>
+<h4 id="延时视频"><a href="#%E5%BB%B6%E6%97%B6%E8%A7%86%E9%A2%91" class="headerlink" title="延时视频"></a>延时视频</h4><ul>
 <li><p>公园延时摄影</p>
 <div style="position: relative; width: 100%; height: 0; padding-bottom: 75%;">
-  <iframe src="//player.bilibili.com/player.html?aid=501747233&bvid=BV1BN411X7oM&cid=298163667&page=1&&high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="520"> </iframe>
+  <iframe src="//player.bilibili.com/player.html?aid=501747233&amp;bvid=BV1BN411X7oM&amp;cid=298163667&amp;page=1&amp;&amp;high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="520"> </iframe>
 </div>
 </li>
-<li><p>星空延时摄影<br><div style="position: relative; width: 100%; height: 0; padding-bottom: 75%;">
-  <iframe src="//player.bilibili.com/player.html?aid=586696451&bvid=BV1uz4y127zS&cid=298721215&page=1&&high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="520"> </iframe>
-</div></p>
-<h5 id="简要介绍"><a href="#简要介绍" class="headerlink" title="简要介绍"></a>简要介绍</h5><p>哪怕大家对延时摄影这个概念非常模糊，但肯定见过与上面两个视频类似的视频，延时摄影当可以将斗转星移、日升日落、云彩飘动压缩到短短的十几秒视频中，所带来的视觉体验还是神奇的， 首先给出延时摄影的定义: </p>
+<li><p>星空延时摄影<br></p><div style="position: relative; width: 100%; height: 0; padding-bottom: 75%;">
+  <iframe src="//player.bilibili.com/player.html?aid=586696451&amp;bvid=BV1uz4y127zS&amp;cid=298721215&amp;page=1&amp;&amp;high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="520"> </iframe>
+</div>
+<h5 id="简要介绍"><a href="#%E7%AE%80%E8%A6%81%E4%BB%8B%E7%BB%8D" class="headerlink" title="简要介绍"></a>简要介绍</h5><p>哪怕大家对延时摄影这个概念非常模糊，但肯定见过与上面两个视频类似的视频，延时摄影当可以将斗转星移、日升日落、云彩飘动压缩到短短的十几秒视频中，所带来的视觉体验还是神奇的， 首先给出延时摄影的定义: </p>
 <blockquote>
 <p><strong>延时摄影:</strong> 延时摄影，又叫缩时摄影、缩时录影，是以一种将时间压缩的拍摄技术。其拍摄的通常是一组照片，后期通过将照片串联合成视频，把几分钟、几小时甚至是几天的过程压缩在一个较短的时间内以视频的方式播放。</p>
 </blockquote>
 </li>
 </ul>
-<h5 id="计算公式"><a href="#计算公式" class="headerlink" title="计算公式"></a>计算公式</h5><p>延时摄影可以为我们带来平日所接触不到的视觉体验，其原理也是非常简单的，只需要明确以下几点: </p>
+<h5 id="计算公式"><a href="#%E8%AE%A1%E7%AE%97%E5%85%AC%E5%BC%8F" class="headerlink" title="计算公式"></a>计算公式</h5><p>延时摄影可以为我们带来平日所接触不到的视觉体验，其原理也是非常简单的，只需要明确以下几点: </p>
 <blockquote>
 <ul>
 <li><strong>视频:</strong> 视频其实就是一系列图片堆栈而成，若想让视频看起来流畅，则一秒钟至少需要有24帧图像。</li>
-<li><strong>客观世界时长:</strong> 假设我们以高速快门间隔$t_p$s进行拍摄，最终拍摄时长为$ts$，则$t$就是客观世界所经历的时间，而所拍摄的照片张数为$a = \frac{t}{t_p}$。</li>
-<li><strong>视频时长:</strong> 若视频帧数为24fps，那么若用相机拍摄的$a$张照片来制作延时视频，那么视频时长就是$t_v = \frac{a}{24}s$。 </li>
+<li><strong>客观世界时长:</strong> 假设我们以高速快门间隔<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>t</mi><mi>p</mi></msub></mrow><annotation encoding="application/x-tex">t_p</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9012em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">p</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span>s进行拍摄，最终拍摄时长为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mi>s</mi></mrow><annotation encoding="application/x-tex">ts</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6151em;"></span><span class="mord mathnormal">t</span><span class="mord mathnormal">s</span></span></span></span>，则<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi></mrow><annotation encoding="application/x-tex">t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6151em;"></span><span class="mord mathnormal">t</span></span></span></span>就是客观世界所经历的时间，而所拍摄的照片张数为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>=</mo><mfrac><mi>t</mi><msub><mi>t</mi><mi>p</mi></msub></mfrac></mrow><annotation encoding="application/x-tex">a = \frac{t}{t_p}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">a</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.3669em;vertical-align:-0.5423em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8246em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1645em;"><span style="top:-2.357em;margin-left:0em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight">p</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2819em;"><span></span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.5423em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>。</li>
+<li><strong>视频时长:</strong> 若视频帧数为24fps，那么若用相机拍摄的<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">a</span></span></span></span>张照片来制作延时视频，那么视频时长就是<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>t</mi><mi>v</mi></msub><mo>=</mo><mfrac><mi>a</mi><mn>24</mn></mfrac><mi>s</mi></mrow><annotation encoding="application/x-tex">t_v = \frac{a}{24}s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7651em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0359em;">v</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.0404em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6954em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">24</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">a</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mord mathnormal">s</span></span></span></span>。 </li>
 </ul>
 </blockquote>
 <p>由此，基于照片张数这样一个桥梁，我们就建立了如下一个等式: </p>
-<script type="math/tex; mode=display">
-    \frac{t}{t_p} = 24 \times t_v</script><p>比如我们想以固定间隔时间$t_p = 10s$， 想拍一个10$s$的视频，那么实际在进行间隔拍摄时就需要拍摄$t = 24<em>t_v</em>t_p = 2400s = 40 min$。这样就实现了将$40min$客观世界的变化压缩到了$10s$的视频内。但如果是慢门拍摄则在间隔时间里需要将曝光时间也算进去。 </p>
-<h5 id="拍摄方法"><a href="#拍摄方法" class="headerlink" title="拍摄方法"></a>拍摄方法</h5><p>拍摄方法一般有三种: </p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mfrac><mi>t</mi><msub><mi>t</mi><mi>p</mi></msub></mfrac><mo>=</mo><mn>24</mn><mo>×</mo><msub><mi>t</mi><mi>v</mi></msub></mrow><annotation encoding="application/x-tex">
+    \frac{t}{t_p} = 24 \times t_v</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:2.2642em;vertical-align:-0.9721em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.2921em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">p</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.9721em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">24</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7651em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0359em;">v</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span><p>比如我们想以固定间隔时间<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>t</mi><mi>p</mi></msub><mo>=</mo><mn>10</mn><mi>s</mi></mrow><annotation encoding="application/x-tex">t_p = 10s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9012em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">p</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">10</span><span class="mord mathnormal">s</span></span></span></span>， 想拍一个10<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi></mrow><annotation encoding="application/x-tex">s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">s</span></span></span></span>的视频，那么实际在进行间隔拍摄时就需要拍摄$t = 24<em>t_v</em>t_p = 2400s = 40 min<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>。这样就实现了将</mtext></mrow><annotation encoding="application/x-tex">。这样就实现了将</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">。这样就实现了将</span></span></span></span>40min<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>客观世界的变化压缩到了</mtext></mrow><annotation encoding="application/x-tex">客观世界的变化压缩到了</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">客观世界的变化压缩到了</span></span></span></span>10s$的视频内。但如果是慢门拍摄则在间隔时间里需要将曝光时间也算进去。 </p>
+<h5 id="拍摄方法"><a href="#%E6%8B%8D%E6%91%84%E6%96%B9%E6%B3%95" class="headerlink" title="拍摄方法"></a>拍摄方法</h5><p>拍摄方法一般有三种: </p>
 <ul>
 <li>对于没有机内延时的相机，则需要借助快门线来实现间隔拍摄的功能。</li>
 <li>间隔拍摄: 直接根据自己的需求来计算间隔时间和拍摄时间，然后将图片导出后导入PR来输出延时视频(教程很多)。 </li>
 <li>延时视频: 现在很多相机都内置延时短片功能，设置拍摄间隔和拍摄张数，便可直出延时视频，省去了将图片堆栈成延时视频这一步。 </li>
 </ul>
-<h4 id="星轨拍摄"><a href="#星轨拍摄" class="headerlink" title="星轨拍摄"></a>星轨拍摄</h4><h5 id="简要介绍-1"><a href="#简要介绍-1" class="headerlink" title="简要介绍"></a>简要介绍</h5><blockquote>
+<h4 id="星轨拍摄"><a href="#%E6%98%9F%E8%BD%A8%E6%8B%8D%E6%91%84" class="headerlink" title="星轨拍摄"></a>星轨拍摄</h4><h5 id="简要介绍-1"><a href="#%E7%AE%80%E8%A6%81%E4%BB%8B%E7%BB%8D-1" class="headerlink" title="简要介绍"></a>简要介绍</h5><blockquote>
 <p><strong>星轨:</strong> 星轨其实是我们地球自身自转的反射，在拍摄过程中，我们的相机机位在地球上相对位置并未发生变化，但由于有地球自转存在，我们会观测到星星不断移动，形成一个圆形，而圆心就是我们自转的主轴所指向的无穷远处。 </p>
 </blockquote>
-<p><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E6%98%9F%E8%BD%A8.png" alt="星轨-from-500px"></p>
-<h5 id="星轨拍摄-1"><a href="#星轨拍摄-1" class="headerlink" title="星轨拍摄"></a>星轨拍摄</h5><p>星轨拍摄需要慢门，但在实现上有两种思路: </p>
+<p><img src="/Img/%E6%98%9F%E8%BD%A8.png" alt="星轨-from-500px"></p>
+<h5 id="星轨拍摄-1"><a href="#%E6%98%9F%E8%BD%A8%E6%8B%8D%E6%91%84-1" class="headerlink" title="星轨拍摄"></a>星轨拍摄</h5><p>星轨拍摄需要慢门，但在实现上有两种思路: </p>
 <blockquote>
 <ul>
-<li>直接采用B门定时拍摄，设置$10min$以上的曝光时间，然后拧动对焦环到无穷远处，最后调整曝光参数以保证最终图片恰当曝光，曝光参数可能需要多次尝试后确定，当拍摄环境并不够黑暗时，这种思路很难实现，因为长曝光会导致成片一片死白。 </li>
+<li>直接采用B门定时拍摄，设置<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>10</mn><mi>m</mi><mi>i</mi><mi>n</mi></mrow><annotation encoding="application/x-tex">10min</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6595em;"></span><span class="mord">10</span><span class="mord mathnormal">min</span></span></span></span>以上的曝光时间，然后拧动对焦环到无穷远处，最后调整曝光参数以保证最终图片恰当曝光，曝光参数可能需要多次尝试后确定，当拍摄环境并不够黑暗时，这种思路很难实现，因为长曝光会导致成片一片死白。 </li>
 </ul>
 </blockquote>
-<p><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/星轨3.JPG" alt="星轨-10min长曝光"></p>
+<p><img src="/Img/%E6%98%9F%E8%BD%A83.JPG" alt="星轨-10min长曝光"></p>
 <blockquote>
 <ul>
 <li>间隔拍摄，然后后期堆栈，比如我想拍30min时长所形成的星轨，那么我可以连续拍摄多个星空照片，然后后期进入PS，使用最大值堆栈进行星轨合成。 </li>
 </ul>
 </blockquote>
-<p><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/星空-堆栈-20MB.jpg" alt="星轨-后期堆栈"></p>
+<p><img src="/Img/%E6%98%9F%E7%A9%BA-%E5%A0%86%E6%A0%88-20MB.jpg" alt="星轨-后期堆栈"></p>
 <blockquote>
 <p><strong>tips:</strong> 记得关闭相机的长曝光降噪。 </p>
 </blockquote>
 <p>我比较推荐第二种方法，因为参数更容易设置，同时后期空间更大，试错成本更低。 </p>
+
 
             </div>
             <hr/>
@@ -623,12 +641,12 @@
                     
                 </div>
                 <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
-                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/share/css/share.min.css">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
 <div id="article-share">
 
     
     <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/share/js/social-share.min.js"></script>
+    <script src="/libs/share/js/social-share.min.js"></script>
     
 
     
@@ -746,10 +764,10 @@
                         <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
                     </ul>
                     <div id="alipay">
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/reward/ali.jpeg" class="reward-img" alt="支付宝打赏二维码">
+                        <img src="/medias/reward/ali.jpeg" class="reward-img" alt="支付宝打赏二维码">
                     </div>
                     <div id="wechat">
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/reward/wechat.jpeg" class="reward-img" alt="微信打赏二维码">
+                        <img src="/medias/reward/wechat.jpeg" class="reward-img" alt="微信打赏二维码">
                     </div>
                 </div>
             </div>
@@ -1017,12 +1035,12 @@
         <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
         <span>评论</span>
     </div>
-    <div id="vcomments" class="card-content" style="display: grid">
+    <div id="vcomments" class="card-content" style="display: block">
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/valine/av-min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/valine/Valine.min.js"></script>
+<script src="/libs/valine/av-min.js"></script>
+<script src="/libs/valine/Valine.min.js"></script>
 <script>
     new Valine({
         el: '#vcomments',
@@ -1054,8 +1072,7 @@
                 <a href="/2021/03/20/wen-cheng-du-hou-gan/">
                     <div class="card-image">
                         
-                        
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/6.jpg" class="responsive-img" alt="文城-读后感">
+                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="文城-读后感">
                         
                         <span class="card-title">文城-读后感</span>
                     </div>
@@ -1064,7 +1081,7 @@
                     <div class="summary block-with-text">
                         
                             
-序: 3月12日晚，在王府井街道上的三联韬奋书店中，我轻抚着一本本书的封面，似乎试图透过封面上的零星字眼来寻找某种共鸣感，当我看到《文城》这本书时，腰封上的“人生就是自己的往事和他人的序章”蓦然间打动了我，于是我拿起了这本书，将与这本书
+序: 3月12日晚，在王府井街道上的三联韬奋书店中，我轻抚着一本本书的封面，似乎试图透过封面上的零星字眼来寻找某种共鸣感，当我看到《文城》这本书时，腰封上的“人生就是自己的往事和他人的序章”蓦然间打动了我，于是我拿起了这本书，将与这本书的
                         
                     </div>
                     <div class="publish-info">
@@ -1077,6 +1094,14 @@
                             
                             <a href="/categories/%E7%81%B5%E9%AD%82%E9%9B%95%E7%90%A2/" class="post-category">
                                     灵魂雕琢
+                                </a>
+                            
+                            <a href="/categories/%E7%81%B5%E9%AD%82%E9%9B%95%E7%90%A2/%E7%94%B5%E5%BD%B1%E8%A7%82%E5%90%8E%E6%84%9F/" class="post-category">
+                                    电影观后感
+                                </a>
+                            
+                            <a href="/categories/%E7%81%B5%E9%AD%82%E9%9B%95%E7%90%A2/%E7%94%B5%E5%BD%B1%E8%A7%82%E5%90%8E%E6%84%9F/%E7%82%B9%E6%BB%B4%E7%94%9F%E6%B4%BB/" class="post-category">
+                                    点滴生活
                                 </a>
                             
                             
@@ -1104,8 +1129,7 @@
                 <a href="/2021/01/09/shao-you-ren-zou-de-lu-du-hou-gan/">
                     <div class="card-image">
                         
-                        
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/0.jpg" class="responsive-img" alt="少有人走的路-读后感">
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="少有人走的路-读后感">
                         
                         <span class="card-title">少有人走的路-读后感</span>
                     </div>
@@ -1126,6 +1150,10 @@
                             
                             <a href="/categories/%E7%81%B5%E9%AD%82%E9%9B%95%E7%90%A2/" class="post-category">
                                     灵魂雕琢
+                                </a>
+                            
+                            <a href="/categories/%E7%81%B5%E9%AD%82%E9%9B%95%E7%90%A2/%E7%82%B9%E6%BB%B4%E7%94%9F%E6%B4%BB/" class="post-category">
+                                    点滴生活
                                 </a>
                             
                             
@@ -1152,21 +1180,21 @@
 
 
 <!-- 代码块功能依赖 -->
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeBlockFuction.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
 
 <!-- 代码语言 -->
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeLang.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
 
 
 <!-- 代码块复制 -->
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeCopy.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
 
 
 <!-- 代码块收缩 -->
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeShrink.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
 
 
 <!-- 代码块折行 -->
@@ -1194,7 +1222,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
 </div>
 
 
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/tocbot/tocbot.min.js"></script>
+<script src="/libs/tocbot/tocbot.min.js"></script>
 <script>
     $(function () {
         tocbot.init({
@@ -1275,18 +1303,11 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
 </main>
 
 
-<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script>
-    MathJax.Hub.Config({
-        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
-    });
-</script>
-
 
 
     <footer class="page-footer bg-color">
     
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aplayer/APlayer.min.css">
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
 <style>
     .aplayer .aplayer-lrc p {
         
@@ -1336,7 +1357,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aplayer/APlayer.min.js"></script>
+<script src="/libs/aplayer/APlayer.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
 
     
@@ -1350,7 +1371,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">177k</span>&nbsp;字
+                class="white-color">202k</span>&nbsp;字
             
             
             
@@ -1419,10 +1440,10 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/js/search.js"></script>
+<script src="/js/search.js"></script>
 <script type="text/javascript">
 $(function () {
-    searchFunc("https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/search.xml", 'searchInput', 'searchResult');
+    searchFunc("/search.xml", 'searchInput', 'searchResult');
 });
 </script>
 
@@ -1434,12 +1455,12 @@ $(function () {
 </div>
 
 
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/materialize/materialize.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/masonry/masonry.pkgd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aos/aos.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/scrollprogress/scrollProgress.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/lightGallery/js/lightgallery-all.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/js/matery.js"></script>
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
 
     <!-- Baidu Analytics -->
 
@@ -1461,7 +1482,7 @@ $(function () {
 
     
     
-    <script async src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/others/busuanzi.pure.mini.js"></script>
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
     
 
     
@@ -1475,7 +1496,7 @@ $(function () {
     
 
     
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/instantpage/instantpage.js" type="module"></script>
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
     
 
 <script type="text/javascript"> //只在桌面版网页启用特效 

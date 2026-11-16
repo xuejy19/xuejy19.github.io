@@ -17,24 +17,23 @@
 
 
     <title>人像摄影-光线与构图 | 风之声</title>
-    <link rel="icon" type="image/jpeg" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/favicon.jpg">
+    <link rel="icon" type="image/jpeg" href="/favicon.jpg">
 
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/awesome/css/all.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/materialize/materialize.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aos/aos.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/animate/animate.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/lightGallery/css/lightgallery.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/css/matery.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/css/my.css">
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <link rel="stylesheet" href="/vendor/katex/katex.min.css">
+    <link rel="stylesheet" href="/css/prism.css">
+    <link rel="stylesheet" href="/css/prism-line-numbers.css">
+    <link rel="stylesheet" href="/css/custom.css">
 
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/jquery/jquery.min.js"></script>
+    <script src="/libs/jquery/jquery.min.js"></script>
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"><link rel="stylesheet" href="/css/prism.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<meta name="generator" content="Hexo 8.1.2"></head>
 
 
 <body>
@@ -44,7 +43,7 @@
             <div class="brand-logo">
                 <a href="/" class="waves-effect waves-light">
                     
-                    <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/logo.png" class="logo-img" alt="LOGO">
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
                     
                     <span class="logo-span">风之声</span>
                 </a>
@@ -143,7 +142,7 @@
 
     <div class="mobile-head bg-color">
         
-        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/logo.png" class="logo-img circle responsive-img">
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
         
         <div class="logo-name">风之声</div>
         <div class="logo-desc">
@@ -310,10 +309,23 @@
 </header>
 
     
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/7.jpg')">
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/7.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -331,7 +343,7 @@
 <main class="post-container content">
 
     
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
 <style>
     #articleContent h1::before,
     #articleContent h2::before,
@@ -451,6 +463,10 @@
                                 点滴生活
                             </a>
                         
+                            <a href="/categories/%E7%82%B9%E6%BB%B4%E7%94%9F%E6%B4%BB/%E5%BC%80%E5%8F%91%E7%9F%A5%E8%AF%86/" class="post-category">
+                                开发知识
+                            </a>
+                        
                     </div>
                     
                 </div>
@@ -496,137 +512,200 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>这一部分介绍一下在进行人像摄影时的一些理论知识，该部分目录如下:<br><!-- TOC --></p>
+                <p>这一部分介绍一下在进行人像摄影时的一些理论知识，该部分目录如下:</p>
+<!-- TOC -->
 <ul>
-<li><a href="#光线">光线</a><ul>
-<li><a href="#光位">光位</a></li>
-<li><a href="#光质">光质</a><ul>
-<li><a href="#时刻">时刻</a></li>
-<li><a href="#天气">天气</a></li>
-<li><a href="#环境光">环境光</a></li>
-<li><a href="#立体感塑造">立体感塑造</a></li>
-<li><a href="#少光环境">少光环境</a></li>
+<li><a href="#%E5%85%89%E7%BA%BF">光线</a>
+<ul>
+<li><a href="#%E5%85%89%E4%BD%8D">光位</a></li>
+<li><a href="#%E5%85%89%E8%B4%A8">光质</a>
+<ul>
+<li><a href="#%E6%97%B6%E5%88%BB">时刻</a></li>
+<li><a href="#%E5%A4%A9%E6%B0%94">天气</a></li>
+<li><a href="#%E7%8E%AF%E5%A2%83%E5%85%89">环境光</a></li>
+<li><a href="#%E7%AB%8B%E4%BD%93%E6%84%9F%E5%A1%91%E9%80%A0">立体感塑造</a></li>
+<li><a href="#%E5%B0%91%E5%85%89%E7%8E%AF%E5%A2%83">少光环境</a></li>
 </ul>
 </li>
-<li><a href="#曝光技巧">曝光技巧</a><ul>
-<li><a href="#曝光-cdot-寻找光斑">曝光 $\cdot$ 寻找光斑</a><ul>
-<li><a href="#曝光-cdot-设置">曝光 $\cdot$ 设置</a></li>
+<li><a href="#%E6%9B%9D%E5%85%89%E6%8A%80%E5%B7%A7">曝光技巧</a>
+<ul>
+<li><a href="#%E6%9B%9D%E5%85%89-cdot-%E5%AF%BB%E6%89%BE%E5%85%89%E6%96%91">曝光 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⋅</mo></mrow><annotation encoding="application/x-tex">\cdot</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4445em;"></span><span class="mord">⋅</span></span></span></span> 寻找光斑</a>
+<ul>
+<li><a href="#%E6%9B%9D%E5%85%89-cdot-%E8%AE%BE%E7%BD%AE">曝光 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⋅</mo></mrow><annotation encoding="application/x-tex">\cdot</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4445em;"></span><span class="mord">⋅</span></span></span></span> 设置</a></li>
 </ul>
 </li>
-<li><a href="#曝光-cdot-大光比">曝光 $\cdot$ 大光比</a></li>
-<li><a href="#曝光-cdot-剪影">曝光 $\cdot$ 剪影</a></li>
+<li><a href="#%E6%9B%9D%E5%85%89-cdot-%E5%A4%A7%E5%85%89%E6%AF%94">曝光 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⋅</mo></mrow><annotation encoding="application/x-tex">\cdot</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4445em;"></span><span class="mord">⋅</span></span></span></span> 大光比</a></li>
+<li><a href="#%E6%9B%9D%E5%85%89-cdot-%E5%89%AA%E5%BD%B1">曝光 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⋅</mo></mrow><annotation encoding="application/x-tex">\cdot</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4445em;"></span><span class="mord">⋅</span></span></span></span> 剪影</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#构图">构图</a></li>
+<li><a href="#%E6%9E%84%E5%9B%BE">构图</a></li>
 </ul>
 <!-- /TOC -->
 <span id="more"></span>
-<h3 id="光线"><a href="#光线" class="headerlink" title="光线"></a>光线</h3><h4 id="光位"><a href="#光位" class="headerlink" title="光位"></a>光位</h4><p>首先在进行人像拍摄时，我们一定要明确主光源的位置，主光源与人像主体位置对于最终拍摄效果影响很大，如下图所示:<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E5%85%89%E4%BD%8D.jpeg" alt="光位"><br>光位大概分几个:</p>
+<h3 id="光线">光线</h3>
+<h4 id="光位">光位</h4>
+<p>首先在进行人像拍摄时，我们一定要明确主光源的位置，主光源与人像主体位置对于最终拍摄效果影响很大，如下图所示:<br>
+<img src="/Img/%E5%85%89%E4%BD%8D.jpeg" alt="光位"><br>
+光位大概分几个:</p>
 <ul>
-<li>顺光：光线从人像前方照过来  </li>
-<li>逆光：光线从人像后方照过来 </li>
+<li>顺光：光线从人像前方照过来</li>
+<li>逆光：光线从人像后方照过来</li>
 <li>前侧光: 光线投射的方向与景物、照相机呈45度左右夹角</li>
-<li>后侧光: 光线投射过来的方向与景物、照相机呈135度左右夹角<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E5%85%89%E4%BD%8D1.jpeg" alt="常用光位"></li>
+<li>后侧光: 光线投射过来的方向与景物、照相机呈135度左右夹角<br>
+<img src="/Img/%E5%85%89%E4%BD%8D1.jpeg" alt="常用光位"></li>
 </ul>
 <p>下面大概地讲一讲不同光位进行拍摄所带来的效果:</p>
 <ul>
-<li>顺光: 还原颜色，立体感差，规避瑕疵，通透 </li>
-<li>侧光: 脸部立体感凸显，阴阳脸控制<ul>
+<li>顺光: 还原颜色，立体感差，规避瑕疵，通透</li>
+<li>侧光: 脸部立体感凸显，阴阳脸控制
+<ul>
 <li><strong>前侧光: 窄面光，也就是说此时脸部大部亮,可以使得脸颊比较消瘦</strong></li>
 <li>后侧光: 宽面广，此时脸部大部较暗，会显得脸部比较宽</li>
-<li>伦布朗光: 拍摄时，被摄者脸部阴影一侧对着相机，灯光照亮脸部的四分之三。以这种用光方法拍摄的人像酷似伦勃朗的人物肖像绘画，因而得名。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E5%AE%BD%E7%AA%84%E9%9D%A2%E5%85%89.jpg" alt="宽窄面光"></li>
+<li>伦布朗光: 拍摄时，被摄者脸部阴影一侧对着相机，灯光照亮脸部的四分之三。以这种用光方法拍摄的人像酷似伦勃朗的人物肖像绘画，因而得名。<br>
+<img src="/Img/%E5%AE%BD%E7%AA%84%E9%9D%A2%E5%85%89.jpg" alt="宽窄面光"></li>
 </ul>
 </li>
 <li>逆光: 勾勒轮廓，发丝光，显瘦，对焦困难一些</li>
-<li>顶/底光: 一般而言我们并不喜欢顶光和底光，但如果适当运用阴影遮挡，也可以达到较好效果，使用透明伞作为柔光设备，要适当注意反光造成的底光效果。   </li>
+<li>顶/底光: 一般而言我们并不喜欢顶光和底光，但如果适当运用阴影遮挡，也可以达到较好效果，使用透明伞作为柔光设备，要适当注意反光造成的底光效果。</li>
 </ul>
-<h4 id="光质"><a href="#光质" class="headerlink" title="光质"></a>光质</h4><p>首先给出光质的定义:</p>
+<h4 id="光质">光质</h4>
+<p>首先给出光质的定义:</p>
 <blockquote>
-<p>光质是指拍摄所用光线的软硬性质。可分为硬质光和软质光。 </p>
+<p>光质是指拍摄所用光线的软硬性质。可分为硬质光和软质光。</p>
 </blockquote>
-<p>下面给出硬质光和软质光的基本概念:</p>
+<p>下面给出硬质光和软质光的基本概念:</p>
 <ul>
 <li>硬质光即是强烈的直射光，如晴天的阳光，人工灯中的聚光灯、回光灯的灯光等。硬质光照射下的被摄体表面的物理特性表现为：<strong>受光面、背光面及投影非常鲜明，明暗反差较大，对比效果明显，有助于表现受光面的细节及质感，造成有力度、鲜活等视角艺术效果。</strong></li>
 <li>软质光是一种漫散射性质的光，没有明确的方向性，在被照物上不留明显的阴影。如大雾中的阳光，泛光灯光源等。软质光的特点是<strong>光线柔和，强度均匀，光比较小，形成的影像反差不大，主体感和质感较弱。</strong></li>
 </ul>
-<h5 id="时刻"><a href="#时刻" class="headerlink" title="时刻"></a>时刻</h5><p>在进行拍摄时，合适的光质对于最终的出片质量影响非常巨大，但当我们出行的时间刚好是正午，此时光线非常强烈，我们可以通过以下几种方式来进行解决: </p>
+<h5 id="时刻">时刻</h5>
+<p>在进行拍摄时，合适的光质对于最终的出片质量影响非常巨大，但当我们出行的时间刚好是正午，此时光线非常强烈，我们可以通过以下几种方式来进行解决:</p>
 <ul>
-<li>选择合适的阴影场地 </li>
+<li>选择合适的阴影场地</li>
 <li>通过一些柔光设备</li>
-<li>合适的颜色搭配来突出主体,特别是进行雪地拍摄时 </li>
+<li>合适的颜色搭配来突出主体,特别是进行雪地拍摄时</li>
 </ul>
 <p>最适合进行拍照的时间一般是<strong>清晨/傍晚时分</strong>，此时:</p>
 <ul>
-<li>太阳高度不太高 </li>
+<li>太阳高度不太高</li>
 <li>光线不是很强，软硬度合适</li>
 <li>最终成像使得既能呈现脸部立体感，又不至于因光线太强而出现太多难以修复的影子</li>
 </ul>
 <p>最后给出风光摄影中常提的两个概念:</p>
 <ul>
-<li>蓝调时刻: 蓝调时刻指的是太阳落山之后（或者日出之前），天空从金色变成蓝色，但又没完全变黑的时候。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E8%93%9D%E8%B0%83%E6%97%B6%E5%88%BB.jpg" alt="蓝调时刻"></li>
-<li>黄金时刻: 天气晴朗的清晨和黄昏，此时阳光（作为光源）广阔而柔和，选好角度，可以拍摄逆光、阳光铺洒的感觉，十分温暖、唯美。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E9%BB%84%E9%87%91%E6%97%B6%E5%88%BB.jpeg" alt="黄金时刻"></li>
+<li>蓝调时刻: 蓝调时刻指的是太阳落山之后（或者日出之前），天空从金色变成蓝色，但又没完全变黑的时候。<br>
+<img src="/Img/%E8%93%9D%E8%B0%83%E6%97%B6%E5%88%BB.jpg" alt="蓝调时刻"></li>
+<li>黄金时刻: 天气晴朗的清晨和黄昏，此时阳光（作为光源）广阔而柔和，选好角度，可以拍摄逆光、阳光铺洒的感觉，十分温暖、唯美。<br>
+<img src="/Img/%E9%BB%84%E9%87%91%E6%97%B6%E5%88%BB.jpeg" alt="黄金时刻"></li>
 </ul>
-<h5 id="天气"><a href="#天气" class="headerlink" title="天气"></a>天气</h5><p>天气其实也就大致分: </p>
+<h5 id="天气">天气</h5>
+<p>天气其实也就大致分:</p>
 <blockquote>
-<p>晴 $\cdot$ 云 $\cdot$ 雨 $\cdot$ 雪 $\cdot$ 霞 </p>
+<p>晴 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⋅</mo></mrow><annotation encoding="application/x-tex">\cdot</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4445em;"></span><span class="mord">⋅</span></span></span></span> 云 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⋅</mo></mrow><annotation encoding="application/x-tex">\cdot</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4445em;"></span><span class="mord">⋅</span></span></span></span> 雨 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⋅</mo></mrow><annotation encoding="application/x-tex">\cdot</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4445em;"></span><span class="mord">⋅</span></span></span></span> 雪 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⋅</mo></mrow><annotation encoding="application/x-tex">\cdot</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4445em;"></span><span class="mord">⋅</span></span></span></span> 霞</p>
 </blockquote>
 <ul>
 <li>晴天: 等云来，找阴影，柔光设备</li>
-<li>雪: 颜色搭配，后期调色 </li>
-<li>霞: 提前规划，搭建脚本 </li>
+<li>雪: 颜色搭配，后期调色</li>
+<li>霞: 提前规划，搭建脚本</li>
 </ul>
-<h5 id="环境光"><a href="#环境光" class="headerlink" title="环境光"></a>环境光</h5><p>需要注意环境中的反射光:</p>
+<h5 id="环境光">环境光</h5>
+<p>需要注意环境中的反射光:</p>
 <ul>
 <li>光线打到草地上，又反射到脸上，可以通过反光板来削弱不想要的反射光</li>
-<li>夕阳直射面部发黄 </li>
+<li>夕阳直射面部发黄</li>
 <li><strong>通过白墙、水泥地、书来进行光线反射以补光</strong></li>
 </ul>
-<h5 id="立体感塑造"><a href="#立体感塑造" class="headerlink" title="立体感塑造"></a>立体感塑造</h5><p>这一部分介绍如何应用光线来进行人物立体感塑造,主要有以下几点技巧: </p>
+<h5 id="立体感塑造">立体感塑造</h5>
+<p>这一部分介绍如何应用光线来进行人物立体感塑造,主要有以下几点技巧:</p>
 <ul>
-<li>方向性光线，比如窄面光 </li>
+<li>方向性光线，比如窄面光</li>
 <li>颜色对比，背景与人物颜色的反差更能够凸显主体</li>
 <li>明暗对比，通过人物背景的明暗反差可以拉远主体背景之间的关系</li>
 </ul>
-<h5 id="少光环境"><a href="#少光环境" class="headerlink" title="少光环境"></a>少光环境</h5><p>当在光线比较少的情况霞，需要通过一些人造光源来达到补光的效果，人造光源可以大致分为两类:</p>
+<h5 id="少光环境">少光环境</h5>
+<p>当在光线比较少的情况霞，需要通过一些人造光源来达到补光的效果，人造光源可以大致分为两类:</p>
 <ul>
 <li>常亮光源: 比如灯笼，或者手持灯，一般而言光源离主体越近，光线越柔和</li>
-<li>闪光灯: 可能需要试拍，调整闪光灯强度、时间，在下雨时，闪光灯快速闪一下，可以起到凝固水珠的效果<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E8%A1%A5%E5%85%89.png" alt="补光"><br>在星光环境下拍摄一定要补光，此时人像摄影师和风光摄影师的侧重点就完全不同，比如对于一颗彗星，左边第一幅图就是风光摄影师拍摄的，而右边几张则是人像摄影师，人像摄影师在这种昏暗环境下使用补光设备一定要注意不能让人物面部出现死光，因此补光设备的光线都会压的非常暗，要不然就会出现过曝现象。</li>
+<li>闪光灯: 可能需要试拍，调整闪光灯强度、时间，在下雨时，闪光灯快速闪一下，可以起到凝固水珠的效果<br>
+<img src="/Img/%E8%A1%A5%E5%85%89.png" alt="补光"><br>
+在星光环境下拍摄一定要补光，此时人像摄影师和风光摄影师的侧重点就完全不同，比如对于一颗彗星，左边第一幅图就是风光摄影师拍摄的，而右边几张则是人像摄影师，人像摄影师在这种昏暗环境下使用补光设备一定要注意不能让人物面部出现死光，因此补光设备的光线都会压的非常暗，要不然就会出现过曝现象。</li>
 </ul>
-<h4 id="曝光技巧"><a href="#曝光技巧" class="headerlink" title="曝光技巧"></a>曝光技巧</h4><h5 id="曝光-cdot-寻找光斑"><a href="#曝光-cdot-寻找光斑" class="headerlink" title="曝光 $\cdot$ 寻找光斑"></a>曝光 $\cdot$ 寻找光斑</h5><p>在进行人像拍摄时，我们往往期望获得一个较为梦幻的虚化效果，这就要求背景最好有光斑一类的东西，因此就需要找一些透光的树林。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E5%AF%BB%E6%89%BE%E5%85%89%E6%96%91.png" alt="寻找光斑"></p>
-<h6 id="曝光-cdot-设置"><a href="#曝光-cdot-设置" class="headerlink" title="曝光 $\cdot$ 设置"></a>曝光 $\cdot$ 设置</h6><p>通过调整曝光补偿和白平衡来使相机直出的图像更加漂亮，如果保存为<code>raw</code>格式，在进行后期时时可以无损调整的。 </p>
-<h5 id="曝光-cdot-大光比"><a href="#曝光-cdot-大光比" class="headerlink" title="曝光 $\cdot$ 大光比"></a>曝光 $\cdot$ 大光比</h5><ul>
-<li>提高曝光宽容度<ul>
+<h4 id="曝光技巧">曝光技巧</h4>
+<h5 id="曝光-cdot-寻找光斑">曝光 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⋅</mo></mrow><annotation encoding="application/x-tex">\cdot</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4445em;"></span><span class="mord">⋅</span></span></span></span> 寻找光斑</h5>
+<p>在进行人像拍摄时，我们往往期望获得一个较为梦幻的虚化效果，这就要求背景最好有光斑一类的东西，因此就需要找一些透光的树林。<br>
+<img src="/Img/%E5%AF%BB%E6%89%BE%E5%85%89%E6%96%91.png" alt="寻找光斑"></p>
+<h6 id="曝光-cdot-设置">曝光 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⋅</mo></mrow><annotation encoding="application/x-tex">\cdot</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4445em;"></span><span class="mord">⋅</span></span></span></span> 设置</h6>
+<p>通过调整曝光补偿和白平衡来使相机直出的图像更加漂亮，如果保存为<code>raw</code>格式，在进行后期时时可以无损调整的。</p>
+<h5 id="曝光-cdot-大光比">曝光 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⋅</mo></mrow><annotation encoding="application/x-tex">\cdot</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4445em;"></span><span class="mord">⋅</span></span></span></span> 大光比</h5>
+<ul>
+<li>提高曝光宽容度
+<ul>
 <li>我们在进行曝光时一定要<strong>尽量</strong>保证高光不死白-<strong>宁欠勿曝</strong></li>
-<li>在保证亮部不过曝的情况下尽量向右曝光,拉亮暗部,保留更多信息-<strong>向右曝光</strong> </li>
+<li>在保证亮部不过曝的情况下尽量向右曝光,拉亮暗部,保留更多信息-<strong>向右曝光</strong></li>
 </ul>
 </li>
-<li>拍摄时推荐使用M档，适当调整保证曝光补偿<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E5%A4%A7%E5%85%89%E6%AF%94.png" alt="光比"><h5 id="曝光-cdot-剪影"><a href="#曝光-cdot-剪影" class="headerlink" title="曝光 $\cdot$ 剪影"></a>曝光 $\cdot$ 剪影</h5>对焦、曝光分离，将焦点对在人物上，使人物部分一片死黑，拍摄时注意下鼻子。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E5%89%AA%E5%BD%B1.png" alt="剪影"></li>
+<li>拍摄时推荐使用M档，适当调整保证曝光补偿<br>
+<img src="/Img/%E5%A4%A7%E5%85%89%E6%AF%94.png" alt="光比"></li>
 </ul>
-<h3 id="构图"><a href="#构图" class="headerlink" title="构图"></a>构图</h3><p>这里就简单介绍几种中心构图的思路:</p>
+<h5 id="曝光-cdot-剪影">曝光 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⋅</mo></mrow><annotation encoding="application/x-tex">\cdot</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4445em;"></span><span class="mord">⋅</span></span></span></span> 剪影</h5>
+<p>对焦、曝光分离，将焦点对在人物上，使人物部分一片死黑，拍摄时注意下鼻子。<br>
+<img src="/Img/%E5%89%AA%E5%BD%B1.png" alt="剪影"></p>
+<h3 id="构图">构图</h3>
+<p>这里就简单介绍几种中心构图的思路:</p>
 <ul>
-<li>中心构图<br>有时可以通过水或者镜面来实现中心对称效果</li>
-<li>倒影<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E4%B8%BB%E6%A5%BC%E5%89%8D%E6%B0%B4%E6%B1%A0.JPG" alt="水池"></li>
-<li>三分构图<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E4%B8%89%E5%88%86%E6%9E%84%E5%9B%BE.jpg" alt="三分构图"><br>但需要注意主体应当放在哪一个点上。</li>
-<li><p>构图 $\cdot$ 引导线<br>适当的引导线可以将观众引导到拍摄主体上去<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E5%BC%95%E5%AF%BC%E7%BA%BF.jpeg" alt></p>
+<li>
+<p>中心构图<br>
+有时可以通过水或者镜面来实现中心对称效果</p>
 </li>
-<li><p>构图 $\cdot$ 对比<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E5%AF%B9%E6%AF%94.png" alt="对比"></p>
+<li>
+<p>倒影<br>
+<img src="/Img/%E4%B8%BB%E6%A5%BC%E5%89%8D%E6%B0%B4%E6%B1%A0.JPG" alt="水池"></p>
 </li>
-<li><p>构图 $\cdot$ 正常情况<br>在实际构图中，往往都是多种技巧结合，经过训练后其实都是后知后觉<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E5%AE%9E%E9%99%85%E6%9E%84%E5%9B%BE.png" alt="正常构图"></p>
+<li>
+<p>三分构图<br>
+<img src="/Img/%E4%B8%89%E5%88%86%E6%9E%84%E5%9B%BE.jpg" alt="三分构图"><br>
+但需要注意主体应当放在哪一个点上。</p>
 </li>
-<li>构图 $\cdot$ 景别<br>组图需要有层次有差别</li>
-<li>构图 $\cdot$ 立体感打造<br>打造立体感主要有以下几种思路: 透视、压缩、前后景等等</li>
+<li>
+<p>构图 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⋅</mo></mrow><annotation encoding="application/x-tex">\cdot</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4445em;"></span><span class="mord">⋅</span></span></span></span> 引导线<br>
+适当的引导线可以将观众引导到拍摄主体上去<br>
+<img src="/Img/%E5%BC%95%E5%AF%BC%E7%BA%BF.jpeg" alt=""></p>
+</li>
+<li>
+<p>构图 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⋅</mo></mrow><annotation encoding="application/x-tex">\cdot</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4445em;"></span><span class="mord">⋅</span></span></span></span> 对比<br>
+<img src="/Img/%E5%AF%B9%E6%AF%94.png" alt="对比"></p>
+</li>
+<li>
+<p>构图 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⋅</mo></mrow><annotation encoding="application/x-tex">\cdot</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4445em;"></span><span class="mord">⋅</span></span></span></span> 正常情况<br>
+在实际构图中，往往都是多种技巧结合，经过训练后其实都是后知后觉<br>
+<img src="/Img/%E5%AE%9E%E9%99%85%E6%9E%84%E5%9B%BE.png" alt="正常构图"></p>
+</li>
+<li>
+<p>构图 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⋅</mo></mrow><annotation encoding="application/x-tex">\cdot</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4445em;"></span><span class="mord">⋅</span></span></span></span> 景别<br>
+组图需要有层次有差别</p>
+</li>
+<li>
+<p>构图 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⋅</mo></mrow><annotation encoding="application/x-tex">\cdot</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4445em;"></span><span class="mord">⋅</span></span></span></span> 立体感打造<br>
+打造立体感主要有以下几种思路: 透视、压缩、前后景等等</p>
+</li>
 </ul>
-<p><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E7%A9%BA%E9%97%B4%E6%84%9F.png" alt="立体感"></p>
+<p><img src="/Img/%E7%A9%BA%E9%97%B4%E6%84%9F.png" alt="立体感"></p>
 <ul>
-<li><p>构图 $\cdot$ 俯仰<br>仰拍要注意下巴，俯拍要注意不要拍全身</p>
+<li>
+<p>构图 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⋅</mo></mrow><annotation encoding="application/x-tex">\cdot</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4445em;"></span><span class="mord">⋅</span></span></span></span> 俯仰<br>
+仰拍要注意下巴，俯拍要注意不要拍全身</p>
 </li>
-<li><p>构图 $\cdot$ 人像裁切示意图<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E4%BA%BA%E5%83%8F%E8%A3%81%E5%88%87.jpeg" alt="人像裁切"><br>基本原则就是关节部位不要切，脖子不要切</p>
+<li>
+<p>构图 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⋅</mo></mrow><annotation encoding="application/x-tex">\cdot</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4445em;"></span><span class="mord">⋅</span></span></span></span> 人像裁切示意图<br>
+<img src="/Img/%E4%BA%BA%E5%83%8F%E8%A3%81%E5%88%87.jpeg" alt="人像裁切"><br>
+基本原则就是关节部位不要切，脖子不要切</p>
 </li>
-<li><p>构图 $\cdot$ 雷区</p>
+<li>
+<p>构图 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⋅</mo></mrow><annotation encoding="application/x-tex">\cdot</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4445em;"></span><span class="mord">⋅</span></span></span></span> 雷区</p>
 <ul>
-<li>不要线穿头 </li>
+<li>不要线穿头</li>
 <li>尽量不要倾斜，仰拍俯拍可以适当倾斜</li>
 </ul>
 </li>
@@ -702,12 +781,12 @@
                     
                 </div>
                 <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
-                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/share/css/share.min.css">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
 <div id="article-share">
 
     
     <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/share/js/social-share.min.js"></script>
+    <script src="/libs/share/js/social-share.min.js"></script>
     
 
     
@@ -825,10 +904,10 @@
                         <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
                     </ul>
                     <div id="alipay">
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/reward/ali.jpeg" class="reward-img" alt="支付宝打赏二维码">
+                        <img src="/medias/reward/ali.jpeg" class="reward-img" alt="支付宝打赏二维码">
                     </div>
                     <div id="wechat">
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/reward/wechat.jpeg" class="reward-img" alt="微信打赏二维码">
+                        <img src="/medias/reward/wechat.jpeg" class="reward-img" alt="微信打赏二维码">
                     </div>
                 </div>
             </div>
@@ -1096,12 +1175,12 @@
         <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
         <span>评论</span>
     </div>
-    <div id="vcomments" class="card-content" style="display: grid">
+    <div id="vcomments" class="card-content" style="display: block">
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/valine/av-min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/valine/Valine.min.js"></script>
+<script src="/libs/valine/av-min.js"></script>
+<script src="/libs/valine/Valine.min.js"></script>
 <script>
     new Valine({
         el: '#vcomments',
@@ -1133,8 +1212,7 @@
                 <a href="/2020/11/03/ren-xiang-she-ying-quan-liu-cheng/">
                     <div class="card-image">
                         
-                        
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/0.jpg" class="responsive-img" alt="人像摄影全流程">
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="人像摄影全流程">
                         
                         <span class="card-title">人像摄影全流程</span>
                     </div>
@@ -1155,6 +1233,10 @@
                             
                             <a href="/categories/%E7%82%B9%E6%BB%B4%E7%94%9F%E6%B4%BB/" class="post-category">
                                     点滴生活
+                                </a>
+                            
+                            <a href="/categories/%E7%82%B9%E6%BB%B4%E7%94%9F%E6%B4%BB/%E7%81%B5%E9%AD%82%E9%9B%95%E7%90%A2/" class="post-category">
+                                    灵魂雕琢
                                 </a>
                             
                             
@@ -1182,8 +1264,7 @@
                 <a href="/2020/10/28/chu-shi-docker/">
                     <div class="card-image">
                         
-                        
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/1.png" class="responsive-img" alt="初识Docker">
+                        <img src="/medias/featureimages/1.png" class="responsive-img" alt="初识Docker">
                         
                         <span class="card-title">初识Docker</span>
                     </div>
@@ -1191,9 +1272,10 @@
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            近期因为在外出差，没咋看论文，为了让时间得到充分利用，自己打算学习一些开发相关的知识，毕竟技多不压身。 这部分就参考Docker官方文档来进行Docker基本知识的学习。该部分分为以下三个章节进行组织:
+                            近期因为在外出差，没咋看论文，为了让时间得到充分利用，自己打算学习一些开发相关的知识，毕竟技多不压身。 这部分就参考Docker官方文档来进行Docker基本知识的学习。
+该部分分为以下三个章节进行组织:
 
-概念与设置 
+概念与设置
 构建并运行镜像
 在D
                         
@@ -1208,6 +1290,10 @@
                             
                             <a href="/categories/%E5%BC%80%E5%8F%91%E7%9F%A5%E8%AF%86/" class="post-category">
                                     开发知识
+                                </a>
+                            
+                            <a href="/categories/%E5%BC%80%E5%8F%91%E7%9F%A5%E8%AF%86/%E7%82%B9%E6%BB%B4%E7%94%9F%E6%B4%BB/" class="post-category">
+                                    点滴生活
                                 </a>
                             
                             
@@ -1234,21 +1320,21 @@
 
 
 <!-- 代码块功能依赖 -->
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeBlockFuction.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
 
 <!-- 代码语言 -->
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeLang.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
 
 
 <!-- 代码块复制 -->
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeCopy.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
 
 
 <!-- 代码块收缩 -->
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeShrink.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
 
 
 <!-- 代码块折行 -->
@@ -1276,7 +1362,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
 </div>
 
 
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/tocbot/tocbot.min.js"></script>
+<script src="/libs/tocbot/tocbot.min.js"></script>
 <script>
     $(function () {
         tocbot.init({
@@ -1357,18 +1443,11 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
 </main>
 
 
-<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script>
-    MathJax.Hub.Config({
-        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
-    });
-</script>
-
 
 
     <footer class="page-footer bg-color">
     
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aplayer/APlayer.min.css">
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
 <style>
     .aplayer .aplayer-lrc p {
         
@@ -1418,7 +1497,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aplayer/APlayer.min.js"></script>
+<script src="/libs/aplayer/APlayer.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
 
     
@@ -1432,7 +1511,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">177k</span>&nbsp;字
+                class="white-color">202k</span>&nbsp;字
             
             
             
@@ -1501,10 +1580,10 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/js/search.js"></script>
+<script src="/js/search.js"></script>
 <script type="text/javascript">
 $(function () {
-    searchFunc("https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/search.xml", 'searchInput', 'searchResult');
+    searchFunc("/search.xml", 'searchInput', 'searchResult');
 });
 </script>
 
@@ -1516,12 +1595,12 @@ $(function () {
 </div>
 
 
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/materialize/materialize.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/masonry/masonry.pkgd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aos/aos.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/scrollprogress/scrollProgress.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/lightGallery/js/lightgallery-all.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/js/matery.js"></script>
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
 
     <!-- Baidu Analytics -->
 
@@ -1543,7 +1622,7 @@ $(function () {
 
     
     
-    <script async src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/others/busuanzi.pure.mini.js"></script>
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
     
 
     
@@ -1557,7 +1636,7 @@ $(function () {
     
 
     
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/instantpage/instantpage.js" type="module"></script>
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
     
 
 <script type="text/javascript"> //只在桌面版网页启用特效 

@@ -17,24 +17,23 @@
 
 
     <title>剑指offer题目总结 | 风之声</title>
-    <link rel="icon" type="image/jpeg" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/favicon.jpg">
+    <link rel="icon" type="image/jpeg" href="/favicon.jpg">
 
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/awesome/css/all.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/materialize/materialize.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aos/aos.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/animate/animate.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/lightGallery/css/lightgallery.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/css/matery.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/css/my.css">
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <link rel="stylesheet" href="/vendor/katex/katex.min.css">
+    <link rel="stylesheet" href="/css/prism.css">
+    <link rel="stylesheet" href="/css/prism-line-numbers.css">
+    <link rel="stylesheet" href="/css/custom.css">
 
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/jquery/jquery.min.js"></script>
+    <script src="/libs/jquery/jquery.min.js"></script>
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"><link rel="stylesheet" href="/css/prism.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<meta name="generator" content="Hexo 8.1.2"></head>
 
 
 <body>
@@ -44,7 +43,7 @@
             <div class="brand-logo">
                 <a href="/" class="waves-effect waves-light">
                     
-                    <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/logo.png" class="logo-img" alt="LOGO">
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
                     
                     <span class="logo-span">风之声</span>
                 </a>
@@ -143,7 +142,7 @@
 
     <div class="mobile-head bg-color">
         
-        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/logo.png" class="logo-img circle responsive-img">
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
         
         <div class="logo-name">风之声</div>
         <div class="logo-desc">
@@ -310,10 +309,23 @@
 </header>
 
     
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/4.png')">
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/4.png')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -331,7 +343,7 @@
 <main class="post-container content">
 
     
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
 <style>
     #articleContent h1::before,
     #articleContent h2::before,
@@ -451,6 +463,10 @@
                                 算法岗八股文
                             </a>
                         
+                            <a href="/categories/%E7%AE%97%E6%B3%95%E5%B2%97%E5%85%AB%E8%82%A1%E6%96%87/%E6%B8%B8%E6%88%8F/" class="post-category">
+                                游戏
+                            </a>
+                        
                     </div>
                     
                 </div>
@@ -496,7 +512,8 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="剑指offer题目总结"><a href="#剑指offer题目总结" class="headerlink" title="剑指offer题目总结"></a>剑指offer题目总结</h3><h4 id="链表题目"><a href="#链表题目" class="headerlink" title="链表题目"></a>链表题目</h4><ul>
+                
+<h3 id="剑指offer题目总结"><a href="#%E5%89%91%E6%8C%87offer%E9%A2%98%E7%9B%AE%E6%80%BB%E7%BB%93" class="headerlink" title="剑指offer题目总结"></a>剑指offer题目总结</h3><h4 id="链表题目"><a href="#%E9%93%BE%E8%A1%A8%E9%A2%98%E7%9B%AE" class="headerlink" title="链表题目"></a>链表题目</h4><ul>
 <li>从尾到头打印链表  </li>
 <li>反转链表 </li>
 <li>合并两个排序的链表(递归/遍历)</li>
@@ -510,7 +527,7 @@
 </blockquote>
 </li>
 </ul>
-<h4 id="树题目"><a href="#树题目" class="headerlink" title="树题目"></a>树题目</h4><ul>
+<h4 id="树题目"><a href="#%E6%A0%91%E9%A2%98%E7%9B%AE" class="headerlink" title="树题目"></a>树题目</h4><ul>
 <li>二叉树的深度(简单递归/队列辅助层次遍历)</li>
 <li>按之字顺序打印二叉树(层次遍历 + flag判断奇偶层)</li>
 <li>二叉搜索树的第k个节点(深度优先遍历，结合二叉搜索树的特点)</li>
@@ -538,7 +555,7 @@
 <li>合理考虑递归边界，特殊情况 </li>
 </ul>
 </blockquote>
-<h4 id="队列-amp-栈"><a href="#队列-amp-栈" class="headerlink" title="队列&amp;栈"></a>队列&amp;栈</h4><ul>
+<h4 id="队列-amp-栈"><a href="#%E9%98%9F%E5%88%97-amp-%E6%A0%88" class="headerlink" title="队列&amp;栈"></a>队列&amp;栈</h4><ul>
 <li>用两个栈实现队列(进行两次压栈操作即可) </li>
 <li>包含min函数的栈(普通栈+最小栈) </li>
 <li>栈的压入弹出序列(辅助栈模拟) </li>
@@ -548,7 +565,7 @@
 <blockquote>
 <p>总结：数据结构特点的基础应用 </p>
 </blockquote>
-<h4 id="搜索算法"><a href="#搜索算法" class="headerlink" title="搜索算法"></a>搜索算法</h4><ul>
+<h4 id="搜索算法"><a href="#%E6%90%9C%E7%B4%A2%E7%AE%97%E6%B3%95" class="headerlink" title="搜索算法"></a>搜索算法</h4><ul>
 <li>数字在升序数组中出现的次数(二分查找 target-0.5 target+0.5) </li>
 <li>二维数组中的查找(有序数组，从角落开始搜索)</li>
 <li>旋转数组中的最小数字(二分查找，特殊情况考虑，注意等号) </li>
@@ -558,13 +575,13 @@
 <blockquote>
 <p>总结：二分搜索 or 模拟遍历  </p>
 </blockquote>
-<h4 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h4><ul>
+<h4 id="动态规划"><a href="#%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92" class="headerlink" title="动态规划"></a>动态规划</h4><ul>
 <li>连续子数组的最大和(一维dp, 可以不另外开辟数组) </li>
 <li>连续子数组最大和(二)(一维dp,维护起始位置，可以不另外开辟数组) </li>
 <li>跳台阶(斐波那契数列) </li>
 <li>斐波那契数列 </li>
 <li>正则表达式匹配(二维dp) </li>
-<li>跳台阶扩展问题($2^{n-1}$) </li>
+<li>跳台阶扩展问题(<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">2^{n-1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span></span></span></span>) </li>
 <li>矩阵覆盖(斐波那契数列)</li>
 <li>买股票的最好时机(一维dp) </li>
 <li>礼物的最大价值(二维dp, 可以不另外开辟数组) </li>
@@ -578,14 +595,14 @@
 <li>状态转移方程的形式 </li>
 </ul>
 </blockquote>
-<h4 id="回溯"><a href="#回溯" class="headerlink" title="回溯"></a>回溯</h4><ul>
+<h4 id="回溯"><a href="#%E5%9B%9E%E6%BA%AF" class="headerlink" title="回溯"></a>回溯</h4><ul>
 <li>矩阵中的路径(dfs + 标志矩阵)</li>
 <li>机器人的运动范围(dfs + 标志矩阵)</li>
 </ul>
 <blockquote>
 <p>dfs + 标志矩阵  </p>
 </blockquote>
-<h4 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h4><ul>
+<h4 id="排序"><a href="#%E6%8E%92%E5%BA%8F" class="headerlink" title="排序"></a>排序</h4><ul>
 <li>数组中重复的数字(哈希/位置重排) </li>
 <li>数组中的逆序对(归并排序) </li>
 <li>最小的k个数 </li>
@@ -594,20 +611,20 @@
 <blockquote>
 <p>总结：熟练掌握归并排序和快速排序 </p>
 </blockquote>
-<h4 id="位运算"><a href="#位运算" class="headerlink" title="位运算"></a>位运算</h4><ul>
+<h4 id="位运算"><a href="#%E4%BD%8D%E8%BF%90%E7%AE%97" class="headerlink" title="位运算"></a>位运算</h4><ul>
 <li>不用加减乘除做加法(异或运算获取非进位和，与运算加左移算子获取进位信息) </li>
 <li>二进制中1的个数(n&amp;n-1, 将低位1变为0，注意处理负数) </li>
 <li>数值的整数次方(借助二进制运算实现快速幂) </li>
 <li>数组中只出现一次的两个数字(异或运算的特点) </li>
 <li>求1+2+…+n(通过与运算终止递归) </li>
 </ul>
-<h4 id="模拟"><a href="#模拟" class="headerlink" title="模拟"></a>模拟</h4><ul>
+<h4 id="模拟"><a href="#%E6%A8%A1%E6%8B%9F" class="headerlink" title="模拟"></a>模拟</h4><ul>
 <li>顺时针打印矩阵(简单模拟，通过边界控制循环结束)</li>
 <li>扑克牌顺子(借助hash)</li>
 <li>把字符串转换成整数(去空格，找符号，转换，取模)</li>
 <li>表示数值的字符串 </li>
 </ul>
-<h4 id="其他算法"><a href="#其他算法" class="headerlink" title="其他算法"></a>其他算法</h4><ul>
+<h4 id="其他算法"><a href="#%E5%85%B6%E4%BB%96%E7%AE%97%E6%B3%95" class="headerlink" title="其他算法"></a>其他算法</h4><ul>
 <li>构建乘积数组 </li>
 <li>第一个只出现一次的字符 </li>
 <li>替换空格 </li>
@@ -624,7 +641,7 @@
 <li>剪绳子 </li>
 <li>调整数组顺序使奇数位于偶数前面</li>
 <li>剪绳子(进阶版)</li>
-<li>打印从1到最大的n位数<h4 id="python中常用数据结构模块"><a href="#python中常用数据结构模块" class="headerlink" title="python中常用数据结构模块"></a>python中常用数据结构模块</h4></li>
+<li>打印从1到最大的n位数<h4 id="python中常用数据结构模块"><a href="#python%E4%B8%AD%E5%B8%B8%E7%94%A8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E6%A8%A1%E5%9D%97" class="headerlink" title="python中常用数据结构模块"></a>python中常用数据结构模块</h4></li>
 </ul>
 <ol>
 <li>队列 <code>queue.Queue()</code> </li>
@@ -637,7 +654,7 @@
 <li><code>Queue().put()</code>: 写入队列 </li>
 <li>题目: 从上往下打印二叉树 <pre class="line-numbers language-lang-python"><code class="language-lang-python">import queue 
 class Solution:
-  def PrintFromTopToBottom(self , root: TreeNode) -> List[int]:
+  def PrintFromTopToBottom(self , root: TreeNode) -&gt; List[int]:
       # write code here 
       res = [] 
       if not root:
@@ -668,23 +685,23 @@ class Solution:
 <li><p>题目: 滑动窗口的最大值 </p>
 <pre class="line-numbers language-lang-python"><code class="language-lang-python">from collections import deque 
 class Solution:
-  def maxInWindows(self , num: List[int], size: int) -> List[int]:
+  def maxInWindows(self , num: List[int], size: int) -&gt; List[int]:
       # write code here 
       res = [] 
       dq = deque()
-      if size > len(num) or not size: 
+      if size &gt; len(num) or not size: 
           return [] 
 
       for i in range(size): 
-          while len(dq) > 0 and num[dq[-1]] < num[i]: 
+          while len(dq) &gt; 0 and num[dq[-1]] &lt; num[i]: 
               dq.pop() 
           dq.append(i) 
 
       for i in range(size, len(num)): 
           res.append(num[dq[0]]) 
-          while len(dq) > 0 and dq[0] < i - size + 1: 
+          while len(dq) &gt; 0 and dq[0] &lt; i - size + 1: 
               dq.popleft() 
-          while len(dq) > 0 and num[dq[-1]] < num[i]:
+          while len(dq) &gt; 0 and num[dq[-1]] &lt; num[i]:
               dq.pop() 
           dq.append(i) 
       res.append(num[dq[0]]) 
@@ -713,7 +730,7 @@ mp = collections.defaultdict(lambda:999) # 默认值为999
 </ul>
 <p>不可哈希的数据类型有:</p>
 <ul>
-<li>字典<code>dict</code>、列表<code>list</code>、集合<code>set</code><h4 id="算法题常用解题思路"><a href="#算法题常用解题思路" class="headerlink" title="算法题常用解题思路"></a>算法题常用解题思路</h4><h5 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h5></li>
+<li>字典<code>dict</code>、列表<code>list</code>、集合<code>set</code><h4 id="算法题常用解题思路"><a href="#%E7%AE%97%E6%B3%95%E9%A2%98%E5%B8%B8%E7%94%A8%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF" class="headerlink" title="算法题常用解题思路"></a>算法题常用解题思路</h4><h5 id="递归"><a href="#%E9%80%92%E5%BD%92" class="headerlink" title="递归"></a>递归</h5></li>
 <li>什么样的问题可以用递归解决? <ul>
 <li>主问题可以拆分为若干子问题 </li>
 <li>主问题和子问题的解题思路一致</li>
@@ -727,6 +744,7 @@ mp = collections.defaultdict(lambda:999) # 默认值为999
 </ul>
 </li>
 </ul>
+
 
             </div>
             <hr/>
@@ -798,12 +816,12 @@ mp = collections.defaultdict(lambda:999) # 默认值为999
                     
                 </div>
                 <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
-                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/share/css/share.min.css">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
 <div id="article-share">
 
     
     <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/share/js/social-share.min.js"></script>
+    <script src="/libs/share/js/social-share.min.js"></script>
     
 
     
@@ -921,10 +939,10 @@ mp = collections.defaultdict(lambda:999) # 默认值为999
                         <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
                     </ul>
                     <div id="alipay">
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/reward/ali.jpeg" class="reward-img" alt="支付宝打赏二维码">
+                        <img src="/medias/reward/ali.jpeg" class="reward-img" alt="支付宝打赏二维码">
                     </div>
                     <div id="wechat">
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/reward/wechat.jpeg" class="reward-img" alt="微信打赏二维码">
+                        <img src="/medias/reward/wechat.jpeg" class="reward-img" alt="微信打赏二维码">
                     </div>
                 </div>
             </div>
@@ -1192,12 +1210,12 @@ mp = collections.defaultdict(lambda:999) # 默认值为999
         <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
         <span>评论</span>
     </div>
-    <div id="vcomments" class="card-content" style="display: grid">
+    <div id="vcomments" class="card-content" style="display: block">
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/valine/av-min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/valine/Valine.min.js"></script>
+<script src="/libs/valine/av-min.js"></script>
+<script src="/libs/valine/Valine.min.js"></script>
 <script>
     new Valine({
         el: '#vcomments',
@@ -1226,11 +1244,62 @@ mp = collections.defaultdict(lambda:999) # 默认值为999
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
+                <a href="/2022/10/03/zheng-yi-lun-du-shu-bi-ji/">
+                    <div class="card-image">
+                        
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="《正义论》读书笔记">
+                        
+                        <span class="card-title">《正义论》读书笔记</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            人生路走的愈远，愈发意识到个人的边界，愈发对社会现实有了更加清醒的认识。一切的矛盾说到根源也逃不出分配二字，什么样的分配制度是正义的呢？带着这样一个问题，我翻开了罗尔斯的《正义论》，期待罗尔斯能够给我一个答案。 译者前记首先需要明确罗尔斯《正义论》中正义的对象: 在《正义论》中，正义的对象是社会的基
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-10-03
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E7%81%B5%E9%AD%82%E9%9B%95%E7%90%A2/" class="post-category">
+                                    灵魂雕琢
+                                </a>
+                            
+                            <a href="/categories/%E7%81%B5%E9%AD%82%E9%9B%95%E7%90%A2/%E7%AE%97%E6%B3%95%E5%B2%97%E5%85%AB%E8%82%A1%E6%96%87/" class="post-category">
+                                    算法岗八股文
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E6%AD%A3%E4%B9%89/">
+                        <span class="chip bg-color">正义</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
                 <a href="/2022/09/29/shu-ju-jie-gou-yu-suan-fa/">
                     <div class="card-image">
                         
-                        
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/3.png" class="responsive-img" alt="数据结构与算法">
+                        <img src="/medias/featureimages/3.png" class="responsive-img" alt="数据结构与算法">
                         
                         <span class="card-title">数据结构与算法</span>
                     </div>
@@ -1238,22 +1307,23 @@ mp = collections.defaultdict(lambda:999) # 默认值为999
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            数据结构与算法算是必考内容，如果能在笔试/面试的过程中快速找到算法题的解题思路，无疑会给面试官留下很好的印象，这类题目主要考察两个方面: 
-
-数据结构的掌握程度，能否熟练掌握各类数据结构的特点及操作
-常见算法，比如贪心算法、动态规划、BFS
+                            数据结构与算法算是必考内容，如果能在笔试/面试的过程中快速找到算法题的解题思路，无疑会给面试官留下很好的印象，这类题目主要考察两个方面: 数据结构的掌握程度，能否熟练掌握各类数据结构的特点及操作 常见算法，比如贪心算法、动态规划、BFS/DFS等 面试官的考察一般是循序渐进的： 一般首先会考察一些数
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-09-29
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-09-29
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
                             <a href="/categories/%E7%AE%97%E6%B3%95%E5%B2%97%E5%85%AB%E8%82%A1%E6%96%87/" class="post-category">
                                     算法岗八股文
+                                </a>
+                            
+                            <a href="/categories/%E7%AE%97%E6%B3%95%E5%B2%97%E5%85%AB%E8%82%A1%E6%96%87/%E7%81%B5%E9%AD%82%E9%9B%95%E7%90%A2/" class="post-category">
+                                    灵魂雕琢
                                 </a>
                             
                             
@@ -1272,55 +1342,6 @@ mp = collections.defaultdict(lambda:999) # 默认值为999
             </div>
         </div>
         
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2022/09/08/sai-er-hao-cha-jian-xia-zai-di-zhi/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/4.png" class="responsive-img" alt="赛尔号插件下载地址">
-                        
-                        <span class="card-title">赛尔号插件下载地址</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            不是每个人都应该像我这样去建造一座水晶大教堂，但是每个人都应该拥有自己的梦想，设计自己的梦想，追求自己的梦想，实现自己的梦想。梦想是生命的灵魂，是心灵的灯塔，是引导人走向成功的信仰。有了崇高的梦想，只要矢志不渝地追求，梦想就会成为现实，奋斗
-                        
-                    </div>
-                    <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-09-08
-                            </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/%E6%B8%B8%E6%88%8F/" class="post-category">
-                                    游戏
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/%E6%8F%92%E4%BB%B6%E7%AE%A1%E7%90%86/">
-                        <span class="chip bg-color">插件管理</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
     </div>
 </article>
 
@@ -1329,21 +1350,21 @@ mp = collections.defaultdict(lambda:999) # 默认值为999
 
 
 <!-- 代码块功能依赖 -->
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeBlockFuction.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
 
 <!-- 代码语言 -->
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeLang.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
 
 
 <!-- 代码块复制 -->
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeCopy.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
 
 
 <!-- 代码块收缩 -->
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeShrink.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
 
 
 <!-- 代码块折行 -->
@@ -1371,7 +1392,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
 </div>
 
 
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/tocbot/tocbot.min.js"></script>
+<script src="/libs/tocbot/tocbot.min.js"></script>
 <script>
     $(function () {
         tocbot.init({
@@ -1452,18 +1473,11 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
 </main>
 
 
-<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script>
-    MathJax.Hub.Config({
-        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
-    });
-</script>
-
 
 
     <footer class="page-footer bg-color">
     
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aplayer/APlayer.min.css">
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
 <style>
     .aplayer .aplayer-lrc p {
         
@@ -1513,7 +1527,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aplayer/APlayer.min.js"></script>
+<script src="/libs/aplayer/APlayer.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
 
     
@@ -1527,7 +1541,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">177k</span>&nbsp;字
+                class="white-color">202k</span>&nbsp;字
             
             
             
@@ -1596,10 +1610,10 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/js/search.js"></script>
+<script src="/js/search.js"></script>
 <script type="text/javascript">
 $(function () {
-    searchFunc("https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/search.xml", 'searchInput', 'searchResult');
+    searchFunc("/search.xml", 'searchInput', 'searchResult');
 });
 </script>
 
@@ -1611,12 +1625,12 @@ $(function () {
 </div>
 
 
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/materialize/materialize.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/masonry/masonry.pkgd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aos/aos.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/scrollprogress/scrollProgress.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/lightGallery/js/lightgallery-all.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/js/matery.js"></script>
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
 
     <!-- Baidu Analytics -->
 
@@ -1638,7 +1652,7 @@ $(function () {
 
     
     
-    <script async src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/others/busuanzi.pure.mini.js"></script>
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
     
 
     
@@ -1652,7 +1666,7 @@ $(function () {
     
 
     
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/instantpage/instantpage.js" type="module"></script>
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
     
 
 <script type="text/javascript"> //只在桌面版网页启用特效 

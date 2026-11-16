@@ -17,24 +17,23 @@
 
 
     <title>安全外壳协议-ssh | 风之声</title>
-    <link rel="icon" type="image/jpeg" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/favicon.jpg">
+    <link rel="icon" type="image/jpeg" href="/favicon.jpg">
 
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/awesome/css/all.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/materialize/materialize.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aos/aos.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/animate/animate.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/lightGallery/css/lightgallery.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/css/matery.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/css/my.css">
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <link rel="stylesheet" href="/vendor/katex/katex.min.css">
+    <link rel="stylesheet" href="/css/prism.css">
+    <link rel="stylesheet" href="/css/prism-line-numbers.css">
+    <link rel="stylesheet" href="/css/custom.css">
 
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/jquery/jquery.min.js"></script>
+    <script src="/libs/jquery/jquery.min.js"></script>
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"><link rel="stylesheet" href="/css/prism.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<meta name="generator" content="Hexo 8.1.2"></head>
 
 
 <body>
@@ -44,7 +43,7 @@
             <div class="brand-logo">
                 <a href="/" class="waves-effect waves-light">
                     
-                    <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/logo.png" class="logo-img" alt="LOGO">
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
                     
                     <span class="logo-span">风之声</span>
                 </a>
@@ -143,7 +142,7 @@
 
     <div class="mobile-head bg-color">
         
-        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/logo.png" class="logo-img circle responsive-img">
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
         
         <div class="logo-name">风之声</div>
         <div class="logo-desc">
@@ -310,10 +309,23 @@
 </header>
 
     
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/6.jpg')">
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/6.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -331,7 +343,7 @@
 <main class="post-container content">
 
     
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
 <style>
     #articleContent h1::before,
     #articleContent h2::before,
@@ -451,6 +463,14 @@
                                 技术学习
                             </a>
                         
+                            <a href="/categories/%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" class="post-category">
+                                论文阅读
+                            </a>
+                        
+                            <a href="/categories/%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/linux/" class="post-category">
+                                linux
+                            </a>
+                        
                     </div>
                     
                 </div>
@@ -496,8 +516,9 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h4 id="简介-from-wiki"><a href="#简介-from-wiki" class="headerlink" title="简介(from wiki)"></a>简介(from wiki)</h4><p>安全外壳协议(Secure Shell Protocol,简称ssh)是一种加密的网络传输协议，可在不安全的网络中为网络服务提供安全的传输环境。SSH通过在网络中创建安全隧道来实现SSH客户端与服务器之间的连接;SSH最常见的用途是远程登录系统，人们通常利用SSH来传输命令行界面和远程执行命令。<br><span id="more"></span></p>
-<h4 id="相关文件"><a href="#相关文件" class="headerlink" title="相关文件"></a>相关文件</h4><p>SSH服务会在系统的用户目录下生成一个<code>.ssh</code>文件夹，文件夹下一般会有如下文件: </p>
+                
+<h4 id="简介-from-wiki"><a href="#%E7%AE%80%E4%BB%8B-from-wiki" class="headerlink" title="简介(from wiki)"></a>简介(from wiki)</h4><p>安全外壳协议(Secure Shell Protocol,简称ssh)是一种加密的网络传输协议，可在不安全的网络中为网络服务提供安全的传输环境。SSH通过在网络中创建安全隧道来实现SSH客户端与服务器之间的连接;SSH最常见的用途是远程登录系统，人们通常利用SSH来传输命令行界面和远程执行命令。<br><span id="more"></span></p>
+<h4 id="相关文件"><a href="#%E7%9B%B8%E5%85%B3%E6%96%87%E4%BB%B6" class="headerlink" title="相关文件"></a>相关文件</h4><p>SSH服务会在系统的用户目录下生成一个<code>.ssh</code>文件夹，文件夹下一般会有如下文件: </p>
 <ul>
 <li><code>config</code>: 配置文件，可以为远程主机配置host、登录端口、默认登录用户等，方便用户使用； </li>
 <li><code>known_hosts</code>: 记录本机访问过的服务端所提供的host key，下次访问相同主机时会核对host key，如不匹配会发出警告； </li>
@@ -505,14 +526,14 @@
 <li><code>id_rsa.pub</code>: 保存本机的公钥 </li>
 <li><code>authorized_keys</code>: 本机作为服务端所保存的已授权客户端的公钥</li>
 </ul>
-<h4 id="非对称加密"><a href="#非对称加密" class="headerlink" title="非对称加密"></a>非对称加密</h4><p>SSH有密码登录和证书登录两种认证方式，都是以非对称加密实现身份验证。不同于对称加密的加密解密使用同一套密钥的方式，非对称加密拥有公钥和私钥两套密钥，其中 公钥负责加密，私钥负责解密 ，<strong>公钥加密后的密文只能通过对应的私钥进行解密，而通过公钥几乎不可能推算出私钥</strong>。另外提一下，数字签名一类是使用私钥编码、公钥解码的，但是这种方式只能称为编解码而不能称作加密解密，因为公钥是公开的，拥有公钥者都可以通过密文解码出明文，加密的意义就不存在。</p>
-<h4 id="密码登陆的验证过程"><a href="#密码登陆的验证过程" class="headerlink" title="密码登陆的验证过程"></a>密码登陆的验证过程</h4><ol>
+<h4 id="非对称加密"><a href="#%E9%9D%9E%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86" class="headerlink" title="非对称加密"></a>非对称加密</h4><p>SSH有密码登录和证书登录两种认证方式，都是以非对称加密实现身份验证。不同于对称加密的加密解密使用同一套密钥的方式，非对称加密拥有公钥和私钥两套密钥，其中 公钥负责加密，私钥负责解密 ，<strong>公钥加密后的密文只能通过对应的私钥进行解密，而通过公钥几乎不可能推算出私钥</strong>。另外提一下，数字签名一类是使用私钥编码、公钥解码的，但是这种方式只能称为编解码而不能称作加密解密，因为公钥是公开的，拥有公钥者都可以通过密文解码出明文，加密的意义就不存在。</p>
+<h4 id="密码登陆的验证过程"><a href="#%E5%AF%86%E7%A0%81%E7%99%BB%E9%99%86%E7%9A%84%E9%AA%8C%E8%AF%81%E8%BF%87%E7%A8%8B" class="headerlink" title="密码登陆的验证过程"></a>密码登陆的验证过程</h4><ol>
 <li>客户端向远程服务端发出登录请求，服务端把自己的公钥发给客户端；</li>
 <li>客户端本机使用服务端提供的公钥对密码进行加密，并把密文发送至服务端；</li>
 <li>服务端接收密文并使用私钥把密文解密出密码；</li>
 <li>服务端通过密码验证用户身份并返回登录结果；</li>
 </ol>
-<h4 id="证书登陆的验证过程"><a href="#证书登陆的验证过程" class="headerlink" title="证书登陆的验证过程"></a>证书登陆的验证过程</h4><ol>
+<h4 id="证书登陆的验证过程"><a href="#%E8%AF%81%E4%B9%A6%E7%99%BB%E9%99%86%E7%9A%84%E9%AA%8C%E8%AF%81%E8%BF%87%E7%A8%8B" class="headerlink" title="证书登陆的验证过程"></a>证书登陆的验证过程</h4><ol>
 <li>客户端事先生成本机的公钥和私钥，并把公钥追加到服务端主机的authorized_keys文件中；</li>
 <li>客户端发出登录请求，服务端在authorized_keys中匹配该客户端对应的公钥；</li>
 <li>服务端生成随机数，并使用客户端的公钥进行加密，然后把密文发送给客户端；</li>
@@ -521,6 +542,7 @@
 <li>服务端使用同样的算法生成另一份Digest；</li>
 <li>服务端对比生成的Digest和客户端发送过来的Digest，返回登录结果；</li>
 </ol>
+
 
             </div>
             <hr/>
@@ -592,12 +614,12 @@
                     
                 </div>
                 <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
-                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/share/css/share.min.css">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
 <div id="article-share">
 
     
     <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/share/js/social-share.min.js"></script>
+    <script src="/libs/share/js/social-share.min.js"></script>
     
 
     
@@ -715,10 +737,10 @@
                         <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
                     </ul>
                     <div id="alipay">
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/reward/ali.jpeg" class="reward-img" alt="支付宝打赏二维码">
+                        <img src="/medias/reward/ali.jpeg" class="reward-img" alt="支付宝打赏二维码">
                     </div>
                     <div id="wechat">
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/reward/wechat.jpeg" class="reward-img" alt="微信打赏二维码">
+                        <img src="/medias/reward/wechat.jpeg" class="reward-img" alt="微信打赏二维码">
                     </div>
                 </div>
             </div>
@@ -986,12 +1008,12 @@
         <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
         <span>评论</span>
     </div>
-    <div id="vcomments" class="card-content" style="display: grid">
+    <div id="vcomments" class="card-content" style="display: block">
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/valine/av-min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/valine/Valine.min.js"></script>
+<script src="/libs/valine/av-min.js"></script>
+<script src="/libs/valine/Valine.min.js"></script>
 <script>
     new Valine({
         el: '#vcomments',
@@ -1023,8 +1045,7 @@
                 <a href="/2022/10/28/domain-generalization/">
                     <div class="card-image">
                         
-                        
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/0.jpg" class="responsive-img" alt="Domain generalization">
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="Domain generalization">
                         
                         <span class="card-title">Domain generalization</span>
                     </div>
@@ -1032,7 +1053,7 @@
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            本篇文章是对文章Generalizing to Unseen Domains: A Survey onDomain Generalization的研读介绍，旨在对域泛化(domain generalization)领域研究现状有粗略了解，考
+                            本篇文章是对文章Generalizing to Unseen Domains: A Survey onDomain Generalization的研读介绍，旨在对域泛化(domain generalization)领域研究现状有粗略了解，考虑将该领域的一些研究思想迁移到故障检测/溯源/软测量等任务上
                         
                     </div>
                     <div class="publish-info">
@@ -1045,6 +1066,10 @@
                             
                             <a href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" class="post-category">
                                     论文阅读
+                                </a>
+                            
+                            <a href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/" class="post-category">
+                                    技术学习
                                 </a>
                             
                             
@@ -1072,8 +1097,7 @@
                 <a href="/2022/10/18/chang-yong-linux-ming-ling-zheng-li/">
                     <div class="card-image">
                         
-                        
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/3.png" class="responsive-img" alt="常用Linux命令整理">
+                        <img src="/medias/featureimages/3.png" class="responsive-img" alt="常用Linux命令整理">
                         
                         <span class="card-title">常用Linux命令整理</span>
                     </div>
@@ -1081,7 +1105,7 @@
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            在服务器上训练深度学习模型时不可避免地需要进行大量的命令行操作，熟练使用命令行已经成为了一项程序员必备的技能，本文对常用的linux命令进行整理，以加深印象和方便后续查询。
+                            在服务器上训练深度学习模型时不可避免地需要进行大量的命令行操作，熟练使用命令行已经成为了一项程序员必备的技能，本文对常用的linux命令进行整理，以加深印象和方便后续查询。 文件管理 cat: 用于连接文件并打印到标准输出设备上 使用权限: 所有使用者 语法格式: cat [-AbeEnstTuv]
                         
                     </div>
                     <div class="publish-info">
@@ -1094,6 +1118,14 @@
                             
                             <a href="/categories/linux/" class="post-category">
                                     linux
+                                </a>
+                            
+                            <a href="/categories/linux/%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/" class="post-category">
+                                    技术学习
+                                </a>
+                            
+                            <a href="/categories/linux/%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/" class="post-category">
+                                    环境配置
                                 </a>
                             
                             
@@ -1120,21 +1152,21 @@
 
 
 <!-- 代码块功能依赖 -->
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeBlockFuction.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
 
 <!-- 代码语言 -->
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeLang.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
 
 
 <!-- 代码块复制 -->
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeCopy.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
 
 
 <!-- 代码块收缩 -->
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeShrink.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
 
 
 <!-- 代码块折行 -->
@@ -1162,7 +1194,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
 </div>
 
 
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/tocbot/tocbot.min.js"></script>
+<script src="/libs/tocbot/tocbot.min.js"></script>
 <script>
     $(function () {
         tocbot.init({
@@ -1243,18 +1275,11 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
 </main>
 
 
-<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script>
-    MathJax.Hub.Config({
-        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
-    });
-</script>
-
 
 
     <footer class="page-footer bg-color">
     
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aplayer/APlayer.min.css">
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
 <style>
     .aplayer .aplayer-lrc p {
         
@@ -1304,7 +1329,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aplayer/APlayer.min.js"></script>
+<script src="/libs/aplayer/APlayer.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
 
     
@@ -1318,7 +1343,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">177k</span>&nbsp;字
+                class="white-color">202k</span>&nbsp;字
             
             
             
@@ -1387,10 +1412,10 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/js/search.js"></script>
+<script src="/js/search.js"></script>
 <script type="text/javascript">
 $(function () {
-    searchFunc("https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/search.xml", 'searchInput', 'searchResult');
+    searchFunc("/search.xml", 'searchInput', 'searchResult');
 });
 </script>
 
@@ -1402,12 +1427,12 @@ $(function () {
 </div>
 
 
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/materialize/materialize.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/masonry/masonry.pkgd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aos/aos.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/scrollprogress/scrollProgress.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/lightGallery/js/lightgallery-all.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/js/matery.js"></script>
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
 
     <!-- Baidu Analytics -->
 
@@ -1429,7 +1454,7 @@ $(function () {
 
     
     
-    <script async src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/others/busuanzi.pure.mini.js"></script>
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
     
 
     
@@ -1443,7 +1468,7 @@ $(function () {
     
 
     
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/instantpage/instantpage.js" type="module"></script>
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
     
 
 <script type="text/javascript"> //只在桌面版网页启用特效 

@@ -17,24 +17,23 @@
 
 
     <title>少有人走的路-读后感 | 风之声</title>
-    <link rel="icon" type="image/jpeg" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/favicon.jpg">
+    <link rel="icon" type="image/jpeg" href="/favicon.jpg">
 
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/awesome/css/all.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/materialize/materialize.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aos/aos.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/animate/animate.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/lightGallery/css/lightgallery.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/css/matery.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/css/my.css">
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <link rel="stylesheet" href="/vendor/katex/katex.min.css">
+    <link rel="stylesheet" href="/css/prism.css">
+    <link rel="stylesheet" href="/css/prism-line-numbers.css">
+    <link rel="stylesheet" href="/css/custom.css">
 
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/jquery/jquery.min.js"></script>
+    <script src="/libs/jquery/jquery.min.js"></script>
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"><link rel="stylesheet" href="/css/prism.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<meta name="generator" content="Hexo 8.1.2"></head>
 
 
 <body>
@@ -44,7 +43,7 @@
             <div class="brand-logo">
                 <a href="/" class="waves-effect waves-light">
                     
-                    <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/logo.png" class="logo-img" alt="LOGO">
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
                     
                     <span class="logo-span">风之声</span>
                 </a>
@@ -143,7 +142,7 @@
 
     <div class="mobile-head bg-color">
         
-        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/logo.png" class="logo-img circle responsive-img">
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
         
         <div class="logo-name">风之声</div>
         <div class="logo-desc">
@@ -310,10 +309,23 @@
 </header>
 
     
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/0.jpg')">
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/0.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -331,7 +343,7 @@
 <main class="post-container content">
 
     
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
 <style>
     #articleContent h1::before,
     #articleContent h2::before,
@@ -451,6 +463,10 @@
                                 灵魂雕琢
                             </a>
                         
+                            <a href="/categories/%E7%81%B5%E9%AD%82%E9%9B%95%E7%90%A2/%E7%82%B9%E6%BB%B4%E7%94%9F%E6%B4%BB/" class="post-category">
+                                点滴生活
+                            </a>
+                        
                     </div>
                     
                 </div>
@@ -496,52 +512,57 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>自己前一段时间收了几本旧书，偶然注意到了其中一本名叫《少有人走的路-心智成熟的旅程》的书，刚好那时《中国哲学简史》刚刚读完，我便开始着手读这本书。刚开始其实我是抱着读鸡汤文的想法读一读的，但在读的过程中发现从心理学的角度来看待心智成熟也是蛮有意思的一件事。<br>跳出此书，单纯从“心智成熟”这四个字出发，其实我更觉得这是一个属于哲学范畴的命题，所谓“心智成熟”，在我看来主要体现于以下几个方面<span id="more"></span>: </p>
+                <p>自己前一段时间收了几本旧书，偶然注意到了其中一本名叫《少有人走的路-心智成熟的旅程》的书，刚好那时《中国哲学简史》刚刚读完，我便开始着手读这本书。刚开始其实我是抱着读鸡汤文的想法读一读的，但在读的过程中发现从心理学的角度来看待心智成熟也是蛮有意思的一件事。<br>
+跳出此书，单纯从“心智成熟”这四个字出发，其实我更觉得这是一个属于哲学范畴的命题，所谓“心智成熟”，在我看来主要体现于以下几个方面<span id="more"></span>:</p>
 <ul>
-<li>明确个体在世界中的位置，在一个庞大的坐标系中找到自己所处的位置。 </li>
-<li>不断地反思是与非的界限，并清晰地认识到自己认知的局限。 </li>
-<li>敢于面对想法与现实之间的gap并可以为消除gap不断努力。 </li>
+<li>明确个体在世界中的位置，在一个庞大的坐标系中找到自己所处的位置。</li>
+<li>不断地反思是与非的界限，并清晰地认识到自己认知的局限。</li>
+<li>敢于面对想法与现实之间的gap并可以为消除gap不断努力。</li>
 </ul>
-<p>其实这三个方面其实就是讨论了人与世界、事物(事件)、自身的关系，这三个方面其实只是一个大框架，针对具体的个人答案可能会全然不同，但是如果是一个认真反省过这三件事的人，那么想必他/她的生活中会少一些迷茫，多一些坚定。<br>本文后面内容就按照原书的四个章节划分进行组织。 </p>
-<h4 id="第一部分-自律"><a href="#第一部分-自律" class="headerlink" title="第一部分 自律"></a>第一部分 自律</h4><blockquote>
+<p>其实这三个方面其实就是讨论了人与世界、事物(事件)、自身的关系，这三个方面其实只是一个大框架，针对具体的个人答案可能会全然不同，但是如果是一个认真反省过这三件事的人，那么想必他/她的生活中会少一些迷茫，多一些坚定。<br>
+本文后面内容就按照原书的四个章节划分进行组织。</p>
+<h4 id="第一部分-自律">第一部分 自律</h4>
+<blockquote>
 <p>自律是解决人生问题最主要的工具，也是消除人生痛苦最重要的方法。</p>
 </blockquote>
-<p>人生苦难重重，而也正是因为这些苦难，我们才能够不断成长，但苦难可以让一个人成长，也可以让一个人毁灭，其根源区别就在于<strong>个人是否自律</strong>，何为自律? </p>
+<p>人生苦难重重，而也正是因为这些苦难，我们才能够不断成长，但苦难可以让一个人成长，也可以让一个人毁灭，其根源区别就在于<strong>个人是否自律</strong>，何为自律?</p>
 <blockquote>
-<p>自律就是主动要求自己以积极的态度去承受痛苦，解决问题。 </p>
+<p>自律就是主动要求自己以积极的态度去承受痛苦，解决问题。</p>
 </blockquote>
-<p>在作者看来，自律有四个原则: </p>
+<p>在作者看来，自律有四个原则:</p>
 <ul>
 <li>推迟满足感</li>
-<li>承担责任 </li>
-<li>忠于事实 </li>
-<li>保持平衡 </li>
+<li>承担责任</li>
+<li>忠于事实</li>
+<li>保持平衡</li>
 </ul>
-<p>这四个道理其实很简单，然而这却会与人的本性相违背，因此个体总会或多或少落入四个原则的对立面，这就要求我们在日常生活中不断自省，及时修正自己的想法和行为。<br>关于承担责任，对应于心理学领域的两种疾病: </p>
+<p>这四个道理其实很简单，然而这却会与人的本性相违背，因此个体总会或多或少落入四个原则的对立面，这就要求我们在日常生活中不断自省，及时修正自己的想法和行为。<br>
+关于承担责任，对应于心理学领域的两种疾病:</p>
 <ul>
-<li>神经官能症: 患者总是为自己强加责任，导致个体焦虑。 </li>
-<li>人格失调症: 患者总是不愿承担原本属于自己的责任，总认为错在他人。 </li>
+<li>神经官能症: 患者总是为自己强加责任，导致个体焦虑。</li>
+<li>人格失调症: 患者总是不愿承担原本属于自己的责任，总认为错在他人。</li>
 </ul>
 <blockquote>
 <p>作为成年人，我们一生都充满选择和决定的机会，接受这一事实，就会变成自由的人；无法接受这种事实，就会永远觉得自己是牺牲品。</p>
 </blockquote>
-<p>忠于事实，意味着我们要用一生的时间不间断地进行自我反省，意味着我们要敢于接受外界的质疑与挑战。对于自律其是，总结来说: </p>
+<p>忠于事实，意味着我们要用一生的时间不间断地进行自我反省，意味着我们要敢于接受外界的质疑与挑战。对于自律其是，总结来说:</p>
 <blockquote>
 <p>自律是一项艰苦而复杂的任务，需要足够的勇气和判断力。你要以追求诚实为己任，也需要隐瞒部分事实和真相。你既要承担责任，也要拒绝不该承担的责任。你既要学会推迟满足感，先苦后甜，把眼光放远，同时又要尽可能过好当前的生活，让人生的快乐多于痛苦，这就要求我们拥有保持平衡的艺术。</p>
 </blockquote>
-<p>在本章的最后，作者谈论了“放弃与新生”，有点佛教理论的味道了，死亡与新生正如一枚硬币的正反面，两者所带来的痛苦并无不同: </p>
+<p>在本章的最后，作者谈论了“放弃与新生”，有点佛教理论的味道了，死亡与新生正如一枚硬币的正反面，两者所带来的痛苦并无不同:</p>
 <blockquote>
-<p>如同死亡，新的诞生也带给我们痛苦。 </p>
+<p>如同死亡，新的诞生也带给我们痛苦。</p>
 </blockquote>
-<h4 id="第二部分-爱"><a href="#第二部分-爱" class="headerlink" title="第二部分-爱"></a>第二部分-爱</h4><blockquote>
-<p>爱，是为了促进自己和他人心智成熟，而不断拓展自我界限，实现自我完善的一种意愿。      </p>
+<h4 id="第二部分-爱">第二部分-爱</h4>
+<blockquote>
+<p>爱，是为了促进自己和他人心智成熟，而不断拓展自我界限，实现自我完善的一种意愿。</p>
 </blockquote>
 <p>在谈论完自律之后，作者分析了自律背后的深层次原因-爱，这一部分内容则主要来自于作者的主观总结，在作者看来，真正的“爱”具有以下几点特征：</p>
 <ul>
-<li>爱与非爱最显著的区别之一，就在于当事人意识和潜意识中的目标是否一致，如果不一致，就不是真正的爱。(ps. 潜意识中的目标似乎很难确定) </li>
-<li>爱是一个长期、渐进的过程。 </li>
-<li>真正意义上的爱，既是爱自己，也是爱他人。 </li>
-<li>爱是一种意愿，需要付出努力。 </li>
+<li>爱与非爱最显著的区别之一，就在于当事人意识和潜意识中的目标是否一致，如果不一致，就不是真正的爱。(ps. 潜意识中的目标似乎很难确定)</li>
+<li>爱是一个长期、渐进的过程。</li>
+<li>真正意义上的爱，既是爱自己，也是爱他人。</li>
+<li>爱是一种意愿，需要付出努力。</li>
 </ul>
 <p>就具体表现而言，“爱”的结果是导致自我界限的扩展还是自我界限的崩溃是区分成熟的爱与原始冲动的重要指标。</p>
 <blockquote>
@@ -549,75 +570,94 @@
 </blockquote>
 <p>简单的“坠入情网”并非是爱，“依赖性”也并不是爱(消极性依赖人格失调症)，“一味的给予，纯粹的自我牺牲”也并不是爱。</p>
 <blockquote>
-<p>真正的爱不是忘乎所以，而是深思熟虑，是奉献全部身心的重大决定。  </p>
+<p>真正的爱不是忘乎所以，而是深思熟虑，是奉献全部身心的重大决定。</p>
 </blockquote>
 <p>当“爱”落实到具体的小事之时，则需要一些技巧：</p>
 <ul>
-<li>学会聆听他人。 </li>
+<li>学会聆听他人。</li>
 <li>在指导他人之时，既要尊重对方的独立性，又要给出有价值的指导。</li>
 </ul>
 <blockquote>
 <p>真正以爱为出发点的人，总是致力于自我完善，让自己具备起码的道德与智慧，然后才会行使批评权。</p>
 </blockquote>
-<p>与之相对的是自恋的人: </p>
+<p>与之相对的是自恋的人:</p>
 <blockquote>
-<p>自恋的人无视别人的存在，只把别人当成自我的延伸(缺乏共情心)。 </p>
+<p>自恋的人无视别人的存在，只把别人当成自我的延伸(缺乏共情心)。</p>
 </blockquote>
-<p>婚姻可以看作是“爱”的契约: </p>
+<p>婚姻可以看作是“爱”的契约:</p>
 <blockquote>
 <p>理想婚姻的基本目标，是让双方同时得到滋养，推动两颗心灵的共同成长。</p>
 </blockquote>
 <p>纪伯伦在《论婚姻》中这样谈到:</p>
 <blockquote>
-<p>你们一块出生<br>也将永远相依<br>当死神的白色羽翼驱散你们的日子，你们也应在一起<br>的确，你们始终相守，即使在上帝的记忆中</p>
-<p>但在聚守中你们要保留空间<br>让来自天堂的风在你们的空隙之间舞动 </p>
-<p>彼此相爱，但不要让爱成为束缚<br>让爱成为奔流于你们灵魂海岸间的海洋<br>盛满彼此的杯盏，但不要只从一只杯盏中取饮<br>彼此互赠面包，但不要只向一块面包取食 </p>
-<p>一起欢歌曼舞<br>但要保持各自的独立<br>鲁特琴的琴弦也彼此分开<br>即使它们为同一首乐曲震颤 </p>
-<p>一定要把心扉向对方敞开<br>但并不是交给对方来保管<br>因为唯有生命之手才能接纳你们的心 </p>
-<p>站在一起，但不要靠的太近<br>因为殿宇的支柱总是彼此分立的<br>橡树和松柏也不在彼此的阴影下生长 </p>
+<p>你们一块出生<br>
+也将永远相依<br>
+当死神的白色羽翼驱散你们的日子，你们也应在一起<br>
+的确，你们始终相守，即使在上帝的记忆中</p>
+<p>但在聚守中你们要保留空间<br>
+让来自天堂的风在你们的空隙之间舞动</p>
+<p>彼此相爱，但不要让爱成为束缚<br>
+让爱成为奔流于你们灵魂海岸间的海洋<br>
+盛满彼此的杯盏，但不要只从一只杯盏中取饮<br>
+彼此互赠面包，但不要只向一块面包取食</p>
+<p>一起欢歌曼舞<br>
+但要保持各自的独立<br>
+鲁特琴的琴弦也彼此分开<br>
+即使它们为同一首乐曲震颤</p>
+<p>一定要把心扉向对方敞开<br>
+但并不是交给对方来保管<br>
+因为唯有生命之手才能接纳你们的心</p>
+<p>站在一起，但不要靠的太近<br>
+因为殿宇的支柱总是彼此分立的<br>
+橡树和松柏也不在彼此的阴影下生长</p>
 </blockquote>
-<h4 id="第三部分-成长与信仰"><a href="#第三部分-成长与信仰" class="headerlink" title="第三部分-成长与信仰"></a>第三部分-成长与信仰</h4><blockquote>
+<h4 id="第三部分-成长与信仰">第三部分-成长与信仰</h4>
+<blockquote>
 <p>人人都有自己的信仰，对人生的认识和了解就属于信仰的范畴。</p>
 </blockquote>
-<p>首先来谈一下什么是世界观: </p>
+<p>首先来谈一下什么是世界观:</p>
 <blockquote>
 <p>世界观其实就是一个人所感受到的世界的模样(规律和本质)。</p>
 </blockquote>
-<p>在作者看来，我们对于一种信仰并不应当是深信不疑，而是： </p>
+<p>在作者看来，我们对于一种信仰并不应当是深信不疑，而是：</p>
 <blockquote>
-<p>我们应当过去的信仰提出疑问，主动探索陌生领域，挑战某些久被视为真理的结论。只有怀疑和挑战，才能使我们走上神圣的自由之路。 </p>
+<p>我们应当过去的信仰提出疑问，主动探索陌生领域，挑战某些久被视为真理的结论。只有怀疑和挑战，才能使我们走上神圣的自由之路。</p>
 </blockquote>
-<p>我们生活中很多的知识都是二手的资料，像自然科学的各种定理，但我们可以在日常中进行验证，因此这些知识尽管“二手”，但仍“充满活力”。 </p>
+<p>我们生活中很多的知识都是二手的资料，像自然科学的各种定理，但我们可以在日常中进行验证，因此这些知识尽管“二手”，但仍“充满活力”。</p>
 <blockquote>
-<p>但是，有关人类生存的意义、目的与死亡的问题，一切二手材料我都无法接受。 </p>
+<p>但是，有关人类生存的意义、目的与死亡的问题，一切二手材料我都无法接受。</p>
 </blockquote>
-<p>或许，在我看: </p>
+<p>或许，在我看:</p>
 <blockquote>
 <p><strong>敢于摆脱既往的经验，敢于迎接未知的挑战，敢于质疑所谓的权威，这本身也是一种信仰，一种更具神性的信仰。</strong></p>
 </blockquote>
-<p>最后谈一下宗教,许多心理学家往往视宗教为心理成熟的重大障碍： </p>
+<p>最后谈一下宗教,许多心理学家往往视宗教为心理成熟的重大障碍：</p>
 <blockquote>
-<p>宗教本身就是一种神经官能症——一种禁锢心灵的非理性观念。 </p>
+<p>宗教本身就是一种神经官能症——一种禁锢心灵的非理性观念。</p>
 </blockquote>
-<p>就我个人对宗教浅薄的理解来说: </p>
+<p>就我个人对宗教浅薄的理解来说:</p>
 <blockquote>
 <p>宗教既可以是毒药，也可以是解药，它的效用取决于作用于什么样的人身上。</p>
 </blockquote>
-<h4 id="第四部分-恩典"><a href="#第四部分-恩典" class="headerlink" title="第四部分-恩典"></a>第四部分-恩典</h4><blockquote>
-<p>我们之所以具备爱的能力和成长的意愿，不仅取决于童年时父母爱的滋养，也取决于我们一生中对恩典的接纳。 </p>
+<h4 id="第四部分-恩典">第四部分-恩典</h4>
+<blockquote>
+<p>我们之所以具备爱的能力和成长的意愿，不仅取决于童年时父母爱的滋养，也取决于我们一生中对恩典的接纳。</p>
 </blockquote>
-<p>这个世界每天都会发生一些我们无法解释的事件，纯粹的数理学派可以将它们简单归类于“小概率时间”，而斯科特$\cdot$派克则就这些事件从心理学角度展开了思考，将它们看作是<strong>恩典</strong>。</p>
-<p>作者主要从梦境、潜意识出发来试图对这些<strong>恩典</strong>进行说明，荣格的“集体潜意识”理论暗示，我们的智慧来自于对全人类智慧的继承。<br>画<br>下面给出恩典的定义: </p>
+<p>这个世界每天都会发生一些我们无法解释的事件，纯粹的数理学派可以将它们简单归类于“小概率时间”，而斯科特<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⋅</mo></mrow><annotation encoding="application/x-tex">\cdot</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4445em;"></span><span class="mord">⋅</span></span></span></span>派克则就这些事件从心理学角度展开了思考，将它们看作是<strong>恩典</strong>。</p>
+<p>作者主要从梦境、潜意识出发来试图对这些<strong>恩典</strong>进行说明，荣格的“集体潜意识”理论暗示，我们的智慧来自于对全人类智慧的继承。<br>
+画<br>
+下面给出恩典的定义:</p>
 <blockquote>
 <ul>
 <li>它们具有滋养生命、促进心智成熟的作用。</li>
-<li>它们的具体作用机制仍然无法用科学解释。 </li>
+<li>它们的具体作用机制仍然无法用科学解释。</li>
 <li>它们是人类世界中的普遍现象，在不同的人身上均会反复发生。</li>
 <li>尽管它们可能或多或少受意识影响，但它们的根源位于意识和主观思维之外。</li>
 </ul>
 </blockquote>
 <p>然后作者还从熵的角度来进行理解，熵会让一个物体走向无序，走向发散，但人类的进化以及心智的成熟其实是逆熵增的，这从某个角度来说也可以说是<strong>恩典</strong>。</p>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>斯科特$\cdot$派克本人是一名出色的心理医生，因此斯科特在叙述一套理论时，往往都会附上一些具体的心理学案例加以辅助说明，这使得本书没有落入过分理论的窠臼之中。然后从内容角度来说，因为我们都是“人”的具体化，因此对于书中总结的一些规律，我们往往会有感同深受之感，若是一个心智成熟的人阅读这本书，那么可能更多的是为自己的行为找到了一些理论支撑，同时也可以以一套更加成熟的框架(成熟的语言体系)来分析其他人的行为。本书分为四部分——自律、爱、成长与信仰、恩典，就我看来，第一、三部分是较为可信的，而二、四部分属于见仁见智的部分，毕竟有点“形上学”了，这也是渴望将具体问题纳入一个更加宏大的框架来进行描述必然面临的问题，也不失为斯科特$\cdot$派克作为心理学家的一种尝试吧。 </p>
+<h4 id="总结">总结</h4>
+<p>斯科特<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⋅</mo></mrow><annotation encoding="application/x-tex">\cdot</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4445em;"></span><span class="mord">⋅</span></span></span></span>派克本人是一名出色的心理医生，因此斯科特在叙述一套理论时，往往都会附上一些具体的心理学案例加以辅助说明，这使得本书没有落入过分理论的窠臼之中。然后从内容角度来说，因为我们都是“人”的具体化，因此对于书中总结的一些规律，我们往往会有感同深受之感，若是一个心智成熟的人阅读这本书，那么可能更多的是为自己的行为找到了一些理论支撑，同时也可以以一套更加成熟的框架(成熟的语言体系)来分析其他人的行为。本书分为四部分——自律、爱、成长与信仰、恩典，就我看来，第一、三部分是较为可信的，而二、四部分属于见仁见智的部分，毕竟有点“形上学”了，这也是渴望将具体问题纳入一个更加宏大的框架来进行描述必然面临的问题，也不失为斯科特<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⋅</mo></mrow><annotation encoding="application/x-tex">\cdot</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4445em;"></span><span class="mord">⋅</span></span></span></span>派克作为心理学家的一种尝试吧。</p>
 
             </div>
             <hr/>
@@ -689,12 +729,12 @@
                     
                 </div>
                 <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
-                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/share/css/share.min.css">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
 <div id="article-share">
 
     
     <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/share/js/social-share.min.js"></script>
+    <script src="/libs/share/js/social-share.min.js"></script>
     
 
     
@@ -812,10 +852,10 @@
                         <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
                     </ul>
                     <div id="alipay">
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/reward/ali.jpeg" class="reward-img" alt="支付宝打赏二维码">
+                        <img src="/medias/reward/ali.jpeg" class="reward-img" alt="支付宝打赏二维码">
                     </div>
                     <div id="wechat">
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/reward/wechat.jpeg" class="reward-img" alt="微信打赏二维码">
+                        <img src="/medias/reward/wechat.jpeg" class="reward-img" alt="微信打赏二维码">
                     </div>
                 </div>
             </div>
@@ -1083,12 +1123,12 @@
         <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
         <span>评论</span>
     </div>
-    <div id="vcomments" class="card-content" style="display: grid">
+    <div id="vcomments" class="card-content" style="display: block">
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/valine/av-min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/valine/Valine.min.js"></script>
+<script src="/libs/valine/av-min.js"></script>
+<script src="/libs/valine/Valine.min.js"></script>
 <script>
     new Valine({
         el: '#vcomments',
@@ -1120,8 +1160,7 @@
                 <a href="/2021/02/19/xing-kong-she-ying-yu-yan-shi-shi-pin/">
                     <div class="card-image">
                         
-                        
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/1.png" class="responsive-img" alt="星轨拍摄与延时视频">
+                        <img src="/medias/featureimages/1.png" class="responsive-img" alt="星轨拍摄与延时视频">
                         
                         <span class="card-title">星轨拍摄与延时视频</span>
                     </div>
@@ -1129,7 +1168,7 @@
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            在上学期马上要结束时，我动了换相机的邪念，这邪念最终导致我的钱包缩水，我的相机也由尼康家的D3500换成了佳能家Eosrp。鉴于我以前假期在家都是高强度娱乐，带回去的书往往就呆在行李箱睡大觉，这次我便将新购的相机和三脚架一并带回了家，万一自
+                            关于星轨拍摄、延时摄影和影像记录的方法与实践。
                         
                     </div>
                     <div class="publish-info">
@@ -1142,6 +1181,10 @@
                             
                             <a href="/categories/%E7%82%B9%E6%BB%B4%E7%94%9F%E6%B4%BB/" class="post-category">
                                     点滴生活
+                                </a>
+                            
+                            <a href="/categories/%E7%82%B9%E6%BB%B4%E7%94%9F%E6%B4%BB/%E7%81%B5%E9%AD%82%E9%9B%95%E7%90%A2/" class="post-category">
+                                    灵魂雕琢
                                 </a>
                             
                             
@@ -1169,8 +1212,7 @@
                 <a href="/2020/12/14/chun-cui-li-xing-pi-pan/">
                     <div class="card-image">
                         
-                        
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/6.jpg" class="responsive-img" alt="纯粹理性批判">
+                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="纯粹理性批判">
                         
                         <span class="card-title">纯粹理性批判</span>
                     </div>
@@ -1191,6 +1233,10 @@
                             
                             <a href="/categories/%E7%81%B5%E9%AD%82%E9%9B%95%E7%90%A2/" class="post-category">
                                     灵魂雕琢
+                                </a>
+                            
+                            <a href="/categories/%E7%81%B5%E9%AD%82%E9%9B%95%E7%90%A2/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    读书笔记
                                 </a>
                             
                             
@@ -1217,21 +1263,21 @@
 
 
 <!-- 代码块功能依赖 -->
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeBlockFuction.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
 
 <!-- 代码语言 -->
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeLang.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
 
 
 <!-- 代码块复制 -->
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeCopy.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
 
 
 <!-- 代码块收缩 -->
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeShrink.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
 
 
 <!-- 代码块折行 -->
@@ -1259,7 +1305,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
 </div>
 
 
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/tocbot/tocbot.min.js"></script>
+<script src="/libs/tocbot/tocbot.min.js"></script>
 <script>
     $(function () {
         tocbot.init({
@@ -1340,18 +1386,11 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
 </main>
 
 
-<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script>
-    MathJax.Hub.Config({
-        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
-    });
-</script>
-
 
 
     <footer class="page-footer bg-color">
     
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aplayer/APlayer.min.css">
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
 <style>
     .aplayer .aplayer-lrc p {
         
@@ -1401,7 +1440,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aplayer/APlayer.min.js"></script>
+<script src="/libs/aplayer/APlayer.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
 
     
@@ -1415,7 +1454,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">177k</span>&nbsp;字
+                class="white-color">202k</span>&nbsp;字
             
             
             
@@ -1484,10 +1523,10 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/js/search.js"></script>
+<script src="/js/search.js"></script>
 <script type="text/javascript">
 $(function () {
-    searchFunc("https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/search.xml", 'searchInput', 'searchResult');
+    searchFunc("/search.xml", 'searchInput', 'searchResult');
 });
 </script>
 
@@ -1499,12 +1538,12 @@ $(function () {
 </div>
 
 
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/materialize/materialize.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/masonry/masonry.pkgd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aos/aos.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/scrollprogress/scrollProgress.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/lightGallery/js/lightgallery-all.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/js/matery.js"></script>
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
 
     <!-- Baidu Analytics -->
 
@@ -1526,7 +1565,7 @@ $(function () {
 
     
     
-    <script async src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/others/busuanzi.pure.mini.js"></script>
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
     
 
     
@@ -1540,7 +1579,7 @@ $(function () {
     
 
     
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/instantpage/instantpage.js" type="module"></script>
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
     
 
 <script type="text/javascript"> //只在桌面版网页启用特效 

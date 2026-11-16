@@ -17,24 +17,23 @@
 
 
     <title>致时光 | 风之声</title>
-    <link rel="icon" type="image/jpeg" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/favicon.jpg">
+    <link rel="icon" type="image/jpeg" href="/favicon.jpg">
 
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/awesome/css/all.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/materialize/materialize.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aos/aos.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/animate/animate.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/lightGallery/css/lightgallery.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/css/matery.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/css/my.css">
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <link rel="stylesheet" href="/vendor/katex/katex.min.css">
+    <link rel="stylesheet" href="/css/prism.css">
+    <link rel="stylesheet" href="/css/prism-line-numbers.css">
+    <link rel="stylesheet" href="/css/custom.css">
 
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/jquery/jquery.min.js"></script>
+    <script src="/libs/jquery/jquery.min.js"></script>
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"><link rel="stylesheet" href="/css/prism.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<meta name="generator" content="Hexo 8.1.2"></head>
 
 
 <body>
@@ -44,7 +43,7 @@
             <div class="brand-logo">
                 <a href="/" class="waves-effect waves-light">
                     
-                    <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/logo.png" class="logo-img" alt="LOGO">
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
                     
                     <span class="logo-span">风之声</span>
                 </a>
@@ -143,7 +142,7 @@
 
     <div class="mobile-head bg-color">
         
-        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/logo.png" class="logo-img circle responsive-img">
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
         
         <div class="logo-name">风之声</div>
         <div class="logo-desc">
@@ -310,10 +309,23 @@
 </header>
 
     
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/7.jpg')">
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/7.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -331,7 +343,7 @@
 <main class="post-container content">
 
     
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
 <style>
     #articleContent h1::before,
     #articleContent h2::before,
@@ -451,6 +463,10 @@
                                 闲谈
                             </a>
                         
+                            <a href="/categories/%E9%97%B2%E8%B0%88/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/" class="post-category">
+                                统计学习
+                            </a>
+                        
                     </div>
                     
                 </div>
@@ -496,18 +512,23 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>我很久之前就想写这一篇文章了，但或是感触未深，或是时光未老，迟迟不知如何落笔。<br>今天是2020年9月25月，我的人生的第24个年头已经悄然逝去过半；上个月我姐生下了小宝宝安宁，我也正式升格为舅舅；明天我大哥也就要结婚了，我们这一辈已经开始慢慢化身我儿时父辈的角色。时光的巨轮已然于我之身滚动两旬，新旧两代交替的音符已然在空中交响。<br><span id="more"></span><br>如果让我为自己的人生划分章节，我倾向于将自己的人生划为四个章节。</p>
+                <p>我很久之前就想写这一篇文章了，但或是感触未深，或是时光未老，迟迟不知如何落笔。<br>
+今天是2020年9月25月，我的人生的第24个年头已经悄然逝去过半；上个月我姐生下了小宝宝安宁，我也正式升格为舅舅；明天我大哥也就要结婚了，我们这一辈已经开始慢慢化身我儿时父辈的角色。时光的巨轮已然于我之身滚动两旬，新旧两代交替的音符已然在空中交响。</p>
+<span id="more"></span>
+<p>如果让我为自己的人生划分章节，我倾向于将自己的人生划为四个章节。</p>
 <ul>
-<li>初识人间，懵懵懂懂 </li>
-<li>渐知人事，似懂非懂 </li>
-<li>洞察人事，知己知人 </li>
+<li>初识人间，懵懵懂懂</li>
+<li>渐知人事，似懂非懂</li>
+<li>洞察人事，知己知人</li>
 </ul>
 <p>下面我就按照我自己划分的人生章节来对我24年的人生进行一个阶段性总结。</p>
-<h3 id="初识人间，懵懵懂懂"><a href="#初识人间，懵懵懂懂" class="headerlink" title="初识人间，懵懵懂懂"></a>初识人间，懵懵懂懂</h3><p>1997年1月30日，伴随着一声啼哭，我来到了这个人世间，掀开了我的人生篇章。那时的我，并没有太多的想法与感情，驱动我的只有最基本的感觉，比如饥饿感，不适感，满足感等等，我觉得舒服了就开心地笑笑，我觉得不舒服了就在那里哭。我并不清楚我诞生在了一个什么样的地方，我的父亲、母亲究竟是什么样的人，也并不了解周围大人的欢喜与忧愁。</p>
+<h3 id="初识人间，懵懵懂懂">初识人间，懵懵懂懂</h3>
+<p>1997年1月30日，伴随着一声啼哭，我来到了这个人世间，掀开了我的人生篇章。那时的我，并没有太多的想法与感情，驱动我的只有最基本的感觉，比如饥饿感，不适感，满足感等等，我觉得舒服了就开心地笑笑，我觉得不舒服了就在那里哭。我并不清楚我诞生在了一个什么样的地方，我的父亲、母亲究竟是什么样的人，也并不了解周围大人的欢喜与忧愁。</p>
 <p>诞生之初，我的脑中并没有任何的行为准则，在周围亲人的引导下，我渐渐学会了喊“爸爸”和“妈妈”等一系列亲人的称谓，了解了当我有需求的时候可以向哪些人求助，整体而言，我的行为是缺乏约束的，我的欢喜与忧愁并不受周围环境影响，我的言语也并不受周围人影响，所谓童言无忌。</p>
 <p>如果要对人生的这一阶段做一个比喻，我觉得孩子诞生之初就是一张白纸，然后父母开始帮忙在这张纸上写写画画，教我尊重长辈，教我约束行为，以他们的语言和经历向我描述他们眼中的世界。这一阶段我的记忆是模糊的，没有特别好的记忆，也没有特别差的记忆，依我看来，这一段人生时光是不易留下记忆的，但若留下记忆便可能会影响孩子的一生，毕竟人生的构建是自下而上。</p>
 <p>我曾经思考过这样一个问题，如果将所有知识、习俗对一个孩子进行隔绝，那么这个孩子会是什么模样？ 我思考的答案是这个孩子将会成为一个原始人，与整个人类社会格格不入。每念及此，我常心怀感激之情，感激这几千年的文化知识传承，让我出生便站在了一个古人难以企及的起点上；感激父母赐予我生命，让我能够来此世间一游，写下属于我的故事。</p>
-<h3 id="渐知人事，似懂非懂"><a href="#渐知人事，似懂非懂" class="headerlink" title="渐知人事，似懂非懂"></a>渐知人事，似懂非懂</h3><p>随着年龄的增长，我也开始陆陆续续见识到种种事物。</p>
+<h3 id="渐知人事，似懂非懂">渐知人事，似懂非懂</h3>
+<p>随着年龄的增长，我也开始陆陆续续见识到种种事物。</p>
 
             </div>
             <hr/>
@@ -579,12 +600,12 @@
                     
                 </div>
                 <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
-                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/share/css/share.min.css">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
 <div id="article-share">
 
     
     <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/share/js/social-share.min.js"></script>
+    <script src="/libs/share/js/social-share.min.js"></script>
     
 
     
@@ -702,10 +723,10 @@
                         <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
                     </ul>
                     <div id="alipay">
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/reward/ali.jpeg" class="reward-img" alt="支付宝打赏二维码">
+                        <img src="/medias/reward/ali.jpeg" class="reward-img" alt="支付宝打赏二维码">
                     </div>
                     <div id="wechat">
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/reward/wechat.jpeg" class="reward-img" alt="微信打赏二维码">
+                        <img src="/medias/reward/wechat.jpeg" class="reward-img" alt="微信打赏二维码">
                     </div>
                 </div>
             </div>
@@ -973,12 +994,12 @@
         <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
         <span>评论</span>
     </div>
-    <div id="vcomments" class="card-content" style="display: grid">
+    <div id="vcomments" class="card-content" style="display: block">
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/valine/av-min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/valine/Valine.min.js"></script>
+<script src="/libs/valine/av-min.js"></script>
+<script src="/libs/valine/Valine.min.js"></script>
 <script>
     new Valine({
         el: '#vcomments',
@@ -1010,8 +1031,7 @@
                 <a href="/2020/10/05/svm-bu-chong/">
                     <div class="card-image">
                         
-                        
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/2.jpg" class="responsive-img" alt="SVM补充">
+                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="SVM补充">
                         
                         <span class="card-title">SVM补充</span>
                     </div>
@@ -1021,10 +1041,10 @@
                         
                             之前章节关于支持向量机的介绍已经比较详细了，最近发现有一些部分细节理解差一些意思，同时少了一部分内容，今天就在这里补充下，该部分章节按照以下结构组织:
 
-优化问题等价 
-从硬间隔svm到软间隔svm 
-svm应用于多分类问题 
-支持向量回归
+优化问题等价
+从硬间隔svm到软间隔svm
+svm应用于多分类问题
+支持向量回归svr
                         
                     </div>
                     <div class="publish-info">
@@ -1037,6 +1057,10 @@ svm应用于多分类问题
                             
                             <a href="/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/" class="post-category">
                                     统计学习
+                                </a>
+                            
+                            <a href="/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/%E9%97%B2%E8%B0%88/" class="post-category">
+                                    闲谈
                                 </a>
                             
                             
@@ -1064,8 +1088,7 @@ svm应用于多分类问题
                 <a href="/2020/09/21/ju-lei-suan-fa/">
                     <div class="card-image">
                         
-                        
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/7.jpg" class="responsive-img" alt="聚类算法">
+                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="聚类算法">
                         
                         <span class="card-title">聚类算法</span>
                     </div>
@@ -1086,6 +1109,10 @@ svm应用于多分类问题
                             
                             <a href="/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/" class="post-category">
                                     统计学习
+                                </a>
+                            
+                            <a href="/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/%E9%97%B2%E8%B0%88/" class="post-category">
+                                    闲谈
                                 </a>
                             
                             
@@ -1112,21 +1139,21 @@ svm应用于多分类问题
 
 
 <!-- 代码块功能依赖 -->
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeBlockFuction.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
 
 <!-- 代码语言 -->
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeLang.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
 
 
 <!-- 代码块复制 -->
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeCopy.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
 
 
 <!-- 代码块收缩 -->
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeShrink.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
 
 
 <!-- 代码块折行 -->
@@ -1154,7 +1181,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
 </div>
 
 
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/tocbot/tocbot.min.js"></script>
+<script src="/libs/tocbot/tocbot.min.js"></script>
 <script>
     $(function () {
         tocbot.init({
@@ -1239,7 +1266,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
 
     <footer class="page-footer bg-color">
     
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aplayer/APlayer.min.css">
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
 <style>
     .aplayer .aplayer-lrc p {
         
@@ -1289,7 +1316,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aplayer/APlayer.min.js"></script>
+<script src="/libs/aplayer/APlayer.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
 
     
@@ -1303,7 +1330,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">177k</span>&nbsp;字
+                class="white-color">202k</span>&nbsp;字
             
             
             
@@ -1372,10 +1399,10 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/js/search.js"></script>
+<script src="/js/search.js"></script>
 <script type="text/javascript">
 $(function () {
-    searchFunc("https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/search.xml", 'searchInput', 'searchResult');
+    searchFunc("/search.xml", 'searchInput', 'searchResult');
 });
 </script>
 
@@ -1387,12 +1414,12 @@ $(function () {
 </div>
 
 
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/materialize/materialize.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/masonry/masonry.pkgd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aos/aos.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/scrollprogress/scrollProgress.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/lightGallery/js/lightgallery-all.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/js/matery.js"></script>
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
 
     <!-- Baidu Analytics -->
 
@@ -1414,7 +1441,7 @@ $(function () {
 
     
     
-    <script async src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/others/busuanzi.pure.mini.js"></script>
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
     
 
     
@@ -1428,7 +1455,7 @@ $(function () {
     
 
     
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/instantpage/instantpage.js" type="module"></script>
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
     
 
 <script type="text/javascript"> //只在桌面版网页启用特效 

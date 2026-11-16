@@ -17,24 +17,23 @@
 
 
     <title>有感 | 风之声</title>
-    <link rel="icon" type="image/jpeg" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/favicon.jpg">
+    <link rel="icon" type="image/jpeg" href="/favicon.jpg">
 
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/awesome/css/all.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/materialize/materialize.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aos/aos.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/animate/animate.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/lightGallery/css/lightgallery.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/css/matery.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/css/my.css">
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <link rel="stylesheet" href="/vendor/katex/katex.min.css">
+    <link rel="stylesheet" href="/css/prism.css">
+    <link rel="stylesheet" href="/css/prism-line-numbers.css">
+    <link rel="stylesheet" href="/css/custom.css">
 
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/jquery/jquery.min.js"></script>
+    <script src="/libs/jquery/jquery.min.js"></script>
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"><link rel="stylesheet" href="/css/prism.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<meta name="generator" content="Hexo 8.1.2"></head>
 
 
 <body>
@@ -44,7 +43,7 @@
             <div class="brand-logo">
                 <a href="/" class="waves-effect waves-light">
                     
-                    <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/logo.png" class="logo-img" alt="LOGO">
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
                     
                     <span class="logo-span">风之声</span>
                 </a>
@@ -143,7 +142,7 @@
 
     <div class="mobile-head bg-color">
         
-        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/logo.png" class="logo-img circle responsive-img">
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
         
         <div class="logo-name">风之声</div>
         <div class="logo-desc">
@@ -310,10 +309,23 @@
 </header>
 
     
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/6.jpg')">
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/6.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -331,7 +343,7 @@
 <main class="post-container content">
 
     
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
 <style>
     #articleContent h1::before,
     #articleContent h2::before,
@@ -451,6 +463,10 @@
                                 闲谈
                             </a>
                         
+                            <a href="/categories/%E9%97%B2%E8%B0%88/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/" class="post-category">
+                                统计学习
+                            </a>
+                        
                     </div>
                     
                 </div>
@@ -474,7 +490,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    998
+                    995
                 </div>
                 
 
@@ -496,7 +512,9 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>&emsp;    或许逃避是人的天性，整个博一上学期，似乎整天忙忙碌碌，在若干门课程中来回斡旋，<span id="more"></span>但当闲下来细细一想，似乎也有很多时间自己并没有好好利用，用那些时间在逃避、在咸鱼、在发呆。整个博一上学期自己也读了一些书，比如《历史的教训》、《贫穷的本质》、《禅与摩托车维修技术》、《变革中国》，相比于完整读下来的书，挖的坑自然是更多，《纯粹理性批判》、《世界文明史》、《资本论》……如果你要问我为什么选择这些书，我只能回答机缘巧合吧，这些书或是来源于上课时某位同学的推荐，或是来自于自己查询某些资料时的推荐，不一而足。其实我认为读这些书一方面是一种对自己空余时间的填充，对纯粹理工科学习的一种暂时逃避，也是一个不断寻找答案的过程，寻找一些理工科的书籍里缺乏的一些答案。其实我一直在思考一个问题，一个人的强大究竟是来源于其内心的强大，还是来源于其所凭外物，当你一无所有（指外物）之时，你还能剩下什么？是没有灵魂的一具空壳，还是一个拥有强大生命的种子。<br>&emsp;    读史教会我的第一点是作为历史当中普通人的世事无常，我们所接触的历史往往是王侯将相的历史，是英雄名士的历史，若人类发展的角度来看历史，一个人的历史观总会趋于无情，这种无情我们可以理解为作为现代人的傲慢/优越，如今我们去各地旅游，惊叹于种种历史古迹，惊叹于古人的智慧，但是孰又会在意这些历史古迹下面是当时多少奴隶的血泪。这些遗迹显示了当时高超的建造技术，为后人留下了宝贵遗产，我们或可以说这是历史的进步，然而那些建造他们的奴隶们则消逝于历史的阴影之中。若我们接受这样的历史进步性说法，由此会自然引出下一个结论——历史的发展是必然伴随着牺牲的，作为现代人，我们可以一方面斥责当时的暴政，另一方面又可以欣赏到这些暴政所留下的历史遗迹，每每想到这些，总觉如鲠在喉。或许从这些历史中我们可以得出这样的经验，某些我们认为错误的做法确实促进了当时历史的发展，但是历史发展途径许多，我们应当选择让人民整体更加幸福的发展道路，唉，不过聊以自慰耳。<br>&emsp;行路者需要背负东西，然而不能背负太多。我第一个放入背包的叫做责任，从诞生开始，我就开始与这个世界产生联系，父母、家庭、国家、人类，这些名词限定了我是我，梁启超在《最苦与最乐》中写道：“人生最苦，莫过于身上背负着一种未了的责任；人生最乐，莫过于尽责之时。“责任二字，说来轻巧，实则沉甸甸，也因责任二字，人生少了些凄清，多了些烟火；我第二个放入背包的叫做知识，在我看来，当曾经模糊看不清楚的东西在你眼前变得清晰之时，也是精神愉悦满足之时，文学史哲让你反求诸己，塑造清明的内心世界，理血工学让你更好地认识客观世界，改造客观世界，两种知识于我而言同样重要。吾之一生，有此两者，足矣。</p>
+                <p> 	或许逃避是人的天性，整个博一上学期，似乎整天忙忙碌碌，在若干门课程中来回斡旋，<span id="more"></span>但当闲下来细细一想，似乎也有很多时间自己并没有好好利用，用那些时间在逃避、在咸鱼、在发呆。整个博一上学期自己也读了一些书，比如《历史的教训》、《贫穷的本质》、《禅与摩托车维修技术》、《变革中国》，相比于完整读下来的书，挖的坑自然是更多，《纯粹理性批判》、《世界文明史》、《资本论》......如果你要问我为什么选择这些书，我只能回答机缘巧合吧，这些书或是来源于上课时某位同学的推荐，或是来自于自己查询某些资料时的推荐，不一而足。其实我认为读这些书一方面是一种对自己空余时间的填充，对纯粹理工科学习的一种暂时逃避，也是一个不断寻找答案的过程，寻找一些理工科的书籍里缺乏的一些答案。其实我一直在思考一个问题，一个人的强大究竟是来源于其内心的强大，还是来源于其所凭外物，当你一无所有（指外物）之时，你还能剩下什么？是没有灵魂的一具空壳，还是一个拥有强大生命的种子。<br>
+ 	读史教会我的第一点是作为历史当中普通人的世事无常，我们所接触的历史往往是王侯将相的历史，是英雄名士的历史，若人类发展的角度来看历史，一个人的历史观总会趋于无情，这种无情我们可以理解为作为现代人的傲慢/优越，如今我们去各地旅游，惊叹于种种历史古迹，惊叹于古人的智慧，但是孰又会在意这些历史古迹下面是当时多少奴隶的血泪。这些遗迹显示了当时高超的建造技术，为后人留下了宝贵遗产，我们或可以说这是历史的进步，然而那些建造他们的奴隶们则消逝于历史的阴影之中。若我们接受这样的历史进步性说法，由此会自然引出下一个结论——历史的发展是必然伴随着牺牲的，作为现代人，我们可以一方面斥责当时的暴政，另一方面又可以欣赏到这些暴政所留下的历史遗迹，每每想到这些，总觉如鲠在喉。或许从这些历史中我们可以得出这样的经验，某些我们认为错误的做法确实促进了当时历史的发展，但是历史发展途径许多，我们应当选择让人民整体更加幸福的发展道路，唉，不过聊以自慰耳。<br>
+ 行路者需要背负东西，然而不能背负太多。我第一个放入背包的叫做责任，从诞生开始，我就开始与这个世界产生联系，父母、家庭、国家、人类，这些名词限定了我是我，梁启超在《最苦与最乐》中写道：“人生最苦，莫过于身上背负着一种未了的责任；人生最乐，莫过于尽责之时。“责任二字，说来轻巧，实则沉甸甸，也因责任二字，人生少了些凄清，多了些烟火；我第二个放入背包的叫做知识，在我看来，当曾经模糊看不清楚的东西在你眼前变得清晰之时，也是精神愉悦满足之时，文学史哲让你反求诸己，塑造清明的内心世界，理血工学让你更好地认识客观世界，改造客观世界，两种知识于我而言同样重要。吾之一生，有此两者，足矣。</p>
 
             </div>
             <hr/>
@@ -568,12 +586,12 @@
                     
                 </div>
                 <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
-                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/share/css/share.min.css">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
 <div id="article-share">
 
     
     <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/share/js/social-share.min.js"></script>
+    <script src="/libs/share/js/social-share.min.js"></script>
     
 
     
@@ -691,10 +709,10 @@
                         <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
                     </ul>
                     <div id="alipay">
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/reward/ali.jpeg" class="reward-img" alt="支付宝打赏二维码">
+                        <img src="/medias/reward/ali.jpeg" class="reward-img" alt="支付宝打赏二维码">
                     </div>
                     <div id="wechat">
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/reward/wechat.jpeg" class="reward-img" alt="微信打赏二维码">
+                        <img src="/medias/reward/wechat.jpeg" class="reward-img" alt="微信打赏二维码">
                     </div>
                 </div>
             </div>
@@ -962,12 +980,12 @@
         <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
         <span>评论</span>
     </div>
-    <div id="vcomments" class="card-content" style="display: grid">
+    <div id="vcomments" class="card-content" style="display: block">
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/valine/av-min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/valine/Valine.min.js"></script>
+<script src="/libs/valine/av-min.js"></script>
+<script src="/libs/valine/Valine.min.js"></script>
 <script>
     new Valine({
         el: '#vcomments',
@@ -999,8 +1017,7 @@
                 <a href="/2020/07/06/ji-qi-xue-xi-li-lun/">
                     <div class="card-image">
                         
-                        
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/4.png" class="responsive-img" alt="机器学习理论">
+                        <img src="/medias/featureimages/4.png" class="responsive-img" alt="机器学习理论">
                         
                         <span class="card-title">机器学习理论</span>
                     </div>
@@ -1021,6 +1038,10 @@
                             
                             <a href="/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/" class="post-category">
                                     统计学习
+                                </a>
+                            
+                            <a href="/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/%E9%97%B2%E8%B0%88/" class="post-category">
+                                    闲谈
                                 </a>
                             
                             
@@ -1048,8 +1069,7 @@
                 <a href="/2020/02/17/yi-zhong-ju-jia/">
                     <div class="card-image">
                         
-                        
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/3.png" class="responsive-img" alt="疫中居家">
+                        <img src="/medias/featureimages/3.png" class="responsive-img" alt="疫中居家">
                         
                         <span class="card-title">疫中居家</span>
                     </div>
@@ -1096,21 +1116,21 @@
 
 
 <!-- 代码块功能依赖 -->
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeBlockFuction.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
 
 <!-- 代码语言 -->
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeLang.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
 
 
 <!-- 代码块复制 -->
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeCopy.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
 
 
 <!-- 代码块收缩 -->
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeShrink.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
 
 
 <!-- 代码块折行 -->
@@ -1138,7 +1158,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
 </div>
 
 
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/tocbot/tocbot.min.js"></script>
+<script src="/libs/tocbot/tocbot.min.js"></script>
 <script>
     $(function () {
         tocbot.init({
@@ -1223,7 +1243,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
 
     <footer class="page-footer bg-color">
     
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aplayer/APlayer.min.css">
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
 <style>
     .aplayer .aplayer-lrc p {
         
@@ -1273,7 +1293,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aplayer/APlayer.min.js"></script>
+<script src="/libs/aplayer/APlayer.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
 
     
@@ -1287,7 +1307,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">177k</span>&nbsp;字
+                class="white-color">202k</span>&nbsp;字
             
             
             
@@ -1356,10 +1376,10 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/js/search.js"></script>
+<script src="/js/search.js"></script>
 <script type="text/javascript">
 $(function () {
-    searchFunc("https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/search.xml", 'searchInput', 'searchResult');
+    searchFunc("/search.xml", 'searchInput', 'searchResult');
 });
 </script>
 
@@ -1371,12 +1391,12 @@ $(function () {
 </div>
 
 
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/materialize/materialize.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/masonry/masonry.pkgd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aos/aos.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/scrollprogress/scrollProgress.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/lightGallery/js/lightgallery-all.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/js/matery.js"></script>
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
 
     <!-- Baidu Analytics -->
 
@@ -1398,7 +1418,7 @@ $(function () {
 
     
     
-    <script async src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/others/busuanzi.pure.mini.js"></script>
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
     
 
     
@@ -1412,7 +1432,7 @@ $(function () {
     
 
     
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/instantpage/instantpage.js" type="module"></script>
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
     
 
 <script type="text/javascript"> //只在桌面版网页启用特效 

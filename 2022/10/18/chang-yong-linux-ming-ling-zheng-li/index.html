@@ -17,24 +17,23 @@
 
 
     <title>常用Linux命令整理 | 风之声</title>
-    <link rel="icon" type="image/jpeg" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/favicon.jpg">
+    <link rel="icon" type="image/jpeg" href="/favicon.jpg">
 
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/awesome/css/all.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/materialize/materialize.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aos/aos.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/animate/animate.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/lightGallery/css/lightgallery.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/css/matery.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/css/my.css">
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <link rel="stylesheet" href="/vendor/katex/katex.min.css">
+    <link rel="stylesheet" href="/css/prism.css">
+    <link rel="stylesheet" href="/css/prism-line-numbers.css">
+    <link rel="stylesheet" href="/css/custom.css">
 
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/jquery/jquery.min.js"></script>
+    <script src="/libs/jquery/jquery.min.js"></script>
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"><link rel="stylesheet" href="/css/prism.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<meta name="generator" content="Hexo 8.1.2"></head>
 
 
 <body>
@@ -44,7 +43,7 @@
             <div class="brand-logo">
                 <a href="/" class="waves-effect waves-light">
                     
-                    <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/logo.png" class="logo-img" alt="LOGO">
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
                     
                     <span class="logo-span">风之声</span>
                 </a>
@@ -143,7 +142,7 @@
 
     <div class="mobile-head bg-color">
         
-        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/logo.png" class="logo-img circle responsive-img">
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
         
         <div class="logo-name">风之声</div>
         <div class="logo-desc">
@@ -310,10 +309,23 @@
 </header>
 
     
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/3.png')">
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/3.png')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -331,7 +343,7 @@
 <main class="post-container content">
 
     
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
 <style>
     #articleContent h1::before,
     #articleContent h2::before,
@@ -451,6 +463,14 @@
                                 linux
                             </a>
                         
+                            <a href="/categories/linux/%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/" class="post-category">
+                                技术学习
+                            </a>
+                        
+                            <a href="/categories/linux/%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/" class="post-category">
+                                环境配置
+                            </a>
+                        
                     </div>
                     
                 </div>
@@ -496,8 +516,9 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>在服务器上训练深度学习模型时不可避免地需要进行大量的命令行操作，熟练使用命令行已经成为了一项程序员必备的技能，本文对常用的linux命令进行整理，以加深印象和方便后续查询。<br><span id="more"></span> </p>
-<h4 id="文件管理"><a href="#文件管理" class="headerlink" title="文件管理"></a>文件管理</h4><ul>
+                
+<p>在服务器上训练深度学习模型时不可避免地需要进行大量的命令行操作，熟练使用命令行已经成为了一项程序员必备的技能，本文对常用的linux命令进行整理，以加深印象和方便后续查询。<br><span id="more"></span> </p>
+<h4 id="文件管理"><a href="#%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86" class="headerlink" title="文件管理"></a>文件管理</h4><ul>
 <li><code>cat</code>: 用于连接文件并打印到标准输出设备上 <ul>
 <li>使用权限: 所有使用者 </li>
 <li>语法格式: <pre class="line-numbers language-lang-shell"><code class="language-lang-shell">cat [-AbeEnstTuv] [--help] [--version] fileName
@@ -505,7 +526,7 @@
 </li>
 <li>参数说明: <ul>
 <li>-n/—number: 由1开始对所有输出的行号编号 </li>
-<li>-b: 与-n类似，只是对空白行不编号 <pre class="line-numbers language-lang-shell"><code class="language-lang-shell">cat file1 > file2 #将file1的内容拷贝到file2中(覆盖)
+<li>-b: 与-n类似，只是对空白行不编号 <pre class="line-numbers language-lang-shell"><code class="language-lang-shell">cat file1 &gt; file2 #将file1的内容拷贝到file2中(覆盖)
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 </li>
 </ul>
@@ -514,7 +535,7 @@
 </li>
 <li><code>chmod</code>: 控制用户对文件的权限 <ul>
 <li>使用权限: 只有文件所有者和超级用户可以修改文件或者目录的权限 </li>
-<li>说明: Linux/unix的文件调用权限分为三级: 文件所有者、用户组、其他用户<br>用户创建一个新文件时，默认权限是<code>-rw-r--r--</code><br><img src="/.io//%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90.png" alt><br>可以通过使用绝对模式(八进制数字模式)指定文件的权限<br><img src="/.io//%E7%94%A8%E6%88%B7%E7%BB%84.png" alt></li>
+<li>说明: Linux/unix的文件调用权限分为三级: 文件所有者、用户组、其他用户<br>用户创建一个新文件时，默认权限是<code>-rw-r--r--</code><br><img src="/.io//%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90.png" alt=""><br>可以通过使用绝对模式(八进制数字模式)指定文件的权限<br><img src="/.io//%E7%94%A8%E6%88%B7%E7%BB%84.png" alt=""></li>
 <li>语法: <pre class="line-numbers language-lang-shell"><code class="language-lang-shell">chmod [-cfvR] [--help] [--version] mode file...
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 </li>
@@ -553,7 +574,7 @@ chown -R xuejianye dir #将文件夹dir及其子目录的所有者设定为xueji
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 </li>
 <li><code>find</code>: 在指定目录下查找文件<ul>
-<li>语法: <pre class="line-numbers language-lang-shell"><code class="language-lang-shell">  find   path   -option   [   -print ]   [ -exec   -ok   command ]   &#123;&#125; \;
+<li>语法: <pre class="line-numbers language-lang-shell"><code class="language-lang-shell">  find   path   -option   [   -print ]   [ -exec   -ok   command ]   {} \;
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 </li>
 <li>使用示例: <pre class="line-numbers language-lang-shell"><code class="language-lang-shell">  find . -name "*.txt" #在当前目录下找到所有txt文件
@@ -586,7 +607,7 @@ mv aaa bbb #将文件aaa改名为bbb
   456
   123
   456
-  icarus@DESKTOP-7Q4C11S  ~  cat test.txt copy.txt > new.txt
+  icarus@DESKTOP-7Q4C11S  ~  cat test.txt copy.txt &gt; new.txt
   icarus@DESKTOP-7Q4C11S  ~  cat new.txt
   123
   456
@@ -604,7 +625,7 @@ mv aaa bbb #将文件aaa改名为bbb
 <li>参数 -r: 递归删除目录内所有文件 </li>
 </ul>
 </li>
-<li><code>touch</code>: 修改文件或者目录的时间属性，若文件不存在则会创建一个新文件<br>  -语法: <pre class="line-numbers language-lang-shell"><code class="language-lang-shell">  touch [-acfm][-d<日期时间>][-r<参考文件或目录>] [-t<日期时间>][--help][--version][文件或目录…]
+<li><code>touch</code>: 修改文件或者目录的时间属性，若文件不存在则会创建一个新文件<br>  -语法: <pre class="line-numbers language-lang-shell"><code class="language-lang-shell">  touch [-acfm][-d][-r] [-t][--help][--version][文件或目录…]
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
   -使用示例: <pre class="line-numbers language-lang-shell"><code class="language-lang-shell">  touch file #若文件不存在则创建文件，文件存在则修改文件的事件属性
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
@@ -649,12 +670,12 @@ scp -r www.runoob.com:/home/root/others/ /home/space/music/
 </ul>
 </li>
 </ul>
-<h4 id="文档编辑"><a href="#文档编辑" class="headerlink" title="文档编辑"></a>文档编辑</h4><ul>
+<h4 id="文档编辑"><a href="#%E6%96%87%E6%A1%A3%E7%BC%96%E8%BE%91" class="headerlink" title="文档编辑"></a>文档编辑</h4><ul>
 <li><code>grep</code>: 用于查找文件里符合条件的字符串 <pre class="line-numbers language-lang-shell"><code class="language-lang-shell">  grep "被查找的字符串" 文件名
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 </li>
 </ul>
-<h4 id="文件传输"><a href="#文件传输" class="headerlink" title="文件传输"></a>文件传输</h4><h4 id="磁盘管理"><a href="#磁盘管理" class="headerlink" title="磁盘管理"></a>磁盘管理</h4><ul>
+<h4 id="文件传输"><a href="#%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93" class="headerlink" title="文件传输"></a>文件传输</h4><h4 id="磁盘管理"><a href="#%E7%A3%81%E7%9B%98%E7%AE%A1%E7%90%86" class="headerlink" title="磁盘管理"></a>磁盘管理</h4><ul>
 <li><code>cd</code>: 切换当前工作目录 </li>
 <li><code>df</code>: 显示目前在linux系统上的文件系统磁盘使用情况统计 <ul>
 <li>语法: <pre class="line-numbers language-lang-shell"><code class="language-lang-shell">df [选项]... [FILE]...
@@ -690,13 +711,13 @@ Filesystem     1K-blocks     Used Available Use% Mounted on
 </ul>
 </li>
 </ul>
-<h4 id="磁盘维护"><a href="#磁盘维护" class="headerlink" title="磁盘维护"></a>磁盘维护</h4><h4 id="网络通讯"><a href="#网络通讯" class="headerlink" title="网络通讯"></a>网络通讯</h4><ul>
+<h4 id="磁盘维护"><a href="#%E7%A3%81%E7%9B%98%E7%BB%B4%E6%8A%A4" class="headerlink" title="磁盘维护"></a>磁盘维护</h4><h4 id="网络通讯"><a href="#%E7%BD%91%E7%BB%9C%E9%80%9A%E8%AE%AF" class="headerlink" title="网络通讯"></a>网络通讯</h4><ul>
 <li><code>ifconfig</code>: 用于显示或设置网络设备,查看ip/mac地址 </li>
 <li><code>ping</code>: 用于检测主机，</li>
 </ul>
-<h4 id="系统管理"><a href="#系统管理" class="headerlink" title="系统管理"></a>系统管理</h4><ul>
+<h4 id="系统管理"><a href="#%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86" class="headerlink" title="系统管理"></a>系统管理</h4><ul>
 <li><code>kill</code>: 用于删除执行中的程序或工作<ul>
-<li>语法: <pre class="line-numbers language-lang-shell"><code class="language-lang-shell">kill [-s <信息名称或编号>][程序]　或　kill [-l <信息编号>]
+<li>语法: <pre class="line-numbers language-lang-shell"><code class="language-lang-shell">kill [-s ][程序]　或　kill [-l ]
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 </li>
 <li>常用参数: <ul>
@@ -725,7 +746,7 @@ kill -KILL 123456 #强制杀死进程
 </ul>
 </li>
 </ul>
-<h4 id="系统设置"><a href="#系统设置" class="headerlink" title="系统设置"></a>系统设置</h4><ul>
+<h4 id="系统设置"><a href="#%E7%B3%BB%E7%BB%9F%E8%AE%BE%E7%BD%AE" class="headerlink" title="系统设置"></a>系统设置</h4><ul>
 <li><code>clear</code>: 用于清除屏幕 </li>
 <li><code>export</code>: 用于设置或者显示环境变量,效力仅限于该次登陆操作 <ul>
 <li>语法: <pre class="line-numbers language-lang-shell"><code class="language-lang-shell">export [-fnp][变量名称]=[变量设置值]
@@ -742,7 +763,9 @@ kill -KILL 123456 #强制杀死进程
 </ul>
 </li>
 </ul>
-<h4 id="备份压缩"><a href="#备份压缩" class="headerlink" title="备份压缩"></a>备份压缩</h4><h4 id="设备管理"><a href="#设备管理" class="headerlink" title="设备管理"></a>设备管理</h4>
+<h4 id="备份压缩"><a href="#%E5%A4%87%E4%BB%BD%E5%8E%8B%E7%BC%A9" class="headerlink" title="备份压缩"></a>备份压缩</h4><h4 id="设备管理"><a href="#%E8%AE%BE%E5%A4%87%E7%AE%A1%E7%90%86" class="headerlink" title="设备管理"></a>设备管理</h4>
+
+
             </div>
             <hr/>
 
@@ -813,12 +836,12 @@ kill -KILL 123456 #强制杀死进程
                     
                 </div>
                 <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
-                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/share/css/share.min.css">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
 <div id="article-share">
 
     
     <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/share/js/social-share.min.js"></script>
+    <script src="/libs/share/js/social-share.min.js"></script>
     
 
     
@@ -936,10 +959,10 @@ kill -KILL 123456 #强制杀死进程
                         <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
                     </ul>
                     <div id="alipay">
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/reward/ali.jpeg" class="reward-img" alt="支付宝打赏二维码">
+                        <img src="/medias/reward/ali.jpeg" class="reward-img" alt="支付宝打赏二维码">
                     </div>
                     <div id="wechat">
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/reward/wechat.jpeg" class="reward-img" alt="微信打赏二维码">
+                        <img src="/medias/reward/wechat.jpeg" class="reward-img" alt="微信打赏二维码">
                     </div>
                 </div>
             </div>
@@ -1207,12 +1230,12 @@ kill -KILL 123456 #强制杀死进程
         <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
         <span>评论</span>
     </div>
-    <div id="vcomments" class="card-content" style="display: grid">
+    <div id="vcomments" class="card-content" style="display: block">
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/valine/av-min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/valine/Valine.min.js"></script>
+<script src="/libs/valine/av-min.js"></script>
+<script src="/libs/valine/Valine.min.js"></script>
 <script>
     new Valine({
         el: '#vcomments',
@@ -1244,8 +1267,7 @@ kill -KILL 123456 #强制杀死进程
                 <a href="/2022/10/24/an-quan-wai-ke-xie-yi-ssh/">
                     <div class="card-image">
                         
-                        
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/6.jpg" class="responsive-img" alt="安全外壳协议-ssh">
+                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="安全外壳协议-ssh">
                         
                         <span class="card-title">安全外壳协议-ssh</span>
                     </div>
@@ -1253,7 +1275,7 @@ kill -KILL 123456 #强制杀死进程
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            简介(from wiki)安全外壳协议(Secure Shell Protocol,简称ssh)是一种加密的网络传输协议，可在不安全的网络中为网络服务提供安全的传输环境。SSH通过在网络中创建安全隧道来实现SSH客户端与服务器之间的连接;S
+                            简介(from wiki)安全外壳协议(Secure Shell Protocol,简称ssh)是一种加密的网络传输协议，可在不安全的网络中为网络服务提供安全的传输环境。SSH通过在网络中创建安全隧道来实现SSH客户端与服务器之间的连接;SSH最常见的用途是远程登录系统，人们通常利用SSH来传输命令
                         
                     </div>
                     <div class="publish-info">
@@ -1266,6 +1288,14 @@ kill -KILL 123456 #强制杀死进程
                             
                             <a href="/categories/%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/" class="post-category">
                                     技术学习
+                                </a>
+                            
+                            <a href="/categories/%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" class="post-category">
+                                    论文阅读
+                                </a>
+                            
+                            <a href="/categories/%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/linux/" class="post-category">
+                                    linux
                                 </a>
                             
                             
@@ -1293,8 +1323,7 @@ kill -KILL 123456 #强制杀死进程
                 <a href="/2022/10/17/conda-jie-shao-ji-chang-yong-ming-ling/">
                     <div class="card-image">
                         
-                        
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/0.jpg" class="responsive-img" alt="conda介绍及常用命令">
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="conda介绍及常用命令">
                         
                         <span class="card-title">conda介绍及常用命令</span>
                     </div>
@@ -1302,7 +1331,7 @@ kill -KILL 123456 #强制杀死进程
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            随着机器学习、深度学习的爆火，大量的python第三方库也如雨后春笋一般冒了出来，这给开发者带来了极大便利的同时，也使得管理这些库成为了一件复杂度极高的事情，相信很多人都有过为了处理库冲突而抓狂的时刻，为了简化python包管理的工作，An
+                            随着机器学习、深度学习的爆火，大量的python第三方库也如雨后春笋一般冒了出来，这给开发者带来了极大便利的同时，也使得管理这些库成为了一件复杂度极高的事情，相信很多人都有过为了处理库冲突而抓狂的时刻，为了简化python包管理的工作，Anaconda应运而生。 AnacondaAnaconda可以
                         
                     </div>
                     <div class="publish-info">
@@ -1315,6 +1344,10 @@ kill -KILL 123456 #强制杀死进程
                             
                             <a href="/categories/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/" class="post-category">
                                     环境配置
+                                </a>
+                            
+                            <a href="/categories/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/linux/" class="post-category">
+                                    linux
                                 </a>
                             
                             
@@ -1341,21 +1374,21 @@ kill -KILL 123456 #强制杀死进程
 
 
 <!-- 代码块功能依赖 -->
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeBlockFuction.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
 
 <!-- 代码语言 -->
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeLang.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
 
 
 <!-- 代码块复制 -->
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeCopy.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
 
 
 <!-- 代码块收缩 -->
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeShrink.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
 
 
 <!-- 代码块折行 -->
@@ -1383,7 +1416,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
 </div>
 
 
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/tocbot/tocbot.min.js"></script>
+<script src="/libs/tocbot/tocbot.min.js"></script>
 <script>
     $(function () {
         tocbot.init({
@@ -1464,18 +1497,11 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
 </main>
 
 
-<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script>
-    MathJax.Hub.Config({
-        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
-    });
-</script>
-
 
 
     <footer class="page-footer bg-color">
     
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aplayer/APlayer.min.css">
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
 <style>
     .aplayer .aplayer-lrc p {
         
@@ -1525,7 +1551,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aplayer/APlayer.min.js"></script>
+<script src="/libs/aplayer/APlayer.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
 
     
@@ -1539,7 +1565,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">177k</span>&nbsp;字
+                class="white-color">202k</span>&nbsp;字
             
             
             
@@ -1608,10 +1634,10 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/js/search.js"></script>
+<script src="/js/search.js"></script>
 <script type="text/javascript">
 $(function () {
-    searchFunc("https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/search.xml", 'searchInput', 'searchResult');
+    searchFunc("/search.xml", 'searchInput', 'searchResult');
 });
 </script>
 
@@ -1623,12 +1649,12 @@ $(function () {
 </div>
 
 
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/materialize/materialize.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/masonry/masonry.pkgd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aos/aos.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/scrollprogress/scrollProgress.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/lightGallery/js/lightgallery-all.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/js/matery.js"></script>
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
 
     <!-- Baidu Analytics -->
 
@@ -1650,7 +1676,7 @@ $(function () {
 
     
     
-    <script async src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/others/busuanzi.pure.mini.js"></script>
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
     
 
     
@@ -1664,7 +1690,7 @@ $(function () {
     
 
     
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/instantpage/instantpage.js" type="module"></script>
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
     
 
 <script type="text/javascript"> //只在桌面版网页启用特效 

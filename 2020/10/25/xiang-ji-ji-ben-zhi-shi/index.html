@@ -17,24 +17,23 @@
 
 
     <title>相机基本知识 | 风之声</title>
-    <link rel="icon" type="image/jpeg" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/favicon.jpg">
+    <link rel="icon" type="image/jpeg" href="/favicon.jpg">
 
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/awesome/css/all.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/materialize/materialize.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aos/aos.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/animate/animate.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/lightGallery/css/lightgallery.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/css/matery.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/css/my.css">
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <link rel="stylesheet" href="/vendor/katex/katex.min.css">
+    <link rel="stylesheet" href="/css/prism.css">
+    <link rel="stylesheet" href="/css/prism-line-numbers.css">
+    <link rel="stylesheet" href="/css/custom.css">
 
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/jquery/jquery.min.js"></script>
+    <script src="/libs/jquery/jquery.min.js"></script>
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"><link rel="stylesheet" href="/css/prism.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<meta name="generator" content="Hexo 8.1.2"></head>
 
 
 <body>
@@ -44,7 +43,7 @@
             <div class="brand-logo">
                 <a href="/" class="waves-effect waves-light">
                     
-                    <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/logo.png" class="logo-img" alt="LOGO">
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
                     
                     <span class="logo-span">风之声</span>
                 </a>
@@ -143,7 +142,7 @@
 
     <div class="mobile-head bg-color">
         
-        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/logo.png" class="logo-img circle responsive-img">
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
         
         <div class="logo-name">风之声</div>
         <div class="logo-desc">
@@ -310,10 +309,23 @@
 </header>
 
     
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/3.png')">
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/3.png')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -331,7 +343,7 @@
 <main class="post-container content">
 
     
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
 <style>
     #articleContent h1::before,
     #articleContent h2::before,
@@ -451,6 +463,14 @@
                                 点滴生活
                             </a>
                         
+                            <a href="/categories/%E7%82%B9%E6%BB%B4%E7%94%9F%E6%B4%BB/%E5%BC%80%E5%8F%91%E7%9F%A5%E8%AF%86/" class="post-category">
+                                开发知识
+                            </a>
+                        
+                            <a href="/categories/%E7%82%B9%E6%BB%B4%E7%94%9F%E6%B4%BB/%E5%BC%80%E5%8F%91%E7%9F%A5%E8%AF%86/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/" class="post-category">
+                                统计学习
+                            </a>
+                        
                     </div>
                     
                 </div>
@@ -498,147 +518,220 @@
             <div id="articleContent">
                 <p>俗话说，没有金刚钻就不揽瓷器活，既然要进行摄影的系统性学习，那么自然就首先从设备讲起，本文按照以下结构进行组织:</p>
 <ul>
-<li>单反与微单 </li>
-<li>传感器 </li>
-<li>相机推荐<span id="more"></span>
-</li>
+<li>单反与微单</li>
+<li>传感器</li>
+<li>相机推荐</li>
 </ul>
-<h3 id="单反与微单"><a href="#单反与微单" class="headerlink" title="单反与微单"></a>单反与微单</h3><p>单反与微单的区别:</p>
+<span id="more"></span>
+<h3 id="单反与微单">单反与微单</h3>
+<p>单反与微单的区别:</p>
 <ul>
-<li>单反: 大、重、靠谱 </li>
+<li>单反: 大、重、靠谱</li>
 <li>微单: 轻便易学，未来以来</li>
 </ul>
-<p>单反当年之所以需要加入反光镜和五棱镜然后在取景器中看到实时画面，当按下快门时，反光板抬起，光线打到CMOS传感器时最终成像，但这样就导致单反存在两个致命缺点: </p>
+<p>单反当年之所以需要加入反光镜和五棱镜然后在取景器中看到实时画面，当按下快门时，反光板抬起，光线打到CMOS传感器时最终成像，但这样就导致单反存在两个致命缺点:</p>
 <ul>
-<li>由于有反光镜和五棱镜的存在，单反一般都比较笨重。 </li>
-<li>从取景器中看到的景象与我们人眼直接看到的并无不同，但会与最终在CMOS传感器上的成像有所差异，也就是说所见并不为所得。 </li>
+<li>由于有反光镜和五棱镜的存在，单反一般都比较笨重。</li>
+<li>从取景器中看到的景象与我们人眼直接看到的并无不同，但会与最终在CMOS传感器上的成像有所差异，也就是说所见并不为所得。</li>
 </ul>
-<p>虽然随着数码感光元件的发展，部分单反相机也都配上了一块LCD液晶屏，但在进行实际拍摄的过程中会出现对焦慢、出片延迟大的问题。 而微单则是彻底的抛弃了光学取景器，采用电子取景器，在进行拍摄时所见及所得，而两者的数码感光元件并没有太大差异，因此也就是说，只要钱到位了，两者都能够拍出质量很高的照片。<br>整体而言，光学取景OVF较电子取景EVF而言，其发展已经没什么潜力了，未来随着电子取景技术的不断发展，光学取景可能就会被淘汰了。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E5%8D%95%E5%8F%8D%E5%92%8C%E6%97%A0%E5%8F%8D.jpeg" alt="单反和微单"></p>
-<h3 id="光学传感器"><a href="#光学传感器" class="headerlink" title="光学传感器"></a>光学传感器</h3><p>在进行相机选购的时候，光学传感器是重中之重，<strong>从根本上来说，传感器的大小决定了相机可用于创建图像的光量</strong>。虽然像素在细节上起着重要的作用，但决定相机曝光平衡、动态范围以及清晰度的是光线的捕获量，这也是为什么如今1600万像素和2000万像素的单反相机拍摄的图像看起来仍然比今天七八千万像素的手机所拍摄的图像看起来更好的原因。 </p>
-<p><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E7%9B%B8%E6%9C%BA%E4%BC%A0%E6%84%9F%E5%99%A8.jpeg" alt="相机传感器"></p>
-<p>上面这张图给出了目前的相机传感器尺寸，我们接触最多是两种传感器: </p>
+<p>虽然随着数码感光元件的发展，部分单反相机也都配上了一块LCD液晶屏，但在进行实际拍摄的过程中会出现对焦慢、出片延迟大的问题。 而微单则是彻底的抛弃了光学取景器，采用电子取景器，在进行拍摄时所见及所得，而两者的数码感光元件并没有太大差异，因此也就是说，只要钱到位了，两者都能够拍出质量很高的照片。<br>
+整体而言，光学取景OVF较电子取景EVF而言，其发展已经没什么潜力了，未来随着电子取景技术的不断发展，光学取景可能就会被淘汰了。<br>
+<img src="/Img/%E5%8D%95%E5%8F%8D%E5%92%8C%E6%97%A0%E5%8F%8D.jpeg" alt="单反和微单"></p>
+<h3 id="光学传感器">光学传感器</h3>
+<p>在进行相机选购的时候，光学传感器是重中之重，<strong>从根本上来说，传感器的大小决定了相机可用于创建图像的光量</strong>。虽然像素在细节上起着重要的作用，但决定相机曝光平衡、动态范围以及清晰度的是光线的捕获量，这也是为什么如今1600万像素和2000万像素的单反相机拍摄的图像看起来仍然比今天七八千万像素的手机所拍摄的图像看起来更好的原因。</p>
+<p><img src="/Img/%E7%9B%B8%E6%9C%BA%E4%BC%A0%E6%84%9F%E5%99%A8.jpeg" alt="相机传感器"></p>
+<p>上面这张图给出了目前的相机传感器尺寸，我们接触最多是两种传感器:</p>
 <ul>
-<li>半/残幅传感器: APS-C半画幅 23.6 $\times$ 15.6 </li>
-<li>全画幅传感器: 135全画幅 36 $\times$ 24 mm </li>
+<li>半/残幅传感器: APS-C半画幅 23.6 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>×</mo></mrow><annotation encoding="application/x-tex">\times</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord">×</span></span></span></span> 15.6</li>
+<li>全画幅传感器: 135全画幅 36 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>×</mo></mrow><annotation encoding="application/x-tex">\times</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord">×</span></span></span></span> 24 mm</li>
 </ul>
-<p><strong>全画幅相机与残幅相机最明显的差异可能就是视野大小了</strong>，我们可以将圆形区域看成是一支镜头的视角能够捕捉到的所有画面范围，而红色框线是全画幅的大小，蓝色框线则是APS-C画幅大小，这也就意味着在使用全画幅镜头时，残幅机身只能捕捉到更小的画面。这在实际拍摄中最直观的感觉就是当拍同样景别图像时，持全画幅相机的人往往要向后移一移以达到与半画幅相机同样的取景效果。一般而言全画幅相机配50mm镜头与APS-C相机配35mm镜头取景范围差不多，等效系数一般是1.5，也就是说50mm全画幅镜头接到APS-C半画幅机身上，大致上相当于75mm半画幅镜头效果，<strong>因此在购买镜头时一定要注意是买的全画幅镜头还是仅支持APS-C的镜头，但在标示时一般都是按照全画幅标准进行标称，比如APS-C 23mm镜头，实际上是35mm焦距镜头</strong>。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E5%85%A8%E7%94%BB%E5%B9%85%E5%92%8C%E6%AE%8B%E5%B9%85.png" alt="全幅和半幅"></p>
+<p><strong>全画幅相机与残幅相机最明显的差异可能就是视野大小了</strong>，我们可以将圆形区域看成是一支镜头的视角能够捕捉到的所有画面范围，而红色框线是全画幅的大小，蓝色框线则是APS-C画幅大小，这也就意味着在使用全画幅镜头时，残幅机身只能捕捉到更小的画面。这在实际拍摄中最直观的感觉就是当拍同样景别图像时，持全画幅相机的人往往要向后移一移以达到与半画幅相机同样的取景效果。一般而言全画幅相机配50mm镜头与APS-C相机配35mm镜头取景范围差不多，等效系数一般是1.5，也就是说50mm全画幅镜头接到APS-C半画幅机身上，大致上相当于75mm半画幅镜头效果，<strong>因此在购买镜头时一定要注意是买的全画幅镜头还是仅支持APS-C的镜头，但在标示时一般都是按照全画幅标准进行标称，比如APS-C 23mm镜头，实际上是35mm焦距镜头</strong>。<br>
+<img src="/Img/%E5%85%A8%E7%94%BB%E5%B9%85%E5%92%8C%E6%AE%8B%E5%B9%85.png" alt="全幅和半幅"></p>
 <p>另一方面来说，全画幅相机相较半画幅相机具有更高的感光度，在较昏暗环境中能够捕捉到更多光线，提高ISO值不易出现噪点。</p>
-<h3 id="相机推荐-摄影协会大佬"><a href="#相机推荐-摄影协会大佬" class="headerlink" title="相机推荐-摄影协会大佬"></a>相机推荐-摄影协会大佬</h3><ol>
-<li>4000以内<br> 无推荐</li>
-<li>5000以内<ul>
-<li>相机推荐<ul>
-<li>佳能 EOS M50 </li>
-<li>佳能 EOS 200D2 </li>
-<li>Sony Alpha 6000L </li>
-<li>Sony Alpha 6100L </li>
-</ul>
+<h3 id="相机推荐-摄影协会大佬">相机推荐-摄影协会大佬</h3>
+<ol>
+<li>
+<p>4000以内<br>
+无推荐</p>
 </li>
-<li>镜头推荐<ul>
-<li>适马 16mm F1.4 </li>
-<li>适马 30mm F1.4 </li>
-<li>适马 56mm F1.4 </li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>10000以上 </p>
+<li>
+<p>5000以内</p>
 <ul>
-<li>相机推荐 <ul>
-<li>佳能 <ul>
+<li>相机推荐
+<ul>
+<li>佳能 EOS M50</li>
+<li>佳能 EOS 200D2</li>
+<li>Sony Alpha 6000L</li>
+<li>Sony Alpha 6100L</li>
+</ul>
+</li>
+<li>镜头推荐
+<ul>
+<li>适马 16mm F1.4</li>
+<li>适马 30mm F1.4</li>
+<li>适马 56mm F1.4</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>10000以上</p>
+<ul>
+<li>相机推荐
+<ul>
+<li>佳能
+<ul>
 <li>佳能 EOS R 12899¥ 3000w像素</li>
 <li>佳能 EOS R6</li>
-<li>佳能 EOS R5 </li>
-<li>小痰盂 50mm/f1.8 镜头 </li>
+<li>佳能 EOS R5</li>
+<li>小痰盂 50mm/f1.8 镜头</li>
 </ul>
 </li>
-<li>Sony <ul>
-<li>Sony A 7C 2400w像素</li>
-<li>Sony A 7III 2400w像素 </li>
-<li>Sony A 7R III 4200w像素<br>Sony相机较佳能优势: CMOS工艺，对焦性能，除了机身，其他都贵 </li>
-</ul>
-</li>
-<li>富士<br>富士基本都是APS-C画幅 </li>
-</ul>
-</li>
-</ul>
-<p>三家相机各自特点: </p>
+<li>Sony
 <ul>
-<li>佳能: 屏幕好，直出人像色彩好，镜头多而强 </li>
-<li>富士: 相机长得好看，直出色彩好，买镜头要计算系数 </li>
-<li>Sony: 最好的续航，最多的原生镜头群，最好的自动追焦 </li>
+<li>Sony A 7C 2400w像素</li>
+<li>Sony A 7III 2400w像素</li>
+<li>Sony A 7R III 4200w像素<br>
+Sony相机较佳能优势: CMOS工艺，对焦性能，除了机身，其他都贵</li>
+</ul>
+</li>
+<li>富士<br>
+富士基本都是APS-C画幅</li>
+</ul>
+</li>
+</ul>
+<p>三家相机各自特点:</p>
+<ul>
+<li>佳能: 屏幕好，直出人像色彩好，镜头多而强</li>
+<li>富士: 相机长得好看，直出色彩好，买镜头要计算系数</li>
+<li>Sony: 最好的续航，最多的原生镜头群，最好的自动追焦</li>
 </ul>
 </li>
 </ol>
-<h3 id="相机基础知识"><a href="#相机基础知识" class="headerlink" title="相机基础知识"></a>相机基础知识</h3><blockquote>
-<p>相机说明书是最好的摄影书 </p>
+<h3 id="相机基础知识">相机基础知识</h3>
+<blockquote>
+<p>相机说明书是最好的摄影书</p>
 </blockquote>
-<h4 id="曝光"><a href="#曝光" class="headerlink" title="曝光"></a>曝光</h4><p><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E6%9B%9D%E5%85%89.jpg" alt="曝光"><br>曝光可以简单理解为图像亮度，映像曝光主要有三个参数:</p>
+<h4 id="曝光">曝光</h4>
+<p><img src="/Img/%E6%9B%9D%E5%85%89.jpg" alt="曝光"><br>
+曝光可以简单理解为图像亮度，映像曝光主要有三个参数:</p>
 <ul>
-<li>光圈<br>首先给出$F$值的计算公式: <script type="math/tex; mode=display">
-  光圈 =  \frac{焦距}{通光孔直径}</script>如果把光圈值看作一个函数值，那么这个值就与焦距成正相关，而与通光孔直径负相关，这其实也与我们直观感觉相对应，焦距越长，则发光物体距离我们就越远，相机也就更难捕捉光线，而通光孔直径则是直接控制进光量。<br>通光孔越大，则单位时间进入的光越多，带了两点好处:<ul>
-<li>更多的进光量。</li>
-<li>浅景深，背景虚化。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E5%85%89%E5%9C%88.jpeg" alt="光圈"><br>如果仅仅调整通光孔直径来改变进光量的话，那么通光孔直径增大$\sqrt{2}$倍，进光量增加两倍，这也是为啥光圈都是差1.4倍，比如F1.4,F2,F2.8等等。</li>
+<li>光圈<br>
+首先给出<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi></mrow><annotation encoding="application/x-tex">F</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">F</span></span></span></span>值的计算公式:</li>
 </ul>
-</li>
-<li><p>快门速度<br>快门在相机里是时间单位，比如”$\frac{1}{100}s, \frac{1}{1000}s$”等，快门时间越短，会带来两点影响: </p>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>光圈</mtext><mo>=</mo><mfrac><mtext>焦距</mtext><mtext>通光孔直径</mtext></mfrac></mrow><annotation encoding="application/x-tex">    光圈 =  \frac{焦距}{通光孔直径}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">光圈</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.0463em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord cjk_fallback">通光孔直径</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord cjk_fallback">焦距</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+<p>如果把光圈值看作一个函数值，那么这个值就与焦距成正相关，而与通光孔直径负相关，这其实也与我们直观感觉相对应，焦距越长，则发光物体距离我们就越远，相机也就更难捕捉光线，而通光孔直径则是直接控制进光量。<br>
+通光孔越大，则单位时间进入的光越多，带了两点好处:</p>
 <ul>
-<li>进光量较少，容易出现欠曝 </li>
+<li>
+<p>更多的进光量。</p>
+</li>
+<li>
+<p>浅景深，背景虚化。<br>
+<img src="/Img/%E5%85%89%E5%9C%88.jpeg" alt="光圈"><br>
+如果仅仅调整通光孔直径来改变进光量的话，那么通光孔直径增大<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msqrt><mn>2</mn></msqrt></mrow><annotation encoding="application/x-tex">\sqrt{2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.04em;vertical-align:-0.1328em;"></span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9072em;"><span class="svg-align" style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord" style="padding-left:0.833em;"><span class="mord">2</span></span></span><span style="top:-2.8672em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail" style="min-width:0.853em;height:1.08em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="1.08em" viewBox="0 0 400000 1080" preserveAspectRatio="xMinYMin slice"><path d="M95,702
+c-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,-10,-9.5,-14
+c0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54
+c44.2,-33.3,65.8,-50.3,66.5,-51c1.3,-1.3,3,-2,5,-2c4.7,0,8.7,3.3,12,10
+s173,378,173,378c0.7,0,35.3,-71,104,-213c68.7,-142,137.5,-285,206.5,-429
+c69,-144,104.5,-217.7,106.5,-221
+l0 -0
+c5.3,-9.3,12,-14,20,-14
+H400000v40H845.2724
+s-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7
+c-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z
+M834 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1328em;"><span></span></span></span></span></span></span></span></span>倍，进光量增加两倍，这也是为啥光圈都是差1.4倍，比如F1.4,F2,F2.8等等。</p>
+</li>
+<li>
+<p>快门速度<br>
+快门在相机里是时间单位，比如"<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mn>1</mn><mn>100</mn></mfrac><mi>s</mi><mo separator="true">,</mo><mfrac><mn>1</mn><mn>1000</mn></mfrac><mi>s</mi></mrow><annotation encoding="application/x-tex">\frac{1}{100}s, \frac{1}{1000}s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.1901em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8451em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">100</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mord mathnormal">s</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8451em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1000</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mord mathnormal">s</span></span></span></span>"等，快门时间越短，会带来两点影响:</p>
+<ul>
+<li>进光量较少，容易出现欠曝</li>
 <li>可以定格某些瞬间，比如水滴溅开等</li>
 </ul>
-<p>当拍摄夜景或者想获得水流拉丝效果时，可以提高快门时间，此时一般需要三脚架辅助。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E5%BF%AB%E9%97%A8%E6%97%B6%E9%97%B4.jpg" alt="快门速度"></p>
+<p>当拍摄夜景或者想获得水流拉丝效果时，可以提高快门时间，此时一般需要三脚架辅助。<br>
+<img src="/Img/%E5%BF%AB%E9%97%A8%E6%97%B6%E9%97%B4.jpg" alt="快门速度"></p>
 </li>
-<li><p>感光度<br>相机感光度iso的值本质上是算法调节，因此调整感光度来使画面变亮并不是相机真正获得了更多的光线，而仅仅是通过算法将已有的光进行了放大，因此随着感光度的提升，噪点也会相应增多，如下图所示:<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E6%84%9F%E5%85%89%E5%BA%A6.jpg" alt="感光度iso"></p>
+<li>
+<p>感光度<br>
+相机感光度iso的值本质上是算法调节，因此调整感光度来使画面变亮并不是相机真正获得了更多的光线，而仅仅是通过算法将已有的光进行了放大，因此随着感光度的提升，噪点也会相应增多，如下图所示:<br>
+<img src="/Img/%E6%84%9F%E5%85%89%E5%BA%A6.jpg" alt="感光度iso"></p>
 </li>
-<li><p>综合<br>最后我们通过下面这张图来看下三个因素的综合影响:<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E6%9B%9D%E5%85%89%E7%BB%BC%E5%90%88.jpg" alt="曝光"></p>
+<li>
+<p>综合<br>
+最后我们通过下面这张图来看下三个因素的综合影响:<br>
+<img src="/Img/%E6%9B%9D%E5%85%89%E7%BB%BC%E5%90%88.jpg" alt="曝光"></p>
 </li>
 </ul>
-<h4 id="变焦与对焦"><a href="#变焦与对焦" class="headerlink" title="变焦与对焦"></a>变焦与对焦</h4><p>首先我们的镜头是分两类的:</p>
+<h4 id="变焦与对焦">变焦与对焦</h4>
+<p>首先我们的镜头是分两类的:</p>
 <ul>
-<li>变焦镜头: 即可以进行焦距的调整 </li>
-<li>定焦镜头: 焦距是固定的 </li>
+<li>变焦镜头: 即可以进行焦距的调整</li>
+<li>定焦镜头: 焦距是固定的</li>
 </ul>
-<p>变焦镜头与定焦镜头相比有以下优缺点: </p>
+<p>变焦镜头与定焦镜头相比有以下优缺点:</p>
 <ul>
 <li>优点: 更加地灵活，可以通过变焦来拍摄远景和近景，而对于定焦镜头则只能通过人移动来实现拍摄近景或者远景。</li>
 <li>缺点: 更加重，同时因为定焦镜头更容易将光圈做大，因此更容易获得梦幻般的虚化效果。</li>
 </ul>
-<p>长焦距镜头可以拍到更远地方的景物而不损失像素，超短焦距镜头也被称为广角镜头，可以获得非常大的取景范围。 </p>
+<p>长焦距镜头可以拍到更远地方的景物而不损失像素，超短焦距镜头也被称为广角镜头，可以获得非常大的取景范围。</p>
 <ul>
-<li><p>焦距<br>  焦距直接影响的是相机的取景范围，人双目的取景范围大致与50mm焦距镜头相当，单目的取景范围大致与35mm焦距镜头相当。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E7%84%A6%E8%B7%9D.jpg" alt="焦距"></p>
+<li>
+<p>焦距<br>
+焦距直接影响的是相机的取景范围，人双目的取景范围大致与50mm焦距镜头相当，单目的取景范围大致与35mm焦距镜头相当。<br>
+<img src="/Img/%E7%84%A6%E8%B7%9D.jpg" alt="焦距"></p>
 </li>
-<li><p>透视<br>  透视本质上其实就是近大远小，应用透视技巧可以进行一些好的构图<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E9%80%8F%E8%A7%86.jpg" alt="透视"></p>
+<li>
+<p>透视<br>
+透视本质上其实就是近大远小，应用透视技巧可以进行一些好的构图<br>
+<img src="/Img/%E9%80%8F%E8%A7%86.jpg" alt="透视"></p>
 </li>
-<li><p>对焦<br>在讲对焦之前首先给出一个光学公式: </p>
-<script type="math/tex; mode=display">
-  \frac{1}{u} + \frac{1}{v} = \frac{1}{f}</script><p>也就是说物距的倒数与像距的倒数之和为焦距的倒数。 在变焦时是调整$f$，而在对焦时则是调整$u,v$。 </p>
+<li>
+<p>对焦<br>
+在讲对焦之前首先给出一个光学公式:</p>
 </li>
-<li><p>景深<br>景深通俗来讲就是清晰的范围，影响景深的因素有三个: </p>
+</ul>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mfrac><mn>1</mn><mi>u</mi></mfrac><mo>+</mo><mfrac><mn>1</mn><mi>v</mi></mfrac><mo>=</mo><mfrac><mn>1</mn><mi>f</mi></mfrac></mrow><annotation encoding="application/x-tex">    \frac{1}{u} + \frac{1}{v} = \frac{1}{f}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:2.0074em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3214em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">u</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:2.0074em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3214em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">v</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.2019em;vertical-align:-0.8804em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3214em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.1076em;">f</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.8804em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+<p>也就是说物距的倒数与像距的倒数之和为焦距的倒数。 在变焦时是调整<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span></span></span></span>，而在对焦时则是调整<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo separator="true">,</mo><mi>v</mi></mrow><annotation encoding="application/x-tex">u,v</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">u</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">v</span></span></span></span>。</p>
 <ul>
-<li>焦距长景深浅 </li>
+<li>
+<p>景深<br>
+景深通俗来讲就是清晰的范围，影响景深的因素有三个:</p>
+<ul>
+<li>焦距长景深浅</li>
 <li>光圈大景深浅</li>
-<li>与焦点的距离近景深浅 </li>
+<li>与焦点的距离近景深浅</li>
 </ul>
-<p>景深的形成则是因为在焦点前后都会有一个容许弥散圆，这两个弥散圆之间的距离就叫景深，其光学原理大致如下图所示:<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E6%99%AF%E6%B7%B1.png" alt="景深"><br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/%E6%99%AF%E6%B7%B11.png" alt="景深计算公式"><br>从公式也可以看出，光圈值越小，对焦距离越小，焦距越大，则景深越小， 也就是说更容易拍出虚化效果。<br>一般而言，景深也与传感器大小有关，全画幅相机更容易获得浅景深。</p>
+<p>景深的形成则是因为在焦点前后都会有一个容许弥散圆，这两个弥散圆之间的距离就叫景深，其光学原理大致如下图所示:<br>
+<img src="/Img/%E6%99%AF%E6%B7%B1.png" alt="景深"><br>
+<img src="/Img/%E6%99%AF%E6%B7%B11.png" alt="景深计算公式"><br>
+从公式也可以看出，光圈值越小，对焦距离越小，焦距越大，则景深越小， 也就是说更容易拍出虚化效果。<br>
+一般而言，景深也与传感器大小有关，全画幅相机更容易获得浅景深。</p>
 </li>
 </ul>
-<h3 id="实际操作-曝光和对焦"><a href="#实际操作-曝光和对焦" class="headerlink" title="实际操作-曝光和对焦"></a>实际操作-曝光和对焦</h3><h4 id="曝光-1"><a href="#曝光-1" class="headerlink" title="曝光"></a>曝光</h4><p>机器曝光常见模式有以下几种:   </p>
+<h3 id="实际操作-曝光和对焦">实际操作-曝光和对焦</h3>
+<h4 id="曝光-1">曝光</h4>
+<p>机器曝光常见模式有以下几种:</p>
 <ul>
-<li>M档: 纯手动档，光圈、快门均手动调节 </li>
+<li>M档: 纯手动档，光圈、快门均手动调节</li>
 <li>A档: 光圈优先，可以手动调整光圈，然后相机会根据测光情况自动调整快门和iso</li>
-<li>S档: 快门优先，可以手动调整快门时间，然后相机会根据测光情况自动调整光圈和iso </li>
-<li>P/Auto档: 傻瓜档位，啥也不需要设置  </li>
+<li>S档: 快门优先，可以手动调整快门时间，然后相机会根据测光情况自动调整光圈和iso</li>
+<li>P/Auto档: 傻瓜档位，啥也不需要设置</li>
 </ul>
-<p>如果自己对于曝光满意可以通过曝光补偿来进行曝光调节。 </p>
-<h4 id="对焦"><a href="#对焦" class="headerlink" title="对焦"></a>对焦</h4><p>常见对焦模式有以下几种: </p>
+<p>如果自己对于曝光满意可以通过曝光补偿来进行曝光调节。</p>
+<h4 id="对焦">对焦</h4>
+<p>常见对焦模式有以下几种:</p>
 <ul>
-<li>MF: 手动对焦 </li>
-<li>AF-S: 单次自动对焦 </li>
+<li>MF: 手动对焦</li>
+<li>AF-S: 单次自动对焦</li>
 <li>AF-C: 多次自动对焦，广域-眼部对焦</li>
-<li>DMF: AF-S + MF </li>
+<li>DMF: AF-S + MF</li>
 </ul>
-<p>注意: </p>
+<p>注意:</p>
 <blockquote>
-<p>对焦和曝光没有关系 </p>
+<p>对焦和曝光没有关系</p>
 </blockquote>
 
             </div>
@@ -711,12 +804,12 @@
                     
                 </div>
                 <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
-                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/share/css/share.min.css">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
 <div id="article-share">
 
     
     <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/share/js/social-share.min.js"></script>
+    <script src="/libs/share/js/social-share.min.js"></script>
     
 
     
@@ -834,10 +927,10 @@
                         <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
                     </ul>
                     <div id="alipay">
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/reward/ali.jpeg" class="reward-img" alt="支付宝打赏二维码">
+                        <img src="/medias/reward/ali.jpeg" class="reward-img" alt="支付宝打赏二维码">
                     </div>
                     <div id="wechat">
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/reward/wechat.jpeg" class="reward-img" alt="微信打赏二维码">
+                        <img src="/medias/reward/wechat.jpeg" class="reward-img" alt="微信打赏二维码">
                     </div>
                 </div>
             </div>
@@ -1105,12 +1198,12 @@
         <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
         <span>评论</span>
     </div>
-    <div id="vcomments" class="card-content" style="display: grid">
+    <div id="vcomments" class="card-content" style="display: block">
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/valine/av-min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/valine/Valine.min.js"></script>
+<script src="/libs/valine/av-min.js"></script>
+<script src="/libs/valine/Valine.min.js"></script>
 <script>
     new Valine({
         el: '#vcomments',
@@ -1142,8 +1235,7 @@
                 <a href="/2020/10/28/chu-shi-docker/">
                     <div class="card-image">
                         
-                        
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/1.png" class="responsive-img" alt="初识Docker">
+                        <img src="/medias/featureimages/1.png" class="responsive-img" alt="初识Docker">
                         
                         <span class="card-title">初识Docker</span>
                     </div>
@@ -1151,9 +1243,10 @@
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            近期因为在外出差，没咋看论文，为了让时间得到充分利用，自己打算学习一些开发相关的知识，毕竟技多不压身。 这部分就参考Docker官方文档来进行Docker基本知识的学习。该部分分为以下三个章节进行组织:
+                            近期因为在外出差，没咋看论文，为了让时间得到充分利用，自己打算学习一些开发相关的知识，毕竟技多不压身。 这部分就参考Docker官方文档来进行Docker基本知识的学习。
+该部分分为以下三个章节进行组织:
 
-概念与设置 
+概念与设置
 构建并运行镜像
 在D
                         
@@ -1168,6 +1261,10 @@
                             
                             <a href="/categories/%E5%BC%80%E5%8F%91%E7%9F%A5%E8%AF%86/" class="post-category">
                                     开发知识
+                                </a>
+                            
+                            <a href="/categories/%E5%BC%80%E5%8F%91%E7%9F%A5%E8%AF%86/%E7%82%B9%E6%BB%B4%E7%94%9F%E6%B4%BB/" class="post-category">
+                                    点滴生活
                                 </a>
                             
                             
@@ -1195,8 +1292,7 @@
                 <a href="/2020/10/10/zi-bian-ma-qi-ae/">
                     <div class="card-image">
                         
-                        
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/1.png" class="responsive-img" alt="自编码器AE">
+                        <img src="/medias/featureimages/1.png" class="responsive-img" alt="自编码器AE">
                         
                         <span class="card-title">自编码器AE</span>
                     </div>
@@ -1204,13 +1300,7 @@
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            在进行数据降维和数据降噪时常用的深度学习方法是自编码器AutoEncoder类算法，其具有以下特点:
-
-自编码器类算法属于无监督学习范畴
-从结构上来看自编码器类算法包含编码器和解码器两部分 
-自编码器算法常用做特征提取 
-
-本文按照以下结构
+                            在进行数据降维和数据降噪时常用的深度学习方法是自编码器AutoEncoder类算法，其具有以下特点: 自编码器类算法属于无监督学习范畴 从结构上来看自编码器类算法包含编码器和解码器两部分 自编码器算法常用做特征提取 本文按照以下结构进行组织: 自编码器AE 变分自编码器VAE 降噪自编码器DAE 自
                         
                     </div>
                     <div class="publish-info">
@@ -1223,6 +1313,10 @@
                             
                             <a href="/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/" class="post-category">
                                     统计学习
+                                </a>
+                            
+                            <a href="/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/%E7%82%B9%E6%BB%B4%E7%94%9F%E6%B4%BB/" class="post-category">
+                                    点滴生活
                                 </a>
                             
                             
@@ -1249,21 +1343,21 @@
 
 
 <!-- 代码块功能依赖 -->
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeBlockFuction.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
 
 <!-- 代码语言 -->
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeLang.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
 
 
 <!-- 代码块复制 -->
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeCopy.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
 
 
 <!-- 代码块收缩 -->
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeShrink.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
 
 
 <!-- 代码块折行 -->
@@ -1291,7 +1385,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
 </div>
 
 
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/tocbot/tocbot.min.js"></script>
+<script src="/libs/tocbot/tocbot.min.js"></script>
 <script>
     $(function () {
         tocbot.init({
@@ -1372,18 +1466,11 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
 </main>
 
 
-<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script>
-    MathJax.Hub.Config({
-        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
-    });
-</script>
-
 
 
     <footer class="page-footer bg-color">
     
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aplayer/APlayer.min.css">
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
 <style>
     .aplayer .aplayer-lrc p {
         
@@ -1433,7 +1520,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aplayer/APlayer.min.js"></script>
+<script src="/libs/aplayer/APlayer.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
 
     
@@ -1447,7 +1534,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">177k</span>&nbsp;字
+                class="white-color">202k</span>&nbsp;字
             
             
             
@@ -1516,10 +1603,10 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/js/search.js"></script>
+<script src="/js/search.js"></script>
 <script type="text/javascript">
 $(function () {
-    searchFunc("https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/search.xml", 'searchInput', 'searchResult');
+    searchFunc("/search.xml", 'searchInput', 'searchResult');
 });
 </script>
 
@@ -1531,12 +1618,12 @@ $(function () {
 </div>
 
 
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/materialize/materialize.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/masonry/masonry.pkgd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aos/aos.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/scrollprogress/scrollProgress.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/lightGallery/js/lightgallery-all.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/js/matery.js"></script>
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
 
     <!-- Baidu Analytics -->
 
@@ -1558,7 +1645,7 @@ $(function () {
 
     
     
-    <script async src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/others/busuanzi.pure.mini.js"></script>
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
     
 
     
@@ -1572,7 +1659,7 @@ $(function () {
     
 
     
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/instantpage/instantpage.js" type="module"></script>
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
     
 
 <script type="text/javascript"> //只在桌面版网页启用特效 

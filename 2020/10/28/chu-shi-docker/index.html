@@ -17,24 +17,23 @@
 
 
     <title>初识Docker | 风之声</title>
-    <link rel="icon" type="image/jpeg" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/favicon.jpg">
+    <link rel="icon" type="image/jpeg" href="/favicon.jpg">
 
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/awesome/css/all.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/materialize/materialize.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aos/aos.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/animate/animate.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/lightGallery/css/lightgallery.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/css/matery.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/css/my.css">
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <link rel="stylesheet" href="/vendor/katex/katex.min.css">
+    <link rel="stylesheet" href="/css/prism.css">
+    <link rel="stylesheet" href="/css/prism-line-numbers.css">
+    <link rel="stylesheet" href="/css/custom.css">
 
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/jquery/jquery.min.js"></script>
+    <script src="/libs/jquery/jquery.min.js"></script>
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"><link rel="stylesheet" href="/css/prism.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<meta name="generator" content="Hexo 8.1.2"></head>
 
 
 <body>
@@ -44,7 +43,7 @@
             <div class="brand-logo">
                 <a href="/" class="waves-effect waves-light">
                     
-                    <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/logo.png" class="logo-img" alt="LOGO">
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
                     
                     <span class="logo-span">风之声</span>
                 </a>
@@ -143,7 +142,7 @@
 
     <div class="mobile-head bg-color">
         
-        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/logo.png" class="logo-img circle responsive-img">
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
         
         <div class="logo-name">风之声</div>
         <div class="logo-desc">
@@ -310,10 +309,23 @@
 </header>
 
     
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/1.png')">
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/1.png')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -331,7 +343,7 @@
 <main class="post-container content">
 
     
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
 <style>
     #articleContent h1::before,
     #articleContent h2::before,
@@ -451,6 +463,10 @@
                                 开发知识
                             </a>
                         
+                            <a href="/categories/%E5%BC%80%E5%8F%91%E7%9F%A5%E8%AF%86/%E7%82%B9%E6%BB%B4%E7%94%9F%E6%B4%BB/" class="post-category">
+                                点滴生活
+                            </a>
+                        
                     </div>
                     
                 </div>
@@ -496,81 +512,94 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>近期因为在外出差，没咋看论文，为了让时间得到充分利用，自己打算学习一些开发相关的知识，毕竟技多不压身。 这部分就参考<a target="_blank" rel="noopener" href="https://docs.docker.com/get-started/">Docker官方文档</a>来进行Docker基本知识的学习。<br>该部分分为以下三个章节进行组织:</p>
+                <p>近期因为在外出差，没咋看论文，为了让时间得到充分利用，自己打算学习一些开发相关的知识，毕竟技多不压身。 这部分就参考<a target="_blank" rel="noopener" href="https://docs.docker.com/get-started/">Docker官方文档</a>来进行Docker基本知识的学习。<br>
+该部分分为以下三个章节进行组织:</p>
 <ul>
-<li>概念与设置 </li>
+<li>概念与设置</li>
 <li>构建并运行镜像</li>
-<li>在Docker Hub 上共享镜像 <span id="more"></span>
-<h3 id="概念与设置"><a href="#概念与设置" class="headerlink" title="概念与设置"></a>概念与设置</h3><h4 id="Docker概念"><a href="#Docker概念" class="headerlink" title="Docker概念"></a>Docker概念</h4>Docker是供开发人员和系统管理员 使用容器构建，运行和共享应用程序的平台。使用容器部署应用程序称为容器化。容器不是新的，但用于轻松部署应用程序的容器却是新的。<br>容器化越来越受欢迎，这是因为容器具有如下几点优点: </li>
+<li>在Docker Hub 上共享镜像</li>
+</ul>
+<span id="more"></span>
+<h3 id="概念与设置">概念与设置</h3>
+<h4 id="Docker概念">Docker概念</h4>
+<p>Docker是供开发人员和系统管理员 使用容器构建，运行和共享应用程序的平台。使用容器部署应用程序称为容器化。容器不是新的，但用于轻松部署应用程序的容器却是新的。<br>
+容器化越来越受欢迎，这是因为容器具有如下几点优点:</p>
+<ul>
 <li>灵活：即使最复杂的应用程序也可以容器化。</li>
-<li>轻量级：容器利用并共享主机内核，在系统资源方面比虚拟机更有效。 </li>
+<li>轻量级：容器利用并共享主机内核，在系统资源方面比虚拟机更有效。</li>
 <li>可移植：您可以在本地构建，部署到云并在任何地方运行。</li>
 <li>松散耦合：容器是高度自给自足并封装的，可让您在不破坏其他容器的情况下更换或升级它们。</li>
 <li>可扩展：您可以在数据中心内增加并自动分布容器副本。</li>
-<li>安全：容器将积极的约束和隔离应用于流程，而用户无需进行任何配置。 </li>
+<li>安全：容器将积极的约束和隔离应用于流程，而用户无需进行任何配置。</li>
 </ul>
-<h4 id="镜像与容器"><a href="#镜像与容器" class="headerlink" title="镜像与容器"></a>镜像与容器</h4><p>从根本上说，一个容器不过是一个<strong>正在运行的进程</strong>，并对其应用了一些附加的封装功能，以使其与主机和其他容器隔离。容器隔离的最重要方面之一是每个容器都与自己的专用文件系统进行交互。该文件系统由<strong>Docker映像</strong>提供。映像包括运行应用程序所需的所有内容-代码或二进制文件，运行时，依赖关系以及所需的任何其他文件系统对象。</p>
-<h4 id="容器和虚拟机"><a href="#容器和虚拟机" class="headerlink" title="容器和虚拟机"></a>容器和虚拟机</h4><p>一个容器本地运行于Linux系统上，并与其他容器共享主机内核。一个容器运行一个离散进程，占用的内存不超过其他任何可执行文件，因此其比较轻量。<br>相比之下，虚拟机（VM）运行一个全面的“来宾”操作系统，通过hypervisor对主机资源进行虚拟访问。一般来说，除了应用程序逻辑所消耗的外，vm会产生很多开销。<br><img src="https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/Container.png" alt="容器与虚拟机"></p>
-<h4 id="Docker环境设置"><a href="#Docker环境设置" class="headerlink" title="Docker环境设置"></a>Docker环境设置</h4><p>参考<a target="_blank" rel="noopener" href="https://docs.docker.com/get-started/">docker桌面版安装及测试</a>来进行安装，运行:</p>
-<pre class="line-numbers language-lang-bash"><code class="language-lang-bash">docker run hello-world
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h4 id="镜像与容器">镜像与容器</h4>
+<p>从根本上说，一个容器不过是一个<strong>正在运行的进程</strong>，并对其应用了一些附加的封装功能，以使其与主机和其他容器隔离。容器隔离的最重要方面之一是每个容器都与自己的专用文件系统进行交互。该文件系统由<strong>Docker映像</strong>提供。映像包括运行应用程序所需的所有内容-代码或二进制文件，运行时，依赖关系以及所需的任何其他文件系统对象。</p>
+<h4 id="容器和虚拟机">容器和虚拟机</h4>
+<p>一个容器本地运行于Linux系统上，并与其他容器共享主机内核。一个容器运行一个离散进程，占用的内存不超过其他任何可执行文件，因此其比较轻量。<br>
+相比之下，虚拟机（VM）运行一个全面的“来宾”操作系统，通过hypervisor对主机资源进行虚拟访问。一般来说，除了应用程序逻辑所消耗的外，vm会产生很多开销。<br>
+<img src="/Img/Container.png" alt="容器与虚拟机"></p>
+<h4 id="Docker环境设置">Docker环境设置</h4>
+<p>参考<a target="_blank" rel="noopener" href="https://docs.docker.com/get-started/">docker桌面版安装及测试</a>来进行安装，运行:</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">docker</span> run hello-world <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>如果返回:</p>
-<pre class="line-numbers language-lang-bash"><code class="language-lang-bash">Hello from Docker!
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">Hello from Docker<span class="token operator">!</span>
 This message shows that your installation appears to be working correctly.
 
 To generate this message, Docker took the following steps:
- 1. The Docker client contacted the Docker daemon.
- 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
-    (amd64)
- 3. The Docker daemon created a new container from that image which runs the
+ <span class="token number">1</span>. The Docker client contacted the Docker daemon.
+ <span class="token number">2</span>. The Docker daemon pulled the <span class="token string">"hello-world"</span> image from the Docker Hub.
+    <span class="token punctuation">(</span>amd64<span class="token punctuation">)</span>
+ <span class="token number">3</span>. The Docker daemon created a new container from that image <span class="token function">which</span> runs the
     executable that produces the output you are currently reading.
- 4. The Docker daemon streamed that output to the Docker client, which sent it
+ <span class="token number">4</span>. The Docker daemon streamed that output to the Docker client, <span class="token function">which</span> sent it
     to your terminal.
 
-To try something more ambitious, you can run an Ubuntu container with:
- $ docker run -it ubuntu bash
+To try something <span class="token function">more</span> ambitious, you can run an Ubuntu container with:
+ $ <span class="token function">docker</span> run <span class="token parameter variable">-it</span> ubuntu <span class="token function">bash</span>
 
-Share images, automate workflows, and more with a free Docker ID:
+Share images, automate workflows, and <span class="token function">more</span> with a <span class="token function">free</span> Docker ID:
  https://hub.docker.com/
 
-For more examples and ideas, visit:
- https://docs.docker.com/get-started/
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>则说明已经在机器上成功安装docker desktop 并进行了快速测试，成功运行了第一个容器化应用<code>hello-world</code>. </p>
-<h3 id="构建并运行镜像"><a href="#构建并运行镜像" class="headerlink" title="构建并运行镜像"></a>构建并运行镜像</h3><h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><p>通过上面的测试，我们已经设置好了开发环境，接下来我们便可以开发容器化的应用程序，通常，开发流程如下: </p>
+For <span class="token function">more</span> examples and ideas, visit:
+ https://docs.docker.com/get-started/<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>则说明已经在机器上成功安装docker desktop 并进行了快速测试，成功运行了第一个容器化应用<code>hello-world</code>.</p>
+<h3 id="构建并运行镜像">构建并运行镜像</h3>
+<h4 id="简介">简介</h4>
+<p>通过上面的测试，我们已经设置好了开发环境，接下来我们便可以开发容器化的应用程序，通常，开发流程如下:</p>
 <ul>
 <li>首先创建Docker映像，为应用程序的每个组件创建和测试单独的容器。</li>
 <li>将您的容器和支持基础结构组装成一个完整的应用程序。</li>
-<li>测试，共享和部署完整的容器化应用程序。 </li>
+<li>测试，共享和部署完整的容器化应用程序。</li>
 </ul>
 <p>在本章节中，我们将工作重心放在第一个步骤，创建容器将基于的镜像。请记住，Docker映像捕获了将在其中运行容器化进程的私有文件系统；您需要创建一个图像，其中包含您的应用程序需要运行的内容。</p>
-<h4 id="设置"><a href="#设置" class="headerlink" title="设置"></a>设置</h4><p>首先下载<code>node-bulletin-board</code>项目，这是一个用Node.js编写的简单公告版应用程序,首先通过<code>git</code>下clone该项目:</p>
-<pre class="line-numbers language-lang-bash"><code class="language-lang-bash">git clone https://github.com/dockersamples/node-bulletin-board
-cd node-bulletin-board/bulletin-board-app
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<h4 id="使用dockerfile定义一个容器"><a href="#使用dockerfile定义一个容器" class="headerlink" title="使用dockerfile定义一个容器"></a>使用dockerfile定义一个容器</h4><p>在下载整个项目后，使用找到<code>bulletin board</code>应用中的<code>dockerfile</code>文件，<code>dockerfile</code>描述了如何为容器组装私有文件系统，并且还包含一些元数据来描述如何基于该映像运行容器。<br>下面给出该示例项目的<code>dockerfile</code>的注释文件: </p>
-<pre class="line-numbers language-lang-bash"><code class="language-lang-bash"># Use the official image as a parent image.
+<h4 id="设置">设置</h4>
+<p>首先下载<code>node-bulletin-board</code>项目，这是一个用Node.js编写的简单公告版应用程序,首先通过<code>git</code>下clone该项目:</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> clone https://github.com/dockersamples/node-bulletin-board
+<span class="token builtin class-name">cd</span> node-bulletin-board/bulletin-board-app<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h4 id="使用dockerfile定义一个容器">使用dockerfile定义一个容器</h4>
+<p>在下载整个项目后，使用找到<code>bulletin board</code>应用中的<code>dockerfile</code>文件，<code>dockerfile</code>描述了如何为容器组装私有文件系统，并且还包含一些元数据来描述如何基于该映像运行容器。<br>
+下面给出该示例项目的<code>dockerfile</code>的注释文件:</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># Use the official image as a parent image.</span>
 FROM node:current-slim
 
-# Set the working directory.
+<span class="token comment"># Set the working directory.</span>
 WORKDIR /usr/src/app
 
-# Copy the file from your host to your current location.
-COPY package.json .
+<span class="token comment"># Copy the file from your host to your current location.</span>
+COPY package.json <span class="token builtin class-name">.</span>
 
-# Run the command inside your image filesystem.
-RUN npm install
+<span class="token comment"># Run the command inside your image filesystem.</span>
+RUN <span class="token function">npm</span> <span class="token function">install</span>
 
-# Add metadata to the image to describe which port the container is listening on at runtime.
-EXPOSE 8080
+<span class="token comment"># Add metadata to the image to describe which port the container is listening on at runtime.</span>
+EXPOSE <span class="token number">8080</span>
 
-# Run the specified command within the container.
-CMD [ "npm", "start" ]
+<span class="token comment"># Run the specified command within the container.</span>
+CMD <span class="token punctuation">[</span> <span class="token string">"npm"</span>, <span class="token string">"start"</span> <span class="token punctuation">]</span>
 
-# Copy the rest of your app's source code from your host to your image filesystem.
-COPY . .
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>下面给出该<code>dockerfile</code>命令逻辑解释: </p>
+<span class="token comment"># Copy the rest of your app's source code from your host to your image filesystem.</span>
+COPY <span class="token builtin class-name">.</span> <span class="token builtin class-name">.</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>下面给出该<code>dockerfile</code>命令逻辑解释:</p>
 <ul>
 <li>通过<code>FROM</code>指定一个基础映像-<code>node:current-slim</code>。这是由<code>node.js</code>公司构建的官方镜像并且已由<code>Docker</code>验证为包含<code>Node.js</code>长期支持解释器和基本依赖项的高质量镜像。</li>
 <li>使用<code>WORKDIR</code>指定所有后续操作都应该从映像文件系统中的<code>/usr/src/app</code>目录（而不是主机的文件系统）执行。</li>
@@ -580,33 +609,36 @@ COPY . .
 </ul>
 <p>上面的步骤构建了我们的映像文件系统，但同时还包含一些其它命令:</p>
 <ul>
-<li>使用<code>CMD</code>命令来指定了如何基于该映像运行容器，该命令意味着该镜像要支持的容器化进程是<code>npm start</code> </li>
-<li><code>EXPOSURE 8080</code>则是通知<code>Docker</code>容器会实时监听端口<code>8080</code> </li>
+<li>使用<code>CMD</code>命令来指定了如何基于该映像运行容器，该命令意味着该镜像要支持的容器化进程是<code>npm start</code></li>
+<li><code>EXPOSURE 8080</code>则是通知<code>Docker</code>容器会实时监听端口<code>8080</code></li>
 </ul>
-<h4 id="构建并测试镜像"><a href="#构建并测试镜像" class="headerlink" title="构建并测试镜像"></a>构建并测试镜像</h4><p>运行以下命令来构建公告板映像:</p>
-<pre class="line-numbers language-lang-bash"><code class="language-lang-bash">docker build --tag bulletinboard:1.0 .
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>运行成功后会显示： </p>
-<pre class="line-numbers language-lang-bash"><code class="language-lang-bash">Successfully tagged bulletinboard:1.0
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h4 id="将镜像作为容器运行"><a href="#将镜像作为容器运行" class="headerlink" title="将镜像作为容器运行"></a>将镜像作为容器运行</h4><ol>
-<li>运行以下命令以基于新映像启动容器 <pre class="line-numbers language-lang-bash"><code class="language-lang-bash">docker run --publish 8000:8080 --detach --name bb bulletinboard:1.0
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-这里有几个常见的标志: </li>
+<h4 id="构建并测试镜像">构建并测试镜像</h4>
+<p>运行以下命令来构建公告板映像:</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">docker</span> build <span class="token parameter variable">--tag</span> bulletinboard:1.0 <span class="token builtin class-name">.</span> <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>运行成功后会显示：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">Successfully tagged bulletinboard:1.0<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h4 id="将镜像作为容器运行">将镜像作为容器运行</h4>
+<ol>
+<li>运行以下命令以基于新映像启动容器</li>
 </ol>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">docker</span> run <span class="token parameter variable">--publish</span> <span class="token number">8000</span>:8080 <span class="token parameter variable">--detach</span> <span class="token parameter variable">--name</span> bb bulletinboard:1.0 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>这里有几个常见的标志:</p>
 <ul>
-<li><code>--publish</code>要求Docker将主机端口8000上传入的流量转发到容器的端口8080。容器具有自己的专用端口集，因此，如果要从网络访问某个端口，则必须以这种方式将流量转发到该端口。否则，作为默认的安全状态，防火墙规则将阻止所有网络流量到达您的容器。 </li>
-<li><code>--detach</code>要求docker在后台运行此程序 </li>
+<li><code>--publish</code>要求Docker将主机端口8000上传入的流量转发到容器的端口8080。容器具有自己的专用端口集，因此，如果要从网络访问某个端口，则必须以这种方式将流量转发到该端口。否则，作为默认的安全状态，防火墙规则将阻止所有网络流量到达您的容器。</li>
+<li><code>--detach</code>要求docker在后台运行此程序</li>
 <li><code>--name</code>指定一个名称，在后续命令中，可以使用该名称引用容器，本命令中指定为<code>bb</code></li>
 </ul>
-<ol>
+<ol start="2">
 <li>在浏览器中访问应用程序<code>localhost:8000</code>,可以看到公告版应用程序已启动并且正在运行，在这一步，您通常会尽一切可能确保容器按预期方式工作。例如，现在是运行单元测试的时候了。</li>
-<li>对公告板容器正常工作感到满意后可以将其删除：<pre class="line-numbers language-lang-bash"><code class="language-lang-bash">docker rm --force bb
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-该<code>--force</code>选项停止一个正在运行中的容器，也可以采用<code>docker stop bb</code>来停止一个容器，这样就不需要使用<code>--force</code>选项来<code>rm</code>容器。</li>
+<li>对公告板容器正常工作感到满意后可以将其删除：</li>
 </ol>
-<h3 id="在Docker-Hub-中分享镜像"><a href="#在Docker-Hub-中分享镜像" class="headerlink" title="在Docker Hub 中分享镜像"></a>在Docker Hub 中分享镜像</h3><h4 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h4><p>开发容器化程序的最后一步是在<a target="_blank" rel="noopener" href="https://hub.docker.com/">docker hub</a>之类的注册标上共享镜像，以便可以轻松下载他们，并在任何目标计算机上运行他们。 </p>
-<h4 id="创建一个Docker-hub-存储库"><a href="#创建一个Docker-hub-存储库" class="headerlink" title="创建一个Docker hub 存储库"></a>创建一个Docker hub 存储库</h4><p>在创建完docker id之后，可以创建一个docker镜像仓库</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">docker</span> <span class="token function">rm</span> <span class="token parameter variable">--force</span> bb <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>该<code>--force</code>选项停止一个正在运行中的容器，也可以采用<code>docker stop bb</code>来停止一个容器，这样就不需要使用<code>--force</code>选项来<code>rm</code>容器。</p>
+<h3 id="在Docker-Hub-中分享镜像">在Docker Hub 中分享镜像</h3>
+<h4 id="介绍">介绍</h4>
+<p>开发容器化程序的最后一步是在<a target="_blank" rel="noopener" href="https://hub.docker.com/">docker hub</a>之类的注册标上共享镜像，以便可以轻松下载他们，并在任何目标计算机上运行他们。</p>
+<h4 id="创建一个Docker-hub-存储库">创建一个Docker hub 存储库</h4>
+<p>在创建完docker id之后，可以创建一个docker镜像仓库</p>
 
             </div>
             <hr/>
@@ -678,12 +710,12 @@ COPY . .
                     
                 </div>
                 <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
-                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/share/css/share.min.css">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
 <div id="article-share">
 
     
     <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/share/js/social-share.min.js"></script>
+    <script src="/libs/share/js/social-share.min.js"></script>
     
 
     
@@ -801,10 +833,10 @@ COPY . .
                         <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
                     </ul>
                     <div id="alipay">
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/reward/ali.jpeg" class="reward-img" alt="支付宝打赏二维码">
+                        <img src="/medias/reward/ali.jpeg" class="reward-img" alt="支付宝打赏二维码">
                     </div>
                     <div id="wechat">
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/reward/wechat.jpeg" class="reward-img" alt="微信打赏二维码">
+                        <img src="/medias/reward/wechat.jpeg" class="reward-img" alt="微信打赏二维码">
                     </div>
                 </div>
             </div>
@@ -1072,12 +1104,12 @@ COPY . .
         <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
         <span>评论</span>
     </div>
-    <div id="vcomments" class="card-content" style="display: grid">
+    <div id="vcomments" class="card-content" style="display: block">
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/valine/av-min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/valine/Valine.min.js"></script>
+<script src="/libs/valine/av-min.js"></script>
+<script src="/libs/valine/Valine.min.js"></script>
 <script>
     new Valine({
         el: '#vcomments',
@@ -1109,8 +1141,7 @@ COPY . .
                 <a href="/2020/11/02/ren-xiang-she-ying/">
                     <div class="card-image">
                         
-                        
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/7.jpg" class="responsive-img" alt="人像摄影-光线与构图">
+                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="人像摄影-光线与构图">
                         
                         <span class="card-title">人像摄影-光线与构图</span>
                     </div>
@@ -1120,9 +1151,12 @@ COPY . .
                         
                             这一部分介绍一下在进行人像摄影时的一些理论知识，该部分目录如下:
 
+
 光线
+
 光位
 光质
+
 时刻
 天气
 环境光
@@ -1131,12 +1165,13 @@ COPY . .
 
 
 曝光技巧
-曝光 $\cdot$ 寻找光斑
-曝光 $\cdot$ 设置
+
+曝光 ⋅\cdot⋅ 寻找光斑
+
+曝光 ⋅\cdot⋅ 设置
 
 
-曝光 $\cdot$ 大光比
-曝光
+曝光 ⋅\cdot⋅ 大
                         
                     </div>
                     <div class="publish-info">
@@ -1149,6 +1184,10 @@ COPY . .
                             
                             <a href="/categories/%E7%82%B9%E6%BB%B4%E7%94%9F%E6%B4%BB/" class="post-category">
                                     点滴生活
+                                </a>
+                            
+                            <a href="/categories/%E7%82%B9%E6%BB%B4%E7%94%9F%E6%B4%BB/%E5%BC%80%E5%8F%91%E7%9F%A5%E8%AF%86/" class="post-category">
+                                    开发知识
                                 </a>
                             
                             
@@ -1176,8 +1215,7 @@ COPY . .
                 <a href="/2020/10/25/xiang-ji-ji-ben-zhi-shi/">
                     <div class="card-image">
                         
-                        
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/3.png" class="responsive-img" alt="相机基本知识">
+                        <img src="/medias/featureimages/3.png" class="responsive-img" alt="相机基本知识">
                         
                         <span class="card-title">相机基本知识</span>
                     </div>
@@ -1187,9 +1225,10 @@ COPY . .
                         
                             俗话说，没有金刚钻就不揽瓷器活，既然要进行摄影的系统性学习，那么自然就首先从设备讲起，本文按照以下结构进行组织:
 
-单反与微单 
-传感器 
+单反与微单
+传感器
 相机推荐
+
                         
                     </div>
                     <div class="publish-info">
@@ -1202,6 +1241,14 @@ COPY . .
                             
                             <a href="/categories/%E7%82%B9%E6%BB%B4%E7%94%9F%E6%B4%BB/" class="post-category">
                                     点滴生活
+                                </a>
+                            
+                            <a href="/categories/%E7%82%B9%E6%BB%B4%E7%94%9F%E6%B4%BB/%E5%BC%80%E5%8F%91%E7%9F%A5%E8%AF%86/" class="post-category">
+                                    开发知识
+                                </a>
+                            
+                            <a href="/categories/%E7%82%B9%E6%BB%B4%E7%94%9F%E6%B4%BB/%E5%BC%80%E5%8F%91%E7%9F%A5%E8%AF%86/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/" class="post-category">
+                                    统计学习
                                 </a>
                             
                             
@@ -1228,21 +1275,21 @@ COPY . .
 
 
 <!-- 代码块功能依赖 -->
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeBlockFuction.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
 
 <!-- 代码语言 -->
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeLang.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
 
 
 <!-- 代码块复制 -->
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeCopy.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
 
 
 <!-- 代码块收缩 -->
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeShrink.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
 
 
 <!-- 代码块折行 -->
@@ -1270,7 +1317,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
 </div>
 
 
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/tocbot/tocbot.min.js"></script>
+<script src="/libs/tocbot/tocbot.min.js"></script>
 <script>
     $(function () {
         tocbot.init({
@@ -1351,18 +1398,11 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
 </main>
 
 
-<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script>
-    MathJax.Hub.Config({
-        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
-    });
-</script>
-
 
 
     <footer class="page-footer bg-color">
     
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aplayer/APlayer.min.css">
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
 <style>
     .aplayer .aplayer-lrc p {
         
@@ -1412,7 +1452,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aplayer/APlayer.min.js"></script>
+<script src="/libs/aplayer/APlayer.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
 
     
@@ -1426,7 +1466,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">177k</span>&nbsp;字
+                class="white-color">202k</span>&nbsp;字
             
             
             
@@ -1495,10 +1535,10 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/js/search.js"></script>
+<script src="/js/search.js"></script>
 <script type="text/javascript">
 $(function () {
-    searchFunc("https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/search.xml", 'searchInput', 'searchResult');
+    searchFunc("/search.xml", 'searchInput', 'searchResult');
 });
 </script>
 
@@ -1510,12 +1550,12 @@ $(function () {
 </div>
 
 
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/materialize/materialize.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/masonry/masonry.pkgd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aos/aos.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/scrollprogress/scrollProgress.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/lightGallery/js/lightgallery-all.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/js/matery.js"></script>
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
 
     <!-- Baidu Analytics -->
 
@@ -1537,7 +1577,7 @@ $(function () {
 
     
     
-    <script async src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/others/busuanzi.pure.mini.js"></script>
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
     
 
     
@@ -1551,7 +1591,7 @@ $(function () {
     
 
     
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/instantpage/instantpage.js" type="module"></script>
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
     
 
 <script type="text/javascript"> //只在桌面版网页启用特效 

@@ -17,24 +17,23 @@
 
 
     <title>赛尔号插件下载地址 | 风之声</title>
-    <link rel="icon" type="image/jpeg" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/favicon.jpg">
+    <link rel="icon" type="image/jpeg" href="/favicon.jpg">
 
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/awesome/css/all.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/materialize/materialize.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aos/aos.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/animate/animate.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/lightGallery/css/lightgallery.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/css/matery.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/css/my.css">
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <link rel="stylesheet" href="/vendor/katex/katex.min.css">
+    <link rel="stylesheet" href="/css/prism.css">
+    <link rel="stylesheet" href="/css/prism-line-numbers.css">
+    <link rel="stylesheet" href="/css/custom.css">
 
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/jquery/jquery.min.js"></script>
+    <script src="/libs/jquery/jquery.min.js"></script>
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"><link rel="stylesheet" href="/css/prism.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<meta name="generator" content="Hexo 8.1.2"></head>
 
 
 <body>
@@ -44,7 +43,7 @@
             <div class="brand-logo">
                 <a href="/" class="waves-effect waves-light">
                     
-                    <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/logo.png" class="logo-img" alt="LOGO">
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
                     
                     <span class="logo-span">风之声</span>
                 </a>
@@ -143,7 +142,7 @@
 
     <div class="mobile-head bg-color">
         
-        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/logo.png" class="logo-img circle responsive-img">
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
         
         <div class="logo-name">风之声</div>
         <div class="logo-desc">
@@ -310,10 +309,23 @@
 </header>
 
     
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/4.png')">
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/4.png')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -331,7 +343,7 @@
 <main class="post-container content">
 
     
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
 <style>
     #articleContent h1::before,
     #articleContent h2::before,
@@ -451,6 +463,10 @@
                                 游戏
                             </a>
                         
+                            <a href="/categories/%E6%B8%B8%E6%88%8F/%E7%AE%97%E6%B3%95%E5%B2%97%E5%85%AB%E8%82%A1%E6%96%87/" class="post-category">
+                                算法岗八股文
+                            </a>
+                        
                     </div>
                     
                 </div>
@@ -496,7 +512,8 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="抱歉, 这个密码看着不太对, 请再试试." data-whm="抱歉, 这个文章不能被校验, 不过您还是能看看解密后的内容.">
+                
+<div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="抱歉, 这个密码看着不太对, 请再试试." data-whm="抱歉, 这个文章不能被校验, 不过您还是能看看解密后的内容.">
   <script id="hbeData" type="hbeData" data-hmacdigest="4d290510b6709c91c117269e5f5b09f572bf07b11751014a01b284c7c21c8455">1b693c4938223286468132b2f7068bf6e9d90218eafbee831d63680d4b07e55471d163e871ab44ffa30ecb74842f15845442a6a7dd8fbfb8352a9d3974ad4bc35d6fd25e43c7a6bb3c8a144ec8df131505b600667d2b4aefe97be14b94b12342e4966ccfa24cae276a28c8054e118216ec23b0dcb92098286e81c47d9fa5b17008b0700b98f77f7259d953f8005f1af0990fdf8af3f19db8cdc600603cdbb22b4d0acb09171bd94f89e6681ff3d47d35eb17ebe357fc7cccde0387ec030ee6a5417aca9443db0abb51ace0fbd25fe0e928ad19f69f4902e580626b45c20fcacb80785f9e4227a4819ca3a5c7f668901a831645822b2bf07094586379bcd7ee9cead6d395aa76a3e31c41575072ba5f40778444bd141303453949b2ac38c163cc05ad97073ae013dffe3e7021c8c9de25aa07ac692fe25dbf94d8274874a60d459e0ad14580cea10a5d6bb09184476909c5cb3983dec7d4a918471e4d7011ce87b388dac7000dd875fc1080259bbeb2d7e0848a0e9d1fdddaa2814e9faacb78b79aba45f77bc8d353732a778a850437edf56f7d03931750cf7cab7b1e94fef72671047dc1b8bd91f9bec64d6cba1480cec6b865f25bf329961f64c878db43e540cae50684d10e2d5e2121df318e199b459706d0b4f1482406fcbb6901a116cbb735f1cee7cebb880c364c9b640970cb8ec4530b9afe591fa4dc6ebe5038bb7330060079e4a05e3c02ae1dc0e53b0e7567f24c959a17b7b17fdc3ab148b65d647f2f6925ae92773f740ed7f1bd94a0fcfd20bd08831e60ada7aba25503af740c559449bf17c91cc1a86d9801d9d86d884879c067c4fc21bae21a0c785e5d01c34780007b2e0c21e2df59af3fe453afe99ead744017abed3c30e2446392967521788456c8933a34bb39fdd92a23fa3599cc84e959e9b3c48f2a63a043bf23cfd1075fa38c64e25d569d6c8df7f5f8d8372ddd9886b295db376c8018ee0bceb74036fbfb57155f392c2ab1d95580c7634f56a055e37566f0d26619d3679c7ab9eabce1a12b5ba197107e7326de87bf7eed14fb8fdb409d7140942ef2c3f77fe0a0dc6d9a7dfff00f4c3654e4136dfd5c64aee253671897a714088b79293afe4622d5a0f2f4fc695ca0d7c574ed093d42e6cd51af0a73ba42157a8355c3560358e58fcb1dfd8e2a465064f03b09156b987348796eb25b2a984628be0d63b89f2d8ff3a4464a0c2b39142f0b90152ae562f9bfa4e1f8bfb7e91ebcb77814fbff0b4e6d85718e70047c912385d4c342cb6c9d318d640bf9daadccb286611c147216d901b6af216d7bb29aedf548e8d584b1504dfc776d90acaea2676c41b6b48a0b1ae5da4b2429614fc122e8589344219a0817f30351736ad17d40647de4ec117404ce6aea0b92946e7568c7a06454b513c0e6d8a34101fb1a42e7ea8171856c37759fe2a730d00de56fba19ac0a3de96cc7a5eb394cdc924d80ef2994376542a3b8067ff3b168edd910b96cb2502002f01c8df958bae52bf155e8dd1ccd19da93c506c33b3d1b2df1fd0adf7aeaee6b1c3e209f50c62169d4b355d38686c7358bda0611ff947d67b02eb252c32e8d8581000bda978dd1111dccf9312d13cca85d5e71e7609ff4b5ea4070b5a404f38096a3d52d20cb534251840b9fb5dd41ca84854b9dc2c7f8d10410e505b5d5c8bc4df7be9677de9b8ba9d617408305c8e97818ebf7b997dc25a365aac9c69fa26ab2e9ffc3fee3c8037f6d9871deb7127d447a091182dc36bf9cfde092a4994452130ed1d60536592295b44093b50288ed87b9c44ab5fea49973146e40cfa9f483cad94f59901b402bb12b3e79706a679d7e09400a4ba32fb1fc7a441d55e9b8bb8cd3e0a254ed29024db11daa3daa64a1e7ab0276a27a671137e05aa30b0e28ee3a18ef57f9fdc789e606cb2033406491e34e48b70a9be7db78f9eb63fb86c5c29a4d3a6f6176421dc8a03c604e9be6ce2c5cd3d2866ebf09eb49ac2d6c62b24aa8887cc5591ffab08aed9cf9ba23d79fe87a635be350c887dc963d44eb1c7a4c2833376dda2e0be5d053141a44a3761fb9bbf7c86f6239d59b7b6abf9f7a0c592ac7872dc862aae64fe7367ba6b9347e0a4c9ad94be3fe0d57e2811e9e44a759b2b950355b08cd0e1b38d1af1e96890c0185e18cdd8fe60d308a28e4109c802d4f8a1f12337c53fa5e712ab8bc22f08cc40ed94e541258fa02d8775d3959329ce9bf10b0000e91d607a0f1afc6018a6ed6775ab3821c200c4235e60a3cd33d371893363bd94e4d4e060b4893d33a65f69e559d81371d6f812c6ef28938447b1b36bf380d3df4b0bb05e43cff0fb64f4e12262d2b31ff920330c381575d077c9701ccd3a07cb6c857fc00e441157835d16df0baea847fcd7de4e64b82a3c43403ba64d1b854b9449133498bd1af82d4825b22c3e169a73d49ff4693ecaf012be9e274d0a4c338bd6400527c7fca9c2bb3108573c00b8ed274a85b55823f2937f389fe25f750006c0c43874b27cba5207e9bb23cca5f90584c97d07a75cdd4a35f6775ae541611916f06dc9c24d0af5d9c2f5131a2a8fbf0d7fabc300bcda2fb3a877a2b869793914d9046a5d61c227a253bf70e8a3653ee5c5512d21dbe73e0ca7af68e6b0b2a27f93ef834d0dbf5d22d01a3c6edc3199517a8de4db8562732afa486e08f9b855a231516c32640259cf3d001fc8d3d2390c514cc257317036b10797c24c649d884b67b38aa60af64fea4b7c1b7a6cb4e9392106ccfcd9090ea4b2bfb016ae8b5142be04e7f18e604a823e766ec30eb2061104616d5f4efeaed2ab9f428deb6137c3b3c328886876256b37f812f64c6db27beeeb5d922cc3fb7ba1547f50b2cbf3a7259cd306ed79d930c2db0b1ca7e733e010d4fa7637c88e70da4244a63696543f5c883adabe191abc8ff93e3c2329c8d2cdc247b38d6575685e150f75d5cf15b69d82621c6d2027f87691c1dc8a97d34bdc2f7e4eef5a24a0b8398402b7a600ff186fee28bbf5dbd25487793d51693b2048f50b8983c8aaef3f7ee56154e730da42eb640eed9e5bae2f107767aebc1f2e7ddb2993f9934333a170af99bf72442393f717dc00c24b7eff5aa1b1d848c2071840b626901d16dbf5d788e28782f3bd63c038069d10453d7fa206c1e6da42da894c70261747915b4da189e731f0d325cc4c4ceefd409ba14bebd976e1ff630134d85558c47dff7c76f50e2cbee1f10ea460900e0ac8c842bd29f179fd6b2cf65b8d920785ae48ec12ec5054f18691f375e14b2a6bfb874aaaf1ea3b51a0e997c1a3e296551f13ec284532fa294df9ad07db8d2a93ad71f88cd3ce26dd73424964213e552ad271f1a5ab46c3fda007a6a5c7303e9dbfd035ec9525cca7d68a831b758c0103556ec156027f657c8c1f2e1df084088041b75bb0de8cb2b855e728318605658ee7053a778e0e383816b20ad53ab00e0761096e14d0a04909105c75a84f0f7e80c353c9b6cadf499445f1be03814ed511aa80f51e4eae53fb2fa44dedbe9068845c5d64231574363c6ebf4e0f34bd48ed3bd6b81e851c5258836ea051f3a02d2f5b45ac22000ec424c118401a6b0b228b1e12235b722c29a0affbb43248e646c33540e505c5993ea0c06782aa2d97dc5160363b41ce819bcf478792b711834342ebdc63b73f2b7c8174c21196afcef92de632b8714f2b941fdcad3ffb25b252e0a0d04e733ef45c8c8b76c5bb83117a636c532f86f5b5207033cc2cd57fade3d4d2d23043e730db95c7beee42423babcf499fefd0e0e553eceae417130a48d5307ab29ab15797bf9ac8f9659468c821d53edaf4a8d0e83c5256d182ef8cc6b2f2c4b4160b56036f1805a41defadff5f3bf4071cd1d05c50b777a4cc3cd6de9bbc80c2664313295d421decb5fb99e9a54336d617dcd08e9398363b95ecf8031656e623c93e6d6c179add07e2c21b42205bb2961ba4460cb</script>
   <div class="hbe hbe-content">
     <div class="hbe hbe-input hbe-input-blink">
@@ -507,7 +524,9 @@
     </div>
   </div>
 </div>
-<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">
+<script data-pjax="" src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">
+
+
             </div>
             <hr/>
 
@@ -578,12 +597,12 @@
                     
                 </div>
                 <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
-                    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/share/css/share.min.css">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
 <div id="article-share">
 
     
     <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/share/js/social-share.min.js"></script>
+    <script src="/libs/share/js/social-share.min.js"></script>
     
 
     
@@ -701,10 +720,10 @@
                         <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
                     </ul>
                     <div id="alipay">
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/reward/ali.jpeg" class="reward-img" alt="支付宝打赏二维码">
+                        <img src="/medias/reward/ali.jpeg" class="reward-img" alt="支付宝打赏二维码">
                     </div>
                     <div id="wechat">
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/reward/wechat.jpeg" class="reward-img" alt="微信打赏二维码">
+                        <img src="/medias/reward/wechat.jpeg" class="reward-img" alt="微信打赏二维码">
                     </div>
                 </div>
             </div>
@@ -972,12 +991,12 @@
         <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
         <span>评论</span>
     </div>
-    <div id="vcomments" class="card-content" style="display: grid">
+    <div id="vcomments" class="card-content" style="display: block">
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/valine/av-min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/valine/Valine.min.js"></script>
+<script src="/libs/valine/av-min.js"></script>
+<script src="/libs/valine/Valine.min.js"></script>
 <script>
     new Valine({
         el: '#vcomments',
@@ -1006,26 +1025,18 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2022/09/29/suan-fa-ti-zong-jie/">
+                <a href="/2022/09/29/shu-ju-jie-gou-yu-suan-fa/">
                     <div class="card-image">
                         
+                        <img src="/medias/featureimages/3.png" class="responsive-img" alt="数据结构与算法">
                         
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/4.png" class="responsive-img" alt="剑指offer题目总结">
-                        
-                        <span class="card-title">剑指offer题目总结</span>
+                        <span class="card-title">数据结构与算法</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            剑指offer题目总结链表题目
-从尾到头打印链表  
-反转链表 
-合并两个排序的链表(递归/遍历)
-两个链表的第一个公共节点(双指针/哈希表) 
-链表中环的入口节点(快慢指针/字典) 
-链表中倒数最后k个节点(快慢指针) 
-复杂链表的复制(
+                            数据结构与算法算是必考内容，如果能在笔试/面试的过程中快速找到算法题的解题思路，无疑会给面试官留下很好的印象，这类题目主要考察两个方面: 数据结构的掌握程度，能否熟练掌握各类数据结构的特点及操作 常见算法，比如贪心算法、动态规划、BFS/DFS等 面试官的考察一般是循序渐进的： 一般首先会考察一些数
                         
                     </div>
                     <div class="publish-info">
@@ -1038,6 +1049,10 @@
                             
                             <a href="/categories/%E7%AE%97%E6%B3%95%E5%B2%97%E5%85%AB%E8%82%A1%E6%96%87/" class="post-category">
                                     算法岗八股文
+                                </a>
+                            
+                            <a href="/categories/%E7%AE%97%E6%B3%95%E5%B2%97%E5%85%AB%E8%82%A1%E6%96%87/%E7%81%B5%E9%AD%82%E9%9B%95%E7%90%A2/" class="post-category">
+                                    灵魂雕琢
                                 </a>
                             
                             
@@ -1065,8 +1080,7 @@
                 <a href="/2022/08/20/cha-jian-ban-ben-guan-li/">
                     <div class="card-image">
                         
-                        
-                        <img src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/medias/featureimages/3.png" class="responsive-img" alt="插件版本管理">
+                        <img src="/medias/featureimages/3.png" class="responsive-img" alt="插件版本管理">
                         
                         <span class="card-title">插件版本管理</span>
                     </div>
@@ -1074,8 +1088,7 @@
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            本博客用于对我更新的赛尔号插件进行版本管理。
-不是每个人都应该像我这样去建造一座水晶大教堂，但是每个人都应该拥有自己的梦想，设计自己的梦想，追求自己的梦想，实现自己的梦想。梦想是生命的灵魂，是心灵的灯塔，是引导人走向成功的信仰。有了崇高的梦
+                            本博客用于对我更新的赛尔号插件进行版本管理。 不是每个人都应该像我这样去建造一座水晶大教堂，但是每个人都应该拥有自己的梦想，设计自己的梦想，追求自己的梦想，实现自己的梦想。梦想是生命的灵魂，是心灵的灯塔，是引导人走向成功的信仰。有了崇高的梦想，只要矢志不渝地追求，梦想就会成为现实，奋斗就会变成壮举，
                         
                     </div>
                     <div class="publish-info">
@@ -1088,6 +1101,10 @@
                             
                             <a href="/categories/%E6%B8%B8%E6%88%8F/" class="post-category">
                                     游戏
+                                </a>
+                            
+                            <a href="/categories/%E6%B8%B8%E6%88%8F/%E8%AF%BB%E5%90%8E%E6%84%9F/" class="post-category">
+                                    读后感
                                 </a>
                             
                             
@@ -1114,21 +1131,21 @@
 
 
 <!-- 代码块功能依赖 -->
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeBlockFuction.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
 
 <!-- 代码语言 -->
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeLang.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
 
 
 <!-- 代码块复制 -->
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeCopy.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
 
 
 <!-- 代码块收缩 -->
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/codeBlock/codeShrink.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
 
 
 <!-- 代码块折行 -->
@@ -1156,7 +1173,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
 </div>
 
 
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/tocbot/tocbot.min.js"></script>
+<script src="/libs/tocbot/tocbot.min.js"></script>
 <script>
     $(function () {
         tocbot.init({
@@ -1237,18 +1254,11 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
 </main>
 
 
-<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script>
-    MathJax.Hub.Config({
-        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
-    });
-</script>
-
 
 
     <footer class="page-footer bg-color">
     
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aplayer/APlayer.min.css">
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
 <style>
     .aplayer .aplayer-lrc p {
         
@@ -1298,7 +1308,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aplayer/APlayer.min.js"></script>
+<script src="/libs/aplayer/APlayer.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
 
     
@@ -1312,7 +1322,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">177k</span>&nbsp;字
+                class="white-color">202k</span>&nbsp;字
             
             
             
@@ -1381,10 +1391,10 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/js/search.js"></script>
+<script src="/js/search.js"></script>
 <script type="text/javascript">
 $(function () {
-    searchFunc("https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/search.xml", 'searchInput', 'searchResult');
+    searchFunc("/search.xml", 'searchInput', 'searchResult');
 });
 </script>
 
@@ -1396,12 +1406,12 @@ $(function () {
 </div>
 
 
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/materialize/materialize.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/masonry/masonry.pkgd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/aos/aos.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/scrollprogress/scrollProgress.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/lightGallery/js/lightgallery-all.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/js/matery.js"></script>
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
 
     <!-- Baidu Analytics -->
 
@@ -1423,7 +1433,7 @@ $(function () {
 
     
     
-    <script async src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/others/busuanzi.pure.mini.js"></script>
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
     
 
     
@@ -1437,7 +1447,7 @@ $(function () {
     
 
     
-    <script src="https://cdn.jsdelivr.net/gh/xuejy19/xuejy19.github.io/libs/instantpage/instantpage.js" type="module"></script>
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
     
 
 <script type="text/javascript"> //只在桌面版网页启用特效 

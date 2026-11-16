@@ -1,0 +1,8 @@
+/* Compatibility fixes; the original Matery layout and styling stay in the theme. */
+#articleContent .katex-display { overflow-x: auto; overflow-y: hidden; padding: .5rem 0; }
+#articleContent .katex-display > .katex { white-space: nowrap; }
+#articleContent span.katex { display: inline-block; max-width: 100%; overflow-x: auto; overflow-y: hidden; vertical-align: middle; }
+#articleContent pre { overflow-x: auto; }
+#articleContent img { max-width: 100%; height: auto; }
+#articleContent h1, #articleContent h2, #articleContent h3,
+#articleContent h4, #articleContent h5, #articleContent h6 { scroll-margin-top: 90px; }
