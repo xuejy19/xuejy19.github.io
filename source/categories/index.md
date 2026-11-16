@@ -1,6 +1,5 @@
 ---
-title: categories
+title: 分类
 date: 2020-09-17 21:27:23
-type: "categories"
-layout: "categories"
+layout: categories
 ---

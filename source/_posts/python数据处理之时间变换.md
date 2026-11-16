@@ -1,10 +1,17 @@
 ---
 title: python数据处理之时间变换
 date: 2020-09-19 10:21:34
-categories: python学习 
-tags: 编程技能， 时序数据
-toc: true 
-mathjax: true 
+categories:
+- python学习
+- 闲谈
+- 统计学习
+tags:
+- 编程技能， 时序数据
+toc: true
+updated: '2022-08-20 12:00:00'
+permalink: 2020/09/19/python-shu-ju-chu-li-zhi-shi-jian-bian-huan/
+math: true
+img: /medias/featureimages/1.png
 ---
 本文将就`python`中对时间标识的处理做一点讲解，在进行数据分析时，有些时候我们需要对时间序列数据进行处理，比如像下面这样一组数据<!--more-->:
 

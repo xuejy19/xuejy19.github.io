@@ -1,11 +1,15 @@
 ---
 title: 隐马尔可夫模型
 date: 2020-08-17 08:22:44
-tags: 概率模型，HMM
-categories: 统计学习
-#img: https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/thumbnail/HMM.png
+tags:
+- 概率模型，HMM
+categories:
+- 统计学习
 toc: true
-mathjax: true
+updated: '2022-08-20 12:00:00'
+permalink: 2020/08/17/hmm/
+math: true
+img: /medias/featureimages/6.jpg
 ---
 在这一部分，我将对隐马尔可夫模型(HMM)做简要介绍,该章节分为以下几个部分进行组织:
 

@@ -1,10 +1,15 @@
 ---
 title: pytorch学习
 date: 2020-09-06 16:46:45
-tags: pytorch，深度学习框架
-categories: 统计学习
-mathjax: true
+tags:
+- pytorch，深度学习框架
+categories:
+- 统计学习
 toc: true
+updated: '2022-08-20 12:00:00'
+permalink: 2020/09/06/chu-shi-pytorch/
+math: true
+img: /medias/featureimages/3.png
 ---
 在前面介绍深度学习的理论知识时，相信大家可以感受到，神经网络的实现主要有以下两个难题：
 - 当网络结构复杂起来时，手写一个神经网络是非常困难(尤其是进行反向误差传播时)，也是十分费时的。
@@ -12,9 +17,9 @@ toc: true
 <!--more-->
 
 为了解决上述两个问题，深度学习框架便诞生了，目前主流的深度学习框架主要下图所示的这些:
-![主流框架](https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/framework.jpeg)
+![主流框架](/Img/framework.jpeg)
 这些框架比较如下图所示:
-![深度学习框架](https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/framework1.png)
+![深度学习框架](/Img/framework1.png)
 目前在科研机构中应用较多的是Tensorflow和pytorch,本文便以pytorch为例来进行讲解，本文内容主要参考官方教程：[pytorch官方教程](https://pytorch.org/tutorials/beginner/blitz/tensor_tutorial.html#sphx-glr-beginner-blitz-tensor-tutorial-py)。建议英文阅读能力较强的人还是去阅读原版教程，如果对于算法的理论理解已经到位的话，整个教程还是非常简洁明了的。本文按照以下结构组织:
 - pytorch简介
 - 张量和计算图 
@@ -33,7 +38,7 @@ Pytorch 具有以下两大特征:
 
 输入:
 ```python
-torch.randn(2,3)
+torch.randn(2,3)
 ```
 输出:
 ```python
@@ -60,10 +65,10 @@ $$
 $$
 在图中，变量$b,c$和$d$都是数学运算的结果，而变量$a ,w_1,w_2,w_3,w_4$ 由用户自己初始化，由于它们不是由任何数学运算符创建的，因此与其创建相对应的节点由其名称本身表示。
 
-![计算图](https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/computation_graph.png)
+![计算图](/Img/computation_graph.png)
 
 下面来介绍如何使用计算图来进行梯度计算，首先我们计算在图中相连接的节点之间的梯度,将对应的梯度值写到边上，如下图所示:
-![梯度计算图](https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/full_graph.png)
+![梯度计算图](/Img/full_graph.png)
 要计算损失$L$到某个变量$w$的梯度只需要按照以下步骤:
 1. 找到从$L$到$w$所有可能的路径
 2. 对于各个路径，将沿路径所有边相乘 
@@ -71,7 +76,7 @@ $$
 
 ### 低阶API和高阶API
 我们在使用pytorch时主要接触到的pytorch的包的架构如下图所示:
-![pytorch主要包](https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/Pytorch-package-hierarchy.jpg)
+![pytorch主要包](/Img/Pytorch-package-hierarchy.jpg)
 对于一个三层的全连结网络，我们可以仅仅使用tensor来实现，不过这种情况下需要手写梯度，下面我就一步步介绍如何用api来使你的代码变得简洁高效:
 #### tensor 
 ```python
@@ -264,7 +269,7 @@ for t in range(500):
         w2.grad.zero_()
 ```
 #### nn.Module
-如果我们要构建一个深层神经网络，固然可以用这些基本的自动微分算子来构建，但这样做显得有些`low-level`，因为神经网络在进行理论推导时实际上就是`层的堆砌`，那么在进行编程实现时，可否沿用这个思想，将一些微分算子封装成神经网络层的形式，pytorch中实现这个功能是通过包`nn`，`nn`中除了定义了一系列模块`Modules`，同时还有大量的损失函数，下面我们就用`torch.nn.Sequential`来重新实现这样一个三层神经网络:
+如果我们要构建一个深层神经网络，固然可以用这些基本的自动微分算子来构建，但这样做显得有些`low-level`，因为神经网络在进行理论推导时实际上就是`层的堆砌`，那么在进行编程实现时，可否沿用这个思想，将一些微分算子封装成神经网络层的形式，pytorch中实现这个功能是通过包`nn`，`nn`中除了定义了一系列模块`Modules`，同时还有大量的损失函数，下面我们就用`torch.nn.Sequential`来重新实现这样一个三层神经网络:
 ```python
 import torch
 
@@ -437,7 +442,7 @@ for t in range(500):
 可以看到，这样做其实与直接使用`torch.nn.Sequential`来定义模型在有些情况下是差不多的，但通过继承`nn.Module`一方面可以使得自己的模型更具扩展性，同时代码的可读性也进一步加强，因为你自己的神经网络模型是以一个类的形式存在的。
 
 #### TensorDataset
-在进行数据处理时，我们的数据基本都是`x_train,y_train,x_test,y_test`的形式，在进行迭代时可能必须要通过下标来进行迭代，而为了让迭代操作更加方便，`pytorch`引入了`torch.utils.data`来辅助进行数据处理，而其中`TensorDataset()`方法相当于是对`x,y`做了一个`wrap`操作，在进行迭代时可以一起迭代而不需要分别迭代：
+在进行数据处理时，我们的数据基本都是`x_train,y_train,x_test,y_test`的形式，在进行迭代时可能必须要通过下标来进行迭代，而为了让迭代操作更加方便，`pytorch`引入了`torch.utils.data`来辅助进行数据处理，而其中`TensorDataset()`方法相当于是对`x,y`做了一个`wrap`操作，在进行迭代时可以一起迭代而不需要分别迭代：
 >应用`TensorDataset()`方法:
 >```python
 >train_ds = TensorDataset(x_train, y_train)

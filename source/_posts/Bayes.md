@@ -1,10 +1,14 @@
 ---
 title: 贝叶斯理论
 date: 2020-07-23 10:32:46
-tags: 
-categories: 统计学习
-toc: true 
-mathjax: true
+tags: []
+categories:
+- 统计学习
+toc: true
+updated: '2022-08-20 12:00:00'
+permalink: 2020/07/23/bayes/
+math: true
+img: /medias/featureimages/6.jpg
 ---
 -----
 该部分按照以下层次进行组织：
@@ -60,7 +64,7 @@ P(e) &= P(x \in \mathcal{R_1},\omega_2) + P(x \in \mathcal{R_2},\omega_1) \\
 &= P(\omega_2) P_2(e) + P(\omega_1) P_1(e)
 \end{aligned}
 $$
-![最小错误率](https://raw.githubusercontent.com/xuejy19/Images/master/bayes2.png)
+![最小错误率](/Img/bayes2.png)
 
 图中斜线部分代表$P(e)$的第一项，纹线部分代表第二项，而从最小错误率公式来看，若要使平均错误率$P(e)$最小，只需要对于任意的$x$，保证$P(e|x)$最小，而这恰恰是贝叶斯最小错误率决策规则。
 

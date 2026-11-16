@@ -1,13 +1,16 @@
 ---
 title: 马尔可夫网络
 date: 2020-07-25 09:20:59
-tags: 无向图
-categories: 统计学习
+tags:
+- 无向图
+categories:
+- 统计学习
 toc: true
-mathjax: true 
+updated: '2022-08-20 12:00:00'
+permalink: 2020/07/25/markov-network/
+math: true
 img: /medias/featureimages/0.jpg
 ---
-
 在这一部分我将介绍另一种常见的概率图模型:马尔可夫网络，或称马尔可夫随机场。接下来分为以下几部分进行组织<!--more-->：
 - 马尔可夫网络
 - 独立性假设
@@ -29,7 +32,7 @@ img: /medias/featureimages/0.jpg
 - 在图$H$中，节点集$X$与节点集$Y$相对于是节点集$Z$是分离的 $\Leftrightarrow$ $X$与$Y$之间不存在激活路径
 - 表示为$sep_H(X;Y|Z)$,栗子如下图所示。
 
-![栗子](https://raw.githubusercontent.com/xuejy19/Images/master/mav1.png)
+![栗子](/Img/mav1.png)
 
 ### 势函数
 在贝叶斯网络中，节点之间的关系通过条件概率进行表征，而在马尔可夫网络中，节点之间的关系通过势函数来表征，势函数定义如下：

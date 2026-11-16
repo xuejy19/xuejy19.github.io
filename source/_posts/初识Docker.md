@@ -1,10 +1,16 @@
 ---
 title: 初识Docker
 date: 2020-10-28 10:20:16
-tags: 容器 
-categories: 开发知识 
-toc: true 
-mathjax: true 
+tags:
+- 容器
+categories:
+- 开发知识
+- 点滴生活
+toc: true
+updated: '2022-08-20 12:00:00'
+permalink: 2020/10/28/chu-shi-docker/
+math: true
+img: /medias/featureimages/1.png
 ---
 近期因为在外出差，没咋看论文，为了让时间得到充分利用，自己打算学习一些开发相关的知识，毕竟技多不压身。 这部分就参考[Docker官方文档](https://docs.docker.com/get-started/)来进行Docker基本知识的学习。 
 该部分分为以下三个章节进行组织:
@@ -29,7 +35,7 @@ Docker是供开发人员和系统管理员 使用容器构建，运行和共享�
 #### 容器和虚拟机 
 一个容器本地运行于Linux系统上，并与其他容器共享主机内核。一个容器运行一个离散进程，占用的内存不超过其他任何可执行文件，因此其比较轻量。 
 相比之下，虚拟机（VM）运行一个全面的“来宾”操作系统，通过hypervisor对主机资源进行虚拟访问。一般来说，除了应用程序逻辑所消耗的外，vm会产生很多开销。  
-![容器与虚拟机](https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/Container.png)
+![容器与虚拟机](/Img/Container.png)
  
 
 

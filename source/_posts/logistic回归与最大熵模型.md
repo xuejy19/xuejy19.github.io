@@ -1,10 +1,15 @@
 ---
 title: logistic回归与最大熵模型
 date: 2020-08-23 15:16:31
-tags: logistic回归, 最大熵模型, 优化学习
-categories: 统计学习
+tags:
+- logistic回归, 最大熵模型, 优化学习
+categories:
+- 统计学习
 toc: true
-mathjax: true
+updated: '2022-08-20 12:00:00'
+permalink: 2020/08/23/logistic-hui-gui-yu-zui-da-shang-mo-xing/
+math: true
+img: /medias/featureimages/6.jpg
 ---
 在学习李航老师《统计学习》条件随机场章节时，对于学习算法感到有些陌生，后来发现在书中第六章“logistic回归与最大熵模型”有过一些介绍，因此本章节便总结一下相关知识，其中logistic回归模型做简要介绍，重点放在最大熵模型的学习算法上，本文按照如下结构组织：
 - logistic回归
@@ -23,7 +28,7 @@ mathjax: true
 > 式中，$\mu$为位置参数，$\gamma>0$为形状参数 
 
 对于logistic分布，其概率密度函数和分布函数如下图所示：
-![logistic](https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/logistic.jpeg)
+![logistic](/Img/logistic.jpeg)
 分布函数的图形是一条$S$形曲线，该曲线以点$(\mu,\frac{1}{2})$为中心对称，即满足:
 $$
     F(-x+\mu) - \frac{1}{2} = -F(x+\mu) +\frac{1}{2}

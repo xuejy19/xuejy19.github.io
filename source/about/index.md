@@ -1,6 +1,8 @@
 ---
-title: about
+title: 关于
 date: 2020-09-17 21:28:55
-type: "about"
-layout: "about"
+layout: about
 ---
+这里记录我的技术学习、阅读笔记、摄影和生活随想。
+
+愿保持好奇，认真思考，也认真生活。

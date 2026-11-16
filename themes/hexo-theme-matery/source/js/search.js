@@ -1,85 +1,54 @@
 var searchFunc = function (path, search_id, content_id) {
     'use strict';
+    var input = document.getElementById(search_id);
+    var result = document.getElementById(content_id);
+    if (!input || !result) return;
+    var entries = [];
+    var ready = false;
+    var failed = false;
+    function render() {
+        result.textContent = '';
+        var query = input.value.trim().toLowerCase();
+        if (!query) return;
+        if (!ready) {
+            result.textContent = failed ? '搜索暂时无法加载，请刷新后重试。' : '正在搜索…';
+            return;
+        }
+        var keywords = query.split(/\s+/);
+        var list = document.createElement('ul');
+        list.className = 'search-result-list';
+        entries.forEach(function (entry) {
+            var haystack = (entry.title + ' ' + entry.content).toLowerCase();
+            if (!keywords.every(function (word) { return haystack.indexOf(word) >= 0; })) return;
+            var item = document.createElement('li');
+            var link = document.createElement('a');
+            link.className = 'search-result-title';
+            link.href = entry.url;
+            link.textContent = entry.title;
+            item.appendChild(link);
+            var snippet = document.createElement('p');
+            snippet.className = 'search-result';
+            var index = entry.content.toLowerCase().indexOf(keywords[0]);
+            var start = Math.max(0, index - 30);
+            snippet.textContent = entry.content.slice(start, start + 130) + '…';
+            item.appendChild(snippet);
+            list.appendChild(item);
+        });
+        if (!list.childNodes.length) result.textContent = '没有找到相关内容。';
+        else result.appendChild(list);
+    }
+    // Register before the request so a fast first query survives slow index loading.
+    input.addEventListener('input', render);
     $.ajax({
         url: path,
-        dataType: "xml",
-        success: function (xmlResponse) {
-            // get the contents from search data
-            var datas = $("entry", xmlResponse).map(function () {
-                return {
-                    title: $("title", this).text(),
-                    content: $("content", this).text(),
-                    url: $("url", this).text()
-                };
+        dataType: 'xml',
+        success: function (xml) {
+            entries = $('entry', xml).map(function () {
+                return { title: $('title', this).text(), content: $('content', this).text(), url: $('url', this).text() };
             }).get();
-            var $input = document.getElementById(search_id);
-            var $resultContent = document.getElementById(content_id);
-            $input.addEventListener('input', function () {
-                var str = '<ul class=\"search-result-list\">';
-                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
-                $resultContent.innerHTML = "";
-                if (this.value.trim().length <= 0) {
-                    return;
-                }
-                // perform local searching
-                datas.forEach(function (data) {
-                    var isMatch = true;
-                    var content_index = [];
-                    var data_title = data.title.trim().toLowerCase();
-                    var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
-                    var data_url = data.url;
-                    var index_title = -1;
-                    var index_content = -1;
-                    var first_occur = -1;
-                    // only match artiles with not empty titles and contents
-                    if (data_title != '' && data_content != '') {
-                        keywords.forEach(function (keyword, i) {
-                            index_title = data_title.indexOf(keyword);
-                            index_content = data_content.indexOf(keyword);
-                            if (index_title < 0 && index_content < 0) {
-                                isMatch = false;
-                            } else {
-                                if (index_content < 0) {
-                                    index_content = 0;
-                                }
-                                if (i == 0) {
-                                    first_occur = index_content;
-                                }
-                            }
-                        });
-                    }
-                    // show search results
-                    if (isMatch) {
-                        str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
-                        var content = data.content.trim().replace(/<[^>]+>/g, "");
-                        if (first_occur >= 0) {
-                            // cut out 100 characters
-                            var start = first_occur - 20;
-                            var end = first_occur + 80;
-                            if (start < 0) {
-                                start = 0;
-                            }
-                            if (start == 0) {
-                                end = 100;
-                            }
-                            if (end > content.length) {
-                                end = content.length;
-                            }
-                            var match_content = content.substr(start, end);
-                            // highlight all keywords
-                            keywords.forEach(function (keyword) {
-                                var regS = new RegExp(keyword, "gi");
-                                match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
-                            });
-
-                            str += "<p class=\"search-result\">" + match_content + "...</p>"
-                        }
-                        str += "</li>";
-                    }
-                });
-                str += "</ul>";
-                $resultContent.innerHTML = str;
-            });
-        }
+            ready = true;
+            render();
+        },
+        error: function () { failed = true; render(); }
     });
-}
+};

@@ -1,12 +1,16 @@
 ---
 title: 贝叶斯网络
 date: 2020-07-24 09:48:11
-categories: 统计学习
+categories:
+- 统计学习
 toc: true
-tags: 概率图模型，有向图
-mathjax: true
+tags:
+- 概率图模型，有向图
+updated: '2022-08-20 12:00:00'
+permalink: 2020/07/24/bayes-network/
+math: true
+img: /medias/featureimages/7.jpg
 ---
-
 在该部分对贝叶斯网络进行介绍，按照递进关系总结以下知识点：<!--more-->
 - 条件独立性
 - 条件参数化
@@ -46,7 +50,7 @@ $$
 
 <div align=center>
 
-![栗子](https://raw.githubusercontent.com/xuejy19/Images/master/Ind.png)
+![栗子](/Img/Ind.png)
 </div>
 
 图中大写字母均代表随机变量，含义如下：
@@ -59,7 +63,7 @@ $$
 假设$G$和$S$关于$I$条件独立，下面我们分析两种情况的条件参数化
 
 首先以$I$和$S$两个变量为例，我们既可以通过联合分布$P(I,S)$来进行描述，也可以通过$P(I)$和$P(S|I)$进行描述，两种描述均是三个独立参数，如下图所示。
-![](https://raw.githubusercontent.com/xuejy19/Images/master/eg2.png)
+![](/Img/eg2.png)
 
 接下来分析$I、D、G$三个变量的条件参数化，其中$I$与$D$相互独立，下面分析两种表示方法所需的参数个数：
 - 联合分布: $P(I,D,G)$,所需参数个数为$2 \times 2 \times 3 - 1=11$

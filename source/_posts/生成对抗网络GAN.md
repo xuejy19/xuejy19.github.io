@@ -1,11 +1,15 @@
 ---
 title: 生成对抗网络GAN
 date: 2020-09-09 23:34:49
-tags: GAN
-categories: 统计学习 
-mathjax: true
-#img: https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/thumbnail/GAN.jpg
+tags:
+- GAN
+categories:
+- 统计学习
 toc: true
+updated: '2022-08-20 12:00:00'
+permalink: 2020/09/09/sheng-cheng-dui-kang-wang-luo-gan/
+math: true
+img: /medias/featureimages/6.jpg
 ---
 这一部分介绍一种特殊的神经网路模型——生成对抗网络(GAN)，生成对抗网络由[Lan Goodfellow](https://en.wikipedia.org/wiki/Ian_Goodfellow)于2014年提出，该算法在形式上表现为两个神经网络的彼此对抗，对于生成对抗网络，我们可以从以下几个角度来对其进行限定：
 - **本质：** 学习训练数据集的分布  
@@ -20,7 +24,7 @@ toc: true
 <!--more-->
 
 ### GAN 算法思想
-![GAN](https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/GAN.jpg)
+![GAN](/Img/GAN.jpg)
 考虑这样一个场景，一个小镇里有一个造假钞的人，同时有一个警察，它们两个各自的目标分别是：
 - **罪犯：** 不断提高自己的造假钞技术，使得自己的假钞足以以假乱真，让警察鉴别不出来
 - **警察：** 不断提高自己的鉴别水平，能够准确地识别小偷制造的假钞
@@ -166,7 +170,7 @@ $$
 在对生成器进行优化的时候，因为我们期望造出的假样本能够尽可能真，因此只需要将假样本的label设置为1，然后进行反向传播优化生成器即可。
 #### 网络结构设计 
 生成对抗网络是出了名的难训练，因此合理的网络结构非常重要，对于新入门的人来说就只能参考一些现成的网络结构,同时对于不同的任务也应当选用不同的网络结构。目前生成对抗网络在图像处理领域较多，因此往往采用卷积神经网络。
-![GAN](https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/generative-adversarial-network.png)
+![GAN](/Img/generative-adversarial-network.png)
 
 #### 优化顺序
 生成对抗网络的优化是一个交替优化的过程，一般是先对判别器进行优化，接下来再对生成器进行优化，两者进行交替优化，互相博弈，下面简单地写下计算图：
@@ -453,12 +457,12 @@ if __name__ == '__main__':
 ```
 最后附上一些结果图：
 **celeb-A faces Dataset**
-![Loss](https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/Loss.png) 
-![fake_image](https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/fake_image.png)
+![Loss](/Img/Loss.png)
+![fake_image](/Img/fake_image.png)
 
 **MNIST** 
-![Loss](https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/Loss_mn.png) 
-![fake_msist](https://raw.githubusercontent.com/xuejy19/xuejy19.github.io/source/Img/mnist_gan.png)
+![Loss](/Img/Loss_mn.png)
+![fake_msist](/Img/mnist_gan.png)
 
 网络结构比较简单，真正在使用时应当需要根据任务来进行调整，参数初始化以及部分超参数选择，**沃兹基**曾经说过：
 > 深度神经网络理论学习是一门学问，代码实现又是一门学问，网络调参更是一门学问，想把神经网络搞掂，三种学问缺一不可。

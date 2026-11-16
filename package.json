@@ -1,35 +1,40 @@
 {
-  "name": "hexo-site",
-  "version": "0.0.0",
+  "name": "sound-of-wind-blog",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "hexo generate",
+    "build": "hexo clean && hexo generate",
     "clean": "hexo clean",
-    "deploy": "hexo deploy",
-    "server": "hexo server"
+    "deploy": "node tools/publish.cjs",
+    "server": "hexo server --ip 127.0.0.1",
+    "check": "node tools/verify-build.cjs",
+    "check:browser": "node tools/browser-smoke.cjs"
+  },
+  "engines": {
+    "node": ">=22"
   },
   "hexo": {
-    "version": "5.4.2"
+    "version": "8.1.2"
   },
   "dependencies": {
-    "bulma-stylus": "^0.8.0",
-    "hexo": "^5.2.0",
-    "hexo-component-inferno": "^0.10.0",
-    "hexo-deployer-git": "^3.0.0",
-    "hexo-generator-archive": "^1.0.0",
-    "hexo-generator-category": "^1.0.0",
-    "hexo-generator-index": "^2.0.0",
-    "hexo-generator-search": "^2.4.1",
-    "hexo-generator-searchdb": "^1.3.3",
-    "hexo-generator-tag": "^1.0.0",
+    "@traptitech/markdown-it-katex": "3.6.0",
+    "cheerio": "^1.1.2",
+    "hexo": "8.1.2",
+    "hexo-deployer-git": "4.0.0",
+    "hexo-generator-archive": "2.0.0",
+    "hexo-generator-category": "2.0.0",
+    "hexo-generator-index": "4.0.0",
+    "hexo-generator-tag": "2.0.0",
     "hexo-permalink-pinyin": "^1.1.0",
-    "hexo-prism-plugin": "^2.3.0",
     "hexo-renderer-ejs": "^2.0.0",
-    "hexo-renderer-inferno": "^0.1.3",
-    "hexo-renderer-kramed": "^0.1.4",
-    "hexo-renderer-stylus": "^2.0.1",
-    "hexo-server": "^2.0.0",
+    "hexo-renderer-markdown-it": "7.1.1",
+    "hexo-renderer-stylus": "3.0.1",
+    "hexo-server": "^3.0.0",
     "hexo-wordcount": "^6.0.1",
-    "prismjs": "^1.21.0"
+    "katex": "^0.16.22",
+    "typed.js": "2.0.11"
+  },
+  "devDependencies": {
+    "playwright": "1.56.1"
   }
 }

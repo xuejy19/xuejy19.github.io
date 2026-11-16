@@ -1,17 +1,14 @@
 ---
-title: artitalk
-type: artitalk
+title: 动态
+layout: page
 noDate: 'true'
 comments: 'false'
 top_img: https://cdn.jsdelivr.net/gh/cungudafa/img/images/food.jpg
 ---
 
-<head>
-  <script src="https://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
-</head>
   <body>
       <script>
-        var img = "https://github.com/xuejy19/xuejy19.github.io/blob/source/Img/%E5%A4%B4%E5%83%8F.jpg"; //说说旁边显示的头像
+        var img = "/Img/%E5%A4%B4%E5%83%8F.jpg"; //说说旁边显示的头像
         var appID = "11ox8JotioQitvDQGT3sIq6T";
         var appKEY = "vrfkqkuHou88MuRKfF3OeExc";
         var per = "10"; //每页显示说说的数量
@@ -23,5 +20,5 @@ top_img: https://cdn.jsdelivr.net/gh/cungudafa/img/images/food.jpg
       </script>
       <div id="lazy"></div>
       <div id="artitalk"></div>
-      <script type="text/javascript" src="https://unpkg.com/artitalk"></script>
+      <script type="text/javascript" src="https://unpkg.com/artitalk@3.3.4"></script>
   </body>
