@@ -105,15 +105,6 @@ h1 span { color: #5c6d61; font: 400 23px/1.5 var(--font); letter-spacing: -.5px;
 .site-footer { display: flex; gap: 22px; padding: 19px 0 27px; border-top: 1px solid var(--line); color: var(--muted); font-size: 11px; }
 .site-footer a { margin-left: auto; }
 
-@media (min-width: 1100px) {
-  .wrap { width: min(1680px, calc(100% - clamp(80px, 12vw, 240px))); }
-}
-
-@media (min-width: 1200px) {
-  .bio { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(32px, 4vw, 64px); }
-  .bio p { margin: 0; }
-}
-
 @media (max-width: 800px) {
   .wrap { width: calc(100% - 48px); }
   .site-header { min-height: 74px; }
