@@ -19,7 +19,7 @@ npm run server
 
 ## 个人主页
 
-- `source/_data/profile.yml` 管理姓名、简介、学术兴趣、教育经历、代表成果、联系方式和精选笔记。资料根据用户授权查阅的简历、研究材料及公开论文整理；任职采用经历表述。论文按出版信息展示，技术报告可用 `type` 和 `contribution` 标明类型及个人贡献。
+- `source/_data/profile.yml` 管理姓名、简介、学术兴趣、职业经历、教育经历、代表成果、联系方式和精选笔记。资料根据用户授权查阅的简历、研究材料及公开论文整理；任职采用经历表述。论文按出版信息展示，技术报告可用 `type` 和 `contribution` 标明类型及个人贡献。
 - `homepage/index.ejs` 是独立主页模板，`source/css/academic.css` 管理主页样式，与 Matery 阅读页分开。
 - 首页使用的猫头像在 `source/medias/avatar-cat-warm-wise-v1.png`；未采用的头像保存在 `homepage/alternatives/`，不生成到网站中。
 - `scripts/academic-home.js` 生成根首页及旧博客分页跳转。主页不加载第三方字体或 JavaScript，手机上可直接使用导航和博客入口。

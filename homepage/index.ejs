@@ -19,6 +19,7 @@
     <a class="wordmark" href="/" aria-label="<%= profile.motto %>，个人主页"><%= profile.motto %><span class="wordmark-dot" aria-hidden="true"></span></a>
     <nav aria-label="主导航">
       <a href="#interests">学术兴趣</a>
+      <a href="#experience">经历</a>
       <a href="#publications">成果</a>
       <a href="#notes">笔记</a>
       <a class="nav-blog" href="/blog/">博客 <span aria-hidden="true">↗</span></a>
@@ -30,7 +31,7 @@
       <div class="intro-header">
         <figure class="portrait">
           <img src="<%= profile.avatar %>" alt="<%= profile.alias %>的头像" width="200" height="200" fetchpriority="high">
-          <figcaption><%= profile.alias %><span>保持好奇，认真思考。</span></figcaption>
+          <figcaption><%= profile.alias %><span>保持好奇，认真思考</span></figcaption>
         </figure>
         <div class="intro-copy">
           <h1 id="name"><%= profile.name %><span lang="en"><%= profile.english_name %></span></h1>
@@ -55,6 +56,19 @@
           <p class="interest-english" lang="en"><%= interest.english %></p>
           <p><%= interest.description %></p>
         </div>
+      <% }); %></div>
+    </section>
+
+    <section class="section experience" id="experience" aria-labelledby="experience-title">
+      <div class="section-heading"><h2 id="experience-title">职业经历</h2><span lang="en">Experience</span></div>
+      <div class="experience-list"><% profile.experience.forEach(item => { %>
+        <article class="experience-item">
+          <div class="experience-topline">
+            <h3><%= item.company %><span><%= item.role %></span></h3>
+            <p class="experience-period"><%= item.period %></p>
+          </div>
+          <p class="experience-description"><%= item.description %></p>
+        </article>
       <% }); %></div>
     </section>
 

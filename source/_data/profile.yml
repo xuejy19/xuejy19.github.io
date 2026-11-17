@@ -21,6 +21,15 @@ interests:
   - title: 因果建模与工业 AI
     english: Causal Learning & Industrial AI
     description: 将因果分析与数据驱动方法结合，用于工业过程监测、故障诊断与质量预测。
+experience:
+  - company: 华为 2012 实验室
+    role: 计算系统优化工程师
+    period: 2025.04 — 至今
+    description: 从事大模型后训练与 Agentic RL 基础设施研发，参与 Agent 训练框架、分布式经验数据引擎与沙箱执行系统的设计和开发。
+  - company: 华为 2012 实验室
+    role: 算法实习生
+    period: 2023.02 — 2025.04
+    description: 研究 GPU 渲染与计算系统优化，参与 AI 超分、插帧、多 GPU 渲染与 3D Gaussian Splatting 相关工作。
 education:
   - school: 清华大学
     degree: 控制科学与工程 · 博士
