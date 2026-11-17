@@ -28,26 +28,23 @@
   <main class="wrap" id="academic-home">
     <section class="intro" id="about" aria-labelledby="name">
       <div class="intro-header">
-        <div class="intro-copy">
-        <p class="eyebrow">RESEARCH & ENGINEERING</p>
-        <h1 id="name"><%= profile.name %><span lang="en"><%= profile.english_name %></span></h1>
-        <p class="focus"><%= profile.focus %></p>
-        </div>
         <figure class="portrait">
           <img src="<%= profile.avatar %>" alt="<%= profile.alias %>的头像" width="200" height="200" fetchpriority="high">
           <figcaption><%= profile.alias %><span>保持好奇，认真思考。</span></figcaption>
         </figure>
+        <div class="intro-copy">
+          <h1 id="name"><%= profile.name %><span lang="en"><%= profile.english_name %></span></h1>
+          <p class="focus"><%= profile.focus %></p>
+          <div class="contact-links" aria-label="联系方式">
+            <a href="mailto:<%= profile.email %>">Email <span aria-hidden="true">↗</span></a>
+            <a href="<%= profile.github %>">GitHub <span aria-hidden="true">↗</span></a>
+            <a class="contact-blog" href="/blog/">个人博客 <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
       </div>
       <div class="bio"><% profile.intro.forEach(paragraph => { %>
         <p><%= paragraph %></p>
       <% }); %></div>
-      <div class="contact-links" aria-label="联系方式">
-          <a href="mailto:<%= profile.email %>">Email <span aria-hidden="true">↗</span></a>
-          <span class="link-divider" aria-hidden="true">/</span>
-          <a href="<%= profile.github %>">GitHub <span aria-hidden="true">↗</span></a>
-          <span class="link-divider" aria-hidden="true">/</span>
-          <a href="/blog/">个人博客 <span aria-hidden="true">↗</span></a>
-      </div>
     </section>
 
     <section class="section interests" id="interests" aria-labelledby="interests-title">
@@ -63,19 +60,20 @@
 
     <section class="section publications" id="publications" aria-labelledby="publications-title">
       <div class="section-heading"><h2 id="publications-title">代表成果</h2><span lang="en">Selected work</span></div>
-      <div class="publication-list"><% profile.publications.forEach(paper => { %>
-        <article class="publication">
+      <div class="publication-list"><% profile.publications.slice().sort((a, b) => b.year - a.year).forEach(paper => { %>
+        <article class="publication<%= paper.type ? ' publication-report' : '' %>">
           <div class="publication-year"><%= paper.year %></div>
           <div>
             <h3><a href="<%= paper.url %>"><%= paper.title %> <span aria-hidden="true">↗</span></a></h3>
             <% if (paper.authors && paper.authors.length) { %><p class="authors"><% paper.authors.forEach((author, index) => { %><%= index ? ', ' : '' %><% if (author === profile.english_name) { %><strong><%= author %></strong><% } else { %><%= author %><% } %><% }); %></p><% } %>
             <% if (paper.contribution) { %><p class="contribution">个人贡献：<%= paper.contribution %></p><% } %>
-            <% if (paper.venue || paper.type) { %><p class="venue"><%= paper.venue || paper.type %><% if (paper.year) { %>, <%= paper.year %><% } %></p><% } %>
+            <% if (paper.venue || paper.type) { %><p class="venue"><%= paper.venue || paper.type %></p><% } %>
           </div>
         </article>
       <% }); %></div>
     </section>
 
+    <div class="details-grid">
     <section class="section education" id="education" aria-labelledby="education-title">
       <div class="section-heading"><h2 id="education-title">教育经历</h2><span lang="en">Education</span></div>
       <% profile.education.forEach(item => { %>
@@ -96,6 +94,7 @@
       <% }); %></div>
     </section>
 
+    </div>
     <section class="personal" aria-labelledby="personal-title">
       <h2 id="personal-title"><%= profile.personal.title %></h2>
       <p><%= profile.personal.text %></p>
