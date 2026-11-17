@@ -41,7 +41,7 @@
     <nav id="headNav" class="bg-color nav-transparent">
         <div id="navContainer" class="nav-wrapper container">
             <div class="brand-logo">
-                <a href="/" class="waves-effect waves-light">
+                <a href="/blog/" class="waves-effect waves-light">
                     
                     <img src="/medias/logo.png" class="logo-img" alt="LOGO">
                     
@@ -59,7 +59,18 @@
       
       <i class="fas fa-home" style="zoom: 0.6;"></i>
       
-      <span>首页</span>
+      <span>个人主页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/blog/" class="waves-effect waves-light">
+      
+      <i class="fas fa-pen-nib" style="zoom: 0.6;"></i>
+      
+      <span>博客</span>
     </a>
     
   </li>
@@ -162,7 +173,18 @@
 			
 			    <i class="fa-fw fas fa-home"></i>
 			
-			首页
+			个人主页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/blog/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-pen-nib"></i>
+			
+			博客
 		</a>
           
         </li>
@@ -588,7 +610,7 @@
                 type: 'pie',
                 radius: '50%',
                 color: ['#6772e5', '#ff9e0f', '#fa755a', '#3ecf8e', '#82d3f4', '#ab47bc', '#525f7f', '#f51c47', '#26A69A'],
-                data: [{"name":"统计学习","value":30},{"name":"闲谈","value":5},{"name":"闲谈","value":6},{"name":"linux","value":1},{"name":"环境配置","value":2},{"name":"论文阅读","value":1},{"name":"技术学习","value":3},{"name":"灵魂雕琢","value":7},{"name":"技术学习","value":1},{"name":"python学习","value":1},{"name":"算法岗八股文","value":2},{"name":"linux","value":1},{"name":"游戏","value":2},{"name":"技术学习","value":1},{"name":"灵魂雕琢","value":1},{"name":"论文阅读","value":2},{"name":"灵魂雕琢","value":1},{"name":"读后感","value":1},{"name":"电影观后感","value":1},{"name":"点滴生活","value":5},{"name":"环境配置","value":1},{"name":"开发知识","value":1},{"name":"统计学习","value":3},{"name":"闲谈","value":1},{"name":"点滴生活","value":1},{"name":"游戏","value":1},{"name":"算法岗八股文","value":1},{"name":"电影观后感","value":1},{"name":"算法岗八股文","value":1},{"name":"读书笔记","value":2},{"name":"linux","value":1},{"name":"统计学习","value":1},{"name":"灵魂雕琢","value":1},{"name":"读书笔记","value":1},{"name":"游戏","value":1},{"name":"点滴生活","value":1},{"name":"读后感","value":1},{"name":"点滴生活","value":1},{"name":"灵魂雕琢","value":2},{"name":"开发知识","value":2},{"name":"点滴生活","value":1},{"name":"python学习","value":1},{"name":"统计学习","value":1},{"name":"读后感","value":1},{"name":"点滴生活","value":1},{"name":"灵魂雕琢","value":1},{"name":"点滴生活","value":1},{"name":"点滴生活","value":1},{"name":"电影观后感","value":1},{"name":"灵魂雕琢","value":1},{"name":"统计学习","value":1},{"name":"统计学习","value":1},{"name":"读书笔记","value":1},{"name":"python学习","value":1},{"name":"闲谈","value":1}],
+                data: [{"name":"统计学习","value":30},{"name":"闲谈","value":5},{"name":"技术学习","value":3},{"name":"闲谈","value":6},{"name":"linux","value":1},{"name":"环境配置","value":2},{"name":"论文阅读","value":2},{"name":"论文阅读","value":1},{"name":"灵魂雕琢","value":7},{"name":"python学习","value":1},{"name":"技术学习","value":1},{"name":"游戏","value":2},{"name":"算法岗八股文","value":2},{"name":"linux","value":1},{"name":"linux","value":1},{"name":"灵魂雕琢","value":1},{"name":"技术学习","value":1},{"name":"灵魂雕琢","value":1},{"name":"读后感","value":1},{"name":"电影观后感","value":1},{"name":"点滴生活","value":5},{"name":"闲谈","value":1},{"name":"开发知识","value":1},{"name":"环境配置","value":1},{"name":"统计学习","value":3},{"name":"点滴生活","value":1},{"name":"算法岗八股文","value":1},{"name":"灵魂雕琢","value":1},{"name":"读后感","value":1},{"name":"电影观后感","value":1},{"name":"游戏","value":1},{"name":"读书笔记","value":2},{"name":"算法岗八股文","value":1},{"name":"读书笔记","value":1},{"name":"统计学习","value":1},{"name":"游戏","value":1},{"name":"读后感","value":1},{"name":"点滴生活","value":1},{"name":"点滴生活","value":1},{"name":"开发知识","value":2},{"name":"灵魂雕琢","value":2},{"name":"python学习","value":1},{"name":"统计学习","value":1},{"name":"点滴生活","value":1},{"name":"python学习","value":1},{"name":"点滴生活","value":1},{"name":"灵魂雕琢","value":1},{"name":"点滴生活","value":1},{"name":"电影观后感","value":1},{"name":"灵魂雕琢","value":1},{"name":"统计学习","value":1},{"name":"点滴生活","value":1},{"name":"统计学习","value":1},{"name":"读书笔记","value":1},{"name":"闲谈","value":1}],
                 itemStyle: {
                     emphasis: {
                         shadowBlur: 10,
@@ -612,7 +634,7 @@
         xAxis: [
             {
                 type: 'category',
-                data: ["命令行","书籍阅读","数据结构","插件管理","无感而发","EM算法,隐变量,高斯混合模型","概率模型，HMM","无向图","支持向量机","SVM,补充"]
+                data: ["命令行","书籍阅读","插件管理","数据结构","无感而发","EM算法,隐变量,高斯混合模型","概率模型，HMM","无向图","支持向量机","SVM,补充"]
             }
         ],
         yAxis: [
@@ -814,8 +836,8 @@
             
             
             
-            <a href="/tags/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B%EF%BC%8C%E6%9C%89%E5%90%91%E5%9B%BE/">
-                <span class="chip center-align waves-effect waves-light chip-default">概率图模型，有向图</span>
+            <a href="/tags/%E5%AE%89%E5%85%A8%E6%80%A7%E5%8D%8F%E8%AE%AE/">
+                <span class="chip center-align waves-effect waves-light chip-default">安全性协议</span>
             </a>
             
             
@@ -826,26 +848,14 @@
             
             
             
+            <a href="/tags/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B%EF%BC%8C%E6%9C%89%E5%90%91%E5%9B%BE/">
+                <span class="chip center-align waves-effect waves-light chip-default">概率图模型，有向图</span>
+            </a>
+            
+            
+            
             <a href="/tags/%E5%91%BD%E4%BB%A4%E8%A1%8C/">
                 <span class="chip center-align waves-effect waves-light chip-default">命令行</span>
-            </a>
-            
-            
-            
-            <a href="/tags/%E5%89%8D%E6%B2%BF%E6%96%B9%E5%90%91/">
-                <span class="chip center-align waves-effect waves-light chip-default">前沿方向</span>
-            </a>
-            
-            
-            
-            <a href="/tags/%E5%AE%89%E5%85%A8%E6%80%A7%E5%8D%8F%E8%AE%AE/">
-                <span class="chip center-align waves-effect waves-light chip-default">安全性协议</span>
-            </a>
-            
-            
-            
-            <a href="/tags/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/">
-                <span class="chip center-align waves-effect waves-light chip-default">书籍阅读</span>
             </a>
             
             
@@ -856,14 +866,26 @@
             
             
             
-            <a href="/tags/%E7%BC%96%E7%A8%8B%E6%8A%80%E8%83%BD%EF%BC%8C-%E6%97%B6%E5%BA%8F%E6%95%B0%E6%8D%AE/">
-                <span class="chip center-align waves-effect waves-light chip-default">编程技能， 时序数据</span>
+            <a href="/tags/%E5%89%8D%E6%B2%BF%E6%96%B9%E5%90%91/">
+                <span class="chip center-align waves-effect waves-light chip-default">前沿方向</span>
             </a>
             
             
             
-            <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
-                <span class="chip center-align waves-effect waves-light chip-default">数据结构</span>
+            <a href="/tags/logistic%E5%9B%9E%E5%BD%92-%E6%9C%80%E5%A4%A7%E7%86%B5%E6%A8%A1%E5%9E%8B-%E4%BC%98%E5%8C%96%E5%AD%A6%E4%B9%A0/">
+                <span class="chip center-align waves-effect waves-light chip-default">logistic回归, 最大熵模型, 优化学习</span>
+            </a>
+            
+            
+            
+            <a href="/tags/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/">
+                <span class="chip center-align waves-effect waves-light chip-default">书籍阅读</span>
+            </a>
+            
+            
+            
+            <a href="/tags/%E7%BC%96%E7%A8%8B%E6%8A%80%E8%83%BD%EF%BC%8C-%E6%97%B6%E5%BA%8F%E6%95%B0%E6%8D%AE/">
+                <span class="chip center-align waves-effect waves-light chip-default">编程技能， 时序数据</span>
             </a>
             
             
@@ -874,8 +896,14 @@
             
             
             
-            <a href="/tags/logistic%E5%9B%9E%E5%BD%92-%E6%9C%80%E5%A4%A7%E7%86%B5%E6%A8%A1%E5%9E%8B-%E4%BC%98%E5%8C%96%E5%AD%A6%E4%B9%A0/">
-                <span class="chip center-align waves-effect waves-light chip-default">logistic回归, 最大熵模型, 优化学习</span>
+            <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
+                <span class="chip center-align waves-effect waves-light chip-default">数据结构</span>
+            </a>
+            
+            
+            
+            <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">
+                <span class="chip center-align waves-effect waves-light chip-default">数据库</span>
             </a>
             
             
@@ -888,12 +916,6 @@
             
             <a href="/tags/%E6%AD%A3%E4%B9%89/">
                 <span class="chip center-align waves-effect waves-light chip-default">正义</span>
-            </a>
-            
-            
-            
-            <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">
-                <span class="chip center-align waves-effect waves-light chip-default">数据库</span>
             </a>
             
             
@@ -916,20 +938,14 @@
             
             
             
-            <a href="/tags/%E4%BA%BA%E5%83%8F%E6%91%84%E5%BD%B1%E5%85%A5%E9%97%A8%EF%BC%8C%E6%B5%81%E7%A8%8B%E8%A7%A3%E6%9E%90/">
-                <span class="chip center-align waves-effect waves-light chip-default">人像摄影入门，流程解析</span>
-            </a>
-            
-            
-            
             <a href="/tags/%E4%BA%BA%E5%83%8F%E6%91%84%E5%BD%B1%E5%85%A5%E9%97%A8%EF%BC%8C%E5%85%89%E7%BA%BF%E6%9E%84%E5%9B%BE/">
                 <span class="chip center-align waves-effect waves-light chip-default">人像摄影入门，光线构图</span>
             </a>
             
             
             
-            <a href="/tags/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%EF%BC%8C%E5%87%B8%E4%BC%98%E5%8C%96/">
-                <span class="chip center-align waves-effect waves-light chip-default">统计学习，凸优化</span>
+            <a href="/tags/%E4%BA%BA%E5%83%8F%E6%91%84%E5%BD%B1%E5%85%A5%E9%97%A8%EF%BC%8C%E6%B5%81%E7%A8%8B%E8%A7%A3%E6%9E%90/">
+                <span class="chip center-align waves-effect waves-light chip-default">人像摄影入门，流程解析</span>
             </a>
             
             
@@ -940,14 +956,14 @@
             
             
             
-            <a href="/tags/%E5%AE%B9%E5%99%A8/">
-                <span class="chip center-align waves-effect waves-light chip-default">容器</span>
+            <a href="/tags/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%EF%BC%8C%E5%87%B8%E4%BC%98%E5%8C%96/">
+                <span class="chip center-align waves-effect waves-light chip-default">统计学习，凸优化</span>
             </a>
             
             
             
-            <a href="/tags/%E5%8E%86%E5%8F%B2%E9%80%B8%E4%BA%8B/">
-                <span class="chip center-align waves-effect waves-light chip-default">历史逸事</span>
+            <a href="/tags/%E5%AE%B9%E5%99%A8/">
+                <span class="chip center-align waves-effect waves-light chip-default">容器</span>
             </a>
             
             
@@ -958,26 +974,14 @@
             
             
             
+            <a href="/tags/%E5%8E%86%E5%8F%B2%E9%80%B8%E4%BA%8B/">
+                <span class="chip center-align waves-effect waves-light chip-default">历史逸事</span>
+            </a>
+            
+            
+            
             <a href="/tags/%E5%BF%83%E6%99%BA%E6%88%90%E7%86%9F%EF%BC%8C%E5%BF%83%E7%90%86%E5%AD%A6/">
                 <span class="chip center-align waves-effect waves-light chip-default">心智成熟，心理学</span>
-            </a>
-            
-            
-            
-            <a href="/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/">
-                <span class="chip center-align waves-effect waves-light chip-default">强化学习</span>
-            </a>
-            
-            
-            
-            <a href="/tags/%E6%8C%87%E6%95%B0%E5%88%86%E5%B8%83%E6%97%8F%EF%BC%8C-%E5%B9%BF%E4%B9%89%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B/">
-                <span class="chip center-align waves-effect waves-light chip-default">指数分布族， 广义线性模型</span>
-            </a>
-            
-            
-            
-            <a href="/tags/%E6%98%9F%E8%BD%A8%E6%8B%8D%E6%91%84%EF%BC%8C%E5%BB%B6%E6%97%B6%E8%A7%86%E9%A2%91/">
-                <span class="chip center-align waves-effect waves-light chip-default">星轨拍摄，延时视频</span>
             </a>
             
             
@@ -988,8 +992,26 @@
             
             
             
-            <a href="/tags/%E6%97%A0%E6%84%9F%E8%80%8C%E5%8F%91/">
-                <span class="chip center-align waves-effect waves-light chip-default">无感而发</span>
+            <a href="/tags/%E6%8C%87%E6%95%B0%E5%88%86%E5%B8%83%E6%97%8F%EF%BC%8C-%E5%B9%BF%E4%B9%89%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B/">
+                <span class="chip center-align waves-effect waves-light chip-default">指数分布族， 广义线性模型</span>
+            </a>
+            
+            
+            
+            <a href="/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/">
+                <span class="chip center-align waves-effect waves-light chip-default">强化学习</span>
+            </a>
+            
+            
+            
+            <a href="/tags/%E4%BD%99%E5%8D%8E%EF%BC%8C%E6%B8%85%E6%9C%AB%E6%B0%91%E5%88%9D/">
+                <span class="chip center-align waves-effect waves-light chip-default">余华，清末民初</span>
+            </a>
+            
+            
+            
+            <a href="/tags/%E6%98%9F%E8%BD%A8%E6%8B%8D%E6%91%84%EF%BC%8C%E5%BB%B6%E6%97%B6%E8%A7%86%E9%A2%91/">
+                <span class="chip center-align waves-effect waves-light chip-default">星轨拍摄，延时视频</span>
             </a>
             
             
@@ -1000,14 +1022,14 @@
             
             
             
-            <a href="/tags/%E6%A6%82%E7%8E%87%E5%9B%BE%EF%BC%8C%E6%9D%A1%E4%BB%B6%E9%9A%8F%E6%9C%BA%E5%9C%BA/">
-                <span class="chip center-align waves-effect waves-light chip-default">概率图，条件随机场</span>
+            <a href="/tags/%E6%97%A0%E6%84%9F%E8%80%8C%E5%8F%91/">
+                <span class="chip center-align waves-effect waves-light chip-default">无感而发</span>
             </a>
             
             
             
-            <a href="/tags/KL%E6%95%A3%E5%BA%A6%EF%BC%8CJS%E6%95%A3%E5%BA%A6%EF%BC%8C%E6%8E%A8%E5%9C%9F%E6%9C%BA%E8%B7%9D%E7%A6%BB/">
-                <span class="chip center-align waves-effect waves-light chip-default">KL散度，JS散度，推土机距离</span>
+            <a href="/tags/%E6%A6%82%E7%8E%87%E5%9B%BE%EF%BC%8C%E6%9D%A1%E4%BB%B6%E9%9A%8F%E6%9C%BA%E5%9C%BA/">
+                <span class="chip center-align waves-effect waves-light chip-default">概率图，条件随机场</span>
             </a>
             
             
@@ -1018,8 +1040,8 @@
             
             
             
-            <a href="/tags/%E4%BD%99%E5%8D%8E%EF%BC%8C%E6%B8%85%E6%9C%AB%E6%B0%91%E5%88%9D/">
-                <span class="chip center-align waves-effect waves-light chip-default">余华，清末民初</span>
+            <a href="/tags/KL%E6%95%A3%E5%BA%A6%EF%BC%8CJS%E6%95%A3%E5%BA%A6%EF%BC%8C%E6%8E%A8%E5%9C%9F%E6%9C%BA%E8%B7%9D%E7%A6%BB/">
+                <span class="chip center-align waves-effect waves-light chip-default">KL散度，JS散度，推土机距离</span>
             </a>
             
             
@@ -1036,12 +1058,6 @@
             
             
             
-            <a href="/tags/BP%E7%AE%97%E6%B3%95%EF%BC%8C-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%EF%BC%8C-CNN/">
-                <span class="chip center-align waves-effect waves-light chip-default">BP算法， 深度学习， CNN</span>
-            </a>
-            
-            
-            
             <a href="/tags/GAN/">
                 <span class="chip center-align waves-effect waves-light chip-default">GAN</span>
             </a>
@@ -1054,20 +1070,8 @@
             
             
             
-            <a href="/tags/%E6%AF%9B%E9%80%89%E3%80%81%E8%BE%A9%E8%AF%81%E5%94%AF%E7%89%A9%E4%B8%BB%E4%B9%89/">
-                <span class="chip center-align waves-effect waves-light chip-default">毛选、辩证唯物主义</span>
-            </a>
-            
-            
-            
             <a href="/tags/%E7%9B%B8%E6%9C%BA%EF%BC%8C%E5%8D%95%E5%8F%8D/">
                 <span class="chip center-align waves-effect waves-light chip-default">相机，单反</span>
-            </a>
-            
-            
-            
-            <a href="/tags/%E5%BA%B7%E5%BE%B7%EF%BC%8C%E5%93%B2%E5%AD%A6/">
-                <span class="chip center-align waves-effect waves-light chip-default">康德，哲学</span>
             </a>
             
             
@@ -1078,20 +1082,20 @@
             
             
             
-            <a href="/tags/kmeans%EF%BC%8C%E5%B1%82%E6%AC%A1%E8%81%9A%E7%B1%BB%EF%BC%8C%E8%B0%B1%E8%81%9A%E7%B1%BB/">
-                <span class="chip center-align waves-effect waves-light chip-default">kmeans，层次聚类，谱聚类</span>
+            <a href="/tags/%E5%BA%B7%E5%BE%B7%EF%BC%8C%E5%93%B2%E5%AD%A6/">
+                <span class="chip center-align waves-effect waves-light chip-default">康德，哲学</span>
             </a>
             
             
             
-            <a href="/tags/%E7%B1%B3%E5%B0%94%E6%96%AF%EF%BC%8C%E7%A4%BE%E4%BC%9A%E5%AD%A6/">
-                <span class="chip center-align waves-effect waves-light chip-default">米尔斯，社会学</span>
+            <a href="/tags/BP%E7%AE%97%E6%B3%95%EF%BC%8C-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%EF%BC%8C-CNN/">
+                <span class="chip center-align waves-effect waves-light chip-default">BP算法， 深度学习， CNN</span>
             </a>
             
             
             
-            <a href="/tags/%E8%87%AA%E7%BC%96%E7%A0%81%EF%BC%8C%E5%8F%98%E5%88%86%E8%87%AA%E7%BC%96%E7%A0%81%EF%BC%8C%E9%99%8D%E5%99%AA%E8%87%AA%E7%BC%96%E7%A0%81/">
-                <span class="chip center-align waves-effect waves-light chip-default">自编码，变分自编码，降噪自编码</span>
+            <a href="/tags/%E6%AF%9B%E9%80%89%E3%80%81%E8%BE%A9%E8%AF%81%E5%94%AF%E7%89%A9%E4%B8%BB%E4%B9%89/">
+                <span class="chip center-align waves-effect waves-light chip-default">毛选、辩证唯物主义</span>
             </a>
             
             
@@ -1108,20 +1112,32 @@
             
             
             
+            <a href="/tags/kmeans%EF%BC%8C%E5%B1%82%E6%AC%A1%E8%81%9A%E7%B1%BB%EF%BC%8C%E8%B0%B1%E8%81%9A%E7%B1%BB/">
+                <span class="chip center-align waves-effect waves-light chip-default">kmeans，层次聚类，谱聚类</span>
+            </a>
+            
+            
+            
+            <a href="/tags/%E8%87%AA%E7%BC%96%E7%A0%81%EF%BC%8C%E5%8F%98%E5%88%86%E8%87%AA%E7%BC%96%E7%A0%81%EF%BC%8C%E9%99%8D%E5%99%AA%E8%87%AA%E7%BC%96%E7%A0%81/">
+                <span class="chip center-align waves-effect waves-light chip-default">自编码，变分自编码，降噪自编码</span>
+            </a>
+            
+            
+            
             <a href="/tags/%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%88%86%E7%B1%BB%EF%BC%8C%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92/">
                 <span class="chip center-align waves-effect waves-light chip-default">贝叶斯分类，逻辑回归</span>
             </a>
             
             
             
-            <a href="/tags/%E5%88%86%E7%B1%BB%EF%BC%8Ck%E8%BF%91%E9%82%BB/">
-                <span class="chip center-align waves-effect waves-light chip-default">分类，k近邻</span>
+            <a href="/tags/%E7%B1%B3%E5%B0%94%E6%96%AF%EF%BC%8C%E7%A4%BE%E4%BC%9A%E5%AD%A6/">
+                <span class="chip center-align waves-effect waves-light chip-default">米尔斯，社会学</span>
             </a>
             
             
             
-            <a href="/tags/%E9%A3%8E%E5%85%89%E6%91%84%E5%BD%B1/">
-                <span class="chip center-align waves-effect waves-light chip-default">风光摄影</span>
+            <a href="/tags/%E5%88%86%E7%B1%BB%EF%BC%8Ck%E8%BF%91%E9%82%BB/">
+                <span class="chip center-align waves-effect waves-light chip-default">分类，k近邻</span>
             </a>
             
             
@@ -1134,6 +1150,12 @@
             
             <a href="/tags/PCA-ISOMAP-MDS-LLE/">
                 <span class="chip center-align waves-effect waves-light chip-default">PCA, ISOMAP, MDS, LLE</span>
+            </a>
+            
+            
+            
+            <a href="/tags/%E9%A3%8E%E5%85%89%E6%91%84%E5%BD%B1/">
+                <span class="chip center-align waves-effect waves-light chip-default">风光摄影</span>
             </a>
             
             

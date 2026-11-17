@@ -1,7 +1,9 @@
 {
   "theme": "hexo-theme-matery",
   "hexo": "8.1.2",
-  "sourceCommit": "2326897150c25c354715ee1758a0dfdcd3e4cc64",
+  "homepage": "academic",
+  "blogPath": "/blog/",
+  "sourceCommit": "daf1f01444720a22a2444e1ba7903ca99ff63d16",
   "sourceDirty": false,
-  "publishedAt": "2026-11-16T13:19:34.310Z"
+  "publishedAt": "2026-11-17T10:31:28.447Z"
 }
