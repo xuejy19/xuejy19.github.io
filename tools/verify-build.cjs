@@ -13,6 +13,23 @@ let headings = 0;
 let formulas = 0;
 const read = route => fs.readFileSync(path.join(root, route.replace(/^\//, '')), 'utf8');
 
+const $home = cheerio.load(read('/index.html'));
+assert.equal($home('#academic-home h1').length, 1, 'Missing academic homepage');
+assert.ok($home('a[href="/blog/"]').length, 'Homepage has no blog entry');
+assert.equal($home('script').length, 0, 'Homepage should work without JavaScript');
+for (const link of $home('#academic-home a[href^="/"]').toArray()) {
+  const route = link.attribs.href;
+  assert.ok(fs.existsSync(path.join(root, route, 'index.html')), `Broken homepage link ${route}`);
+}
+const $blog = cheerio.load(read('/blog/index.html'));
+assert.equal($blog('#articles .article').length, 12, 'Blog index moved incorrectly');
+for (let number = 2; number <= Math.ceil(manifest.articles.length / 12); number++) {
+  const destination = `/blog/page/${number}/`;
+  assert.ok(fs.existsSync(path.join(root, destination, 'index.html')), `Lost blog pagination ${number}`);
+  const $redirect = cheerio.load(read(`/page/${number}/index.html`));
+  assert.equal($redirect('meta[http-equiv="refresh"]').attr('content'), `0;url=${destination}`, 'Lost old pagination redirect');
+}
+
 for (const article of manifest.articles) {
   const html = read(`${article.url}index.html`);
   const $ = cheerio.load(html);

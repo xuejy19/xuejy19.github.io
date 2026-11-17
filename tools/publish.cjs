@@ -28,13 +28,14 @@ try {
   fs.writeFileSync(path.join(publishDir, '.nojekyll'), '');
   fs.writeFileSync(path.join(publishDir, 'build-info.json'), JSON.stringify({
     theme: 'hexo-theme-matery', hexo: require('../package.json').hexo.version,
+    homepage: 'academic', blogPath: '/blog/',
     sourceCommit, sourceDirty: Boolean(git(['status', '--porcelain'], root, true).trim()),
     publishedAt: new Date().toISOString()
   }, null, 2) + '\n');
   git(['add', '--all'], publishDir);
-  git(['commit', '-m', 'Publish restored Matery blog with updated Hexo and local assets'], publishDir);
+  git(['commit', '-m', 'Publish academic homepage and Matery blog'], publishDir);
   git(['push', 'origin', 'HEAD:master'], publishDir);
-  console.log(`Published Matery from source ${sourceCommit}.`);
+  console.log(`Published academic homepage and Matery blog from source ${sourceCommit}.`);
   git(['worktree', 'remove', publishDir]);
 } catch (error) {
   console.error(`Publish checkout retained for inspection: ${publishDir}`);

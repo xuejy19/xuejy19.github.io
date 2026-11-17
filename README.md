@@ -1,6 +1,8 @@
 # 风之声
 
-思考猫的个人博客。使用 **Hexo 8.1.2 + 原 Matery 主题**，发布到 <https://xuejy19.github.io/>。
+薛建业的个人主页与「风之声」博客。使用 **Hexo 8.1.2 + 独立学术主页 + 原 Matery 博客主题**。
+
+`/` 是清爽的个人主页，`/blog/` 是原 Matery 博客。文章、标签、分类和归档保持原地址；旧 `/page/2/` 等分页会跳转到新的博客分页。
 
 ## 本地预览
 
@@ -14,6 +16,13 @@ npm run server
 ```
 
 打开 <http://127.0.0.1:4000/>。预览服务只监听本机，不会发布到 GitHub。
+
+## 个人主页
+
+- `source/_data/profile.yml` 管理姓名、简介、学术兴趣、教育经历、代表成果、联系方式和精选笔记。资料根据用户授权查阅的简历、研究材料及公开论文整理；任职采用经历表述。论文按出版信息展示，技术报告可用 `type` 和 `contribution` 标明类型及个人贡献。
+- `homepage/index.ejs` 是独立主页模板，`source/css/academic.css` 管理主页样式，与 Matery 阅读页分开。
+- 首页使用的猫头像在 `source/medias/avatar-cat-warm-wise-v1.png`；未采用的头像保存在 `homepage/alternatives/`，不生成到网站中。
+- `scripts/academic-home.js` 生成根首页及旧博客分页跳转。主页不加载第三方字体或 JavaScript，手机上可直接使用导航和博客入口。
 
 ## 写作与配置
 
@@ -44,7 +53,7 @@ npx hexo new post "文章标题"
 
 ## 校验与浏览器截图
 
-`npm run check` 检查文章入口、旧锚点、公式、加密内容、搜索条目、核心资源及旧域名。搜索只应包含 65 篇已发布文章。
+`npm run check` 检查个人主页、博客入口及分页兼容，并检查文章入口、旧锚点、公式、加密内容、搜索条目、核心资源及旧域名。搜索只应包含 65 篇已发布文章。
 
 本地服务运行时，可以执行：
 
@@ -68,8 +77,8 @@ npm run check:browser
 sh deploy.sh
 ```
 
-此脚本重新构建、运行静态校验，成功后才将产物发布到远程 `master`。它会更新公开博客，需要可用的 GitHub SSH 身份。`npm run deploy` 会校验已有构建结果，再以普通 Git 提交发布；不会强制改写发布分支历史。
+此脚本重新构建、运行静态校验，成功后才将产物发布到远程 `master`。根地址 <https://xuejy19.github.io/> 展示个人主页，<https://xuejy19.github.io/blog/> 展示博客；不需要另建仓库或更换域名。它会更新公开网站，需要可用的 GitHub SSH 身份。`npm run deploy` 会校验已有构建结果，再以普通 Git 提交发布；不会强制改写发布分支历史。
 
-源码与生成结果分开保存。提交源码时先审查 `git diff`，再推送所选源码分支；旧 `push.sh` 固定推送 `source`，不适用于新的 `theme/matery` 分支。
+源码与生成结果分开保存：远端 `source` 保存 Hexo 源码，`master` 保存生成的网站。修改后先审查并提交源码，再用 `git push origin HEAD:source` 同步源码分支，最后执行 `sh deploy.sh` 发布网站。当前本地分支是 `theme/matery`，跟踪 `origin/source`；旧 `push.sh` 固定推送本地 `source`，不适用于此分支。
 
 已按个人偏好恢复原 Matery 模板。Fluid 调研仅作为历史记录，见 [THEME_MIGRATION_RESEARCH.md](THEME_MIGRATION_RESEARCH.md)。

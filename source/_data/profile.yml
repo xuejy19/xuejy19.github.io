@@ -1,0 +1,77 @@
+# 根据用户授权查阅的简历、研究材料和公开论文整理；在此维护主页资料。
+name: 薛建业
+english_name: Jianye Xue
+alias: 思考猫
+motto: 所见皆为表象，所思皆有边界
+focus: Agentic RL · 大模型后训练系统
+description: 薛建业的个人主页，关注 Agentic RL 基础设施、分布式训练与经验数据系统，探索算法、模型与系统的协同设计。
+intro:
+  - 我主要从事 Agentic RL Infra 研发。在华为 2012 实验室，我参与了 Agent 训练框架、分布式经验数据引擎与沙箱执行系统的设计和开发，围绕多轮工具交互、轨迹构建、异步数据流转与大规模 rollout，解决训练过程中的正确性、效率和稳定性问题。
+  - 未来，我希望进一步深入训练与推理引擎，围绕长程 Agent 任务探索算法、模型与系统的协同设计。我关心如何在模型效果、训练效率与计算成本之间做出更好的权衡，让智能体能够在更复杂的真实环境中学习和改进。
+avatar: /medias/avatar-cat-warm-wise-v1.png
+email: xuejianye19@gmail.com
+github: https://github.com/xuejy19
+interests:
+  - title: Agentic RL
+    english: Agent Learning & Runtime
+    description: 多轮工具交互、可训练轨迹构建与 Agent-aware 推理调度，连接智能体执行与强化学习。
+  - title: 分布式训练与数据系统
+    english: RL Systems & Data Infrastructure
+    description: 异步训练中的经验数据流转、样本调度与执行环境，兼顾数据正确性和系统效率。
+  - title: 因果建模与工业 AI
+    english: Causal Learning & Industrial AI
+    description: 将因果分析与数据驱动方法结合，用于工业过程监测、故障诊断与质量预测。
+education:
+  - school: 清华大学
+    degree: 控制科学与工程 · 博士
+    detail: 自动化系
+    period: 2019.09 — 2025.04
+  - school: 西北工业大学
+    degree: 机械电子工程 · 本科
+    detail: 教育实验学院（本硕实验班）
+    period: 2015.09 — 2019.06
+publications:
+  - title: openPangu-2.0 Tech Report
+    type: 技术报告
+    year: 2026
+    url: https://ai.gitcode.com/ascend-tribe/openPangu-2.0-Pro/blob/main/openPangu-2.0%20Tech%20Report.pdf
+  - title: openPangu DeepDiver-V2
+    type: 技术报告
+    year: 2025
+    url: https://ai.gitcode.com/ascend-tribe/openPangu-Embedded-7B-DeepDiver/blob/main/docs/openpangu-deepdiver-v2-tech-report.pdf
+  - title: 'ScaleGS: Towards Scalable and Efficient 3D Gaussian Splatting'
+    authors: [Shuoyang Sun, Jiaxin Hong, Kaiwen Zhang, Shiyu Qin, Jiawei Li, Yaowei Li, Jianye Xue, Chenxi Lan, Bin Chen]
+    venue: ICASSP
+    year: 2026
+    url: https://www.cmsworkshops.com/ICASSP2026/view_paper.php?PaperNum=7504&bare=1
+  - title: KPI-oriented process monitoring based on causal-weighted partial least squares
+    authors: [Jianye Xue, Tongshuai Zhang, Hao Ye]
+    venue: Information Sciences
+    year: 2025
+    url: https://doi.org/10.1016/j.ins.2024.121470
+  - title: Data-Driven Soft Sensor for Hot Strip Mill Process Based on Multiscale Information-Fusion Attention Network
+    authors: [Jianye Xue, Kang Li, Tongshuai Zhang, Hao Ye]
+    venue: IEEE Transactions on Instrumentation and Measurement
+    year: 2024
+    url: https://doi.org/10.1109/TIM.2024.3450083
+notes:
+  - title: Domain Generalization：域泛化综述阅读
+    category: 论文阅读
+    date: 2022-10
+    url: /2022/10/28/domain-generalization/
+    description: 从问题定义、方法分类到应用思考，梳理未知域上的泛化问题。
+  - title: 自然语言处理学习
+    category: 课程笔记
+    date: 2022-10
+    url: /2022/10/06/zi-ran-yu-yan-chu-li-xue-xi/
+    description: 以 Stanford CS224n 为线索，记录词表示与深度学习语言模型的学习过程。
+  - title: 概率分布中的距离度量
+    category: 理论笔记
+    date: 2020-08
+    url: /2020/08/26/gai-lu-fen-bu-zhong-de-ju-chi-du-liang/
+    description: 从信息熵到 KL、JS 散度与 Wasserstein 距离，理解分布之间的差异。
+personal:
+  title: 学习之外
+  text: 读一点历史、哲学与社会学，用摄影留住光线和日常。博客「风之声」也保存着这些不那么技术的片段。
+  link_text: 去风之声坐坐
+  url: /blog/
