@@ -6,8 +6,7 @@
   --accent: #315f4d;
   --line: #dfe6dc;
   --tint: #f0f4ec;
-  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
-  --serif: "Songti SC", "Noto Serif CJK SC", Georgia, serif;
+  --font: var(--site-font);
 }
 
 * { box-sizing: border-box; }
@@ -21,7 +20,7 @@ a:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; border-
 .skip-link:focus { top: 12px; }
 
 .site-header { display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 80px; border-bottom: 1px solid var(--line); }
-.wordmark { white-space: nowrap; font: 500 18px/1.5 var(--serif); letter-spacing: .7px; }
+.wordmark { white-space: nowrap; font: 500 18px/1.5 var(--font); letter-spacing: .7px; }
 .wordmark-dot { display: inline-block; width: 4px; height: 4px; margin-left: 7px; border-radius: 50%; background: var(--accent); vertical-align: middle; }
 nav { display: flex; align-items: center; gap: 27px; color: var(--muted); font-size: 13px; }
 nav a { padding: 10px 0; white-space: nowrap; }
@@ -30,7 +29,7 @@ nav a { padding: 10px 0; white-space: nowrap; }
 .intro { padding: 36px 0 32px; }
 .intro-header { display: grid; grid-template-columns: 148px minmax(0, 1fr); align-items: center; gap: 32px; margin-bottom: 24px; }
 .intro-copy { min-width: 0; padding-bottom: 12px; }
-h1 { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 20px; margin: 0; font: 600 42px/1.3 var(--serif); letter-spacing: 2px; }
+h1 { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 20px; margin: 0; font: 600 42px/1.3 var(--font); letter-spacing: 2px; }
 h1 span { color: #5c6d61; font: 400 23px/1.5 var(--font); letter-spacing: -.5px; }
 .focus { margin: 10px 0 0; color: var(--accent); font-size: 14px; letter-spacing: .2px; }
 .portrait { margin: 0; text-align: center; }

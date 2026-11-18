@@ -1,0 +1,16 @@
+/* Shared text typography. Font files and the OFL license are served locally. */
+:root {
+  --site-font: "Noto Sans SC Variable", "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+html,
+body,
+button,
+input,
+optgroup,
+select,
+textarea,
+body .hbe-input-field,
+body .hbe-button {
+  font-family: var(--site-font);
+}
