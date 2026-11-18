@@ -76,6 +76,10 @@ hexo.extend.generator.register('local-vendor-assets', function() {
   const modules = path.join(this.base_dir, 'node_modules');
   walk(path.join(modules, 'katex/dist'), 'katex');
   add(path.join(modules, 'typed.js/lib/typed.min.js'), 'typed/typed.min.js');
+  const fontDir = path.join(modules, '@fontsource-variable/noto-sans-sc');
+  add(path.join(fontDir, 'index.css'), 'fonts/noto-sans-sc/index.css');
+  add(path.join(fontDir, 'LICENSE'), 'fonts/noto-sans-sc/LICENSE.txt');
+  walk(path.join(fontDir, 'files'), 'fonts/noto-sans-sc/files');
   return routes;
 });
 

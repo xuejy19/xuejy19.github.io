@@ -23,6 +23,7 @@ npm run server
 - `homepage/index.ejs` 是独立主页模板，`source/css/academic.css` 管理主页样式，与 Matery 阅读页分开。
 - 首页使用的猫头像在 `source/medias/avatar-cat-warm-wise-v1.png`；未采用的头像保存在 `homepage/alternatives/`，不生成到网站中。
 - `scripts/academic-home.js` 生成根首页及旧博客分页跳转。主页不加载第三方字体或 JavaScript，手机上可直接使用导航和博客入口。
+- 主页与博客的中英文文字统一使用自托管的 Noto Sans SC 可变字体，字形分片按需加载；配置在 `source/css/site-typography.css`，字体版本锁定在 `package-lock.json`，OFL 许可证随字体发布。代码、公式与图标使用各自的专用字体。
 
 ## 写作与配置
 
